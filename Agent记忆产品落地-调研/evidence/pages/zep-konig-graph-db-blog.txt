@@ -1,0 +1,189 @@
+URL: https://blog.getzep.com/why-we-built-a-graph-database-service-for-agent-memory/
+FINAL: https://blog.getzep.com/why-we-built-a-graph-database-service-for-agent-memory/
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Why we built a graph database service for agent memory
+BYTES: 76885
+======================================================================
+Why we built a graph database service for agent memory
+We're hiring! Come build with us &rarr;
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Log in
+Book a demo
+Sign up
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Book a demo
+Sign up
+Blog / Why we built a graph database service for agent memory
+Featured
+Why we built a graph database service for agent memory
+Konig, Zep&#x27;s graph database service, is the data plane beneath our agent memory platform. This post covers why we built it, how it works, and what we learned along the way.
+Daniel Chalef
+27 Aug 2026
+&bull; 15 min read
+Key takeaways
+Governed agent context at scale is a workload general-purpose graph databases handle poorly. Konig is Zep's purpose-built graph database for agent memory: millions of knowledge graphs, one per user, team, or project, most in cold storage and all temporal and governed.
+Retrieval latency holds near-constant as the number of graphs grows: p95 retrieval stays under 100ms from a thousand graphs to tens of millions, and Zep's full end-to-end retrieval stays under 200ms at that scale. Cost tracks activity, not capacity: hot graphs serve from RAM and idle graphs are evicted to object storage.
+A single query fuses vector, full-text, graph, and pattern signals into one ranked answer. Graph analytics that normally run offline as batch jobs, like PageRank, run inline in milliseconds.
+Every graph has its own full-text and vector indexes inside its snapshot: exact kNN with SIMD kernels by default, an IVF index with SPFresh/LIRE incremental maintenance as graphs grow. There's no shared search cluster to operate.
+Governance and security are built into the data plane: attribute-based access control (ABAC) on every node and edge, per-graph isolation, customer-managed keys (CMEK/BYOK), and bi-temporal facts with provenance to source.
+Agents act on context: what they know about the users they serve, the business they operate in, and the work they have already done. That context is scattered across sources. The churning account, the unpaid invoice, and last week's difficult call are the same customer, but each fact is in a different system, and no one system records the connection. Unifying context from across these sources offers agents insights and efficiencies that tool calling does not. The unified data is entities and the relationships between them.
+A graph is the right structure for this data. Relationships are first-class, so traversal replaces the joins a relational or document store would require. Provenance is built in: each fact is an edge that references the source data it was extracted from, so tracing why an agent holds a belief is a traversal. Time fits the model as well, since an edge can store when a relationship held in the world and when the system recorded it.
+Unifying business data across sources models well on a graph. Zep builds a specialized version of these graphs, one per subject : the user, customer, team, or project an agent's task concerns. A single customer can have millions of them.
+Graphs are difficult to build and serve at scale. That problem is why we built a database service.
+The first version of Konig was a holiday project. After several challenging months of fighting outages and poor performance with our production graph database, I prototyped a graph engine over December and January. It was built on in-memory adjacency lists and showed it could meet our scale needs. Over the first half of this year more of the team joined, and their graph algorithm, search, and distributed systems experience turned the prototype into the production system this post describes.
+The requirements
+Zep's customers are enterprises and fast-growing AI-native startups. A single customer has many subjects for its agents to work on, many sources of data about each, and many agents acting on that data. A single deployment maintains separate context for thousands or millions of subjects at once. Many deployments run in regulated industries, where an incorrect answer can become a compliance incident.
+As a result, our requirements for Konig included:
+Scale: millions of graphs, each with its own evolving memory, and retrieval latency that holds as graph size and graph count grow.
+Governance: access control, retention, provenance, and audit, applied via policy down to nodes and edges.
+Security: isolation between graphs and customer-controlled encryption, in a deployment model that matches the customer's compliance requirements.
+Cost: the system should not keep millions of idle graphs in memory or on cluster storage to cover a peak that rarely occurs.
+Why we built a graph database service
+We did not set out to build a graph database. Zep ran on an existing commercial database, and for a long time that worked. As we scaled, it stopped working.
+The database failed under load, and adding hardware stopped helping because the failures were structural. It was slow under our access patterns in ways we could not tune away. It could not express what our customers required: many graphs, per-graph isolation, customer-held encryption keys, or a cost model that tracked activity instead of provisioned cluster capacity.
+The database was good technology built for a different problem. General-purpose graph databases often assume one large graph: mostly resident in memory, traversed by complex queries, against a schema fixed in advance. Agent context is the inverse workload: millions of smaller graphs, most cold at any moment, each temporal and governed independently. Graphs have a reputation for being slow and hard to scale. In our case the cause was the database's fit to this workload, not the graph model itself.
+Fighting a database built for a different workload made less sense than building for our workload, so we built Konig. It is the data plane on which Graphiti and other Zep service components run.
+Zep architecture: Konig is the data plane for the Zep service. Why a narrow scope was easier to build
+Building a general-purpose database is a multi-year undertaking. A purpose-built engine for a single workload is far smaller, both to build and to maintain, because it never has to serve every use case.
+The query interface is the clearest example. Konig exposes a gRPC API: mutate, search, traverse, and a small set of lookups. It has no general-purpose query language such as Cypher. That removes a large part of what makes a database hard to build. There is no grammar to parse and no query optimizer to keep fast across arbitrary queries. The parsing and planning layer that consumes significant effort in a general-purpose database does not exist in Konig.
+We made the same trade in the infrastructure. Konig runs on our cloud provider's managed services instead of storage and failover primitives of our own: object storage for snapshots, and a managed, multi-AZ datastore for the write-ahead log and metadata. Building those ourselves would have been a major undertaking. Using managed infrastructure shortened the path to production.
+Millions of graphs, not one big one
+Konig does not partition one graph across tenants. Each subject, such as a user, project, or team, gets its own graph. This graph is the unit of storage, access, encryption, and retention.
+With one graph per subject, isolation is structural. One tenant's context cannot appear in another's results. Governance, encryption, and retention attach to a boundary that already exists, with none of the per-tenant query filters common in SaaS.
+Bounding each query to one graph enables otherwise offline algorithms to run in real time. PageRank queries return in low milliseconds. Splitting memory into one graph per subject bounds the working set each query and algorithm touches. These algorithms run inline, per request, and latency stays flat as the graph count grows.
+The design gives up global ordering and traversals that span every graph at once. On the real-time retrieval path we do not need them: a single retrieval targets one graph, and an agent reasons across many graphs through separate calls. Some customers do need cross-graph analysis, and we are building it as a separate, non-real-time workload off the low-latency retrieval path.
+The Konig architecture, with multiple, tiered layers of graph storage Hot, warm, and cold storage
+Most graphs are idle most of the time. Konig treats that as the basis of its cost model and keeps each graph in one of three tiers.
+Hot graphs live in RAM and serve most queries at microsecond latency. Snapshots are periodically written to both local ephemeral NVMe and object storage. A graph evicted from RAM due to inactivity stays warm while its snapshot remains on local NVMe, where it reloads in low milliseconds. After longer idleness the local copy is pruned and the graph goes cold, leaving only the snapshot in object storage.
+A cold graph costs almost nothing to retain and reloads from object storage on its next request. After optimizing how we use our cloud provider's object storage, we've gotten cold load down to low hundreds of milliseconds. Promotion to hot is lazy; no background process warms graphs that are not in use.
+Cost tracks active graphs, not total graphs. A deployment with a million graphs and one percent hot pays for one percent of the memory; the rest is in object storage at object-storage prices. This is the data-lake pattern applied to agent context: the working set stays in fast storage and the long tail costs little.
+Scaling by adding shards
+Graphs are distributed across shards by rendezvous hashing. Each graph is scored against every shard by hashing its key with the shard's ID, and the highest-scoring shard owns it. Adding or removing a shard therefore relocates only about 1/N of graphs; the rest stay in place. There is no resharding step, no rebalancing window, and no coordinator assigning ownership.
+Hash scores determine which shard owns a graph. A new shard becomes ready almost immediately. On startup it does not bulk-load its assigned graphs or replay their logs. It registers a heartbeat, marks itself ready, and starts with an empty in-memory map. Each graph loads on demand on the first request for it: Konig loads the snapshot, then replays the write-ahead log written since. Adding capacity means adding a node and letting it load its graphs as requests arrive.
+This fixes the original failure, where adding hardware stopped helping. Even clustered, the old database kept the full dataset on every node and could not shard the workload across them, so scaling meant larger machines. Konig scales horizontally. There is no cluster topology to design in advance and no peak load to capacity-plan against.
+A query touches one graph, so its latency does not depend on the total number of graphs. In production, p95 search latency holds near-constant as the graph count grows. From a thousand graphs to tens of millions, p50 retrieval is unchanged and p95 stays under 100 milliseconds, rising only marginally as the count keeps growing. End-to-end Zep latency is under 200 milliseconds, and the system sustains thousands of mutations and queries per second.
+How a query runs
+Reads enter through the typed API and run against the in-memory graph. Entities and edges are held in compact, integer-indexed arrays with adjacency lists, so following a relationship is a pointer dereference instead of an index lookup. Over that representation, Konig combines every relevance signal into a single ranked result.
+Konig offers several approaches to context retrieval from the graph. These include lexical relevance via BM25 and vector similarity for semantic meaning. Both come from the per-graph search indexes described in the next section.
+An example of a search strategy executed by Konig. These lexical and semantic search results may function as seeds to graph-structural queries such as BFS (Breadth-First Search) and Personalized PageRank. Doing so optimizes these operations by narrowing them to subgraphs.
+For many search operations, Konig runs a pipeline of all strategies above and combines them with reciprocal rank fusion, followed by an optional diversity rerank or low-latency LLM-based reranker, into one ordered result. No separate search cluster, such as Elastic or OpenSearch, is needed.
+Search indexes
+Every graph has its own set of full-text and vector indexes, stored as companion structures inside its snapshot. There is no shared search cluster and no separate index artifact to operate. The indexes are tiered, snapshotted, replicated, and deleted together with the graph they serve. BM25 runs against the per-graph full-text indexes; vector search runs against the per-graph vector indexes, one per embedding model.
+Vector search is exact k-nearest-neighbor by default. On a bounded graph an exact scan is fast and returns the right answer every time. We keep it fast with AVX-512 SIMD distance kernels supporting fp32, bf16, and int8. Exact search runs in low single-digit milliseconds on most graphs.
+Konig uses ANN for large graphs, with indexes maintained with SPFresh/LIRE. Exact scans slowed on the largest graphs, where the full pass is bound by memory bandwidth. We first tried to improve performance with an approximate-nearest-neighbor index, DiskANN. For this workload it was the wrong choice. DiskANN builds its own proximity graph over the vectors, and each node's index entry embeds copies of its neighbors' vectors so a search can walk the graph with one read per hop. With dozens of neighbors per node, the index duplicated vector data many times over. Database size grew by an order of magnitude, with the memory and storage usage that implies. Index builds also ran from tens of minutes to hours per graph.
+We then experimented with IVF indexes, which proved far cheaper to implement. With IVF, vectors are clustered into cells, and a query scans only the few cells nearest to it, a sub-linear win that grows with graph size. Cell membership stores row references instead of vectors, so each vector can belong to several nearby cells.
+The index is partitioned the way searches are filtered. Each scope within a graph gets its own codebook of cells, its own postings, and its own in-memory navigator, and a filtered query probes only the scope it asked for. As a result, filters cost nothing in recall: the index never produces a shortlist that a filter then thins out, so a search over a small scope gets the same recall as a search over the whole graph. An unfiltered query unions across scopes.
+This replication lifts recall to roughly 0.95 while scanning a few percent of the corpus, at a cost of a few megabytes per graph. Graphs are enrolled in IVF at creation, so they are indexed before they grow large and never need a conversion.
+The index maintains itself using SPFresh/LIRE incremental maintenance. A graph churns for years, and a global re-cluster of a multi-million-vector graph takes hours, so we can't afford a periodic rebuild. With SPFresh, a background process splits over-full cells and merges under-full ones, reassigning only the vectors near the changed boundary. The index stays balanced in place, and reads and writes never pause.
+Adjacency lists and sparse matrices
+An adjacency list is the standard structure for a graph that changes. Each node keeps a list of its own edges, so adding a relationship appends one entry to one node's list, and traversal from a node reads only that node's neighbors. Konig holds each graph in RAM this way: integer-indexed arrays of nodes, each with its edge list. Mutation and traversal, the operations the in-memory workload runs constantly, are cheap.
+Adjacency lists are a poor fit for linear-algebra workloads such as PageRank and motif finding, an approach to identifying graph patterns. Those algorithms process every edge in bulk, and they run fastest over a compressed-sparse-row (CSR) matrix: all edges packed into one contiguous array, with an offset index marking where each node's edges begin. The layout is compact, and because the CPU reads memory in cache lines, a scan over a packed array uses every byte it fetches; the whole graph streams through the CPU in order.
+Adjacency lists are the source of truth. CSR Matrices are used where adjacency lists perform poorly. CSR would be a poor primary store for the same reason it scans fast. The arrays are packed, so inserting one edge means shifting everything behind it and rebuilding the offsets, which is close to rebuilding the structure. Zep graphs are often rapidly mutated, making CSRs too expensive to maintain in real-time.
+Konig uses both. The adjacency structure is the source of truth and takes every write. When an algorithm needs a matrix, Konig builds the CSR form on demand in tens of milliseconds or less, runs the algorithm, and discards the matrix after a period of disuse. Each graph is bounded in size, so the matrix is cheap to build. Konig's graph algorithms often run against the CSR form at microsecond-to-low-millisecond latencies. Two representations are worth maintaining when converting between them is cheap.
+Bi-temporal facts native to the graph
+A key Zep innovation is the use of bi-temporal facts. Every edge, on which a fact is materialized, has four timestamps. Two record the world: when the relationship became true and when it stopped being true. Two record the system's knowledge: when Zep first recorded the fact and when it learned the fact was no longer valid. Truth and knowledge are separate timelines, and Konig natively tracks both.
+This enables efficient point-in-time queries that return an answer as of a given date, not the current value written over it. When new information contradicts an existing fact, Konig marks the old fact invalid using an invalid_at date instead of overwriting it, so history is preserved for audit and for reconstructing what the agent knew at any point. Recency ranking and valid-now filtering derive from the same timestamps. None of these require logic above the data model.
+Konig's native support for Zep's bitemporal facts enable efficient Point-in-Time queries. Durability and recovery
+Agent memory is a system of record, and the write path treats it as one. A mutation is appended to a replicated, ordered write-ahead log and acknowledged only after the append is durable. Ordering is per graph, by a monotonic sequence number, so a graph's history replays deterministically. The in-memory graph is updated write-through, so the resident copy and the log never diverge.
+Snapshots compact the log periodically: they collapse tombstones and compress the result, with a checksum to detect corruption. Each snapshot persists to multi-AZ object storage, with a local NVMe copy for fast warm loads. Recovery loads the latest snapshot and replays the log written since; the graph is then current. If a snapshot is missing, Konig rebuilds from the log alone.
+Konig's approach to shard failover. Failover needs no central coordinator. Shards write heartbeats. A leader-elected reconciler removes a shard from membership when its heartbeats stop, and rendezvous hashing re-derives the new owners. gRPC requests may hit any shard and then be routed to a graph owner. Surviving shards usually discover a shard is lost in the course of a request: forwarded requests hit a dead peer and the connection fails. The surviving shard refreshes membership, and the retry reaches the new owner, which cold-loads the graph from object storage and the log. No data is lost, because durability never depended on any single shard.
+Konig favors availability over strong consistency. It is eventually consistent across the fleet and relies on idempotency instead of exactly-once semantics. Context retrieval can tolerate a brief window of staleness during failover. It cannot tolerate a silently lost write.
+Security and governance
+Security was one of the four requirements and one reason for the rebuild, so it is built into Konig itself.
+Access control is attribute-based (ABAC), evaluated at retrieval time on every node and edge. There is no coarse API boundary that returns a graph and trusts the caller to filter it. Isolation is also structural: one graph per subject means that graph's context cannot appear in another's results, because no shared graph exists.
+The graph is also the unit of encryption. Customer-managed keys (CMEK/BYOK) bind at the graph and tenant boundary through envelope encryption, with no change to the data model. Konig can also run inside a customer's own cloud when compliance requires it.
+Governance uses the same foundation. Retention policies expire data on a customer-defined schedule, and legal hold blocks deletion when compliance requires it. Deletion is a tombstone followed by a permanent expunge, so the lifecycle is auditable end to end. Provenance, the path from a fact back to its source, is a queryable property of the graph, not a log reconstructed after the fact.
+Building it with agents
+Konig was built largely with coding agents. The notable part is how we used them, and what we built first to make that effective.
+We used agents adversarially, starting at the design and spec stage. One agent proposes a design and another is tasked with attacking it. We also had them challenge our own assumptions. This approach surfaced the assumptions that matter faster and more comprehensively than a single agent acting on its own.
+We built the instrumentation first so that the agents could develop, test, and iterate quickly. A correctness test suite ran from the start, alongside a graphctl CLI and a web-based graph explorer for developers to inspect the graph. We also built a scalability and soak test suite. A Datadog CLI, which predated Datadog's native MCP service, completed the toolchain. An agent could deploy a change, run the test suites, read back the resulting traces and profiles, and fix what it found.
+We wrote extensive documentation and runbooks from the beginning, for both the agents as well as the team. AGENTS.md rules ensured that any changes to functionality or architecture were updated in related documentation.
+What we learned
+The database we replaced was good technology that assumed one large, hot graph, and no amount of tuning closed the gap to millions of small, cold, governed ones. The results in this post, flat latency, cost that tracks activity, and isolation by construction, all come from matching the database to the shape of the workload.
+The build was also smaller than "we built a database" suggests, because we built only what the problem required. Konig has no general-purpose query language and none of the surface area a database accumulates when it serves every workload. That constraint let a small team build the system and maintain it.
+This exercise was a useful lesson for us in how to build large, complicated services, and has since given us confidence to take on other projects that we previously would have avoided.
+🔆
+We're hiring! Get in touch if you're interested in working on Konig, Graphiti and similar projects.
+Sign up for Zep&#x27;s Newsletter
+Writings on Zep, LLMs, and AI ecosystem tools.
+Subscribe
+No spam. Unsubscribe anytime.
+Defending Agent Memory Against Poisoning
+One poisoned message, web page, or document can shape every later session that reads the same memory. Persistent memory makes prompt injection durable. We explain how memory poisoning works and which controls contain it, in your application and in Zep.
+Sep 02, 2026
+13 min read
+Memory for every agent your team uses
+A knowledge worker's agents don't share what they know: Claude and ChatGPT often can't reach company context, and the agents you build never see what Claude and ChatGPT learn. The Memory MCP Server gives each user one agent memory across all of them, governed by policy.
+Aug 19, 2026
+4 min read
+Coding agents can design your Zep implementation
+Zep now ships one plugin for Claude Code, Codex, and Cursor. It gives your coding agent the Zep documentation MCP server and the new building-with-zep skill, which encodes how to design and evaluate an agent memory implementation around the use case you need to deliver.
+Jul 30, 2026
+6 min read
+The Context Lake for AI agents.
+Product
+Agent Memory
+Context Lake
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Global Market Intelligence coverage
+Trust Center
+Context Engineering
+Mem0 alternative
+Enterprise
+Overview
+Deployment
+Security & compliance
+Company
+About
+Careers
+Pricing
+Contact
+&copy; 2026 Zep AI, Inc. All rights reserved.
+Privacy policy
+Terms of service
+Website terms

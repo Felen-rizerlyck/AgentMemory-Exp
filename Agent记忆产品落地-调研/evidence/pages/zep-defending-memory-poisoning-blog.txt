@@ -1,0 +1,205 @@
+URL: https://blog.getzep.com/defending-agent-memory-poisoning/
+FINAL: https://blog.getzep.com/defending-agent-memory-poisoning/
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Defending Agent Memory Against Poisoning
+BYTES: 70187
+======================================================================
+Defending Agent Memory Against Poisoning
+We're hiring! Come build with us &rarr;
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Log in
+Book a demo
+Sign up
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Book a demo
+Sign up
+Blog / Defending Agent Memory Against Poisoning
+Featured
+Defending Agent Memory Against Poisoning
+One poisoned message, web page, or document can shape every later session that reads the same memory. Persistent memory makes prompt injection durable. We explain how memory poisoning works and which controls contain it, in your application and in Zep.
+Daniel Chalef
+02 Sep 2026
+&bull; 13 min read
+Key takeaways
+Memory poisoning is prompt injection with persistence. Agent memory persists across sessions or users. One poisoned input, such as a message or a fetched web page, can influence answers and tool calls long after the attacker's session ends.
+The model is not the security boundary. A model can follow a stored instruction or generate unsafe tool arguments. The boundary you can enforce is application code that controls every write, every read, and every external action.
+Retrieval must consider source, not similarity alone. A search that ranks on relevance serves poisoned content as readily as real content. Zep can filter by source metadata inside the service, before results return, through filtered search or access policies.
+A value copied from memory never authorizes an action. Payment destinations and permission targets come from an authoritative system of record at execution time. Memory is supporting evidence only.
+Provenance and retained history make repair possible. Every derived fact in Zep traces back to the episode that produced it. A fact displaced by a newer claim is marked invalid and kept. A poisoned source can be found and most of its effect reversed without clearing the store.
+Persistence and prompt injection
+Persistent memory lets an agent use information from earlier sessions. The same property lets an attacker place content in one session that affects a later one. Prompt injection against a stateless system ends when the conversation ends. In a system with memory, an injected claim or instruction is stored. Later, it is served back into prompts because it is relevant, with no check on where it came from.
+The attacker rarely needs privileged access. They control at least one ordinary input: an end-user message, a support ticket, an email, a web page fetched by a tool, a record in a shared workspace, or a document offered for import. Authentication does not close this hole. A compromised account is still an authenticated account. Authentication says nothing about whether the account's content is true.
+The attacks are practical. MINJA injects malicious records into an agent's memory through ordinary user interaction alone, with no access to the backend. AgentPoison shows what an attacker who can write to the store achieves: a small number of poisoned records that a chosen trigger phrase reliably retrieves. PoisonedRAG makes retrieval-augmented generation give a chosen answer to a target question with a few adversarial documents per question. A defense has to assume the poison is fluent and plausible. A false statement carries no malicious marker for a content filter to catch, so content inspection alone is not enough.
+What an attacker does with memory
+A poisoned write serves one of a few goals. The attacker stores a false fact, or replaces a correct fact with a fake newer version. They store text that a later model follows as an instruction. They repeat one claim from one account until it looks like independent confirmation. They flood the store so their content crowds real content out of search results. The more valuable targets are procedures. The attacker teaches the agent a reusable workflow that includes a hostile step, or plants the value that a later tool call copies into a payment destination or recipient field.
+Timestamps are a common lever. Many memory systems resolve conflicts by recency. The attacker submits a claim with a fake later event time, and the store replaces the verified fact. Two separate records remove this lever: when the source says an event happened, and when the application accepted the record. A later date does not make a claim more trustworthy.
+Each goal defeats a system that stores and ranks content on similarity and recency alone. Write and ranking decisions that consider where content came from raise the cost of every one of them. None of the controls below removes the risk on its own.
+How a poison propagates
+A single malicious meaning moves through five stages. It is written into the store. It is stored, and changed by summarization and extraction. It is retrieved into a prompt. It is adopted into the model's reasoning. It is executed as an external action. Each stage is a separate control point. A defense that measures only the last stage learns nothing about the first four. Not every harm reaches the last stage: a wrong answer shown to a user, or one user's context disclosed to another, needs no tool call at all. The retrieve and adopt stages carry those harms, and the controls at those stages matter as much as the action gate.
+Authority laundering happens between write and retrieve. A summary of end-user content is still end-user content. A model's restatement of a claim is not a new independent source. A trusted tool that echoes a fetched web page has not verified the page. Ten messages from one account remain one source. Every transformation removes the visible signs of origin. A derivative can outlive its source and keep the malicious meaning under different wording. Lineage has to survive each transformation, or an investigation stops at the first summary.
+Defense principles
+Controlled writes. One application-owned path decides what enters durable memory. The model proposes a memory. Application code checks it and decides whether to store it. A typed operation such as record_user_preference(subject, field, value, source_event) limits what one input can change. A generic remember(text) tool stores arbitrary text. Rate limits per source and time window limit flooding and fake corroboration.
+External provenance. The application records who supplied each item and how it arrived. Every derivative keeps its parent lineage. Event time and acceptance time are stored separately.
+Scoped retrieval. Retrieval filters by user, workspace, source, and review state before semantic ranking runs. Filtering results after a global search is weaker. Excluded content still fills the candidate list. An attacker who floods the store pushes real results out of the prompt, even when the filter catches every poisoned record. Source filtering does not make end-user content trustworthy, and an agent with memory has to retrieve end-user content. What filtering provides is separation: facts from a system of record are never confused with facts from a chat message, high-stakes retrieval can be limited to reviewed sources, and the model receives each fact with its source class attached.
+Instruction isolation. Retrieved memory enters the model as data at the lowest available privilege, never in a system or developer message. Providers document where untrusted content belongs, and their guidance differs. OpenAI's guidance keeps policy in instructions or developer messages and passes untrusted input through user messages; data from an actual tool call returns as function_call_output . Anthropic's guidance places third-party content in tool_result blocks and keeps it out of the system prompt and plain user text. Delimiters and JSON escaping make boundaries clear and stop content from breaking the prompt's structure. The model still reads the instruction inside the wrapped data, so placement reduces risk without removing it.
+Deterministic action authorization. The model proposes an action. Application code approves or blocks it after checking the actor's current permissions and the current system state. Sensitive values are looked up rather than copied. If memory says a vendor changed bank accounts, the payment gate fetches the approved account from the vendor system of record and pays that one. Memory can never grant a permission or waive a confirmation.
+Detection and recoverability. A fluent false fact carries no marker, so detection watches behavior, not content: one source writing at an unusual rate, one source dominating retrieval, unverified claims invalidating verified facts, or action proposals that cite only unverified memory. When poison is found, operators quarantine the source, trace its derivatives, remove the malicious meaning, and verify that good memory survived. Clearing the entire store removes the poison and everything else. Repair must be selective.
+Where the memory layer fits
+The principles above apply to any memory backend. Four of them depend on properties of the backend itself. An investigation stops at the first summary unless provenance survives extraction. Filters that run after ranking let flooded content fill the candidate list. A displaced fact that is overwritten takes the evidence of the attack with it. Deletion that ignores lineage leaves derivatives in place. A memory system that updates facts in place, keeps no history, and records no provenance has none of these properties. The application can add them from outside, with its own provenance records, lineage links, and filtered index. That is a second system to build and keep consistent with the memory store.
+Zep provides these four properties. Every fact traces to the episode that produced it. Metadata attached at ingestion is kept on every fact and summary derived from that episode. Filters and access policies run inside the service. A contradicted fact is invalidated with timestamps and kept.
+Who owns what
+Your application owns the security boundary around memory. Zep manages storage and retrieval and supplies the building blocks for the controls above, per Zep's memory security guidance .
+Control |
+Application layer |
+Zep |
+Write admission |
+Validates content, decides what to store |
+Ingestion APIs, per-user graph isolation |
+Identity scoping |
+Derives user_id / graph_id from auth state |
+User graphs, standalone graphs |
+Provenance |
+Labels sources at ingestion |
+Episode metadata, projection onto derived facts |
+Conflicting claims |
+Decides which sources may update which fields |
+Bi-temporal facts; invalidation keeps the prior fact |
+Scoped retrieval |
+Declares eligible sources per request |
+Server-side metadata and search filters |
+Least privilege |
+Issues one key per agent |
+ABAC policies on API keys (Enterprise) |
+Instruction isolation |
+Prompt assembly, message roles |
+Returns context as data |
+Action authorization |
+Deterministic gate, systems of record |
+Provides cited evidence, never authority |
+Detection |
+Alerts on write and retrieval behavior |
+API and audit logs (Enterprise), time-filtered listing |
+Investigation and repair |
+Decides what to exclude or delete |
+Episode associations, deletion APIs |
+Division of responsibility for memory security controls, from Zep's memory security documentation. The six principles above map to these rows; identity scoping and least privilege are the mechanics of controlled writes and scoped retrieval.
+Two rows never move to the right column. Prompt assembly happens in your code, so instruction isolation is yours. Tool execution happens in your code, so action authorization is yours. A memory service that claimed to solve either would be overclaiming.
+Implementing the controls with Zep
+Scope writes and reads to authenticated identity. Derive user_id and graph_id from your application's session state, never from model output or message text. Each user's data is kept in their own graph, so a poisoned message from one user persists for that user and does not reach other users. Shared reference data goes in separate standalone graphs. Writes to a shared graph are the path by which one attacker reaches many users, so they go through review, never directly from end-user content.
+Record provenance as episode metadata. An episode is one unit of ingested data: a message, a document chunk, or a JSON record. Attach source identity and review state to the episode when you ingest through graph.add :
+client.graph.add(
+user_id=user_id,
+type="text",
+data=ticket_text,
+metadata={
+"source": "support_ticket",
+"source_id": ticket_id,
+"review_state": "unreviewed",
+},
+)
+Zep projects episode metadata onto every fact, entity, observation, and summary derived from that episode. It returns the metadata when you retrieve those objects. Derived context keeps its origin. Authority laundering destroys that property when provenance is tracked only on raw records. Episode metadata is written by your application, so the labels are only as trustworthy as the code that assigns them. Derive source and review_state from the authenticated ingestion path, never from the model or from the content itself.
+Keep displaced facts and query by time. Zep does not overwrite a fact when new information contradicts it. Each fact carries four timestamps. valid_at and invalid_at record when the fact became true and stopped being true in the world. created_at and expired_at record when Zep learned each of those things. When an ingested claim contradicts a stored fact, Zep marks the old fact invalid and adds the new one. The old fact stays in the graph with its timestamps and its episode associations. The episode that invalidated it is associated with it as well.
+Against this model, a "replace the verified fact" attack achieves less. The attacker's claim still displaces the old fact in current results, and the Context Block, the prompt-ready string Zep assembles for a thread, reflects the poison until repair. The evidence stays in place. The displaced fact is still in the graph. Its edge shows which episode invalidated it and when. Deleting the poisoning episode does not restore the fact: Zep keeps it marked invalid. Restoring it is an explicit step, through graph.edge.update on invalid_at and expired_at , and the invalidating episode stays in the edge's episode associations as a record. Bi-temporal facts shorten and simplify incident response; they do not prevent the incident.
+The two clocks also separate what the attacker can influence from what they cannot. Zep extracts valid_at from dates in the ingested content, so a claim can arrive backdated or future-dated. created_at is set by your ingestion code or defaults to the time of ingestion, and expired_at is set by the service. Content cannot set either one. A fabricated event time cannot hide when the claim arrived. The one way an attacker reaches created_at is through a model that holds direct write access to Zep, which is the write-mediation failure described above and a bad configuration on its own.
+Point-in-time queries then scope an investigation. SearchFilters accept date filters on all four timestamps in graph.search and in edge and node listing. Once you know when a compromised source began writing, a created_at filter over that window lists every fact Zep learned during it. An expired_at filter over the same window lists the facts those writes displaced. A created_at filter before the window reconstructs what the agent knew before the incident. That is the baseline a repair is verified against. Filters on valid_at and invalid_at answer what the graph held as true at a given moment, for auditing a decision the agent made then.
+Filter retrieval in the service. Retrieve through graph.search and pass episode_metadata_filters so only approved sources are searched. Pass search_filters to narrow by entity and edge type or by timestamp. Zep applies the filters before results return, so excluded content does not reach your application. A high-stakes retrieval path, such as the one that feeds a payment or permission decision, requires review_state: approved . General conversation retrieves from all sources, and each fact arrives with its source class attached. An access policy on the agent's key applies the same filter to every read that key makes, without a filter in each call.
+Attach access policies to agent keys. On Enterprise plans, agent access applies ABAC policy sets to the API key each agent authenticates with. The action layer restricts which operations a key may perform. A retrieval-only agent holds a key that cannot write or delete. The attribute layer filters what a permitted read returns, matched against projected episode metadata. A key restricted to source: crm cannot read facts derived from external web content. A fact that draws on both a CRM episode and a web episode carries both labels, and the crm-only key cannot read it either: mixed provenance fails closed. A default_deny role suits keys issued to external integrations. report_only mode measures a policy's effect before it enforces.
+Detect with time-filtered listing and logs. The behavior signals above are queries against the graph. Listing edges with an expired_at filter over the last hour shows which verified facts were just invalidated and by which episodes. Listing episodes with episode_metadata_filters for one source, ordered by created_at , shows that source's write rate. On Enterprise plans, API logs record every request and its access-policy outcome, and audit logs record administrative activity, so a key that starts writing when it should only read is visible.
+Trace and repair through episode associations. The episodes field on every edge lists the episodes that contributed the fact. The episode_uuids filter retrieves everything a given episode contributed. An investigation starts from one suspect source and lists everything derived from it. Updating episode metadata excludes a source from filtered retrieval without waiting for deletion. Deletion APIs cover episodes, threads, users, nodes, and edges. Deleting an episode removes a derived fact only when no other episode supports it, so repair preserves good memory. Two limits remain. Deletion does not regenerate the names or summaries of entities the episode shared with other episodes, so a trace of the poisoned wording can persist there until those entities are re-summarized or edited. Deletion also does not restore a fact the episode invalidated; that is the explicit edge update described above.
+The remaining controls stay in your code. Zep returns context as data for your application to place in a low-privilege channel. It returns evidence with provenance for your action gate to weigh. Neither the model nor the memory service decides what runs.
+FAQ
+How is memory poisoning different from prompt injection?
+Memory poisoning is prompt injection with persistence. A conventional injection influences one conversation and ends with it. A poisoned memory is retrieved into future sessions because it is relevant. The attacker's influence lasts until the record is found and removed. The injected content can reach users and agents the attacker never interacted with.
+Do delimiters or XML tags around retrieved memory make it safe?
+No. Wrappers keep boundaries clear and stop content from breaking the prompt's structure. The model still reads the instruction inside the wrapped data. Low-privilege placement and a deterministic action gate remain necessary regardless of how the content is wrapped.
+If the poisoned source is the user's own messages, what does source filtering buy?
+It provides separation, and it does not create trust. An agent with memory has to retrieve what the user said, so user-derived facts stay retrievable. Filtering keeps them from being mistaken for facts from a system of record, keeps them out of retrieval paths that require reviewed sources, and lets the action gate refuse a sensitive value whose only support is user-class memory. The user cannot write into the standalone graphs that hold reference data at all.
+Does deleting a poisoned message remove its influence?
+Deleting the source alone does not. Summaries and merged entities can retain the malicious meaning under different wording after the source is gone. In Zep, episode associations link each derived artifact to its contributing episodes. Deletion removes derived facts whose only support was the poisoned episode. Artifacts supported by other episodes survive, and their names and summaries are not regenerated, so those need a separate check.
+Can a poisoned claim overwrite a verified fact in Zep?
+It can displace the fact in current results, and it cannot erase it. Zep marks the contradicted fact invalid with invalid_at and expired_at and keeps the fact in the graph with its episode associations. An investigator sees which episode invalidated the fact and when. Deleting that episode leaves the fact marked invalid; restoring it is an explicit graph.edge.update on the validity timestamps.
+Should retrieved memory ever go in the system prompt?
+No. System and developer messages have the highest instruction authority, and content placed there inherits it. Zep's security guidance prohibits inserting context blocks or graph search results into privileged instruction channels. Where it goes instead depends on the provider: OpenAI accepts untrusted input in user messages, and Anthropic directs third-party content to tool_result blocks and away from plain user text. In both cases it is framed as reference data the model must not take instructions from.
+Sign up for Zep&#x27;s Newsletter
+Writings on Zep, LLMs, and AI ecosystem tools.
+Subscribe
+No spam. Unsubscribe anytime.
+Why we built a graph database service for agent memory
+Konig, Zep's graph database service, is the data plane beneath our agent memory platform. This post covers why we built it, how it works, and what we learned along the way.
+Aug 27, 2026
+15 min read
+Memory for every agent your team uses
+A knowledge worker's agents don't share what they know: Claude and ChatGPT often can't reach company context, and the agents you build never see what Claude and ChatGPT learn. The Memory MCP Server gives each user one agent memory across all of them, governed by policy.
+Aug 19, 2026
+4 min read
+Coding agents can design your Zep implementation
+Zep now ships one plugin for Claude Code, Codex, and Cursor. It gives your coding agent the Zep documentation MCP server and the new building-with-zep skill, which encodes how to design and evaluate an agent memory implementation around the use case you need to deliver.
+Jul 30, 2026
+6 min read
+The Context Lake for AI agents.
+Product
+Agent Memory
+Context Lake
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Global Market Intelligence coverage
+Trust Center
+Context Engineering
+Mem0 alternative
+Enterprise
+Overview
+Deployment
+Security & compliance
+Company
+About
+Careers
+Pricing
+Contact
+&copy; 2026 Zep AI, Inc. All rights reserved.
+Privacy policy
+Terms of service
+Website terms

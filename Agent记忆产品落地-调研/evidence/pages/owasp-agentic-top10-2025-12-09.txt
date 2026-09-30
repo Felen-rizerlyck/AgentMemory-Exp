@@ -1,0 +1,169 @@
+URL: https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/
+FINAL: https://genai.owasp.org/2025/12/09/owasp-top-10-for-agentic-applications-the-benchmark-for-agentic-security-in-the-age-of-autonomous-ai/
+STATUS: 200
+CONTENT-TYPE: text/html; charset=UTF-8
+LAST-MODIFIED: Mon, 28 Sep 2026 02:28:13 GMT
+TITLE: OWASP Top 10 for Agentic Applications - The Benchmark for Agentic Security in the Age of Autonomous AI - OWASP Gen AI Security Project
+BYTES: 940684
+======================================================================
+OWASP Top 10 for Agentic Applications - The Benchmark for Agentic Security in the Age of Autonomous AI - OWASP Gen AI Security Project
+Skip to content
+Join us in Orlando, FL 10/11 – 10/15 @ InfoSec World 2026
+|
+Register Now!
+GETTING STARTED
+Introduction
+MEETINGS
+CONTRIBUTING
+EVENTS
+GLOSSARY
+RESOURCES
+All
+LLM TOP 10
+LLM TOP 10 FOR 2025
+LLM TOP 10 FOR 2023/24
+CHEAT SHEETS
+WHITEPAPERS
+TOOLS
+LEARNING VIDEOS
+SOLUTIONS DIRECTORY
+ROADMAP
+NEWSLETTER
+PROJECT INITIATIVES
+Top 10 for LLM and GenAI
+AGENTIC SECURITY
+AI Bill of Materials
+Ai Data Security
+AI Security Governance
+AI Security Solutions
+AI Threat Intel & Resp
+AI Red Teaming
+BLOG
+ABOUT
+Mission and Charter
+Governance
+LEADERSHIP
+INDUSTRY RECOGNITION
+CONTRIBUTORS
+SPONSORS
+SUPPORTERS
+SPONSORSHIP
+NEWSROOM
+CONTACT
+BRANDING
+GEN AI SECURITY
+blog
+OWASP Top 10 for Agentic Applications – The Benchmark for Agentic Security in the Age of Autonomous AI
+Written By:
+John Sotiropoulos
+,
+December 9, 2025
+GenAI Security Project – Agentic Security Initiative (ASI) & Agentic Top 10 Leadership, Blog Co-Authors
+John Sotiropoulos , OWASP GenAI Security Project Board Member & ASI Co-lead, Agentic Top 10 Chair
+Keren Katz , Agentic Top 10 Co-Lead, OWASP GenAI Security Project – ASI Core Team
+Ron F. Del Rosario , OWASP GenAI Security Project Core Team Member & ASI Co-lead
+From GenAI to Agency – and a New Chapter for Security
+In just a single year, we have witnessed something extraordinary. GenAI evolved from helpful chatbots into autonomous, goal-driven agents capable of planning, acting, coordinating, and shaping entire workflows. Our project had already talked about excessive agency, but we felt that we have to go deeper into the security aspects of Agentic AI applications.
+Hundreds of experts, builders, defenders, decision makers joined us in an unprecedented response. We ensured speed is matched by diligence with our Distinguished Expert Review Board with leading voices in AI security, including NIST’s Apostol Vassilev, CAMLIS and Cisco’s Hyrum Anderson, Vasilios Mavroudis and Josh Collier from the Alan Turing Institute, Oracle Cloud’s Egor Pushkin, leading Cybersecurity voice Chris Hughes, Microsoft AI Red Team leaders Peter Bryan and Dan Jones, Alejandro Saucedo from the Institute for Ethical AI and UN/EU/ACM Advisor, AWS security and CoSAI leader Matt Saner, and Zenity CTO Michael Bargury co leading AI VSS. Their guidance, feedback, and insights became fundamental assurances to our community-driven work.
+Since February 2025, we released documents covering the entire lifecycle from our Agentic AI Threats & Mitigations taxonomy (the first of its kind), and a threat modelling guide, to secure agentic app development guidelines, the state of agentic AI and governance, and the agentic AI security product landscape. We also matched the documents with real world code samples and hackathons as well as research and cheat sheets into emerging topics such as MCP and Agentic Identity.
+And the world has responded. Microsoft’s agentic failure modes reference our Threat and Mitigations document. NVIDIA’s recent Safety and Security Framework for Real-World Agentic Systems publication references heavily our Agentic Threat Modelling Guide . GoDaddy has already implemented our Agentic Naming Service proposal and deployed it to production. Products and hyperscalers including Amazon Web Services (AWS) and Microsoft- now reference or embed our AgenticThreats and Mitigations. Our code samples and our FinBot CTF platform are the bedrock of educating builders and defenders at work, in communities, and universities. This initiative has become the foundation the AI security community stands on.
+But as technology evolves and complexity accelerates, this is the moment to offer something rare: a north star . A shared language mapping with our Top 10 for LLMs and other efforts including the AI Vulnerability Scoring Standard (AI-VSS). A clear actionable path forward for securing agentic systems at the pace of innovation.
+Today, with immense pride, we release the OWASP Top 10 for Agentic AI Applications -a milestone shaped by hundreds of experts who understood that securing this new frontier requires not just content, but clarity, courage, and community. We are releasing a minor update on our Threat and Mitigations 1.1 taxonomy synchronised with our Top 10.
+T​​he OWASP Agentic Top 10 – Responding to the story incidents tell
+Agentic AI has already shown us both its power and its fragility and our entries were designed explicitly to respond to these risks .
+Hidden prompts turned copilots into silent exfiltration engines ( ASI01 – Agent Goal Hijack , e.g EchoLeak ). Agents bent legitimate tools into destructive outputs ( ASI02 – Tool Misuse , e.g Amazon Q ), and leaked credentials let them operate far beyond their intended scope ( ASI03 – Identity & Privilege Abuse ). Dynamic MCP and A2A ecosystems revealed how easily runtime components could be poisoned ( ASI04 – Agentic Supply Chain Vulnerabilities , e.g. GitHub MCP exploit ), while natural-language execution paths unlocked dangerous new avenues for remote code execution ( ASI05 – Unexpected Code Execution , e.g AutoGPT RCE ).
+Memory poisoning reshaped behaviour long after the initial interaction ( ASI06 – Memory & Context Poisoning , e.g Gemini Memory Attack ). Spoofed inter-agent messages misdirected entire clusters ( ASI07 – Insecure Inter-Agent Communication ). False signals cascaded through automated pipelines with escalating impact ( ASI08 – Cascading Failures ). Confident, polished explanations misled human operators into approving harmful actions ( ASI09 – Human-Agent Trust Exploitation ). And some agents began showing something far more unsettling: misalignment, concealment, and self-directed action ( ASI10 – Rogue Agents , e.g. Replit meltdown ).
+These are not theoretical risks. They are the lived experience of the first generation of agentic adopters -and they reveal a simple truth:
+Once AI began taking actions, the nature of security changed forever.
+The Agentic Top 10 distils this new reality into a framework the world can use with actionable mitigations and new architectural blueprints.
+Built by a Global Community-At Scale, With Purpose
+This release is the product of one of the largest collaborative efforts ever assembled in AI security. Hundreds of contributors across the world. Extensive review from national cybersecurity agencies, standards bodies, vendors, regulators, enterprises, and researchers. Thousands of comments. Countless improvements. Extraordinary insight.
+We are heartened by the feedback we received. The response from a national cybersecurity agency said it all.
+…Thank you so much for a chance to review – this is another phenomenal document – very clear, well structured, and backed up with an abundance of rich and engaging examples…”.
+Together, the community elevated the early public draft into something deeper, sharper, and more unified: a shared foundation for securing the age of agency .
+We cannot thank enough every single person and organisation – acknowledged in the published document – that became part of this extraordinary journey.
+The Launch, the Summit, and the Path Ahead
+We launch our new Top 10 at the London Agentic Security Summit , bringing together leaders in regulation, governance, AI security research, and red teaming to explore the Agentic Top 10 in its full context.
+Alongside the Top 10m we are also launching:
+The Agentic Adoption Challenge – empowering organisations to operationalise the Top 10, with recognition, certification, and dedicated RSAC showcases.
+Mitigation Accelerators – partnering with the UK’s LASR to drive research directly into real guardrails and controls the world can deploy.
+Expanded code samples, hackathons, and end-to-end validation – practical tooling for developers and defenders.
+Industry-backed papers on critical issues , including a Guide to Secure Vibe Coding at Scale with contributions led by Lovable.
+This is the start of a new journey to help defenders, builders, organisations, and innovators use the Top 10 as it is intended. The north star of accelerated Agentic AI Security response.
+This is the start of a new journey to help defenders, builders, organisations, and innovators use the Top 10 as it is intended – The NorthStar of accelerated Agentic AI Security response. This framework is a part of our strategy to grow the Agentic Security Initiative beyond producing guidance and help turn community energy into meaningful, actionable change. One that helps the world secure AI at the speed it is being built. One that ensures agency comes with accountability.
+This launch is a pivotal moment.
+A testament to what an expert-backed, community-driven initiative can achieve when it refuses to slow down.
+And an invitation.
+Join us-as a contributor, reviewer, supporter, sponsor, Adoption Challenge participant, Mitigation Accelerator partner, developer, or defender.
+Together, we are shaping the security foundations of the agentic era.
+Share this:
+Share on X (Opens in new window)
+X
+Share on Facebook (Opens in new window)
+Facebook
+More
+Print (Opens in new window)
+Print
+Email a link to a friend (Opens in new window)
+Email
+Share on X (Opens in new window)
+X
+Search
+Recent Blogs
+OWASP GenAI Security Project Unveils 2026 Top 10 for LLM Applications, New Agent Control Standard and Sponsors as Community Tops 30,000 Members
+Memory Is a Feature. It Is Also an Attack Surface
+FinBot CTF Is Live: A Hands-On Companion to the OWASP GenAI Security Project
+OWASP GenAI Exploit Round-up Report Q1 2026
+OWASP GenAI Security Project Expands AI Security Frameworks Ahead of RSA 2026, Celebrates Continued Sponsor Support
+Archives
+September 2026
+May 2026
+April 2026
+March 2026
+December 2025
+July 2025
+June 2025
+April 2025
+March 2025
+January 2025
+December 2024
+November 2024
+October 2024
+September 2024
+June 2024
+May 2024
+April 2024
+October 2023
+May 2023
+Related Blogs
+OWASP GenAI Security Project Unveils 2026 Top 10 for LLM Applications, New Agent Control Standard and Sponsors as Community Tops 30,000 Members
+Read More
+Memory Is a Feature. It Is Also an Attack Surface
+Read More
+FinBot CTF Is Live: A Hands-On Companion to the OWASP GenAI Security Project
+Read More
+OWASP GenAI Exploit Round-up Report Q1 2026
+Read More
+Load More
+PRIVACY
+NEWSLETTER
+CONTACT
+Overview
+LLM Top 10
+Initiatives
+Landscape
+Glossary
+Roadmaps
+Resources
+Sponsors
+Sponsorship
+Contribute
+Newsroom
+Events
+Meetings
+Leadership
+Volunteer Jobs
+OWASP and the OWASP logo are trademarks of the OWASP Foundation, Inc. Unless otherwise specified, all content on the site is Creative Commons Attribution-ShareAlike v4.0 and provided without
+warranty of service or accuracy. For more information, please refer to our General Disclaimer . – Copyright © 2025 OWASP Foundation, Inc.
+Scroll to Top
+OWASP Top 10 for Agentic Applications – The Benchmark for Agentic Security in the Age of Autonomous AI

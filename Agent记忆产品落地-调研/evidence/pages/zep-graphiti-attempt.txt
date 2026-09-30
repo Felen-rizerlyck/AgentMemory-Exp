@@ -1,0 +1,85 @@
+URL: https://help.getzep.com/graphiti/getting-started/welcome
+FINAL: https://help.getzep.com/graphiti/getting-started/welcome
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Welcome to Graphiti! | Zep Documentation
+BYTES: 438252
+======================================================================
+Welcome to Graphiti! | Zep Documentation
+For AI agents: a documentation index is available at the root level at /llms.txt. Append /llms.txt to any URL for a page-level index, or .md for the markdown version of any page.
+v3
+v3
+Search /
+Ask AI
+Playground Status Dashboard Sign Up >
+Documentation SDK Reference Graphiti Changelog
+v3
+v3
+Documentation SDK Reference Graphiti Changelog
+Getting Started
+Welcome
+Overview
+Quick Start
+MCP Server
+Configuration
+LLM Configuration
+Neo4j Configuration
+FalkorDB Configuration
+AWS Neptune Configuration
+Core Concepts
+Adding Episodes
+Custom Entity and Edge Types
+Communities
+Graph Namespacing
+Working with Data
+Searching
+CRUD Operations
+Adding Fact Triples
+Integrations
+LangGraph Agent
+Other
+Telemetry
+Welcome
+Overview
+Quick Start
+MCP Server
+LLM Configuration
+Neo4j Configuration
+FalkorDB Configuration
+AWS Neptune Configuration
+Adding Episodes
+Custom Entity and Edge Types
+Communities
+Graph Namespacing
+Searching
+CRUD Operations
+Adding Fact Triples
+LangGraph Agent
+Telemetry
+Playground Status Dashboard Sign Up >
+System
+Getting Started
+Welcome to Graphiti!
+Copy page
+Build temporal Context Graphs with the open-source Graphiti framework
+Want to use Graphiti with AI assistants like Claude Desktop or Cursor? Check out the Graphiti MCP Server .
+Graphiti is the open-source framework for building temporal knowledge graphs —
+Context Graphs — that power Zep. It incrementally updates graphs as new
+episodes arrive, so relationships and facts can evolve with the source data.
+Overview
+Learn about Graphiti’s core concepts and how temporal knowledge graphs work.
+Quick Start
+Get up and running with Graphiti in minutes including installation, episodes, search, and basic operations.
+Graphiti MCP Server
+Use Graphiti with AI assistants like Claude Desktop or Cursor.
+Adding Episodes
+Learn how to add text and JSON episodes to build your knowledge graph.
+Searching
+Discover hybrid search capabilities combining semantic, keyword, and graph-based retrieval.
+Custom Entities
+Define domain-specific entity types for more precise knowledge representation.
+Was this page helpful? Yes No
+Overview
+The open-source temporal knowledge graph framework
+Next Built with

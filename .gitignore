@@ -1,0 +1,9 @@
+# Python 编译缓存
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 编辑器 / 系统文件
+.vscode/
+.idea/
+.DS_Store

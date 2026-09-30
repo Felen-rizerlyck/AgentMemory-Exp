@@ -1,0 +1,630 @@
+URL: https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context
+FINAL: https://support.claude.com/en/articles/11817273-use-claude-s-chat-search-and-memory-to-build-on-previous-context
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Use Claude’s chat search and memory to build on previous context | Claude Help Center
+BYTES: 435147
+======================================================================
+Use Claude’s chat search and memory to build on previous context | Claude Help Center Skip to main content
+API docs Release notes How to get support English Français Deutsch Bahasa Indonesia Italiano 日本語 한국어 Português Pусский 简体中文 Español 繁體中文 English
+Search ⌘ K
+Claude
+Release notes
+Get started with Claude
+Get started with Claude
+What are some things I can use Claude for?
+Where can I access Claude?
+How up-to-date is Claude&#x27;s training data?
+What interfaces can I use to access Claude?
+Verify your phone number
+How to gift a Claude subscription
+How to redeem a Claude gift subscription
+Account management
+Log in to your Claude account
+How to get support
+How do I change the email address associated with my account?
+I would like to input sensitive data into my chats with Claude. Who can view my conversations?
+How do I log out of all active sessions?
+Export your Claude data
+Delete your Claude account
+Why is a coupon or promotion not available for my account?
+Managing your active sessions
+Understanding your billing address and tax calculation
+Notice regarding consumption tax (JCT) for Japanese customers
+Configuring session security settings
+How to get support for Claude for Government
+Public Sector FAQs
+Claude 4 Invite Contest
+Conversation management
+Delete or rename a conversation
+Share and unshare chats
+Share a chat with specific people
+Public links for shared chats
+Use Claude’s chat search and memory to build on previous context
+Import and export your memory from Claude
+Use incognito chats
+Why Claude switched models in your conversation with Fable 5 or Fable 5.1
+Why Claude switched models in your conversation with Opus 5 or Opus 5.5
+Features and capabilities
+What are artifacts and how do I use them?
+Share artifacts
+Get started with Claude Docs
+Get started with Claude Design
+Set up your design system in Claude Design
+When should I use web search, extended thinking, and research?
+Enable and use web search
+Use research on Claude
+Can Claude produce images?
+Upload files to Claude
+Create and edit files with Claude
+How does Claude handle mathematical equations and calculations?
+What are projects?
+Retrieval augmented generation (RAG) for projects
+What are skills?
+Use skills in Claude
+How to create custom skills
+Use plugins in Claude
+Browse skills, connectors, and plugins in one directory
+Use Claude in Xcode
+Use Claude in Microsoft Foundry
+Visual and interactive content
+Custom visuals in chat and Cowork
+Available beta and research preview features
+Use Claude Security
+See your monthly recap
+Get started with Claude Science
+Use Salesforce in Claude
+Set up Salesforce in Claude for your organization
+Personalization and settings
+Understanding Claude&#x27;s personalization features
+Customizing your appearance settings
+How to use Claude in your preferred language
+Change the model, effort, and thinking settings
+Set break reminders and quiet hours
+Troubleshooting
+Troubleshoot Claude error messages
+Claude is providing incorrect or misleading responses. What’s going on?
+Claude is producing links that don’t work and falsely claiming that it has sent emails or produced external documents. What’s going on?
+Adapt to new model personas after deprecations
+Usage and limits
+Usage limit best practices
+How do usage and length limits work?
+Buy usage bundles
+Use the Claude Agent SDK with your Claude plan
+Claude Fable models on your plan
+What is a limit reset?
+Pro and Max plans
+General
+How large is the context window on paid Claude plans?
+Paid plan billing FAQs
+Why was my card declined?
+Add or update your paid Claude account’s tax or VAT ID
+Why am I being asked to verify my payment method?
+Cancel your Pro or Max subscription
+How can I create and manage projects?
+Request a refund for a paid Claude plan
+Manage usage credits for paid Claude plans
+Understanding your Pro or Max plan invoices
+Pro plan
+What is the Pro plan?
+How do I sign up for the Pro plan?
+How to change your Pro plan from monthly to annual billing
+Max plan
+What is the Max plan?
+How do I sign up for the Max plan?
+Team and Enterprise plans
+Plan overviews
+What is the Enterprise plan?
+What is the Team plan?
+Claude Team plan for scientists
+Get started
+Get started with the Team plan
+Move your personal Claude account to a Team or Enterprise organization
+Find and join a Team or Enterprise organization
+Migrate your organization from Team to Enterprise
+Join an organization via invite link
+Respond to an Enterprise domain claim on your Claude account
+Claude Code on Console to Enterprise migration
+Set up Claude for Teachers for your school or district
+Billing
+How is my Team plan bill calculated?
+Team plan billing FAQs
+Change your Team plan from monthly to annual billing
+Add or update your Team plan&#x27;s tax or VAT ID
+Cancel your organization&#x27;s Team plan subscription
+How am I billed for my Enterprise plan?
+Understanding your Team plan invoices
+Admin management
+Roles and permissions
+Purchase and manage seats on Team plans
+Purchase and manage seats on Enterprise plans
+Manage members on Team and Enterprise plans
+Claude Enterprise consumption guide
+Manage usage credits for Team and seat-based Enterprise plans
+Manage user feedback settings on Team and Enterprise plans
+Control project sharing for your organization
+Manage plugins for your organization
+Account management FAQs
+Manage groups and group spend limits on Enterprise plans
+Manage custom roles on Enterprise plans
+Set up role-based permissions on Enterprise plans
+Set organization instructions
+Claude Design admin guide for Team and Enterprise plans
+Claim and migrate accounts on your domain
+Designate support contacts for human support
+Claude Enterprise Admin API reference guide
+Claude Enterprise activation promo for Claude Code and Cowork
+Set a default model for your organization
+Restrict verified-domain connectors to your Enterprise
+Manage model access for your organization
+Create surveys for your organization
+Manage pooled group budgets on Enterprise plans
+Analytics and usage
+View usage analytics for Team and Enterprise plans
+Configure a custom OpenTelemetry collector for Office agents
+Use analytics chat to ask Claude about usage
+Get started with smart reports
+Let team members run smart reports for specific groups
+Capabilities
+Manage project visibility and sharing
+Use enterprise search
+Use visual and interactive content on Team and Enterprise plans
+Provision and manage skills for your organization
+What is Claude Tag?
+Get started with skill and plugin scanning
+Artifacts admin guide for Team and Enterprise plans
+Security and compliance
+Does Anthropic Act as a Data Processor or Controller?
+Can you delete data that I sent via Team and Enterprise plans?
+How can I access the personal information that Anthropic has on my account?
+What happens to a user&#x27;s data when they are removed from a Team or Enterprise organization?
+Export your organization&#x27;s data
+Who owns and manages the data of my team?
+HIPAA-ready Enterprise plans
+Data retention practices for Covered Models
+Configure custom data retention controls for Enterprise plans
+Enable US-only inference for your organization
+Access audit logs
+Access the Compliance API
+Get started with Claude Compliance API integrations
+Restrict access to Claude with IP allowlisting
+Enforce network-level access control with Tenant Restrictions
+What are customer-managed encryption keys (CMEK)?
+Inference hooks overview
+Identity management (SSO, JIT, SCIM)
+Important considerations before enabling single sign-on (SSO) and JIT/SCIM provisioning
+Set up single sign-on (SSO)
+Set up JIT or SCIM provisioning
+Switching to a different Identity Provider (IdP)
+How SCIM sync works for Enterprise organizations
+Setup by identity provider
+Google Workspace SSO setup
+Microsoft Entra ID SSO setup
+Okta SSO setup
+OneLogin SSO setup
+Ping Identity SSO setup
+Troubleshooting by identity provider
+Google Workspace SSO/SCIM email mismatch
+Microsoft Entra ID SSO/SCIM email mismatch
+Okta SSO/SCIM email mismatch
+OneLogin SSO/SCIM email mismatch
+Ping Identity SSO/SCIM email mismatch
+Claude Cowork
+Get started with Claude Cowork
+Use Claude Cowork safely
+Use Claude Cowork on web, desktop, and mobile
+Use Claude Cowork on Team and Enterprise plans
+Use the built-in browser in Claude Cowork
+Set up browser use in Claude Cowork for Team and Enterprise plans
+Use live artifacts in Claude Cowork
+Schedule recurring tasks in Claude Cowork
+Assign tasks from anywhere in Claude Cowork
+Organize your tasks with projects in Claude Cowork
+Let Claude use your computer in Cowork
+Monitor Claude Cowork activity with OpenTelemetry
+Claude Cowork architecture overview
+Claude Cowork and chat are one Claude
+Claude Code
+Claude Code model configuration
+Use Claude Code with your Pro or Max plan
+Automated Security Reviews in Claude Code
+Use Claude Code with your Team or Enterprise plan
+Claude Code usage analytics
+Manage API key environment variables in Claude Code
+Claude Code FAQ
+Claude Code on the web
+Set up Code Review for Claude Code
+Use Claude Code CLI with a screen reader
+Launch guides
+Your first day in Claude Code
+Models, usage, and limits in Claude Code
+Troubleshoot Claude Code installation and authentication
+Give Claude context: CLAUDE.md and better prompts
+Claude Code cheatsheet
+Claude Code user FAQ
+Claude Code power user tips
+Claude Code: Common developer use cases
+Claude Code communications kit
+Claude Code champion kit
+Claude Desktop
+General
+Install Claude Desktop
+Deploy Claude Desktop for Windows
+Deploy Claude Desktop for macOS
+Enterprise configuration for Claude Desktop
+Use quick entry with Claude Desktop on Mac
+Open Claude Desktop with a link
+Desktop extensions
+Enabling and using the desktop extension allowlist
+Deploying enterprise-grade MCP servers with desktop extensions
+Getting Started with Local MCP Servers on Claude Desktop
+Claude Mobile apps
+General
+Use dictation on Claude Mobile
+Use voice mode
+Minimum age requirement access restriction
+Open the Claude mobile app with a link
+Claude for iOS
+Install Claude for iOS
+How do I sign up for Claude Pro on the Claude app for iOS?
+Use Claude app intents, shortcuts, and widgets on iOS
+Access Claude for iOS on your Lock Screen, Control Center, and Action button
+How to update Claude for iOS
+Use Claude with iOS apps
+Claude for Android
+Install Claude for Android
+How do I sign up for Claude Pro on Claude for Android?
+Use the Claude widget on Android
+How to update Claude for Android
+Use Claude with Android apps
+Claude API and Console
+Use the Claude API and Console
+How can I access the Claude API?
+Where is the Claude API supported?
+Log in to your Console account
+I created a Claude Console organization - how do I start using the Claude API?
+How do I use the playground?
+Cost and Usage Reporting in the Claude Console
+Creating and managing Workspaces in the Claude Console
+I have a paid Claude subscription (Pro, Max, Team, or Enterprise plans). Why do I have to pay separately to use the Claude API and Console?
+Claude Console roles and permissions
+Manage user feedback settings on Claude Console
+About the Development Partner Program
+Anthropic&#x27;s AI for Science Program
+Customizing your Console appearance settings
+Inviting members to the Claude Console
+Find and join a Console organization
+Assign a program to workspaces in Claude Console
+Turn on data retention for a Workspace in a zero data retention organization
+Claude API usage and best practices
+Our approach to rate limits for the Claude API
+I’m planning to launch a product using the Claude API. What steps should I take to ensure I’m not violating Anthropic’s Usage Policy?
+What should I do if I suspect my API key has been compromised?
+I’ve been using other large language models (LLMs) to power my product. How should I alter my prompts when switching to Claude?
+API Key Best Practices: Keeping Your Keys Safe and Secure
+How can I get higher rate limits on the Claude API?
+Pricing and billing
+How do I pay for my Claude API usage?
+How can I learn more about Claude API pricing?
+Add or update your Claude Console organization&#x27;s tax or VAT ID
+Understanding your Claude API invoices
+API troubleshooting
+Where can I find your API documentation?
+I’m encountering 429 errors, and I’m worried my rate limit is too low. What should I do?
+Where can I go for Claude API support and assistance?
+I&#x27;m getting an API connection error. How can I fix it?
+How can I check connectivity to the Claude API?
+API FAQ
+Can I have a Claude account and a Console account?
+Can I use the Claude API for individual use?
+What is the External Researcher Access Program?
+How can I delete my Claude Console account?
+API prompt design
+Introduction to prompt design
+Claude’s response to my prompt is too brief.
+My prompt isn’t giving me a helpful answer.
+API and distillation
+Preserved thinking: changing how the Messages API handles thinking blocks to protect against distillation
+Connectors
+General
+Use connectors to extend Claude&#x27;s capabilities
+When to use desktop and web connectors
+Manage Claude’s tool access
+Anthropic Connectors Directory FAQ
+Anthropic Software Directory Policy
+Anthropic Software Directory Terms
+How Claude suggests connected apps
+Authorize MCP connectors for your entire organization
+Pre-Built Connectors
+Use Google Workspace connectors
+Use the GitHub integration
+Connect to Microsoft 365
+Set up the Microsoft 365 connector
+Microsoft 365 connector security guide
+Use interactive connectors in Claude
+Get started with 1Password for Claude
+Custom Connectors
+Get started with custom connectors using remote MCP
+Claude in Chrome
+Get started with Claude in Chrome
+Claude in Chrome permissions guide
+Use Claude in Chrome safely
+Claude in Chrome admin controls
+Claude in Chrome troubleshooting
+Claude for Education
+Get started with Claude for Education at your university (for Owners/Admins)
+Use Claude for Education at your university
+Set up the Claude LTI in Canvas by Instructure
+Who owns and manages the data of my Claude for Education account?
+Privacy and legal
+Where can I learn more about Anthropic&#x27;s Privacy practices?
+Business Associate Agreements (BAA) for Commercial Customers
+What Certifications has Anthropic obtained?
+What is Anthropic’s policy for handling governmental requests for user information?
+Why am I receiving an &#x27;Output blocked by content filtering policy&#x27; error?
+I think a user is infringing my copyright or other intellectual property. How do I report it?
+How do I view and sign your Data Processing Addendum (DPA)?
+Why am I receiving an &#x27;Output blocked by content filtering policy&#x27; error?
+Updates to our Acceptable Use Policy (now “Usage Policy”), Consumer Terms of Service, and Privacy Policy
+Consumer Terms of Service Updates
+Terms of Service Updates
+Official Anthropic marketing email addresses
+Report, block, and remove content from Claude
+Does Anthropic crawl data from the web, and how can site owners block the crawler?
+Online Safety Contacts
+Claude 4 Invite Sweepstakes Official Rules
+Designated point of contact for users in the EU
+Can I use my Outputs to train an AI model?
+Report a concern: Australian DIS Standard compliance
+Unauthorized Anthropic stock sales and investment scams
+Covered Models
+Covered Models under a Business Associate Agreement (BAA)
+Using Claude for Legal Work: Privilege, Confidentiality, and How to Think About Configuration
+Claude for Teachers: your data and our terms
+How Claude marks AI-generated content
+Safeguards
+Our Approach to User Safety
+Exceptions to our Usage Policy
+Safeguards warnings and appeals
+API Safeguards Tools
+Law Enforcement Requests
+Responsible Use of Anthropic&#x27;s Models: Guidelines for Organizations Serving Minors
+Report, block, and remove content from Claude
+CSAM Detection and Reporting
+Public Vulnerability Reporting
+Using Agents According to Our Usage Policy
+Creating a new account after deletion
+Model Safety Bug Bounty Program
+Crisis Helpline Support in Claude
+Identity verification on Claude
+Real-time cyber safeguards on Claude Opus and Sonnet
+Age assurance on Claude
+Child safety guidance for developers
+Amazon Bedrock
+What is Amazon Bedrock?
+How do I get access to Claude in Amazon Bedrock?
+I use Claude in Amazon Bedrock. Who do I contact for customer support inquiries?
+How do I learn more about Amazon and Anthropic’s strategic collaboration?
+Where do I find Claude in Amazon Bedrock documentation?
+What AWS Regions are Claude models available in Amazon Bedrock?
+Claude for Government
+Get started with Claude for Government
+SSO login
+Set up SCIM in Claude for Government
+Organization instructions in Claude for Government
+MCP connectors
+MCP: Individual connectors
+MCP: Web Search
+Model availability in Claude for Government
+Classification banner in Claude for Government
+All Collections Claude Conversation management Use Claude’s chat search and memory to build on previous context Use Claude’s chat search and memory to build on previous context
+Updated over a week ago
+Copy for LLM
+You can prompt Claude to search through your previous conversations to find and reference relevant information in new chats. Claude can also remember context from your chats and carry it into new conversations and Cowork tasks. This article explains how chat search and memory work, what Claude does and doesn&#x27;t remember, how to review and edit what&#x27;s saved, and how to turn these features on or off.
+Important: We have introduced an improved experience for memory and migrated users off the legacy experience. If you think Claude has forgotten something in that migration:
+Navigate to Settings > Memory and until September 9, 2026, you will see the option to export your legacy memory.
+Once you have exported your legacy memory, paste it back into Claude, highlighting the portion that may have been forgotten.
+Search past chats with Claude
+Searching past chats is available to users on paid plans (Pro, Max, Team, and Enterprise plans) on the web, Claude Desktop, and Claude Mobile apps.
+You can prompt Claude to search through your previous conversations to find relevant information across sessions and reference specific details when needed. Simply ask Claude to find what you discussed before, and it will pull together the appropriate context to keep your conversation flowing. These searches use Retrieval-Augmented Generation (RAG) and will appear as tool calls during your conversations.
+What Claude can search
+You can prompt Claude to search conversations within these boundaries:
+All chats outside of projects.
+Individual project conversations (searches are limited to within each specific project).
+Search and reference past chats
+Once the ability to search past chats is rolled out to your account, it will be enabled by default. Just ask Claude about your previous conversations naturally to use it, such as:
+"What did we discuss about [topic]?"
+"Can you find our conversation about [subject]?"
+"Let&#x27;s continue where we left off with [project]."
+When Claude searches your previous chats, you will see this reflected in your current chat as a tool call.
+Can I prevent Claude from searching my past chats?
+Yes, navigate to Settings > Memory and switch the toggle next to "Search and reference chats" off:
+Can I exclude a specific past chat from searches?
+Incognito chats are available to all Claude users (free, Pro, Max, Team, and Enterprise plans). See Use incognito chats for more information.
+When starting a new chat with Claude outside of a project, you&#x27;ll see a ghost icon in the upper right corner of your screen.
+Clicking the ghost icon will open an incognito chat, creating a temporary conversation that isn’t saved to your chat history. Claude won’t pull information from incognito chats when searching previous conversations.
+Important: If you’re using an Enterprise or Team plan account, incognito chats are included in standard data exports and follow your organization&#x27;s data retention policies. You can&#x27;t search past chats if your organization uses customer-managed encryption keys on an Enterprise plan because conversation content is encrypted.
+What is Claude&#x27;s memory?
+Claude can generate memory based on your chats. With the addition of memory, Claude transforms from a stateless chat interface into a knowledgeable collaborator that builds understanding over time.
+Memory is on by default for Free, Pro, and Max plans on the web, Claude Desktop, and Claude Mobile (update to the latest version of the app). On Team and Enterprise plans, memory is off by default and can be turned on by an owner. Memory is shared between Chat and Claude Cowork when Cowork runs in the cloud; Cowork sessions that run locally on your computer don&#x27;t use memory.
+How does Claude’s memory work?
+In addition to searching past chats, enabling Claude&#x27;s memory feature adds several capabilities.
+How Claude stores memory
+Claude saves memory as a set of individual topics as you chat, rather than summarizing conversations after they end. Mention that a deadline moved, and your next conversation already knows. Claude saves on its own, and you can also tell Claude to "remember this" to save something directly.
+Project memory and summary
+Each project has its own separate memory space and dedicated project summary, so the context within each of your projects is focused, relevant, and separate from other projects or non-project chats.
+One memory across chat and Claude Cowork
+What Claude remembers from your chats is available when you hand it a task in Cowork in the cloud, and what comes up in a Cowork task carries back to chat. For example, ask Cowork to draft an update for your manager, and it already knows who that is and how they like updates written.
+Note: Memory across Cowork and chat only works when Cowork runs in the cloud. It isn&#x27;t available in Cowork sessions that run locally on your computer. Learn more about Cowork in the cloud .
+Turn memory on or off
+Note: Members of Enterprise plans can only enable this feature individually when it’s enabled by an owner for their organization. For more information, see Controls for Enterprise plan owners .
+You can toggle Claude’s memory on by navigating to Settings > Memory and turning on Generate memory from chats :
+If you want to disable Claude’s memory, click the toggle and you&#x27;ll see two options:
+Pause memory: Claude keeps its existing memory, including sensitive topics if you have it turned on, but won&#x27;t use memory or make new memories. Conversations while memory is paused won&#x27;t be added to memory if you turn it back on. If you unpause memory, both your memory and sensitive topics memory will be on.
+Reset memory: Permanently deletes all memories including project memories. Once you select this option and click "Reset memory," this cannot be undone. Upon re-enabling the feature, you’ll start from scratch and Claude will not have its previous memory.
+What Claude remembers
+Claude remembers the everyday context that helps it work with you, such as:
+Your role, projects, and professional context
+The people and places in your work and life
+Communication preferences and working style
+Technical preferences and coding style
+Project details and ongoing work
+​We apply safeguards and conduct evaluations to memory to help keep users safe.
+Sensitive topics in memory
+By default, Claude does not store topics related to personal or sensitive subject matter, like your health, race, ethnicity, religious beliefs, politics, gender identity, and other similar areas.
+If these are topics you&#x27;d rather not keep re-explaining, you can choose to include them. Turn on Include sensitive topics in memory in Settings > Memory . You can also turn it on from the one-time notice Claude shows in chat the first time it declines to save a memory because it referenced a sensitive topic.
+Once the setting is on:
+Claude saves sensitive topics going forward. Anything from before you turned it on isn&#x27;t saved retroactively.
+Each time Claude saves something on one of these topics, a notice appears above the message box so you can review it or update your settings.
+If you’re using Claude for iOS or Android, this notice will only appear if you’re on the latest version of the mobile app. If you’re using an older version or the mobile app, you will not see this notice, and Claude won&#x27;t save the sensitive topic to its memory.
+If you decline the notice, or turn the setting off later, Claude removes any sensitive items already saved to memory.
+Important: Some information is never saved to memory, even if you ask. This includes government ID numbers, criminal history, financial account numbers, and immigration status. Claude will let you know when it can&#x27;t save something for this reason.
+What Claude doesn&#x27;t remember
+Incognito chats
+Incognito chats are available to all Claude users (free, Pro, Max, Team, and Enterprise plans).
+When starting a chat with Claude outside of a project, you will see a ghost icon in the upper right corner of your screen; clicking this enables incognito chats. When this mode is switched on, Claude won’t remember your chats, so they won’t be saved to Claude’s memory or your chat history. Close your current incognito chat when you’re ready for Claude to start remembering your conversations again.
+Data retention and privacy
+All memory will be retained in accordance with existing chat data retention policies.
+Claude’s memory reflects changes to your conversations as they happen.
+When a conversation expires or is deleted, related memory entries generated from it won’t be removed, but you can delete individual memories at any time.
+All memory data is included in data exports.
+Enterprise data retention policies apply to chat search and incognito chats.
+Important: Memory entries generated from eligible chats before customer data retention was applied won’t be removed, but users can delete individual memories at any time.
+User controls and visibility
+You have several mechanisms for managing and overseeing Claude&#x27;s memory.
+View and manage your memory
+See exactly what Claude remembers about you in Settings > Memory . Everything Claude remembers is listed under Topics . Select any topic to read it, then use the edit icon to change it or select "Delete" to remove it. Fix something in one topic and the change applies to every conversation from then on.
+You can also update memory directly from a chat. Tell Claude what you&#x27;d like it to remember, change, or forget, and the update applies to your next conversation.
+Past chat citations
+When Claude references previous conversations through search, you&#x27;ll see citations linking back to the original chats, along with the option to delete specific conversations.
+Toggle search past chats and memory on/off
+You maintain control over Claude’s ability to search past chats and use memory–you can always disable these features and enable them again when needed in Settings > Memory .
+Importing your memory from other AI tools
+You can now transfer your memory between Claude and other AI services. This feature lets you import memories from other AI assistants or export your Claude memory for backup or migration. This feature is experimental and still in active development, but for best practices, see this article: Importing and exporting your memory from Claude .
+Controls for Team and Enterprise plan owners
+Memory and sensitive topics are two separate controls for your organization, and both are off by default.
+Organization-level memory controls
+Owners and Primary Owners can turn memory on for the organization in Organization settings > Capabilities . Once enabled, individual users manage their own memory settings. Enabling memory doesn&#x27;t enable sensitive topics, and even if you allow sensitive topics for your organization, nothing in those categories is saved until each user opts in themselves. Once a user has opted in, they control their own sensitive memories: they can view and delete individual entries, or turn sensitive topics off to stop saving new ones. Owners can&#x27;t view or edit a user’s individual memories.
+When an owner turns memory off for the organization, all existing memory entries for all users are deleted immediately, and users can&#x27;t access the memory setting.
+Important: Turning off memory at the organization level permanently deletes all memory data for everyone in your organization.
+Memory isn&#x27;t available to organizations with HIPAA, public-sector, or custom data retention agreements.
+Data handling and compliance
+Memory entries are stored with encryption at rest. When a conversation expires or is deleted, related memory entries aren&#x27;t removed, but members can delete individual memories at any time.
+Incognito chats don&#x27;t contribute to memory and aren&#x27;t visible in members&#x27; chat histories, but they remain available to owners through data export and are subject to your data retention policies (retained for at least 30 days for safety purposes).
+Audit logging and data exports
+Audit logging: The system logs when owners turn org-level memory controls on or off. Standard conversation access logging applies to memory entries. Individual member memory edits aren&#x27;t logged.
+Data exports: Memory entries are included in standard conversation history exports. Incognito chats are included in organizational data exports.
+Important: All memory is retained and exportable by admins in accordance with your organization&#x27;s chat data retention policies.
+Information for legacy memory users
+Important: We&#x27;ve introduced an improved experience for memory from chats. If you see Settings > Memory , you’re using the new memory experience and the sections above apply to you. The sections below only apply to people who have the legacy memory experience and see Memory in Settings > Capabilities .
+Search past chats with Claude
+Searching past chats is available to users on paid plans (Pro, Max, Team, and Enterprise plans) on the web, Claude Desktop, and Claude Mobile apps.
+You can prompt Claude to search through your previous conversations to find relevant information across sessions and reference specific details when needed. Simply ask Claude to find what you discussed before, and it will pull together the appropriate context to keep your conversation flowing. These searches use Retrieval-Augmented Generation (RAG) and will appear as tool calls during your conversations.
+What Claude can search
+You can prompt Claude to search conversations within these boundaries:
+All chats outside of projects.
+Individual project conversations (searches are limited to within each specific project).
+Search and reference past chats
+Once the ability to search past chats is rolled out to your account, it will be enabled by default. Just ask Claude about your previous conversations naturally to use it, such as:
+"What did we discuss about [topic]?"
+"Can you find our conversation about [subject]?"
+"Let&#x27;s continue where we left off with [project]."
+When Claude searches your previous chats, you will see this reflected in your current chat as a tool call.
+Can I prevent Claude from searching my past chats?
+Yes, navigate to Settings > Capabilities and find the Preferences section. Switch the toggle next to “Search and reference chats” off:
+Can I exclude a specific past chat from searches?
+Incognito chats are available to all Claude users (free, Pro, Max, Team, and Enterprise plans). See Use incognito chats for more information.
+When starting a new chat with Claude outside of a project, you&#x27;ll see a ghost icon in the upper right corner of your screen:
+Clicking the ghost icon will open an incognito chat, creating a temporary conversation that isn’t saved to your chat history. Claude won’t pull information from incognito chats when searching previous conversations.
+Important: If you’re using an Enterprise or Team plan account, incognito chats are included in standard data exports and follow your organization&#x27;s data retention policies. You can’t search past chats if your organization uses customer-managed encryption keys on an Enterprise plan because conversation content is encrypted.
+What is Claude&#x27;s memory?
+A small number of Team and Enterprise organizations still use the legacy memory from chats experience. Memory applies to chats on the web, Claude Desktop, and Claude Mobile, and is not currently available for Cowork.
+Claude can now generate memory based on your chat history. With the addition of memory, Claude transforms from a stateless chat interface into a knowledgeable collaborator that builds understanding over time.
+How does Claude’s memory work?
+In addition to searching past chats, enabling Claude’s memory feature adds several capabilities.
+Memory summary
+Claude will automatically summarize your conversations and create a synthesis of key insights across your chat history (not including chats in projects). This synthesis is updated every 24 hours and provides context for every new standalone conversation.
+Project memory and summary
+Each project has its own separate memory space and dedicated project summary, so the context within each of your projects is focused, relevant, and separate from other projects or non-project chats.
+Enable Claude’s memory
+Note: Members of Enterprise plans can only enable this feature individually when it’s enabled by an Owner for their organization. See Controls for Enterprise plan Owners for more information.
+You can toggle Claude’s memory on by navigating to Settings > Capabilities :
+If you want to disable Claude’s memory, click the toggle to see two options:
+Pause memory: Claude keeps its existing memory but won’t use memory or make new memories. Conversations with Claude while memory is paused will not be summarized into its memory should you turn the feature back on.
+Reset memory: Permanently deletes all memories including project memories. Once you select this option and click “Reset memory,” this cannot be undone. Upon re-enabling the feature, you’ll start from scratch and Claude will not have its previous memory.
+Note: Pausing or resetting memory also hides your monthly recap, since Claude builds the recap from the same chat history. Learn more about the monthly recap .
+What does Claude remember?
+Claude focuses on work-related context that helps improve collaboration. You will see this information reflected in your memory or project summary:
+Your role, projects, and professional context
+Communication preferences and working style
+Technical preferences and coding style
+Project details and ongoing work
+What Claude doesn&#x27;t remember
+Incognito chats
+Incognito chats are available to all Claude users (free, Pro, Max, Team, and Enterprise plans).
+When starting a chat with Claude outside of a project, you will see a ghost icon in the upper right corner of your screen; clicking this enables incognito chats. When this mode is switched on, Claude won’t remember your chats, so they won’t be saved to Claude’s memory or your chat history. Close your current incognito chat when you’re ready for Claude to start remembering your conversations again.
+Data retention and privacy
+All memory will be retained in accordance with existing chat data retention policies.
+Deleted conversations are removed from memory synthesis.
+Claude’s memory is updated within 24 hours when conversations are created, modified, or deleted.
+All memory data is included in data exports.
+Enterprise data retention policies apply to chat search and incognito chats.
+User controls and visibility
+You have several mechanisms for managing and overseeing Claude&#x27;s memory.
+View and manage your memory summary
+See exactly what Claude remembers about you by navigating to Settings > Capabilities and clicking “View and edit memory.” The Manage memory modal displays everything Claude remembers about you. In addition to asking Claude to edit the existing summary, you can also tell Claude what you want it to remember. To add custom instructions to Claude’s memory, click the pencil icon in the lower left corner of the summary.
+You can also update your memory summary directly from your chats. Simply tell Claude what you&#x27;d like it to remember, and it will update your memory summary without needing to leave the conversation. Any edits made in this way will immediately apply to your next conversation, so you don’t need to wait for the daily synthesis to run.
+Past chat citations
+When Claude references previous conversations through search, you&#x27;ll see citations linking back to the original chats, along with the option to delete specific conversations.
+Toggle search past chats and memory on/off
+You maintain control over Claude’s ability to search past chats and use memory – you can always disable these features and enable them again when needed in Settings > Capabilities .
+Importing your memory from other AI tools
+You can now transfer your memory between Claude and other AI services. This feature lets you import memories from other AI assistants or export your Claude memory for backup or migration. This feature is experimental and still in active development, but for best practices, see this article: Importing and exporting your memory from Claude .
+Controls for Enterprise plan owners
+Enterprise plan Owners and Primary Owners have specific controls for managing memory features across their organization.
+Organization-level memory controls
+The organization-wide Generate memory from chat history toggle is enabled by default. When enabled, individual users can manage their own memory settings. Owners can disable the memory summary feature for their entire organization by navigating to Organization settings > Capabilities . When disabled by an Owner, it immediately deletes all existing memory synthesis data for all users, and individual users cannot modify or access the memory synthesis setting.
+Important: Disabling Claude&#x27;s memory at the organization level will automatically and permanently delete all memory data for all users in your organization.
+Data handling and compliance
+Chat summaries are stored alongside conversation data and follow your organization&#x27;s existing data retention policies. When a conversation is deleted, its summary is also deleted.
+Memory synthesis is stored with encryption at rest and is tied to underlying conversations. As conversations expire or are deleted according to your retention settings, the synthesis updates accordingly.
+Incognito chats don&#x27;t contribute to memory and aren&#x27;t visible in users&#x27; chat histories, but they remain available to Owners through data export features and are subject to your existing data retention policies (retained for at least 30 days for safety purposes).
+Audit logging and data exports
+Audit logging: The system logs when org-level memory toggles are enabled or disabled by Owners. Standard conversation access logging applies to memory synthesis. Individual user memory edits are not logged.
+Data exports: Memory synthesis and chat summaries are included in standard conversation history exports. Incognito chats are included in organizational data exports. All exported chat summaries remain tied to their source conversations.
+Important: All memory will be retained and exportable by admins in accordance with existing enterprise chat data retention policies.
+Team plan limitations
+Team plans do not have organization-level controls for memory features. Individual Team plan members manage their own memory settings directly.
+Did this answer your question? Disappointed Reaction Neutral Reaction Smiley Reaction
+Related Articles
+Use incognito chats
+Get started with Claude Cowork
+Use Claude Cowork on Team and Enterprise plans
+Organize your tasks with projects in Claude Cowork
+On this page
+Search past chats with Claude
+What Claude can search
+Search and reference past chats
+Can I prevent Claude from searching my past chats?
+Can I exclude a specific past chat from searches?
+What is Claude&#x27;s memory?
+How does Claude’s memory work?
+Turn memory on or off
+What Claude remembers
+What Claude doesn&#x27;t remember
+Data retention and privacy
+User controls and visibility
+Controls for Team and Enterprise plan owners
+Information for legacy memory users
+Product
+Research
+Company
+News
+Careers
+Terms of Service - Consumer
+Terms of Service - Commercial
+Privacy Policy
+Usage Policy
+Responsible Disclosure Policy
+Compliance

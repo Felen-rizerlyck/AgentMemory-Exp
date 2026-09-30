@@ -1,0 +1,191 @@
+URL: https://blog.getzep.com/
+FINAL: https://blog.getzep.com/
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Zep - Agent memory at enterprise scale
+BYTES: 80597
+======================================================================
+Zep - Agent memory at enterprise scale
+We're hiring! Come build with us &rarr;
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Log in
+Book a demo
+Sign up
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Book a demo
+Sign up
+Zep - Agent memory at enterprise scale
+Defending Agent Memory Against Poisoning
+One poisoned message, web page, or document can shape every later session that reads the same memory. Persistent memory makes prompt injection durable. We explain how memory poisoning works and which controls contain it, in your application and in Zep.
+Sep 02, 2026
+13 min read
+Why we built a graph database service for agent memory
+Konig, Zep's graph database service, is the data plane beneath our agent memory platform. This post covers why we built it, how it works, and what we learned along the way.
+Aug 27, 2026
+15 min read
+Memory for every agent your team uses
+A knowledge worker's agents don't share what they know: Claude and ChatGPT often can't reach company context, and the agents you build never see what Claude and ChatGPT learn. The Memory MCP Server gives each user one agent memory across all of them, governed by policy.
+Aug 19, 2026
+4 min read
+Coding agents can design your Zep implementation
+Zep now ships one plugin for Claude Code, Codex, and Cursor. It gives your coding agent the Zep documentation MCP server and the new building-with-zep skill, which encodes how to design and evaluate an agent memory implementation around the use case you need to deliver.
+Jul 30, 2026
+6 min read
+Evaluating Nemotron 3 Embed for agent memory
+Zep's graph retrieval starts from entrypoints selected by semantic and BM25 search, so embedding recall bounds everything downstream. We benchmarked NVIDIA's Nemotron 3 Embed 1B, released today, on 5,954 production recall queries: first place against our production incumbent and two other models.
+Jul 16, 2026
+5 min read
+How Zep tracks provenance in agent memory
+Agent memory is synthesized: an LLM derives facts from chat histories, documents, and business data. A derived fact matches no source word-for-word, so nothing ties it back to where it came from. Zep records that lineage; debugging, source-scoped retrieval, and compliance all depend on it.
+Jul 14, 2026
+8 min read
+Securing Agent Memory with ABAC
+Attach policies to any Zep API key to control the exact endpoints it can call and the graph data it can read.
+Jul 09, 2026
+4 min read
+Unified agent memory in any MCP client
+Your team's agents are split across surfaces: the desktop assistant, the coding tool, the agents you build in-house. Each keeps its own memory or none at all. The Memory MCP Server puts them on one governed user graph, gated by your enterprise single sign-on.
+Jun 30, 2026
+4 min read
+Agent memory placement can cut your token bill up to 2x
+Agent memory has to refresh every turn, but putting it in the system prompt breaks prompt caching and re-bills the whole conversation each turn. Here is the one-message fix, and the token savings it led to in an experiment.
+Jun 24, 2026
+6 min read
+Markdown is not agent memory
+Some of the most capable agents in production keep their memory in plain markdown files, and for a single agent and a single user it is hard to beat. The pattern breaks in predictable places: at scale, as facts change and errors compound, and under concurrent agents.
+Jun 23, 2026
+8 min read
+Building Agents in Go Without a Framework
+A production agent is a long-running, concurrent, I/O-bound process that spends most of its time waiting on a model, a tool, or a human. That shape fits Go's runtime. This post explains why, surveys the Go framework options, and shows how to build an agent without one.
+Jun 18, 2026
+11 min read
+Sycophancy is a design choice
+Writer's "Recalling Too Well" paper says memory systems amplify sycophancy. Its own data traces the amplification to two design decisions — one in Writer's experiment itself, one in a competitor's memory product.
+Jun 11, 2026
+10 min read
+The Batch API: Load Large Datasets into Agent Memory
+Zep's Batch API loads large datasets into agent memory faster, in batches up to 50,000 items, with a progress dashboard and no impact on real-time ingestion.
+Jun 09, 2026
+2 min read
+Smart Context Assembly: Fewer Tokens, Better Quality
+Today we're announcing Smart Context Assembly, an upgrade to how Zep's default Context Block is built: higher accuracy from fewer tokens, with no code changes.
+Jun 04, 2026
+2 min read
+Observations: Patterns and Insights from the Context Graph
+Observations are a new context type in Zep that capture patterns and insights across your Context Graphs, automatically discovered and surfaced to agents.
+May 21, 2026
+3 min read
+Zep&#x27;s 5 Context Types: How to Use and Combine Each One
+Zep produces five distinct types of context from a user's graph. Each captures something different. Here's when to reach for each, and how to combine them in one prompt.
+May 05, 2026
+7 min read
+Context You Can Trace, Filter, and Trust
+Every fact in your agent's context graph came from somewhere. Zep's provenance architecture traces facts back to their source data — and lets you filter retrieval by origin.
+Apr 15, 2026
+7 min read
+Stop Letting Your Agent Decide What It Needs to Know
+Your agent has the tools. It just doesn't call them — and smarter models won't fix that. Here's why the unknown unknowns problem is the hardest challenge in agent context, and what to do about it.
+Mar 25, 2026
+7 min read
+3 Decisions That Shape Every Agent&#x27;s Context Architecture
+Every agent context architecture comes down to three decisions: scope, data sources, and retrieval strategy. A framework for reasoning about persistent context for AI agents.
+Mar 18, 2026
+6 min read
+Evaluation and Control: Evaluation Framework, zepctl CLI, and Dashboard Overhaul
+An evaluation framework for testing Zep against your data, a redesigned dashboard with analytics, and zepctl — a CLI for administering Zep projects.
+Mar 10, 2026
+2 min read
+Build Better Context Graphs: Custom Instructions, Search Filters, and Webhooks
+Custom extraction instructions, property-level search filters, exclusion filters, and webhooks — more control over how you build and query context graphs.
+Mar 03, 2026
+3 min read
+Context Templates: Context Engineering Made Simple
+Key Takeaways
+* Context templates let you declare what context an agent gets (user summary, edges, entities, episodes, with per-section limits and types) instead of writing sequential retrieval calls in code.
+* Save a template once and reference it by ID, so your context configuration is version-controlled and reproducible across
+Dec 17, 2025
+3 min read
+The Retrieval Tradeoff: What 50 Experiments Taught Us About Context Engineering
+Key Takeaways
+* Context retrieval shows diminishing returns: moving from a 5/2 to a 20/20 configuration adds +10.4 points of accuracy at roughly 4x the tokens, while pushing on to 30/30 adds just 0.26.
+* Completeness, not accuracy, tells you whether retrieval is robust. At the minimal
+Dec 09, 2025
+7 min read
+How Zep Works: A Visual Guide to Knowledge Graphs for AI Agents
+Key Takeaways
+* Agents don't fail because the model is weak; they fail because the right context isn't there. Chat memory only sees conversations, static RAG goes stale, tool calls are slow, and context stays scattered across systems.
+* Unified: Zep ingests any text source (chat messages, documents,
+Dec 06, 2025
+2 min read
+Building Voice Agents with Memory: Zep x LiveKit
+Create personalized voice agents with long-term memory with minimal added latency
+Nov 20, 2025
+4 min read
+Page 1 of 4
+Older Posts &rarr;
+The Context Lake for AI agents.
+Product
+Agent Memory
+Context Lake
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Global Market Intelligence coverage
+Trust Center
+Context Engineering
+Mem0 alternative
+Enterprise
+Overview
+Deployment
+Security & compliance
+Company
+About
+Careers
+Pricing
+Contact
+&copy; 2026 Zep AI, Inc. All rights reserved.
+Privacy policy
+Terms of service
+Website terms

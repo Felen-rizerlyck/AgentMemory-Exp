@@ -1,0 +1,97 @@
+URL: https://blog.getzep.com/graph-database-service-agent-memory/
+FINAL: https://blog.getzep.com/graph-database-service-agent-memory/
+STATUS: 404
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Zep - Agent memory at enterprise scale
+BYTES: 33112
+======================================================================
+Zep - Agent memory at enterprise scale
+We're hiring! Come build with us &rarr;
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Log in
+Book a demo
+Sign up
+Product
+Agent Memory
+Context Lake
+Context Graph Engine
+Graphiti
+Enterprise
+Pricing
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Market Intelligence Report
+Trust Center
+Context Engineering
+Company
+About
+Careers
+Contact
+Book a demo
+Sign up
+404
+Page not found
+Go to the front page →
+Defending Agent Memory Against Poisoning
+One poisoned message, web page, or document can shape every later session that reads the same memory. Persistent memory makes prompt injection durable. We explain how memory poisoning works and which controls contain it, in your application and in Zep.
+Sep 02, 2026
+13 min read
+Why we built a graph database service for agent memory
+Konig, Zep's graph database service, is the data plane beneath our agent memory platform. This post covers why we built it, how it works, and what we learned along the way.
+Aug 27, 2026
+15 min read
+Memory for every agent your team uses
+A knowledge worker's agents don't share what they know: Claude and ChatGPT often can't reach company context, and the agents you build never see what Claude and ChatGPT learn. The Memory MCP Server gives each user one agent memory across all of them, governed by policy.
+Aug 19, 2026
+4 min read
+The Context Lake for AI agents.
+Product
+Agent Memory
+Context Lake
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Global Market Intelligence coverage
+Trust Center
+Context Engineering
+Mem0 alternative
+Enterprise
+Overview
+Deployment
+Security & compliance
+Company
+About
+Careers
+Pricing
+Contact
+&copy; 2026 Zep AI, Inc. All rights reserved.
+Privacy policy
+Terms of service
+Website terms

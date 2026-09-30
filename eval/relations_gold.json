@@ -1,0 +1,2326 @@
+{
+  "meta": {
+    "status": "DRAFT — 第二轮扩充：22 案例 / 231 对（旧 36 对沿用首轮草稿；本轮新增 195 对为机械预筛+初步裁定）",
+    "scope": "9 案例全量两两 = 36 对",
+    "tier_legend": {
+      "helpful": "作为分析上下文能增强/改变结论（激活扩展）",
+      "weak": "弱相关，不作上下文扩展（噪声定义的一部分）",
+      "unrelated": "无关",
+      "misleading": "返回即有害（保留位，当前无对）"
+    },
+    "type_legend": {
+      "shares_infra": "跨案例精确 IOC 复用（IP/域名等；当前无对）",
+      "same_technique": "MITRE 技术编号有交集（可机械推导）",
+      "same_family": "同一攻击家族/向量类（人工判断）",
+      "shares_payload": "载荷片段/特征值相同（如 rO0AB）",
+      "same_phase": "同一 kill-chain 阶段",
+      "chain_sibling": "跨阶段伴生候选（PAT-001 时序观察；当前全部为 weak 待裁定）"
+    },
+    "notes": [
+      "顺序纪律：本矩阵先于任何自动推导规则；派生规则实现后与此对比 P/R。",
+      "runtime 派生：查询 helpful 集 = 其 must 案例在矩阵中的 helpful 邻居；misleading 同理。",
+      "跨簇候选（15 对 chain_sibling）现为 weak：如裁定提升为 helpful，重跑 run_eval 即测『跨簇扩展』。",
+      "C4 配置 = 跨簇/跨阶段类边 {shares_infra, chain_sibling, same_phase}；C5 = 簇内类边 {same_technique, same_family, shares_payload}。",
+      "第二轮扩充：新增 helpful 19 条（含 review 标记 14），weak/无关由机械规则批量裁定；统计与规则见 PENDING.md §1.3。"
+    ]
+  },
+  "pairs": [
+    {
+      "a": "CASE-003",
+      "b": "CASE-005",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "同 T1190；均为 WAF/RASP 双层捕获的 Web 路径穿越→执行链（LFI ../ vs 双编码 %%32%65）；同类手法对照价值高",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-006",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "同 T1190+T1059.004；同为『注入→命令执行探针』（echo;id / cmd=id），均 WAF+RASP 双层",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-008",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "同 T1190；008 请求附带与 006 同类 rO0AB Java 序列化流（006 reasoning 已记录该向量跨波次复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-004",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_phase"
+      ],
+      "evidence": "同 T1033 发现动作（whoami / id;hostname）；同为『立足→横向→发现』链型",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-007",
+      "tier": "helpful",
+      "types": [
+        "same_phase"
+      ],
+      "evidence": "同为 Windows 主机侧横向移动（WMIC 远程执行 vs SMB 管理共享），工具链对照价值",
+      "review": true
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-007",
+      "tier": "helpful",
+      "types": [
+        "same_phase"
+      ],
+      "evidence": "同为横向移动阶段（SSH 密钥 vs SMB 共享）；目的相同、机制不同，作上下文对照",
+      "review": true
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-006",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190，但手法栈不同（Node LFI 链 vs Java 反序列化）",
+      "review": true
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-008",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190（Node LFI 链 vs Jinja2 SSTI）",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-009",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190 + 同为 WAF/RASP 双层；LFI 链 vs 登录认证攻击",
+      "review": true
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-008",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同为 Web 注入→命令执行（T1059.004 vs T1059.006 子技术不同）",
+      "review": true
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-009",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190；命令注入 vs SQLi 认证绕过",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-009",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190；反序列化 vs SQLi",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-009",
+      "tier": "weak",
+      "types": [
+        "same_technique"
+      ],
+      "evidence": "同 T1190；SSTI vs SQLi",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-001",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001：Web 告警→约90s 后主机横向的时序伴生观察；按『独立事件』准则暂不建立关联",
+      "review": true,
+      "note": "如裁定为 helpful 将激活跨簇扩展实验"
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-004",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-007",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-001",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-004",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-007",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-001",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-004",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-007",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-001",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-004",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-007",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-001",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-004",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-007",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "PAT-001 时序伴生候选；按『独立事件』准则暂不建立关联",
+      "review": true
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-001",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-003",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-004",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-005",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-006",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-007",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-008",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-009",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量；解析 IP 未与其他案例复用）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为/横向移动，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [
+        "same_phase"
+      ],
+      "evidence": "同为持久化（Windows 后门账户 vs Linux rc.local），系统与机制不同",
+      "review": true
+    },
+    {
+      "a": "CASE-001",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-010",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-011",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-012",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-013",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-014",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-015",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-016",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-017",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-018",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "同经 DNS 通道（DGA C2 信标 / 外传隧道），机制不同；019 外送域含 8 位 hex 前缀形态（与 DGA 形状部分重叠）",
+      "review": true
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-020",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-021",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-002",
+      "b": "CASE-022",
+      "tier": "unrelated",
+      "types": [],
+      "evidence": "无共享技术/指标（DGA 为独立向量）",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-016",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cache_key=../../../tmp/<hex>` 穿越写法与 `smuggle=GET / HTTP/1.1` 标记（003 的 05-01 观测 / 016）",
+      "review": true
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-018",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "均以云元数据段（169.254.169.254）为读取目标：003 参数型 SSRF / 018 XXE 实体——云凭据窃取同类",
+      "review": true
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-003",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为/横向移动，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为/横向移动，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-004",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-017",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "同 T1190+T1059.004；命令执行探针 `echo;id` 完全相同（005 载荷 / 017 载荷）",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-005",
+      "b": "CASE-022",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "同 T1190+T1059.004；均 Web 命令注入伴随 MSSQL 命令探针（xp_cmdshell / xp_dirtree）混投",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-010",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 命令探针（010 请求含 &cmd=id 与 ShellSession 句柄）；同 T1190+T1059.004",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [],
+      "evidence": "同为不安全反序列化致 RCE，语言/载荷机制不同（Java 流 vs PHP phar 上传）",
+      "review": true
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-016",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 探针；同 T1190+T1059.004",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-006",
+      "b": "CASE-022",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 探针；同 T1190+T1059.004",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为/横向移动，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "chain_sibling"
+      ],
+      "evidence": "跨阶段伴生候选（Web 利用 × 横向移动；按独立事件准则不建立关联）",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为/横向移动，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-007",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [],
+      "evidence": "SMB/UNC 形态重叠（022 xp_dirtree UNC 外连 vs 007 SMB 管理共享横向），机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-013",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "表达式注入致命令执行：Jinja2 对象链 / SpEL routing-expression",
+      "review": true
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-020",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "表达式/脚本注入致命令执行：Jinja2 对象链 / Groovy .execute()",
+      "review": true
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-008",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-010",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-011",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-015",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "SQL 注入类：009 认证绕过 / 015 UNION 窃取凭据表",
+      "review": true
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-009",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-011",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享探针模板 `cmd=127.0.0.1;id`（/api/v1/ping 前缀）；两独立波次、产品不同（WebLogic vs F5）——工具链对照价值",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-013",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "Java 表达式引擎类（MVEL 句柄 / SpEL）在 Web 参数中被执行",
+      "review": true
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-016",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 探针（010 含 &cmd=id）",
+      "review": true
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-010",
+      "b": "CASE-022",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 探针",
+      "review": true
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-012",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-011",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-013",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-012",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-014",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-015",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-020",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "same_family"
+      ],
+      "evidence": "脚本/表达式引擎注入：SpEL / Groovy，引擎内执行命令",
+      "review": true
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-013",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-015",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd_inject=#!//bin/bash` 标记",
+      "review": true
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）",
+      "review": false
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-021",
+      "tier": "helpful",
+      "types": [
+        "same_phase"
+      ],
+      "evidence": "同为持久化阶段（cron 写任务 vs rc.local 启动脚本）——机制不同、目的同类",
+      "review": true
+    },
+    {
+      "a": "CASE-014",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004']",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-016",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "同涉凭据获取（DB 凭据 UNION 导出 / 主机 /etc/shadow 外传），平台与机制不同",
+      "review": true
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-015",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-017",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-018",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `smuggle=GET / HTTP/1.1` 走私形态标记",
+      "review": true
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-016",
+      "b": "CASE-022",
+      "tier": "helpful",
+      "types": [
+        "same_technique",
+        "shares_payload"
+      ],
+      "evidence": "共享 `cmd=id` 探针；同 T1190+T1059.004",
+      "review": false
+    },
+    {
+      "a": "CASE-017",
+      "b": "CASE-018",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-017",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-017",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-017",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-017",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1059.004', 'T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-018",
+      "b": "CASE-019",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-018",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-018",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-018",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-019",
+      "b": "CASE-020",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-019",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧行为类（外传 vs 持久化），机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-019",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-020",
+      "b": "CASE-021",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    },
+    {
+      "a": "CASE-020",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [
+        "same_family",
+        "same_technique"
+      ],
+      "evidence": "同属 Web 利用类（技术面/载体不同）；mitre∩=['T1190']",
+      "review": false
+    },
+    {
+      "a": "CASE-021",
+      "b": "CASE-022",
+      "tier": "weak",
+      "types": [],
+      "evidence": "主机侧后利用行为 vs Web 利用，机制不同",
+      "review": false
+    }
+  ]
+}

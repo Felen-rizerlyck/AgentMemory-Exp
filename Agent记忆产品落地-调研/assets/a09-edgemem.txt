@@ -1,0 +1,2554 @@
+ 
+ 
+ 
+ EdgeMem: LLM-Free Agent Memory Construction and Retrieval via Evidence-Preserving Multi-Anchor Hypergraph 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Report GitHub Issue
+
+ × 
+ 
+
+ 
+ Title: 
+ 
+
+ Content selection saved. Describe the issue below:
+
+ Description: 
+ 
+ 
+
+ 
+ Submit without GitHub 
+ Submit in GitHub 
+ 
+ 
+ 
+ 
+ arXiv is now an independent nonprofit! 
+ Learn more 
+ &times; 
+ 
+
+ 
+ 
+ 
+ Back to arXiv 
+ 
+ 
+
+ 
+ 
+ Why HTML? 
+ 
+ 
+ 
+ 
+ Report Issue 
+ 
+ 
+ 
+ 
+ 
+ 
+ Back to Abstract 
+ 
+ 
+ 
+ 
+ 
+ 
+ Download PDF 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Abstract. 
+
+ 1 Introduction 
+
+ 2 Related Work 
+ 
+ LLM-written conversational memory. 
+
+ Graph-organized memory and retrieval. 
+
+ Source-level retrieval and episodic organization. 
+
+ 
+
+ 3 EdgeMem : LLM-Free Structured Memory Management 
+ 
+ 3.1 Problem Statement 
+
+ 3.2 Local Annotation for Anchor Keys 
+
+ 3.3 Multi-anchor Hypergraph Construction 
+
+ 3.4 Memory Retrieval 
+ 
+ Query Cue Extraction. 
+
+ Episode Channel. 
+
+ Co-occurrence Channel. 
+
+ Time Channel. 
+
+ Retrieval Fusion and Evidence Pack. 
+
+ 
+
+ 3.5 Generated Answer 
+
+ 
+
+ 4 Experiments 
+ 
+ 4.1 Experimental Setup 
+ 
+ Datasets. 
+
+ Protocol. 
+
+ Metrics. 
+
+ Baselines. 
+
+ 
+
+ 4.2 Question-Answering Accuracy (Q1) 
+
+ 4.3 Memory Management Efficiency (Q2) 
+
+ 4.4 Original-Evidence Preservation (Q3) 
+
+ 4.5 Anchor Ablation Study (Q4) 
+
+ 4.6 Cross-Benchmark Generalization (Q5) 
+
+ 4.7 Case Study: How Generated Memories Lose Evidence 
+
+ 
+
+ 5 Conclusion 
+
+ References 
+
+ A Prompts and Scoring Rules 
+ 
+ A.1 Reader Prompt 
+
+ A.2 Shared Answer Prompt 
+
+ A.3 Strict Judge (SJ) 
+
+ A.4 Lenient Judge (LJ) 
+
+ A.5 Adversarial Scoring Rule 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ License: arXiv.org perpetual non-exclusive license
+ 
+ 
+arXiv:2609.05553v1 [cs.AI] 03 Sep 2026
+
+ 
+ 
+ EdgeMem: LLM-Free Agent Memory Construction and Retrieval via Evidence-Preserving Multi-Anchor Hypergraph
+
+ CCS:  Information systems Information retrieval CCS:  Computing methodologies Natural language processing 
+ 
+ 
+ Zeyang Cui
+ 
+ email: ze-yang.cui@connect.polyu.hk 
+ 
+ Affiliation:  The Hong Kong Polytechnic University , Hong Kong , Hong Kong SAR 
+ 
+ , 
+ Jiannong Cao
+ 
+ email: jiannong.cao@polyu.edu.hk 
+ 
+ Affiliation:  The Hong Kong Polytechnic University , Hong Kong , Hong Kong SAR 
+ 
+ , 
+ Zhiyuan Wen
+ 
+ email: zyuanwen@polyu.edu.hk 
+ 
+ Affiliation:  The Hong Kong Polytechnic University , Hong Kong , Hong Kong SAR 
+ 
+ , 
+ Bo Yuan
+ 
+ Note:  Bo Yuan and Shengyuan Chen are co-corresponding authors.
+ 
+ email: yuanboit@chinamobile.com 
+ 
+ Affiliation:  JIUTIAN Research, China Mobile , Beijing , China 
+ 
+ , 
+ Junlan Feng
+ 
+ email: fengjunlanit@chinamobile.com 
+ 
+ Affiliation:  JIUTIAN Research, China Mobile , Beijing , China 
+ 
+ and 
+ Shengyuan Chen
+ 
+ email: sheng-yuan.chen@polyu.edu.hk 
+ 
+ Affiliation:  The Hong Kong Polytechnic University , Hong Kong , Hong Kong SAR 
+ 
+
+ © none
+
+ Abstract.
+
+ 
+ Agent memory allows LLM agents to use earlier interactions when answering new
+queries. Existing methods often compress interaction histories into summaries
+or other LLM-generated representations. Repeated generation adds cost and can
+discard answer-bearing details before the system knows what a future query will
+require. We propose EdgeMem , an agent-memory method built around a
+simple principle: preserve original interaction turns and organize them through
+complementary content, temporal, and episodic cues. EdgeMem realizes
+this principle with a multi-anchor hypergraph constructed by lightweight local
+processing. Retrieval directly returns source evidence and reserves LLM use for
+final answer generation, combining structured access to multi-session histories
+with faithful retention of the original conversation. Experiments on LoCoMo
+and LongMemEval-S show strong retrieval and memory-grounded question answering;
+on LoCoMo, EdgeMem achieves the highest strict-judge score among seven
+reproduced systems under a shared prompt (61.01 versus
+58.70), while construction and retrieval require no generative-LLM
+calls. Overall, EdgeMem shows that preserving and organizing source
+evidence provides an effective and efficient foundation for agent memory
+without generative memory management.
+
+ 
+
+ 
+ Keywords: 
+Agent Memory; LLM Agents; Memory Construction and Retrieval
+
+ 
+ 
+ 
+ 
+ 
+ (a) 
+
+ 
+ 
+ 
+ 
+ (b) 
+
+ Figure 1. (a)  LLM-based summarization and retrieval can lose
+answer-bearing evidence, while original-evidence preservation keeps it
+directly retrievable. (b)  Existing memory frameworks incur substantial generative-LLM
+token costs in both memory construction and per-query answering. Top: a side-by-side comparison in which LLM-based
+summarization and retrieval drop an answer-bearing detail before answering,
+while original-evidence preservation retrieves it directly. Bottom: a
+grouped horizontal bar chart on a logarithmic token axis; EdgeMem's
+construction cost is zero and its answering cost is the lowest. 
+ 
+ 
+ 1. Introduction
+
+ 
+ Agent memory allows an LLM agent to draw on past interactions when answering a
+new query ( Zhang et al., 2025 ) . Across multi-session conversations,
+relevant information may lie in a much earlier session
+ ( Maharana et al., 2024 ; Wu et al., 2025 ) . As the interaction history grows,
+maintaining a usable memory and retrieving evidence relevant to the current
+query become increasingly challenging. Feeding the full history to the model
+for every query requires progressively more input tokens and may eventually
+exceed the model’s context window ( Packer et al., 2023 ) . Agent memory systems
+therefore commonly store past interactions externally and retrieve only a
+small amount of relevant evidence for response generation
+ ( Lewis et al., 2020 ; Zhang et al., 2025 ) .
+
+ 
+ Existing agent-memory methods organize external histories through chunk
+retrieval or derived memory representations. Conventional approaches segment
+past interactions and retrieve relevant chunks using lexical or dense
+similarity. More recent methods use LLM inference to extract or compress
+salient information  ( Chhikara et al., 2025 ; Pan et al., 2025 ) , construct
+hierarchical stores, linked memory networks, and knowledge
+graphs  ( Xu et al., 2025 ; Kang et al., 2025 ; Gutiérrez et al., 2025 ) , or build
+multi-granularity memory views  ( Xu et al., 2026 ) . LLMs may also guide
+hierarchical navigation, plan retrieval, or filter candidate evidence at query
+time  ( Li et al., 2025 ; Hu et al., 2026 ; Xu et al., 2026 ) . Methods that place LLM
+inference inside the memory lifecycle introduce two limitations, as summarized in
+Figure  1 . First, repeated LLM calls for construction,
+updating, and retrieval incur substantial token cost as the history grows. At
+the evaluated LoCoMo scale, memory construction alone already consumes more
+tokens than the raw history for every mainstream baseline
+(Figure  1 b). Second, generated summaries and extracted
+memory units may omit or distort details from the original turns
+ ( Pan et al., 2025 ; Zhuang et al., 2026 ) . Once an answer-bearing detail is lost,
+later retrieval stages cannot recover it
+(Figure  1 a). Together, these limitations motivate a memory
+design that organizes original conversational evidence directly and reserves
+generation for the final answer.
+
+ 
+ Inspired by episodic-memory research, which characterizes an occurrence through
+its content and spatiotemporal context
+ ( Tulving, 1972 ; Clayton and Dickinson, 1998 ) , we view conversational memory
+as original interaction records organized by complementary access cues. A turn
+can be recalled through what it discusses, when it occurs, and the episode in
+which it appears. We therefore retain each turn as an atomic evidence record
+and associate it with multiple anchors for content, time, and episode context.
+A query can then follow the anchors most relevant to its cues and retrieve the
+corresponding source evidence.
+
+ 
+ Specifically, we propose EdgeMem , a structured agent-memory method
+with LLM-free construction and retrieval for multi-session interaction
+histories. EdgeMem 
+uses local NLP tools and transcript metadata to annotate each turn with entity
+and lexical keys, time, episode membership, and within-episode order. These
+annotations form a multi-anchor hypergraph with three components: the Time
+Sub-Hypergraph organizes turns by calendar time, the Co-occurrence
+Sub-Hypergraph connects turns through shared entity and lexical keys, and the
+Episode Sub-Hypergraph preserves session membership and local context. For a
+new query, locally extracted entity, lexical, and date cues activate matching
+hyperedges. Episode retrieval supplies the contextual core, while
+co-occurrence and time retrieval add complementary evidence under a fixed
+budget. The resulting evidence pack contains the original source turns and is
+passed to a single reader LLM for answer generation. Because anchor construction
+and query routing use local tools and deterministic rules, only this final
+reader invokes an LLM.
+
+ 
+ To evaluate the effectiveness of EdgeMem , we compare it on LoCoMo with
+six reproducible end-to-end memory baselines: A-Mem, CAM, CompassMem, MemoryOS,
+MemGAS, and SeCom. On LongMemEval-S, we compare with the benchmark’s published
+full-history, dense-retrieval, conversational-memory, and structured-memory
+baselines. Under the shared readout protocol on LoCoMo, EdgeMem 
+achieves the highest reported judge-based and lexical scores, including 61.01
+under the strict judge versus 58.70 for the strongest baseline. It also
+correctly rejects 92.57% of unsupported-premise questions, compared with
+84.68% for the strongest baseline under the same refusal instruction. On
+LongMemEval-S, the same configuration obtains the best session-level retrieval
+scores, with 81.49 Recall@3 and 90.49 NDCG@3, and reaches an answer score of
+60.00 versus the best result of 60.20 while using only 36% as many tokens per
+question. These results demonstrate strong memory retrieval and
+memory-grounded question answering at substantially lower generative-LLM cost.
+
+ 
+ In summary, this work makes three core contributions:
+
+ 
+ • 
+ 
+ We introduce EdgeMem , a source-preserving agent-memory
+framework that organizes original interaction turns in a multi-anchor
+hypergraph, enabling memory construction and retrieval without
+generative-LLM calls.
+
+ • 
+ 
+ We design a deterministic, budget-aware retrieval policy that uses
+episode context as its evidence core and additively incorporates
+cross-session co-occurrence and time-scoped evidence from the corresponding
+Sub-Hypergraphs.
+
+ • 
+ 
+ Extensive experiments on LoCoMo and LongMemEval-S show that
+ EdgeMem achieves the strongest answer quality under the shared
+readout on LoCoMo and the best session-level retrieval at k = 3 k=3 on
+LongMemEval-S, while using substantially fewer generative-LLM tokens than
+competing systems.
+
+ 
+
+ 
+ Figure 2. EdgeMem overview. Top (construction): the interaction
+history is retained as source turns and processed by lightweight local
+annotation; time, co-occurrence, and session grouping derive the time,
+co-occurrence, and episode anchor keys of one multi-anchor hypergraph.
+ Bottom (retrieval): query cues drive deterministic evidence channels
+over the Time, Co-occurrence, and Episode Sub-Hypergraphs. Their selected
+source turns are fused under a fixed budget and passed to a single reader,
+which returns an answer or an explicit refusal. The reader is the pipeline’s
+single LLM stage. A two-stage diagram. During memory construction, source turns are
+retained unchanged and locally annotated with entities, lexical content,
+episode membership, and dates. Time, shared-key, and session grouping induce
+the Time, Co-occurrence, and Episode Sub-Hypergraphs within one multi-anchor
+hypergraph. During retrieval, date, entity, and lexical query cues drive the
+three deterministic evidence channels. Their source turns are fused into one
+evidence pack, after which a single language-model reader produces an answer
+or refusal. 
+ 
+
+ 
+ 2. Related Work
+
+ 
+ Prior work relevant to agent memory spans three lines:
+LLM-written conversational memory, graph-organized memory and retrieval, and
+source-level retrieval informed by episodic models of contextual recall.
+
+ 
+ LLM-written conversational memory.
+
+ 
+ A dominant line uses a language model at write time to summarize turns into
+linked notes ( Xu et al., 2025 ) , distill observations into hierarchical stores
+ ( Kang et al., 2025 ) , consolidate facts through extract-and-merge policies
+ ( Chhikara et al., 2025 ; Zhong et al., 2024 ) , recursively summarizing the
+history ( Wang et al., 2025 ) , or compress topically segmented units
+ ( Pan et al., 2025 ) . More recently, HyperMem organizes LLM-derived topics,
+episodes, and facts in a hierarchical hypergraph and performs coarse-to-fine
+retrieval ( Yue et al., 2026 ) ; although its episode nodes retain raw
+dialogue, episode segmentation, topic aggregation, fact extraction, and
+importance weighting still rely on LLM inference at write time. Such
+representations require model-based construction as histories are processed;
+details omitted from them may be unavailable to later questions.
+
+ 
+ Graph-organized memory and retrieval.
+
+ 
+ Graph-based methods organize stored knowledge for traversal or diffusion. They
+represent memories as knowledge-graph triples with personalized-PageRank
+retrieval ( Gutiérrez et al., 2025 ) , hierarchical summary graphs navigated
+by an LLM ( Li et al., 2025 ) , event graphs searched agentically
+ ( Hu et al., 2026 ) , or multi-granularity graphs with PPR fusion
+ ( Xu et al., 2026 ) . LinearRAG instead constructs a graph for document
+retrieval without LLM relation extraction ( Zhuang et al., 2026 ) , showing
+that graph organization need not depend on generative construction. In many
+agent-memory systems, however, graph construction or query-time navigation
+still introduces LLM calls.
+
+ 
+ Source-level retrieval and episodic organization.
+
+ 
+ Source-level retrieval offers a complementary foundation. Retrieval-augmented
+generation grounds answers in selected source passages ( Lewis et al., 2020 ) ,
+and BM25 ranks stored text without generation ( Robertson and Zaragoza, 2009 ) .
+Applied directly to dialogue, flat relevance by itself treats turns
+independently and leaves relations such as shared events, episode membership,
+and time implicit. Cognitive accounts of episodic memory instead characterize
+an occurrence through both its content and spatiotemporal context
+ ( Tulving, 1972 ; Clayton and Dickinson, 1998 ) , motivating memory structures
+that preserve source records while exposing multiple contextual access paths.
+
+ 
+ Overall, prior work offers complementary strengths in generated abstraction,
+graph association, and direct source retrieval. Yet generation-based memory
+introduces LLM cost and makes evidence fidelity depend on intermediate
+representations, while flat source retrieval does not by itself encode temporal
+and episodic structure. These properties are not typically combined in one
+agent-memory design. Section  3 introduces EdgeMem , which
+preserves original turns and organizes LLM-free construction and retrieval
+through locally derived time, co-occurrence, and episode anchors.
+
+ 
+ 3. EdgeMem : LLM-Free Structured Memory Management
+
+ 
+ We propose EdgeMem , a source-preserving agent-memory method for
+LLM-free memory construction and retrieval. Figure  2 shows
+the overall multi-anchor hypergraph pipeline.
+
+ 
+ 3.1. Problem Statement
+
+ 
+ We study agent-memory answering over a multi-session interaction history,
+represented as an ordered sequence of source turns
+ 𝒯 = ( t 1 , … , t N ) \mathcal{T}=(t_{1},\ldots,t_{N}) . A turn
+ t = ( x t , u t , s ⁡ ( t ) , i ⁡ ( t ) , τ t ) t=(x_{t},u_{t},s(t),i(t),\tau_{t}) contains its original text x t x_{t} , transcript
+speaker u t u_{t} , native session s ⁡ ( t ) s(t) , within-session position i ⁡ ( t ) i(t) , and
+session date τ t \tau_{t} . We call each native session an episode and write
+ T s = ( t s , 1 , … , t s , | T s | ) T_{s}=(t_{s,1},\ldots,t_{s,|T_{s}|}) for its ordered turns. Speaker identity
+provides reader-facing provenance, while retrieval anchors are derived from record
+content and structure.
+
+ 
+ A memory system is a triple ( Φ , Ψ , F ) (\Phi,\Psi,F) . Memory construction
+ Φ ⁡ ( 𝒯 ) \Phi(\mathcal{T}) produces a store ℳ \mathcal{M} ; memory retrieval
+ Ψ ⁡ ( q , ℳ ) \Psi(q,\mathcal{M}) maps a query q q to an evidence pack P ⁡ ( q ) P(q) ; and the
+answer-stage language model F F , termed the reader , maps ( q , P ⁡ ( q ) ) (q,P(q)) to a
+response. The pack contains at most κ \kappa source turns and B B rendered
+tokens. The separation gives each stage a clear role: Φ \Phi controls
+addressability, Ψ \Psi fills the fixed evidence budget, and F F composes the
+answer from that evidence.
+
+ 
+ 3.2. Local Annotation for Anchor Keys
+
+ 
+ To provide the anchor keys used in memory construction, we store every source
+turn unchanged and derive the local annotations shown in
+Figure  2 using local NLP tools. This gives EdgeMem 
+the design invariant
+
+ 
+
+ 
+ (1) 
+ 
+ tok LLM ​ ( Φ ) = tok LLM ​ ( Ψ ) = 0 . \mathrm{tok}_{\mathrm{LLM}}(\Phi)=\mathrm{tok}_{\mathrm{LLM}}(\Psi)=0. 
+ 
+ 
+ 
+ Entity and lexical keys expose what a turn discusses, while session and date
+metadata preserve its coordinates in the interaction history. Local
+construction and retrieval realize Φ \Phi and Ψ \Psi ; the reader F F is reserved for
+answer composition. 1 1 
+ 1 
+ 
+ 
+ 
+ The reported implementation uses spaCy 3.8.11 with
+ en_core_web_sm , rank_bm25  0.2.2, and
+ dateparser  1.2.2. 
+
+ 
+ For each source turn, the named-entity set E t E_{t} retains surface spans labeled
+as person, organization, geopolitical entity or location, nationality or
+group, named event, product, or date/time. The keyword set K t K_{t} contains
+lemmatized content tokens after function words, determiners, and possessives
+are removed. These surface annotations keep anchor formation tied to observable
+text and metadata. The session date τ t \tau_{t} comes directly from transcript
+metadata. A date/time mention inside x t x_{t} contributes a shared content key,
+while τ t \tau_{t} supplies the record’s calendar position.
+
+ 
+ The stored record retains ( x t , u t , s ⁡ ( t ) , i ⁡ ( t ) , τ t ) (x_{t},u_{t},s(t),i(t),\tau_{t}) together with E t E_{t} and
+ K t K_{t} , with x t x_{t} preserved verbatim. Speaker metadata is serialized for the
+reader, and anchor membership is derived from E t E_{t} , K t K_{t} , τ t \tau_{t} , and
+ s ⁡ ( t ) s(t) . Together, the fields make each source turn addressable by content,
+session, and time.
+
+ 
+ 3.3. Multi-anchor Hypergraph Construction
+
+ 
+ To make each source turn accessible by time, shared content, and session
+context, we connect the annotated turns to three anchor-key families in one
+multi-anchor hypergraph. Formally, H = ( V , ℰ ) H=(V,\mathcal{E}) has source turns as
+vertices, V = { t 1 , … , t N } V=\{t_{1},\ldots,t_{N}\} , and typed hyperedges
+ ℰ = ℰ time ⊔ ℰ co ⊔ ℰ epi \mathcal{E}=\mathcal{E}_{\mathrm{time}}\sqcup\mathcal{E}_{\mathrm{co}}\sqcup\mathcal{E}_{\mathrm{epi}} :
+
+ 
+
+ 
+ (2) 
+ 
+ e m time = { t ∣ τ t ∈ m } , e w co = { t ∣ w ∈ E t ∪ K t } , e s epi = T s . e^{\mathrm{time}}_{m}=\{t\mid\tau_{t}\in m\},\qquad e^{\mathrm{co}}_{w}=\{t\mid w\in E_{t}\cup K_{t}\},\qquad e^{\mathrm{epi}}_{s}=T_{s}. 
+ 
+ 
+ 
+ Hyperedges fit this many-to-many structure: turns expose several cues, and each
+cue can connect evidence across episodes.
+An anchor key therefore induces one hyperedge, or hub , containing all
+source turns that share that key. A source-turn record is stored once even
+when it belongs to several hubs.
+
+ 
+ The three grouping operations in Figure  2 instantiate these
+hub families. Time Grouping maps the transcript date to a calendar-month
+key m m . Co-occurrence Grouping creates a hub for each entity or content
+key w w ; its document frequency df ⁡ ( w ) \mathrm{df}(w) counts incident source turns.
+ Session Grouping treats each native session as one episode and retains
+the order of its turns. The resulting Time, Co-occurrence, and Episode
+Sub-Hypergraphs support date-span access, shared-key access, and episode-level
+context, respectively.
+
+ 
+ Construction is append-only: each incoming turn contributes one stable source
+record and links it to its time, co-occurrence, and episode hubs, allowing the
+three access structures to grow together.
+
+ 
+ 3.4. Memory Retrieval
+
+ 
+ To retrieve complementary evidence for a query, we extract its Date
+Span , Entity Cues , and Lexical Cues and route them through the
+corresponding Time, Co-occurrence, and Episode Sub-Hypergraphs in
+Figure  2 . Local parsers and lexical scorers execute the three
+channels deterministically. Episode supplies the contextual core,
+co-occurrence links recurring content across sessions, and time focuses an
+explicit interval.
+
+ 
+ Query Cue Extraction.
+
+ 
+ The local annotation pipeline produces E q E_{q} and K q K_{q} for the query. A fixed
+normalization removes leading determiners and possessives from noun chunks;
+ A q = E q ∪ K q A_{q}=E_{q}\cup K_{q} forms the Entity Cues used for shared-key matching.
+The tokenized query forms the Lexical Cues . Two BM25 indices
+ ( Robertson and Zaragoza, 2009 ) score the original turn text x t x_{t} and the
+concatenated episode text X s = ∥ t ∈ T s x t X_{s}=\mathop{\|}_{t\in T_{s}}x_{t} , yielding
+ r turn ​ ( q , x t ) r_{\mathrm{turn}}(q,x_{t}) and r epi ​ ( q , X s ) r_{\mathrm{epi}}(q,X_{s}) . A guarded parser
+returns a Date Span D q D_{q} or ⊥ \bot .
+
+ 
+ Episode Channel.
+
+ 
+ The Episode channel builds the main evidence core by combining turn-level and
+episode-level lexical relevance:
+
+ 
+
+ 
+ (3) 
+ 
+ ρ ⁡ ( t ) = λ ​ r ^ turn ​ ( q , x t ) + ( 1 − λ ) ​ r ^ epi ​ ( q , X s ⁡ ( t ) ) . \rho(t)=\lambda\,\widehat{r}_{\mathrm{turn}}(q,x_{t})+(1-\lambda)\,\widehat{r}_{\mathrm{epi}}(q,X_{s(t)}). 
+ 
+ 
+ 
+ Each score family is independently max-normalized and set to zero when all of
+its scores are zero. The channel ranks turns by ρ \rho , mixes the global
+ranking with representatives from distinct episodes, and uses a fixed lexical
+trigger to increase episode coverage for enumerative queries. Each selected
+seed is read out with its immediate predecessor and successor when available.
+Stable deduplication preserves the first occurrence of each turn, and the
+channel stops after k k turns.
+
+ 
+ Co-occurrence Channel.
+
+ 
+ The Co-occurrence channel applies the figure’s Shared-key Match . It
+activates query keys whose document frequency lies in the rare-key band and
+selects previously unseen source turns incident to those hubs:
+
+ 
+
+ 
+ 
+ R co ​ ( q ) \displaystyle R_{\mathrm{co}}(q) 
+ = { w ∈ A q ∣ δ min ≤ df ⁡ ( w ) ≤ δ max } , \displaystyle=\{w\in A_{q}\mid\delta_{\min}\leq\mathrm{df}(w)\leq\delta_{\max}\}, 
+ 
+ 
+ 
+ (4) 
+ 
+ C co ​ ( q ) \displaystyle C_{\mathrm{co}}(q) 
+ = top ρ ⁡ ( t ) b co { t ∉ C epi ​ ( q ) ∣ ( E t ∪ K t ) ∩ R co ​ ( q ) ≠ ∅ } . \displaystyle=\operatorname*{top}_{\rho(t)}^{\,b_{\mathrm{co}}}\{t\notin C_{\mathrm{epi}}(q)\mid(E_{t}\cup K_{t})\cap R_{\mathrm{co}}(q)\neq\emptyset\}. 
+ 
+ 
+ 
+ The rare-key band favors anchors that recur enough to connect evidence while
+remaining specific to a person, place, event, or topic. Because a hub may span
+sessions, its highest-ranked turns can contribute evidence from another
+episode. These turns fill the reserved Co-occurrence budget after the Episode
+core.
+
+ 
+ Time Channel.
+
+ 
+ The Time channel applies the figure’s Date-span Gate . It opens only when
+ D q D_{q} contains an explicit month and four-digit year, retaining day precision
+when present. Month hubs identify episodes inside the span; the fixed widening
+rule also includes the first episode after the span when available. Candidate
+turns are the episode openers and the highest- ρ \rho turns in this pool.
+Stable deduplication admits at most b time b_{\mathrm{time}} turns. When the gate is
+closed, the channel is empty.
+
+ 
+ Retrieval Fusion and Evidence Pack.
+
+ 
+ The Episode core is packed first. Co-occurrence evidence and, when activated,
+Time evidence fill the remaining positions:
+
+ 
+
+ 
+ 
+ b time \displaystyle b_{\mathrm{time}} 
+ = 𝟏 [ D q ≠ ⊥ ] n time , \displaystyle=\mathbf{1}[D_{q}\neq\bot]n_{\mathrm{time}}, 
+ 
+ 
+ 
+ 
+ b co \displaystyle b_{\mathrm{co}} 
+ = min ⁡ ( n co , max ⁡ ( 0 , κ − k − b time ) ) , \displaystyle=\min\!\left(n_{\mathrm{co}},\max(0,\kappa-k-b_{\mathrm{time}})\right), 
+ 
+ 
+ 
+ (5) 
+ 
+ P ⁡ ( q ) \displaystyle P(q) 
+ = dedup ⁡ ( C epi k ​ ( q ) ​ ‖ C co b co ​ ( q ) ‖ ​ C time b time ​ ( q ) ) . \displaystyle=\operatorname{dedup}\!\left(C_{\mathrm{epi}}^{k}(q)\|C_{\mathrm{co}}^{b_{\mathrm{co}}}(q)\|C_{\mathrm{time}}^{b_{\mathrm{time}}}(q)\right). 
+ 
+ 
+ 
+ Under the reported k = 14 k=14 , n co = 4 n_{\mathrm{co}}=4 ,
+ n time = 2 n_{\mathrm{time}}=2 , and κ = 18 \kappa=18 , the final four positions contain four
+Co-occurrence turns when the Date-span Gate is closed, or two Co-occurrence
+and two Time turns when it is open. Stable deduplication and the limits
+ | P ⁡ ( q ) | ≤ κ |P(q)|\leq\kappa and tokens ⁡ ( P ⁡ ( q ) ) ≤ B \mathrm{tokens}(P(q))\leq B produce the
+ Evidence Pack in Figure  2 .
+
+ 
+
+ Table 1. Comparison with released memory systems on LoCoMo, all numbers
+from our metered runs: (a)  memory lifecycle cost,
+ (b)  answer quality under the shared answer prompt
+(Sections  4.1 and  4.2 ). In this and the
+following tables, the best value in each column is bold, the second best
+underlined, arrows mark the preferred direction, and n/a marks quantities the
+design does not define. 
+ 
+ (a) Memory lifecycle cost, as released — LoCoMo without adversarial questions 
+
+ 
+ 
+ 
+ 
+ System 
+ 
+ 
+ 
+ Build 
+ 
+ tokens ↓ \downarrow 
+ 
+ 
+ 
+ 
+ Build 
+ 
+ calls ↓ \downarrow 
+ 
+ 
+ 
+ 
+ Build 
+ 
+ time ↓ \downarrow 
+ 
+ 
+ 
+ 
+ Tokens per 
+ 
+ question ↓ \downarrow 
+ 
+ 
+ 
+ 
+ Calls per 
+ 
+ question ↓ \downarrow 
+ 
+ 
+ 
+ 
+ Time per 
+ 
+ question (s) ↓ \downarrow 
+ 
+
+ 
+ EdgeMem 
+ 0 
+ 0 
+ 1.8 min 
+ 1,000 
+ 1 
+ 1.3 
+
+ 
+ CAM 
+ 1.27M 
+ 1,516 
+ 75 min 
+ 19,745 
+ 4.9 
+ 11.8 
+
+ 
+ CompassMem 
+ 1.76M 
+ 1,500 
+ 43 min 
+ 41,348 
+ 21.7 
+ 45.8 
+
+ 
+ MemGAS 
+ 0.46M 
+ 544 
+ 17 min 
+ 3,146 
+ 2 
+ 3.7 
+
+ 
+ MemoryOS 
+ 4.49M 
+ 12,730 
+ ≥ \geq 1.6 h 
+ 5,116 
+ 2 
+ 4.7 
+
+ 
+ A-Mem 
+ 11.77M 
+ 17,768 
+ 10.1 h 
+ 5,857 
+ 2 
+ 5.2 
+
+ 
+ SeCom 
+ 0.57M 
+ 310 
+ ≈ \approx 1.9 h † 
+ 1,061 
+ 2 
+ 2.1 
+
+ 
+ 
+ 
+ (b) Shared answer prompt — LoCoMo without adversarial questions 
+
+ 
+ 
+ 
+ 
+ System 
+ SJ ↑ \uparrow 
+ LJ ↑ \uparrow 
+ F1 ↑ \uparrow 
+ BLEU-4 ↑ \uparrow 
+ ROUGE-L ↑ \uparrow 
+ BERTScore ↑ \uparrow 
+
+ 
+ EdgeMem 
+ 61.01 
+ 77.86 
+ 22.44 
+ 5.03 
+ 21.82 
+ 85.90 
+
+ 
+ CompassMem 
+ 58.70 
+ 77.01 
+ 20.56 
+ 4.41 
+ 19.81 
+ 85.57 
+
+ 
+ CAM 
+ 54.94 
+ 75.26 
+ 18.51 
+ 3.95 
+ 18.24 
+ 85.17 
+
+ 
+ MemoryOS 
+ 47.20 
+ 67.73 
+ 16.23 
+ 3.11 
+ 15.81 
+ 84.94 
+
+ 
+ MemGAS 
+ 44.05 
+ 61.69 
+ 19.50 
+ 4.57 
+ 19.44 
+ 85.44 
+
+ 
+ A-Mem 
+ 39.74 
+ 59.35 
+ 15.33 
+ 2.94 
+ 15.01 
+ 84.62 
+
+ 
+ SeCom 
+ 38.12 
+ 52.99 
+ 14.70 
+ 3.10 
+ 14.54 
+ 84.49 
+
+ 
+
+ 
+
+ 
+ 3.5. Generated Answer
+
+ 
+ To produce a grounded response, we serialize the Evidence Pack and pass it
+with the query to a single reader call F F . Each evidence item retains the
+transcript speaker, session date, and unchanged source text, supporting
+provenance and temporal interpretation. The reader is the pipeline’s single
+generative stage and runs at temperature zero with a maximum of 128 output
+tokens.
+
+ 
+ The evidence-only prompt in Appendix  A.1 requests a short
+answer, requests all items for a list question, and interprets relative dates
+against the rendered session date. If the Evidence Pack is insufficient, the
+reader returns the fixed response Not mentioned in the conversation. 
+This explicit outcome supports direct measurement of abstention behavior
+against the retrieved pack  P ⁡ ( q ) P(q) .
+
+ 
+ 4. Experiments
+
+ 
+ We design the evaluation to answer five questions. Q1
+(Question-Answering Accuracy) : does removing generative inference from memory
+construction and retrieval compromise answer quality? Q2 (Memory
+Management Efficiency) : how efficiently does each system construct and use
+its memory, in terms of both token usage and time? Q3
+(Original-Evidence Preservation) : when the history does not support an answer,
+how reliably does a source-preserving memory abstain? Q4
+(Anchor Ablation Study) : what does each anchor contribute, alone and in
+combination? Q5 (Cross-Benchmark Generalization) : does the same chain
+transfer unchanged to a second benchmark? An audited case study closes the
+section by connecting the aggregate gaps to their mechanism.
+
+ 
+ 4.1. Experimental Setup
+
+ 
+ Datasets.
+
+ 
+ LoCoMo ( Maharana et al., 2024 ) contains ten synthetic multi-session dialogues
+(averaging 588.2 turns over up to 32 sessions) with 1,986 questions in five
+categories, of which 446 are adversarial (category 5): the conversation does not
+support the premised answer. LongMemEval-S ( Wu et al., 2025 ) contains
+500 questions, each over its own haystack of roughly 50 sessions
+( ∼ \sim 115k tokens); 30 questions are unanswerable by construction. We use the
+2025-09 cleaned LongMemEval release (identical questions, lightly edited
+haystacks).
+
+ 
+ Protocol.
+
+ 
+ All components are frozen before evaluation: the reader is
+ gpt-4o-mini-2024-07-18 at temperature 0, with the reader prompt
+reproduced in Appendix  A.1 ; packed evidence is capped at κ = 18 \kappa=18 items and
+ B = 3,072 B=3{,}072 tokens on both benchmarks. The remaining retrieval constants of
+Section  3 are likewise fixed at design time and never tuned:
+Episode Sub-Hypergraph output budget k = 14 k=14 ; mixing coefficient λ = 0.5 \lambda=0.5 ; diversity
+floor K = 3 K=3 , raised to 5 5 for enumerative questions; Co-occurrence
+Sub-Hypergraph capacity n co = 4 n_{\mathrm{co}}=4 over the rare-hub band
+ [ δ min , δ max ] = [ 2 , 10 ] [\delta_{\min},\delta_{\max}]=[2,10] ; Time Sub-Hypergraph capacity
+ n time = 2 n_{\mathrm{time}}=2 . Retrieval executes at 10.73 ms P95 latency on a
+desktop CPU. Every LLM call in every run –
+ours and every reproduced baseline – is metered per call and locked to the
+same snapshot; a serving-side substitution is detected and retried, and runs
+report zero unrepaired violations.
+
+ 
+ Metrics.
+
+ 
+ Answer accuracy is graded by two LLM judges: a strict judge (SJ),
+which credits a reply only when it contains the reference answer, and a
+ lenient judge (LJ), which also credits replies on the same topic or in
+the same time period; both prompts follow prior evaluation practice and are
+reproduced from released artifacts for cross-paper comparability
+(both are reproduced in Appendices  A.3 and  A.4 ). Alongside the judges we report F1, BLEU-4 ( Papineni et al., 2002 ) ,
+ROUGE-L ( Lin, 2004 ) and BERTScore ( Zhang et al., 2020 ) , and measured prompt + + completion tokens per question. Lexical metrics are
+comparable only within a generation style (Section  4.2 );
+judge and BERTScore columns carry cross-style comparisons. For adversarial
+questions we report three calibers: an exact-refusal rule (a reply is credited only
+when it is the designated refusal sentence, reproduced exactly; 444 items) plus the judge on the 2 answerable
+items, a lenient substring detector that coincides with LoCoMo’s own
+released category-5 rule, and a matched-instruction arm that transplants our
+refusal sentence into each baseline’s own prompt with nothing else changed. On LoCoMo, compared systems store heterogeneous memory
+units—generated notes, compressed segments, raw turns—so retrieval has no
+common unit, and memory quality is measured end to end through answer quality
+under the shared budget. LongMemEval-S labels supporting evidence at the
+session level and its suite reports session-level retrieval, giving a
+benchmark-defined unit every system shares; we therefore additionally report
+Recall and NDCG there, a measurement of the memory alone, upstream of any
+reader or answer style. Statistical claims use paired conversation-cluster
+bootstrap (10 clusters, 10,000 draws); bracketed ranges throughout the paper
+are 95% bootstrap confidence intervals.
+
+ 
+ Baselines.
+
+ 
+ We compare against systems that satisfy one requirement: a released pipeline
+that runs end to end under locked model snapshots, so that every number in
+Table  1 is measured rather than quoted. Six systems meet it and
+are reproduced from their released code, pinned and audited – A-Mem
+ ( Xu et al., 2025 ) , CAM ( Li et al., 2025 ) , CompassMem ( Hu et al., 2026 ) ,
+MemoryOS ( Kang et al., 2025 ) , MemGAS ( Xu et al., 2026 ) and SeCom
+ ( Pan et al., 2025 ) – together spanning the design space of
+Section  2 : generative note-writing, hierarchical stores,
+multi-granularity graphs, compression-based construction, and query-time LLM
+retrieval control. Systems that cannot be rerun this way enter comparison only
+as transcribed rows marked † . On LongMemEval-S the comparison
+follows the benchmark’s published evaluation suite: full-history prompting, the
+dense retrievers MPNet ( Song et al., 2020 ) and Contriever
+ ( Izacard et al., 2022 ) , the conversational methods MPC
+ ( Lee et al., 2023 ) , RecurSum ( Wang et al., 2025 ) and SeCom, and the
+memory systems A-Mem, HippoRAG 2 and MemGAS itself, with our rows evaluated
+under the same protocol. The two
+comparison sets thus differ by construction rather than by selection: LoCoMo
+compares end-to-end memory systems, where cost and answer behavior are the
+measurable quantities, while the LongMemEval-S suite centers on methods whose
+retrieval is measurable on the shared session unit. Each
+reproduced system appears both as released and under a fixed shared answer
+prompt (reproduced in Appendix  A.2 ), separating memory quality
+from answer style. Reproduction
+deviations, audits and per-run cost ledgers are released with the code.
+
+ 
+ 4.2. Question-Answering Accuracy (Q1)
+
+ 
+ Removing generative inference from memory construction and retrieval costs
+no measurable answer quality; once answer style is controlled, the anchored
+memory is the strongest in the comparison.
+
+ 
+ As released—each system under its own answer prompt and decoding, one judge
+snapshot, one denominator—the three leading systems are statistically
+indistinguishable under the strict judge: the
+paired difference is − 0.65 -0.65 [ − 2.88 -2.88 , + 1.50 +1.50 ] against CAM and + 0.45 +0.45 
+[ − 2.61 -2.61 , + 3.30 +3.30 ] against CompassMem.
+
+ 
+ Holding answer style fixed sharpens the comparison. Panel (b) reads each
+system’s own retrieval evidence out through the shared answer prompt
+(Section  4.1 ), so differences between rows are attributable to
+the memory rather than to phrasing conventions, and the lexical
+metrics—F1, BLEU-4, ROUGE-L, BERTScore—become comparable across rows.
+Under this control EdgeMem attains the highest value in every
+column, and the ordering of the seven rows is identical under both judges
+(agreement statistics in Appendix  A.4 ), so the conclusion does
+not depend on the evaluator. Why the anchored memory wins is the subject of
+the ablation (Q4), which attributes the gap to anchor structure rather than
+to the reader: accuracy is not the price of removing generative
+inference—the anchored memory is the stronger one.
+
+ 
+ 4.3. Memory Management Efficiency (Q2)
+
+ 
+ The accuracy of the preceding section is reached at the lowest token and
+time cost in the comparison: construction is token-free, and the two systems
+closest in accuracy spend one to two orders of magnitude more tokens per
+question. Across the panel, quality does
+not track spend: the most expensive system is not the strongest, and the
+strongest memory is also the cheapest (Figure  3 a).
+
+ 
+ In tokens, EdgeMem builds its store without any model calls and
+answers within roughly one thousand tokens per question, where the two
+systems it ties with spend 19,745 and 41,348 (Table  1 a).
+
+ 
+ In time, the same separation holds. Because the reproductions ran at
+different worker counts, both figures are concurrency-independent: summed
+per-call latency for builds, and per-question sums of the calls each
+navigating system issues sequentially by design. Building
+ EdgeMem ’s store is a 1.8-minute single-thread annotation pass on a
+desktop CPU, against 17 minutes to 10.1 hours of API time for the metered
+systems; a question is answered in about 1.3 s end to end (10.73 ms P95
+retrieval), against 3.7–45.8 s for systems that consult a model on the
+query path.
+
+ 
+ Local NLP and embedding computation runs on CPU and is not billed. Timing
+provenance per system: A-Mem’s build is inherently sequential (its evolution
+rewrites earlier notes; 17,768 calls at 2.0 s mean, zero failures);
+CompassMem’s per-question time comes from its agentic run ( n = 584 n{=}584 ),
+MemoryOS’s from recorded per-question elapsed time, and SeCom’s from a
+thirty-question replay under the locked snapshot, with its build reported as
+wall-clock ( † ). Zero-token organization thus turns the memory bill
+from a recurring cost into a fixed, local one.
+
+ 
+ 4.4. Original-Evidence Preservation (Q3)
+
+ 
+ Table 2. Behavior on the 446 LoCoMo adversarial questions under the three
+scoring arms of Section  4.1 . 
+ 
+ 
+ System 
+ 
+ 
+ 
+ Judge 
+ 
+ (all questions) ↑ \uparrow 
+ 
+ 
+ 
+ 
+ Exact 
+ 
+ refusal ↑ \uparrow 
+ 
+ 
+ 
+ 
+ Lenient 
+ 
+ refusal ↑ \uparrow 
+ 
+ 
+ 
+ 
+ Matched 
+ 
+ refusal ↑ \uparrow 
+ 
+
+ 
+ EdgeMem 
+ 61.76 
+ 92.57 
+ 92.57 
+ 92.57 
+
+ 
+ CAM 
+ 41.64 
+ n/a 
+ 1.58 
+ 38.96 
+
+ 
+ CompassMem 
+ 40.81 
+ n/a 
+ 18.02 
+ 79.28 
+
+ 
+ MemGAS 
+ 34.26 
+ n/a 
+ 23.65 
+ 74.77 
+
+ 
+ MemoryOS 
+ 31.37 
+ n/a 
+ 12.61 
+ 75.00 
+
+ 
+ A-Mem 
+ 25.19 
+ n/a 
+ 2.93 
+ 84.68 
+
+ 
+ SeCom 
+ 31.37 
+ n/a 
+ 12.39 
+ 75.00 
+
+ 
+ 
+ 
+ When the conversation does not support the premised answer,
+ EdgeMem abstains far more reliably than any baseline given the same
+instruction; the price it pays on the answerable split is measured and
+reported.
+
+ 
+ Table  2 scores the 446 adversarial questions under three
+arms declared in advance: exact credits only the designated refusal
+sentence, reproduced exactly (n/a for systems whose released prompts carry no refusal
+instruction; measured at zero for every such row); lenient coincides with the detector in LoCoMo’s own
+released evaluation and credits any phrasing that declares the information
+absent; matched transplants our refusal sentence into each baseline’s
+own prompt with nothing else changed, and is therefore the arm that compares
+ability rather than the presence of the instruction.
+
+ 
+ Under the matched arm every
+baseline improves substantially, yet none reaches EdgeMem ’s native
+92.57: five of the six cluster between 74.8 and 84.7, and CAM remains at
+38.96—its reader, supplied with roughly twenty thousand tokens of summarized
+context, continues to find apparent support for the premised answer. The
+instruction alone does not account for our margin: appending the same sentence
+to the shared answer prompt of panel (b) yields 76.35, so part of the remaining gap
+is carried by the short-answer output format.
+
+ 
+ The evidence-only rule trades answerable-split recall for
+reliability on unsupported premises. The same conservatism carries a
+measurable cost on the answerable split: the reader abstains on 28.0%
+of the 1,540 answerable questions, and the recoverable share is about eight
+judge points, since the unconstrained shared answer prompt of panel (b) scores 61.01 on
+identical evidence. The all-set column reports the net effect of this
+trade-off. Reliable abstention, then, is a property of evidence-only
+answering over preserved sources, not of the instruction alone.
+
+ 
+ 4.5. Anchor Ablation Study (Q4)
+
+ 
+ 
+ 
+ 
+ (a) 
+
+ 
+ 
+ (b) 
+
+ Figure 3. (a) Memory quality (lenient judge, Table  1 b) against
+each released pipeline’s per-question token cost (Table  1 a);
+upper left is better. (b) The anchor ladder: the accuracy each anchor adds in
+deployment order (Table  3 ); diamonds show co-occurrence and
+time alone. Two small panels. Left: scatter of accuracy versus token cost on
+a logarithmic axis; EdgeMem sits in the upper left. Right: waterfall from a
+flat baseline through episode, co-occurrence, and time increments to the full chain,
+with diamonds for co-occurrence-only and time-only variants. 
+ 
+ 
+ Table 3. Anchor ladder on LoCoMo under the shared answer prompt: the
+deployed path adds one Sub-Hypergraph per rung (upper block); the lower block
+lists non-deployed single- and pair-anchor variants. 
+ 
+ 
+ Configuration 
+ SJ ↑ \uparrow 
+ F1 ↑ \uparrow 
+ BLEU-4 ↑ \uparrow 
+ ROUGE-L ↑ \uparrow 
+ BERTScore ↑ \uparrow 
+
+ 
+ flat turn BM25 
+ 49.74 
+ 19.40 
+ 4.14 
+ 19.00 
+ 85.38 
+
+ 
+ 
+ 
+ 
+ + + episode 
+ 
+ Sub-Hypergraph 
+ 
+ 58.18 
+ 21.94 
+ 4.88 
+ 21.41 
+ 85.80 
+
+ 
+ 
+ 
+ 
+ + + co-occurrence 
+ 
+ Sub-Hypergraph 
+ 
+ 60.43 
+ 22.12 
+ 4.92 
+ 21.53 
+ 85.83 
+
+ 
+ 
+ 
+ 
+ + + time 
+ 
+ Sub-Hypergraph 
+ 
+ 61.01 
+ 22.44 
+ 5.03 
+ 21.82 
+ 85.90 
+
+ 
+ co-occurrence only 
+ 55.39 
+ 20.66 
+ 4.52 
+ 20.07 
+ 85.64 
+
+ 
+ time only 
+ 50.19 
+ 19.54 
+ 4.19 
+ 19.16 
+ 85.40 
+
+ 
+ episode + + time 
+ 58.96 
+ 22.23 
+ 4.97 
+ 21.69 
+ 85.87 
+
+ 
+ 
+ 
+ Table 4. LongMemEval-S: session-level Recall (R) and NDCG (N) at
+ k ∈ { 3 , 10 } k\in\{3,10\} ( n = 470 n{=}470 ), strict-judge accuracy (SJ), and reader input
+tokens per question. 
+ 
+ 
+ 
+ @3 
+ @10 
+ 
+ 
+
+ 
+ System 
+ R ↑ \uparrow 
+ N ↑ \uparrow 
+ R ↑ \uparrow 
+ N ↑ \uparrow 
+ SJ ↑ \uparrow 
+ 
+ 
+ 
+ Tokens per 
+ 
+ question ↓ \downarrow 
+ 
+
+ 
+ Full History † 
+ n/a 
+ n/a 
+ n/a 
+ n/a 
+ 50.60 
+ 103,137 
+
+ 
+ MPNet † 
+ 66.17 
+ 75.47 
+ 85.11 
+ 80.63 
+ 53.20 
+ 8,173 
+
+ 
+ Contriever † 
+ 71.06 
+ 79.72 
+ 90.00 
+ 84.29 
+ 55.40 
+ 8,286 
+
+ 
+ MPC † 
+ 60.00 
+ 70.90 
+ 80.00 
+ 76.59 
+ 53.80 
+ 8,457 
+
+ 
+ RecurSum † 
+ 67.23 
+ 78.33 
+ 87.66 
+ 83.28 
+ 35.40 
+ 8,853 
+
+ 
+ SeCom † 
+ 71.06 
+ 80.88 
+ 89.15 
+ 85.11 
+ 56.00 
+ 2,741 
+
+ 
+ HippoRAG 2 † 
+ 75.53 
+ 85.44 
+ 91.28 
+ 88.73 
+ 57.60 
+ 8,530 
+
+ 
+ A-Mem † 
+ n/a 
+ n/a 
+ n/a 
+ n/a 
+ 55.60 
+ 9,018 
+
+ 
+ MemGAS † 
+ 78.51 
+ 86.83 
+ 94.47 
+ 89.96 
+ 60.20 
+ 8,829 
+
+ 
+ EdgeMem 
+ 81.49 
+ 90.49 
+ 93.83 
+ 92.80 
+ 60.00 
+ 3,202 
+
+ 
+ 
+ 
+ Table 5. Three audited failures, each traced from memory through retrieval to
+the answer, against EdgeMem ’s handling of the same questions: a
+faithful memory retrieved incompletely (A-Mem), a key fact destroyed during
+summarization (CAM), and a faithful store whose agentic navigation selects no
+evidence (CompassMem). ✓ : correct or preserved; × \times : missed or incorrect. 
+ 
+ 
+ 
+ 
+ 
+ Memory / summary 
+ 
+ 
+ 
+ Retrieved evidence 
+ 
+ 
+ 
+ Final answer 
+ 
+
+ 
+ Q1: What gaming equipment did John buy or
+refurbish? gold: Sennheiser headphones, Logitech mouse, gaming desk 
+
+ 
+ A-Mem 
+ 
+ 
+ ✓ notes faithfully retain headphones, mouse , and the
+refurbished desk 
+ 
+ 
+ 
+ × \times partial retrieval: D23:10 omitted;
+ mouse and desk never reach the reader 
+ 
+ 
+ 
+ × \times “new devices and
+headphones”—misses mouse and desk 
+ 
+
+ 
+ EdgeMem 
+ 
+ 
+ ✓ original turns kept: “gaming desk”,
+“headphones”, “Sennheiser + Logitech mouse” 
+ 
+ 
+ 
+ ✓ D20:9, D23:8,
+D23:10 packed (all gold) 
+ 
+ 
+ 
+ ✓ “headphones, mouse , and refurbished
+ desk ” 
+ 
+
+ 
+ Q2: What kind of beer does McGee’s bar
+serve? gold: stout, lager 
+
+ 
+ CAM 
+ 
+ 
+ × \times key fact dropped: gist layer omits “McGee’s” and
+“lager” ; the exact leaf is pruned 
+ 
+ 
+ 
+ × \times cannot recover what construction
+discarded 
+ 
+ 
+ 
+ × \times “stout and light beers”—misses lager 
+ 
+
+ 
+ EdgeMem 
+ 
+ 
+ ✓ original turns kept: D21:15 (great stout),
+D23:3 (“good lager at McGee’s”) 
+ 
+ 
+ 
+ ✓ D21:15, D23:3 packed 
+ 
+ 
+ 
+ ✓ “great stout and lager beer” 
+ 
+
+ 
+ Q3: Who was the new addition to Nate’s family in
+May 2022? gold: Max 
+
+ 
+ CompassMem 
+ 
+ 
+ ✓ faithful event node: “Nate introduces his new dog,
+ Max ” 
+ 
+ 
+ 
+ × \times retrieval miss: agentic navigation selects zero
+nodes ; N10 never enters the reader 
+ 
+ 
+ 
+ × \times “not mentioned” 
+ 
+
+ 
+ EdgeMem 
+ 
+ 
+ ✓ original turn kept: D12:3 (“new addition to
+the family, this is Max !”) 
+ 
+ 
+ 
+ ✓ gold evidence D12:3 packed 
+ 
+ 
+ 
+ ✓ “Max” 
+ 
+
+ 
+ 
+ 
+ Every anchor earns its place: each contributes a significant increment in
+deployment order, episode structure carries the largest step, and no
+combination of fewer anchors matches the deployed chain.
+Table  3 adds the three anchors one at a time
+(Figure  3 b) with the
+answer style held fixed, so successive rows differ only in the memory; its
+final configuration is the EdgeMem row of Table  1 (b). Flat
+BM25 over raw turns at a 14-item budget reaches 49.74 under the judge
+(effective n n = 1,540/1,539; one question filtered in the upper
+configurations). Reading each matched
+turn together with its episode-local context at the same budget raises the
+score to 58.18 ( + + 8.44 [5.79, 10.91]): most of what the memory contributes is
+the surrounding episode rather than the matched turn alone. Extending the pack
+with up to four strictly additive co-occurrence items adds + + 2.21
+[0.76, 3.50], drawing in cross-episode evidence about the same people and
+places without displacing the episode core. The guarded Time Sub-Hypergraph output swaps
+only the final two positions of the pack under a deterministic date parser
+and contributes a
+further + + 0.58 [0.07, 1.15], concentrated on date-conditioned questions. All three intervals
+exclude zero, every lexical column moves in the same direction, and the
+evidence budget grows only from 727 to 944 tokens across the full ladder, so
+the accuracy gains are attributable to anchor structure rather than to a
+larger evidence pack.
+
+ 
+ Module-alone and pairwise variants confirm the ordering and
+expose the episode–co-occurrence overlap. The lower block of
+Table  3 completes the picture with single- and pair-module variants, constructed for
+ablation only: co-occurrence items seeded from the flat ranking, and the Time Sub-Hypergraph
+transplanted under the same gate. Alone, the anchors rank in the same order as
+their marginal contributions—episode + + 8.44, co-occurrence + + 5.65, time + + 0.45
+over flat BM25. The pairwise cells explain why the later ladder increments are
+smaller: episode and co-occurrence overlap (58.18 and 55.39 alone, 60.43 together,
+about 3.4 points short of additive), since cross-episode co-occurrence items partly
+substitute for episode context, and the Time Sub-Hypergraph output is worth more on the
+episode base ( + + 0.78) than on flat ( + + 0.45)—its replacement turns are
+episode openers, which the episode read-out is built to exploit. Every variant
+is dominated by the deployed chain. Read along the alternative path—co-occurrence
+first, then episode—the grid gives 49.74 → 55.39 → 60.43 49.74\to 55.39\to 60.43 , increments
+of + + 5.65 and + + 5.04: the attribution between the two anchors shifts with
+insertion order, as their overlap predicts, but the destination and the time
+Time Sub-Hypergraph’s small final step do not. The ladder, the grid, and both insertion
+orders point to the same conclusion: the anchors, not generation, carry the
+memory.
+
+ 
+ 4.6. Cross-Benchmark Generalization (Q5)
+
+ 
+ Table  4 reports a transfer check on LongMemEval-S: nothing in
+the memory or retrieval is retuned, and the comparison set and metric
+implementation follow the benchmark’s standard suite ( † rows in
+Table  4 are transcribed from Xu et al. (2026) ), since each
+question carries its own haystack of roughly 115k tokens and rerunning
+generative-construction systems at that scale multiplies their build cost by
+500 haystacks. The unchanged chain
+attains the highest session-level Recall@3 (81.49) and NDCG@3 (90.49); because
+the deployed chain reads only about three sessions per question, the rank-3
+column doubles as a small-budget test of the same structure. Under the style
+control, which re-answers EdgeMem ’s byte-identical evidence with the
+shared answer prompt (Section  4.1 ) and is therefore excluded from
+the table’s ranking, its strict-judge score reaches 60.00, close to
+60.20 for the best transcribed system, on roughly a third of the evidence
+tokens. On the 30 unanswerable questions, the house refusal rule abstains at
+90.00%. The structure transfers without retuning.
+
+ 
+ 4.7. Case Study: How Generated Memories Lose Evidence
+
+ 
+ To connect the aggregate gaps to mechanisms, we audited 27 failures of the
+reproduced systems end to end, tracing each question from the original turns
+through construction and retrieval to the answer. The recurring mechanisms
+are retrieval misses, dates dropped or shifted during extraction, noise
+admitted by link expansion, and facts or qualifiers lost in summarization; a
+single failure often exhibits several, because a detail altered at one stage
+is consumed as ground truth by the next, and one system ships with its chain
+broken outright: MemGAS’s released generation never consumes its retrieved
+evidence. Table  5 traces
+three of them, one per failure surface.
+
+ 
+ In the first, A-Mem’s notes faithfully retain the queried facts, but
+note-level retrieval returns only part of them, and the answer misses two of
+the three items. In the second, CAM’s hierarchical summarization drops the
+key fact while building its gist layer and prunes the leaf that contained it;
+no retrieval strategy can recover what construction has discarded, so the
+failure is decided at write time. In the third, CompassMem stores a faithful
+event node, yet its agentic navigation selects no nodes for the reader, and
+the system answers “not mentioned” while the evidence sits in its store.
+ EdgeMem answers all three questions from the unaltered turns: the
+anchors route directly to the gold evidence, and nothing upstream has
+rewritten or pruned it.
+
+ 
+ The three cases span the pipeline: memory that is faithful but incompletely
+retrieved, memory that destroys evidence before any question is asked, and
+retrieval that fails over a faithful store. Only the write-time loss is
+unrecoverable in principle; the other two are the recurring price of
+searching derived structures with further inference. A source-preserving
+store with deterministic anchored retrieval proves effective against all
+three failure surfaces in these audits, which substantiates the risk stated in
+Section  1 : what generative construction alters or discards is
+rarely recoverable downstream, whereas a store that leaves the evidence
+untouched leaves resolution to the one component that sees the question and
+the original turns together.
+
+ 
+ 5. Conclusion
+
+ 
+ We introduce EdgeMem , an LLM-free agent memory framework that uses
+lightweight local annotation over multi-session interaction histories. It
+stores original interaction turns in a multi-anchor hypergraph with Time,
+Co-occurrence, and Episode Sub-Hypergraphs built from the transcript. Upon this
+structure, retrieval activates the hyperedges a
+query matches and fuses the three Sub-Hypergraph outputs
+into a single evidence pack, so that every answer is composed by one reader
+call and remains traceable to the turns behind it. On LoCoMo, EdgeMem 
+attains the strongest answer quality under a shared prompt and abstains more
+reliably than the compared baselines when the conversation does not support an
+answer. The same fixed configuration obtains the highest session-level
+Recall@3 and NDCG@3 in the reported suite. Across both benchmarks, memory
+construction and retrieval use zero generative-LLM tokens, yielding efficient,
+source-grounded agent memory.
+
+ 
+ Ethical Considerations
+
+ 
+ We use two publicly released research benchmarks, LoCoMo and LongMemEval-S,
+containing synthetic or curated conversations, and conduct no new data
+collection or human-subject study. All datasets and reproduced systems are
+used under their released licenses. Because EdgeMem preserves source
+turns verbatim, real-world deployments should enforce consent-aligned
+retention, access-control, and deletion policies; these deployment-level
+mechanisms are outside the scope of our evaluation.
+
+ 
+ References
+
+ 
+ 
+ Chhikara et al . (2025) 
+ 
+Prateek Chhikara, Dev
+Khant, Saket Aryan, Taranjeet Singh,
+and Deshraj Yadav. 2025.
+
+ 
+ Mem0: Building Production-Ready AI Agents with
+Scalable Long-Term Memory.
+
+ 
+ 
+ 
+ arXiv:2504.19413
+
+ 
+
+ 
+ Clayton and Dickinson (1998) 
+ 
+Nicola S. Clayton and
+Anthony Dickinson. 1998.
+
+ 
+ Episodic-like Memory during Cache Recovery by Scrub
+Jays.
+
+ 
+ Nature 395,
+6699 (1998), 272–274.
+
+ 
+ 
+ https://doi.org/10.1038/26216 
+
+ 
+
+ 
+ Fang et al . (2026) 
+ 
+Jizhan Fang, Xinle Deng,
+Haoming Xu, Ziyan Jiang,
+Yuqi Tang, Ziwen Xu,
+Shumin Deng, Yunzhi Yao,
+Mengru Wang, Shuofei Qiao,
+Huajun Chen, and Ningyu Zhang.
+2026.
+
+ 
+ LightMem: Lightweight and Efficient
+Memory-Augmented Generation. In International
+Conference on Learning Representations .
+
+ 
+ 
+ 
+
+ 
+ Gutiérrez et al . (2025) 
+ 
+Bernal Jiménez Gutiérrez,
+Yiheng Shu, Weijian Qi,
+Sizhe Zhou, and Yu Su.
+2025.
+
+ 
+ From RAG to Memory: Non-Parametric Continual
+Learning for Large Language Models. In Proceedings
+of the 42nd International Conference on Machine Learning (ICML) .
+
+ 
+ arXiv:2502.14802
+
+ 
+
+ 
+ Hu et al . (2026) 
+ 
+Yuyang Hu, Jiongnan Liu,
+Jiejun Tan, Yutao Zhu, and
+Zhicheng Dou. 2026.
+
+ 
+ Memory Matters More: Event-Centric Memory as a
+Logic Map for Agent Searching and Reasoning. In
+ Findings of the Association for Computational
+Linguistics: ACL 2026 . 22389–22407.
+
+ 
+ 
+ https://doi.org/10.18653/v1/2026.findings-acl.1123 
+
+ 
+
+ 
+ Izacard et al . (2022) 
+ 
+Gautier Izacard, Mathilde
+Caron, Lucas Hosseini, Sebastian Riedel,
+Piotr Bojanowski, Armand Joulin, and
+Edouard Grave. 2022.
+
+ 
+ Unsupervised Dense Information Retrieval with
+Contrastive Learning.
+
+ 
+ Transactions on Machine Learning Research 
+(2022).
+
+ 
+ 
+ 
+
+ 
+ Kang et al . (2025) 
+ 
+Jiazheng Kang, Mingming
+Ji, Zhe Zhao, and Ting Bai.
+2025.
+
+ 
+ Memory OS of AI Agent. In
+ Proceedings of the 2025 Conference on Empirical
+Methods in Natural Language Processing (EMNLP) .
+25961–25970.
+
+ 
+ 
+ https://doi.org/10.18653/v1/2025.emnlp-main.1318 
+
+ 
+
+ 
+ Lee et al . (2023) 
+ 
+Gibbeum Lee, Volker
+Hartmann, Jongho Park, Dimitris
+Papailiopoulos, and Kangwook Lee.
+2023.
+
+ 
+ Prompted LLMs as Chatbot Modules for Long
+Open-domain Conversation. In Findings of the
+Association for Computational Linguistics: ACL 2023 .
+
+ 
+ 
+ 
+
+ 
+ Lewis et al . (2020) 
+ 
+Patrick Lewis, Ethan
+Perez, Aleksandra Piktus, Fabio Petroni,
+Vladimir Karpukhin, Naman Goyal,
+Heinrich Küttler, Mike Lewis,
+Wen-tau Yih, Tim Rocktäschel,
+Sebastian Riedel, and Douwe Kiela.
+2020.
+
+ 
+ Retrieval-Augmented Generation for
+Knowledge-Intensive NLP Tasks. In Advances in
+Neural Information Processing Systems 33 (NeurIPS) .
+
+ 
+ 
+ 
+
+ 
+ Li et al . (2025) 
+ 
+Rui Li, Zeyu Zhang,
+Xiaohe Bo, Zihang Tian,
+Xu Chen, Quanyu Dai,
+Zhenhua Dong, and Ruiming Tang.
+2025.
+
+ 
+ CAM: A Constructivist View of Agentic Memory for
+LLM-Based Reading Comprehension. In Advances in
+Neural Information Processing Systems 38 (NeurIPS) .
+
+ 
+ arXiv:2510.05520
+
+ 
+
+ 
+ Lin (2004) 
+ 
+Chin-Yew Lin.
+2004.
+
+ 
+ ROUGE: A Package for Automatic Evaluation of
+Summaries. In Text Summarization Branches Out .
+74–81.
+
+ 
+ 
+ 
+
+ 
+ Maharana et al . (2024) 
+ 
+Adyasha Maharana, Dong-Ho
+Lee, Sergey Tulyakov, Mohit Bansal,
+Francesco Barbieri, and Yuwei Fang.
+2024.
+
+ 
+ Evaluating Very Long-Term Conversational Memory of
+LLM Agents. In Proceedings of the 62nd Annual
+Meeting of the Association for Computational Linguistics (Volume 1: Long
+Papers) . 13851–13870.
+
+ 
+ 
+ https://doi.org/10.18653/v1/2024.acl-long.747 
+
+ 
+
+ 
+ Packer et al . (2023) 
+ 
+Charles Packer, Sarah
+Wooders, Kevin Lin, Vivian Fang,
+Shishir G. Patil, Ion Stoica, and
+Joseph E. Gonzalez. 2023.
+
+ 
+ MemGPT: Towards LLMs as Operating Systems.
+
+ 
+ 
+ 
+ arXiv:2310.08560
+
+ 
+
+ 
+ Pan et al . (2025) 
+ 
+Zhuoshi Pan, Qianhui Wu,
+Huiqiang Jiang, Xufang Luo,
+Hao Cheng, Dongsheng Li,
+Yuqing Yang, Chin-Yew Lin,
+H. Vicky Zhao, Lili Qiu, and
+Jianfeng Gao. 2025.
+
+ 
+ SeCom: On Memory Construction and Retrieval for
+Personalized Conversational Agents. In Proceedings
+of the 13th International Conference on Learning Representations (ICLR) .
+
+ 
+ 
+ 
+
+ 
+ Papineni et al . (2002) 
+ 
+Kishore Papineni, Salim
+Roukos, Todd Ward, and Wei-Jing Zhu.
+2002.
+
+ 
+ BLEU: a Method for Automatic Evaluation of
+Machine Translation. In Proceedings of the 40th
+Annual Meeting of the Association for Computational Linguistics .
+311–318.
+
+ 
+ 
+ 
+
+ 
+ Robertson and Zaragoza (2009) 
+ 
+Stephen E. Robertson and
+Hugo Zaragoza. 2009.
+
+ 
+ The Probabilistic Relevance Framework: BM25 and
+Beyond.
+
+ 
+ Foundations and Trends in Information
+Retrieval 3, 4 (2009),
+333–389.
+
+ 
+ 
+ https://doi.org/10.1561/1500000019 
+
+ 
+
+ 
+ Song et al . (2020) 
+ 
+Kaitao Song, Xu Tan,
+Tao Qin, Jianfeng Lu, and
+Tie-Yan Liu. 2020.
+
+ 
+ MPNet: Masked and Permuted Pre-training for
+Language Understanding. In Advances in Neural
+Information Processing Systems .
+
+ 
+ 
+ 
+
+ 
+ Tulving (1972) 
+ 
+Endel Tulving.
+1972.
+
+ 
+ Episodic and Semantic Memory.
+
+ 
+ In Organization of Memory ,
+Endel Tulving and
+Wayne Donaldson (Eds.). Academic
+Press, New York, 381–403.
+
+ 
+ 
+ 
+
+ 
+ Wang et al . (2025) 
+ 
+Qingyue Wang, Yanhe Fu,
+Yanan Cao, Shuai Wang,
+Zhiliang Tian, and Liang Ding.
+2025.
+
+ 
+ Recursively Summarizing Enables Long-Term Dialogue
+Memory in Large Language Models.
+
+ 
+ Neurocomputing 639
+(2025), 130193.
+
+ 
+ 
+ https://doi.org/10.1016/j.neucom.2025.130193 
+
+ 
+
+ 
+ Wu et al . (2025) 
+ 
+Di Wu, Hongwei Wang,
+Wenhao Yu, Yuwei Zhang,
+Kai-Wei Chang, and Dong Yu.
+2025.
+
+ 
+ LongMemEval: Benchmarking Chat Assistants on
+Long-Term Interactive Memory. In Proceedings of
+the 13th International Conference on Learning Representations (ICLR) .
+
+ 
+ 
+ 
+
+ 
+ Xu et al . (2026) 
+ 
+Derong Xu, Yi Wen,
+Pengyue Jia, Yingyi Zhang,
+Wenlin Zhang, Yichao Wang,
+Huifeng Guo, Ruiming Tang,
+Xiangyu Zhao, Enhong Chen, and
+Tong Xu. 2026.
+
+ 
+ From Single to Multi-Granularity: Toward Long-Term
+Memory Association and Selection of Conversational Agents. In
+ The Fourteenth International Conference on Learning
+Representations (ICLR) .
+
+ 
+ arXiv:2505.19549
+
+ 
+
+ 
+ Xu et al . (2025) 
+ 
+Wujiang Xu, Zujie Liang,
+Kai Mei, Hang Gao,
+Juntao Tan, and Yongfeng Zhang.
+2025.
+
+ 
+ A-Mem: Agentic Memory for LLM Agents. In
+ Advances in Neural Information Processing Systems
+38 (NeurIPS) .
+
+ 
+ 
+ 
+
+ 
+ Yue et al . (2026) 
+ 
+Juwei Yue, Chuanrui Hu,
+Jiawei Sheng, Zuyi Zhou,
+Wenyuan Zhang, Tingwen Liu,
+Li Guo, and Yafeng Deng.
+2026.
+
+ 
+ HyperMem: Hypergraph Memory for Long-Term
+Conversations. In Proceedings of the 64th Annual
+Meeting of the Association for Computational Linguistics (Volume 1: Long
+Papers) . 35237–35254.
+
+ 
+ 
+ 
+
+ 
+ Zhang et al . (2020) 
+ 
+Tianyi Zhang, Varsha
+Kishore, Felix Wu, Kilian Q. Weinberger,
+and Yoav Artzi. 2020.
+
+ 
+ BERTScore: Evaluating Text Generation with
+BERT. In International Conference on Learning
+Representations .
+
+ 
+ 
+ 
+
+ 
+ Zhang et al . (2025) 
+ 
+Zeyu Zhang, Quanyu Dai,
+Xiaohe Bo, Chen Ma, Rui
+Li, Xu Chen, Jieming Zhu,
+Zhenhua Dong, and Ji-Rong Wen.
+2025.
+
+ 
+ A Survey on the Memory Mechanism of Large Language
+Model-based Agents.
+
+ 
+ ACM Transactions on Information Systems 
+43, 6 (2025),
+155:1–155:47.
+
+ 
+ 
+ https://doi.org/10.1145/3748302 
+
+ 
+
+ 
+ Zhong et al . (2024) 
+ 
+Wanjun Zhong, Lianghong
+Guo, Qiqi Gao, He Ye, and
+Yanlin Wang. 2024.
+
+ 
+ MemoryBank: Enhancing Large Language Models with
+Long-Term Memory. In Proceedings of the 38th AAAI
+Conference on Artificial Intelligence . 19724–19731.
+
+ 
+ 
+ 
+
+ 
+ Zhuang et al . (2026) 
+ 
+Luyao Zhuang, Shengyuan
+Chen, Yilin Xiao, Huachi Zhou,
+Yujing Zhang, Hao Chen,
+Qinggang Zhang, and Xiao Huang.
+2026.
+
+ 
+ LinearRAG: Linear Graph Retrieval Augmented
+Generation on Large-scale Corpora. In The
+Fourteenth International Conference on Learning Representations (ICLR) .
+
+ 
+ 
+ 
+
+ 
+ 
+
+ 
+
+ 
+ Appendix A Prompts and Scoring Rules
+
+ 
+ All prompts below are reproduced verbatim from the released artifacts. Source
+identifiers and available SHA-256 checksums are reported with each prompt.
+
+ 
+ A.1. Reader Prompt
+
+ 
+ The prompt of EdgeMem ’s own reader
+( gpt-4o-mini-2024-07-18 , temperature 0), used in every native
+ EdgeMem run. Its final sentence is the abstention
+instruction : the exact refusal string it mandates is what the adversarial
+rule checks for, and the matched-instruction arm transplants this sentence,
+unmodified, into each baseline’s own prompt.
+
+ 
+ 
+ Reader Prompt 
+ 
+ 
+ You answer questions about a long conversation using ONLY the evidence provided.
+ Dates: when the question asks when something happened, resolve relative expressions
+(yesterday, last week, next month) against the [session_date] of the evidence turn
+and answer with the resolved calendar date.
+ Answer with a short phrase; when the answer is a list, include every item.
+ If relevant evidence is present, answer from it; only if the evidence does not
+contain the answer, reply exactly: Not mentioned in the conversation.
+ 
+ 
+
+ 
+ A.2. Shared Answer Prompt
+
+ 
+ The shared answer prompt of Table  1 (b) and of the
+style-control row of Table  4 is the answer-stage prompt of
+ Xu et al. (2026) , lifted verbatim from their release (file
+ src/generation/generation_multigran.py , constant
+ PROMPT_G , sha256 22797554… ). Decoding follows the
+release: gpt-4o-mini-2024-07-18 , temperature 0, max tokens
+4,000. It carries no refusal or length constraint (the sense in which the
+text calls it unconstrained ); each system’s retrieved evidence enters
+ {retrieved_texts} with nothing else changed.
+
+ 
+ 
+ Shared Answer Prompt 
+ 
+ 
+ You are an intelligent dialog bot. You will be shown History Dialogs. Please
+read, memorize, and understand the given Dialogs, then generate one concise,
+coherent and helpful response for the Question.
+ History Dialogs: {retrieved_texts}
+ Question Date: {question_date}
+ Question: {question}
+ 
+ 
+
+ 
+ A.3. Strict Judge (SJ)
+
+ 
+ The strict-judge columns (SJ) use the judge prompt of Xu et al. (2026) (their Appendix J,
+Fig. 12), reproduced verbatim and served by the pinned snapshot
+ gpt-4o-2024-08-06 at temperature 0:
+
+ 
+ 
+ Strict Judge Prompt (SJ) 
+ 
+ 
+ I will give you a question, a reference answer, and a response from a model. Please answer [[yes]] if the response contains the reference answer. Otherwise, answer [[no]]. If the response is equivalent to the correct answer or contains all the intermediate steps to get the reference answer, you should also answer [[yes]]. If the response only contains a subset of the information required by the answer, answer [[no]].
+ [User Question]
+ {question}
+ [The Start of Reference Answer]
+ {answer}
+ [The End of Reference Answer]
+ [The Start of Model’s Response]
+ {response}
+ [The End of Model’s Response]
+ Is the model response correct? Answer [[yes]] or [[no]] only.
+ 
+ 
+
+ 
+ A.4. Lenient Judge (LJ)
+
+ 
+ The lenient-judge columns (LJ) use the LoCoMo judge prompt of LightMem ( Fang et al., 2026 ) ,
+lifted verbatim at run time from the pinned release (repository
+ zjunlp/LightMem , commit 8fc9a91 , key
+ locomo-judge , sha256 406f2215… ) and served by
+ gpt-4o-mini-2024-07-18 at temperature 0 with the release’s JSON
+label contract. It is the Mem0-lineage “generous” judge: same-topic answers
+and same-period time references count as correct; following that release,
+adversarial questions are excluded from its denominator ( n = 1,540 n{=}1{,}540 ). On
+20,013 paired verdicts, LJ upgrades 17.7% of SJ’s negatives and
+downgrades 0.1%, and the row orderings of Table  1 (b) are
+identical under the two judges.
+
+ 
+ 
+ Lenient Judge Prompt (LJ) 
+ 
+ 
+ Your task is to label an answer to a question as ’CORRECT’ or ’WRONG’. You will be given the following data: (1) a question (posed by one user to another user), (2) a ’gold’ (ground truth) answer, (3) a generated answer which you will score as CORRECT/WRONG.
+ 
+ 
+ The point of the question is to ask about something one user should know about the other user based on their prior conversations. The gold answer will usually be a concise and short answer that includes the referenced topic, for example:
+ 
+Question: Do you remember what I got the last time I went to Hawaii?
+ 
+Gold answer: A shell necklace
+ 
+The generated answer might be much longer, but you should be generous with your grading - as long as it touches on the same topic as the gold answer, it should be counted as CORRECT.
+ 
+ 
+ For time related questions, the gold answer will be a specific date, month, year, etc. The generated answer might be much longer or use relative time references (like ’last Tuesday’ or ’next month’), but you should be generous with your grading - as long as it refers to the same date or time period as the gold answer, it should be counted as CORRECT. Even if the format differs (e.g., ’May 7th’ vs ’7 May’), consider it CORRECT if it’s the same date.
+ 
+ 
+ Now it’s time for the real question:
+ 
+Question: $question
+ 
+Gold answer: $golden_answers
+ 
+Generated answer: $prediction
+ 
+ 
+ First, provide a short (one sentence) explanation of your reasoning, then finish with CORRECT or WRONG. Do NOT include both CORRECT and WRONG in your response, or it will break the evaluation script.
+ 
+ 
+ Just return the label CORRECT or WRONG in a json format with the key as ’label’.
+ 
+ 
+
+ 
+ A.5. Adversarial Scoring Rule
+
+ 
+ Of LoCoMo’s 446 category-5 questions, the 444 that ship no
+reference answer are scored correct iff the reply is exactly
+ “Not mentioned in the conversation.” ; the 2 that do ship
+one go to the strict judge against the canonical gold. No lexical metric is ever
+computed against an adversarial trap answer. The rule was fixed before any
+baseline adversarial run (one amended exception in the run
+notes: CompassMem’s anti-abstention clause was neutralized so the matched arm
+is defined).
+
+ 
+ 
+ Experimental support, please
+ view the build logs 
+ for errors. Generated by
+ 
+ 
+ L
+ A 
+ T
+ E 
+ 
+ xml 
+ 
+ .
+ 
+
+ 
+ Instructions for reporting errors
+
+ We are continuing to improve HTML versions of papers, and your feedback helps enhance accessibility and mobile
+ support. To report errors in the HTML that will help us improve conversion and rendering, choose any of the
+ methods listed below:
+
+ 
+ Click the "Report Issue" ( 
+ 
+ ) button, located in the page header.
+
+ 
+ Tip: You can select the relevant text first, to include it in your report.
+
+ Our team has already identified the following issues . We appreciate your time reviewing and reporting rendering errors we
+ may not have found yet. Your efforts will help us improve the HTML versions for all readers, because disability
+ should not be a barrier to accessing research. Thank you for your continued support in championing open access for
+ all.
+
+ Have a free development cycle? Help support accessibility at arXiv! Our collaborators at LaTeXML maintain a list of packages that need conversion , and welcome developer contributions .
+
+ 
+
+ 
+ 
+ 
+ 
+ We gratefully acknowledge support from
+ our major funders ,
+ member institutions , ,
+ and all contributors.
+ 
+
+ 
+ About 
+ &middot; 
+ Help 
+ &middot; 
+ Contact 
+ &middot; 
+ Subscribe 
+ &middot; 
+ Copyright 
+ &middot; 
+ Privacy 
+ &middot; 
+ Accessibility 
+ &middot; 
+ Operational Status (opens in new tab) 
+ 
+ 
+
+ 
+ Major funding support from
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 

@@ -1,0 +1,215 @@
+URL: https://www.getzep.com/pricing/
+FINAL: https://www.getzep.com/pricing/
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: null
+TITLE: Pricing | Zep
+BYTES: 234946
+======================================================================
+Pricing | Zep
+We&#x27;re hiring! Come build with us →
+Platform Context Lake Konig Graphiti
+Platform
+Context Lake
+Unify enterprise data into shared context for agents. Explore the Context Lake and the technology behind it.
+Learn more →
+Solutions Context graphs Agent memory Account context
+Solutions
+Context graphs
+Connect knowledge about customers, projects, and business domains into shared context for agents across your organization.
+Learn more →
+Enterprise Pricing Developers Documentation API Reference Blog
+Resources Research S&P Market Intelligence Report Trust Center Context Engineering AI Agents Guides Buy vs. Build: Agent Memory
+Resources
+Research
+Benchmark results on LoCoMo and LongMemEval, the two industry benchmarks for long-running agent memory.
+Learn more →
+Company About Careers Contact
+Log in Request a Demo Sign up
+Zep plans
+Pricing
+Self-serve plans are credit based. Enterprise plans add governance, deployment options, and negotiated rates.
+Contact Sales Start Building
+Enterprise plans
+Enterprise plans combine governed context and deployment flexibility with custom credits, negotiated rates, and a guaranteed SLA.
+Contact Sales View deployment options →
+Custom credits with negotiated rates
+Guaranteed rate limits with SLA
+Unlimited projects
+Custom Memory MCP Server seats
+SOC 2 Type II and HIPAA BAA
+Audit and API logs kept for 1-year
+Slack/Teams support and dedicated account manager
+Fast growing venture-capital funded startup? Get Zep Enterprise at an emerging company price.
+Deploy anywhere
+Cloud Your VPC
+Self-serve plans
+Annual Save 17% Monthly
+Flex
+$125 / month
+billed monthly
+50,000 credits included. Then $25 / 10,000 credits.
+Get started
+Includes
+50,000 credits per month Auto top-up at 20%. 30-day rollover.
+600 requests per minute
+5 projects
+5 Memory MCP Server seats
+10 custom entity & edge types
+API logs (1 day)
+Unlimited memories, retrieval & users
+Flex Plus
+$375 / month
+billed monthly
+200,000 credits included. Then $75 / 40,000 credits.
+Get started
+Includes
+200,000 credits per month Auto top-up at 20%. 60-day rollover.
+1,000 requests per minute
+10 projects
+15 Memory MCP Server seats
+Observations
+20 custom entity & edge types
+Custom extraction instructions
+Webhooks
+Analytics
+API logs (7 days)
+Unlimited memories, retrieval & users
+Prototyping? Start free with 10,000 credits a month. Limits apply .
+Teams that use Zep
+One unit. Every operation
+How credits work
+Each Episode you send uses credits based on its size.
+Memory, retrieval, storage, and users are unmetered.
+1 credit
+per Episode up to 350 bytes; +1 credit per additional 350 bytes (or part).
+⅛ credit
+per webhook invocation, where available.
+0 credits
+for retrieval, storage, threads, users, and graph storage.
+Estimate your monthly spend Recommended: Flex
+Episodes / month 15,000
+0 250k 500k 750k 1M
+Average Episode size 700 bytes · 2 credits ea.
+100 B 1 kB 2 kB 3 kB 3.5 kB
+Webhook invocations / month 20,000
+0 1M 2M 3M 5M
+Credits / month 33k 32,500 credits
+Estimated cost $ 125 / month On the Flex plan
+Compare plans
+All limits, features, and security baselines across Flex, Flex Plus, and Enterprise.
+| Flex $125 / month | Flex Plus $375 / month | Enterprise Custom |
+Usage | | | |
+Included credits / month | 50,000 | 200,000 | Custom |
+Overage rate | $25 / 10k credits | $75 / 40k credits | Negotiated |
+Auto top-up at 20% | 10k credits ($25) | 40k credits ($75) | Custom |
+Credit rollover | 30 days | 60 days | Custom |
+Free trial credits | 10,000 / mo | 10,000 / mo | Custom |
+Limits | | | |
+Requests per minute | 600 | 1,000 | Guaranteed, custom |
+Projects | 5 | 10 | Unlimited |
+Memory MCP Server Seats | 5 | 15 | Custom |
+Custom entity & edge types | 10 | 20 | 20 |
+Memories, retrieval & users | Unlimited | Unlimited | Unlimited |
+Features | | | |
+Context Graph + temporal memory | | | |
+Observations | — | | |
+Custom extraction instructions | — | | |
+Webhooks | — | | |
+Analytics | — | | |
+Security & support | | | |
+SOC 2 Type II | — | — | |
+HIPAA BAA | — | — | |
+API logs retention | 1 day | 7 days | 1 year |
+Audit logs | — | — | |
+DPA (EU customers) | — | — | |
+Support | Community | Priority | Slack/Teams · dedicated AM |
+Deployment | Cloud | Cloud | Cloud · Cloud + BYOK · BYOC |
+Choose where to deploy Zep
+Zep Cloud, Zep Cloud with your own encryption keys, or a deployment in your VPC. Learn more.
+Trust boundary · Zep Zep Cloud Compute Data Keys
+Managed Cloud
+Use Zep&#x27;s managed service. No infrastructure to run. Start in minutes.
+SOC 2 Type II
+HIPAA BAA
+Trust boundary · split Zep Cloud Compute Data
+Your KMS Keys AWS · GCP · Azure
+BYOK Cloud + Your Own Keys
+Use Zep&#x27;s managed service with your own encryption keys. You control the keys that encrypt data at rest.
+SOC 2 Type II
+HIPAA BAA
+Trust boundary · You Your VPC Zep service Compute Data Keys
+BYOC Bring Your Own Cloud
+Deploy Zep inside your VPC. Your network, your perimeter, your compliance boundary.
+Contact Sales → Security and compliance →
+Recognition
+Context infrastructure for the enterprise.
+Read the report
+S&P Global Market Intelligence
+Zep tackles agent memory limitations through its temporal context graph.
+S&P Global Market Intelligence · April 2026
+“ We can easily see Zep becoming a de facto partner in this layer of the enterprise agent stack.
+— Melissa Incera, S&P Global Market Intelligence
+Frequently asked questions
+Quick answers on credits, Episodes, security, and what’s included on each plan.
+Don’t see your question?
+Contact sales
+How credits work Credits are consumed based on the size of each Episode you send to Zep. Episodes up to 350 bytes use 1 credit ; each additional 350 bytes (or part thereof) uses another credit.
+Where available, webhook invocations consume 1/8 of a credit each.
+Flex and Flex Plus automatically top up your credits when your balance drops below 20% . Flex adds 10,000 credits ($25) ; Flex Plus adds 40,000 credits ($75) .
+Flex credits roll over for 30 days ; Flex Plus credits roll over for 60 days . Free plan credits do not roll over.
+What is an Episode? An Episode is any single data object you send to Zep — a chat message, JSON payload, or block of text.
+Credit cost scales with Episode size. Episodes up to 350 bytes use 1 credit ; each additional 350 bytes (or part thereof) uses another credit. A 640-byte Episode uses 2 credits ; a 1,200-byte Episode uses 4 credits .
+Are we charged for ingestion or storage? You are charged for ingestion and processing of Episodes. You are not charged for storage of messages or data.
+How are rate limits calculated? Each plan tier has a base rate limit, with Free being the lowest. Free and Flex Plan customers may see rate limits lowered depending on service usage. Enterprise plans have committed, guaranteed rate limits.
+What are the Free plan limits? · 10,000 credits per month. No rollover or auto-topup.
+· 2 projects, 1 Memory MCP Server seat, 5 custom entity & edge types.
+· Variable rate limits, depending on service-wide load.
+· Lower priority Episode processing.
+· Feature availability and service levels may change over time.
+Is Zep SOC 2 Type II certified? Yes. Zep is SOC 2 Type II certified. Review controls and live compliance status on the Trust Center .
+Can Zep sign a HIPAA BAA? Yes. HIPAA BAAs are available with the Enterprise plan.
+We&#x27;re an EU company. Will you sign a DPA? Yes. Zep signs Data Processing Agreements with EU customers and customers with EU presence.
+Contact the Zep team
+Start with a self-service plan or contact Sales about Enterprise deployment and custom limits.
+Contact Sales Start Building
+The unified context layer for enterprise data.
+Platform
+Context Lake
+Konig
+Graphiti
+Solutions
+Context graphs
+Agent memory
+Account context
+Developers
+Documentation
+API Reference
+Blog
+Resources
+Research
+S&P Global Market Intelligence coverage
+Trust Center
+Context Engineering
+AI Agents Guides
+Buy vs. Build: Agent Memory
+Enterprise
+Overview
+Deployment
+Security and compliance
+Zep vs
+Mem0 Alternative
+Letta Alternative
+AWS AgentCore Alternative
+Vertex AI Memory Bank Alternative
+Cognee Alternative
+Supermemory Alternative
+Company
+About
+Careers
+Pricing
+Contact
+© 2026 Zep AI, Inc. All rights reserved.
+Privacy policy
+Terms of service
+Website terms

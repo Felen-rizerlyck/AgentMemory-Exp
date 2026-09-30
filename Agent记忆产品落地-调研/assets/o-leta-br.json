@@ -1,0 +1,242 @@
+[
+  {
+    "name": "add-posthog-analytics-v2",
+    "commit": {
+      "sha": "b3bc036a7b2e193c586aeb31e3daa959d3d7347a",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/b3bc036a7b2e193c586aeb31e3daa959d3d7347a"
+    },
+    "protected": false
+  },
+  {
+    "name": "archive",
+    "commit": {
+      "sha": "56ba9c25552605eec89de8ed3dc6394b625c1993",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/56ba9c25552605eec89de8ed3dc6394b625c1993"
+    },
+    "protected": false
+  },
+  {
+    "name": "ari-haiku-4-5",
+    "commit": {
+      "sha": "8bcacc4ebc6ff411a1d732a566b1083ca9841960",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/8bcacc4ebc6ff411a1d732a566b1083ca9841960"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-5",
+    "commit": {
+      "sha": "98feeb77f46456330116171ed285b5710844d4cf",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/98feeb77f46456330116171ed285b5710844d4cf"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-6",
+    "commit": {
+      "sha": "b6f8b832c9feb906bd8a195aee2da3266478f385",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/b6f8b832c9feb906bd8a195aee2da3266478f385"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-7-sync-pr",
+    "commit": {
+      "sha": "3726024f486e6f5eaca205dec39d967b8179188f",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/3726024f486e6f5eaca205dec39d967b8179188f"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-8",
+    "commit": {
+      "sha": "645d73f4ee262214fcd7b1816ae75b9734596b54",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/645d73f4ee262214fcd7b1816ae75b9734596b54"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-9",
+    "commit": {
+      "sha": "c9fe6b87b256459d5976cc0537721df7101636fc",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/c9fe6b87b256459d5976cc0537721df7101636fc"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-10",
+    "commit": {
+      "sha": "395fa24e2265f36566c8201af7d2e0143a8a5ad9",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/395fa24e2265f36566c8201af7d2e0143a8a5ad9"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-12",
+    "commit": {
+      "sha": "4b7149cef147ced13b4e22ff292fa4431c0ba5ba",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/4b7149cef147ced13b4e22ff292fa4431c0ba5ba"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-13",
+    "commit": {
+      "sha": "fc65d4ee72405ab55629f6b34bd01d089075d7ec",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/fc65d4ee72405ab55629f6b34bd01d089075d7ec"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-16",
+    "commit": {
+      "sha": "0e46337eeb29c24721d990595ba0203b468d695c",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/0e46337eeb29c24721d990595ba0203b468d695c"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-11-8-24",
+    "commit": {
+      "sha": "6f2995978360854704c2f653dce18a1c96dbdfa7",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/6f2995978360854704c2f653dce18a1c96dbdfa7"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-12-0",
+    "commit": {
+      "sha": "0ae2552d3de1f6177a3b46ac92e41ffe4f641ab0",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/0ae2552d3de1f6177a3b46ac92e41ffe4f641ab0"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-14-0",
+    "commit": {
+      "sha": "e3c8c492de217cb04474cefaa528e64ced5eb235",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/e3c8c492de217cb04474cefaa528e64ced5eb235"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-16-0",
+    "commit": {
+      "sha": "98499ce68d5dd4831c07ccdd80e72531c0d26dd7",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/98499ce68d5dd4831c07ccdd80e72531c0d26dd7"
+    },
+    "protected": false
+  },
+  {
+    "name": "bump-16-1",
+    "commit": {
+      "sha": "a14fe3ad7065db36fc40702e8dd59ea35c62f9dd",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/a14fe3ad7065db36fc40702e8dd59ea35c62f9dd"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/add-new-identities-relationship-routes",
+    "commit": {
+      "sha": "c8d0c4969001a09909827e75ef98aab6ea440941",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/c8d0c4969001a09909827e75ef98aab6ea440941"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/add-title-for-identity-routes",
+    "commit": {
+      "sha": "d2b4b408ea42960688b262dff9abb7e3387cbf56",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/d2b4b408ea42960688b262dff9abb7e3387cbf56"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/fix-agent-route-docstrings",
+    "commit": {
+      "sha": "e4ac8b173c14cb2b273453e7208320b9116a812e",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/e4ac8b173c14cb2b273453e7208320b9116a812e"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/fix-type-33",
+    "commit": {
+      "sha": "eb34948aa3ce32d8c3e9a6b6ab9e714540205f8c",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/eb34948aa3ce32d8c3e9a6b6ab9e714540205f8c"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/include-draft",
+    "commit": {
+      "sha": "7cdce243c8d753b63370ea2fb4221564df6d8bbc",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/7cdce243c8d753b63370ea2fb4221564df6d8bbc"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4382-rename-folders-agents-endpoint",
+    "commit": {
+      "sha": "f9ab6c709bc13e359a810562b7f728fdb49494ab",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/f9ab6c709bc13e359a810562b7f728fdb49494ab"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4383-deprecate-get-folder-by-name-endpoint",
+    "commit": {
+      "sha": "3f05c8cfa62128c1d46c6aef531512de9415a3e3",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/3f05c8cfa62128c1d46c6aef531512de9415a3e3"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4384-add-pagination-to-folderspassageslist",
+    "commit": {
+      "sha": "93ee7602c5c6df537be89c89c7f589be6332695a",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/93ee7602c5c6df537be89c89c7f589be6332695a"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4385-rename-folders-metadata-endpoint",
+    "commit": {
+      "sha": "cfcc1843a506eef357145d8eb5fa6a3bf19b523d",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/cfcc1843a506eef357145d8eb5fa6a3bf19b523d"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4386-replace-query_text-field-on-list-tags-endpoint-with-name",
+    "commit": {
+      "sha": "9009cb43b2839a83f91711a9f2f5f90903acb942",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/9009cb43b2839a83f91711a9f2f5f90903acb942"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4387-add-pagination-to-folders-files-endpoint",
+    "commit": {
+      "sha": "c14edb35e9d2790d2cee027983d4213703e4860d",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/c14edb35e9d2790d2cee027983d4213703e4860d"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4388-add-pagination-to-groups-messages-endpoint",
+    "commit": {
+      "sha": "428cd9ef842a7971ed4a58485784ba75f2d380bd",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/428cd9ef842a7971ed4a58485784ba75f2d380bd"
+    },
+    "protected": false
+  },
+  {
+    "name": "caren/let-4389-add-pagination-to-folders-agents-endpoint",
+    "commit": {
+      "sha": "9c369eb242c41648b4526905509e971b127e8f6e",
+      "url": "https://api.github.com/repos/letta-ai/letta/commits/9c369eb242c41648b4526905509e971b127e8f6e"
+    },
+    "protected": false
+  }
+]

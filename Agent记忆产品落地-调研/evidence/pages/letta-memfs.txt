@@ -1,0 +1,145 @@
+URL: https://docs.letta.com/concepts/memfs
+FINAL: https://docs.letta.com/concepts/memfs
+STATUS: 200
+CONTENT-TYPE: text/html; charset=utf-8
+LAST-MODIFIED: Sun, 27 Sep 2026 00:54:56 GMT
+TITLE: MemFS | Letta Docs
+BYTES: 82442
+======================================================================
+MemFS | Letta Docs
+Skip to content Letta Docs
+Docs
+Agent SDK
+Handbook
+Docs
+Docs Docs
+Agent SDK Agent SDK
+Handbook Handbook
+Search the docs Ctrl K Cancel
+Discord
+Docs
+Agent SDK
+Handbook
+Get started Overview
+Quickstart
+Pricing
+Concepts Stateful agents
+Conversations
+MemFS
+Shared memory
+Platform CLI Overview
+Slash commands
+Headless mode
+CLI reference
+Desktop app
+Cloud agents Overview
+GitHub integration
+Slack integration
+Computers Overview
+Bring Your Own Machine
+Cloud sandboxes
+Teleportation
+ACP
+MCP
+Configuration Memory & dreaming
+Skills
+Mods
+Permissions
+Schedules
+Secrets
+Subagents
+Models
+Dynamic Workflows
+Self-hosting Overview
+App Server Overview
+Quickstart
+Protocol lifecycle
+External tools
+Integration patterns
+Channels Overview
+Slack
+Telegram
+Discord
+WhatsApp
+Signal
+Custom channels
+Enterprise & Team Get started
+Adding collaborators
+Configuring permissions
+Reference FAQ
+Terminology
+Settings
+Changelog
+GitHub action
+Troubleshooting
+Deprecated Hooks
+Docker
+Get started
+Concepts
+MemFS
+Copy Markdown
+Open in Claude
+Open in ChatGPT
+Open in Cursor
+Copy Markdown
+View as Markdown
+MemFS
+Understand the git-backed memory filesystem used by Letta agents
+MemFS is how a Letta agent works with its long-term memory. The memory itself is part of the agent’s state, held in a git repository that belongs to the agent — hosted by Letta for cloud agents, alongside its conversations and configuration.
+MemFS projects that repository onto whatever computer the agent is running on, as a real checkout the agent reads and edits with ordinary file tools. Edits are local until committed and pushed, at which point they become the agent’s memory everywhere. All Letta agents use MemFS.
+MemFS is also called a context repository .
+Memory is addressed by path: the memory labelled system/persona is projected to system/persona.md . Choosing a label is choosing where the memory lives and whether it stays in context.
+Memory structure
+Section titled “Memory structure”
+Each memory is projected as Markdown with YAML frontmatter:
+---
+description : "Who I am, what I value, and how I approach working with people."
+---
+I am a Letta agent. I remember durable preferences and improve with use.
+Files under system/ are loaded into the agent’s system prompt on every turn. Use this directory for the agent’s identity, important user preferences, durable project facts, and critical workflow rules.
+Files outside system/ stay out of context until they are needed. The file tree itself is always in the system prompt, so directory and file names act as signposts the agent follows to read the right file. This keeps the active context lean while preserving deeper reference material.
+$MEMORY_DIR/
+├── system/
+│ ├── persona.md
+│ └── human.md
+├── reference/
+│ └── project-notes.md
+└── skills/
+└── my-skill/
+└── SKILL.md
+Semantic and vector search
+Section titled “Semantic and vector search”
+MemFS does not include a semantic or vector index by default. Agents find memory in its Markdown files with normal file-search and read tools.
+For keyword search and optional semantic or hybrid search, install the MemFS Search mod :
+letta install npm:@letta-ai/memfs-search
+Keyword search works without additional dependencies. Semantic and hybrid modes require QMD to be installed and indexed over $MEMORY_DIR .
+Conversation-history search is separate from MemFS. On Letta Cloud, letta messages search supports full-text, vector, and hybrid search over messages; local backends currently search conversation transcripts with full-text matching only.
+Versioning and synchronization
+Section titled “Versioning and synchronization”
+Every memory edit is committed to the MemFS git repository. This provides version history, conflict resolution, and a clear boundary between saved memory and uncommitted changes.
+For agents backed up to the cloud, commits push back to the hosted repository, so a projection on any other computer picks them up. Local-only agents commit to a repository on the current machine, so you are responsible for backing it up.
+Memory subagents such as dreaming and memory doctor use git worktrees so they can update memory concurrently without blocking the main agent.
+Skills in MemFS
+Section titled “Skills in MemFS”
+Agent-owned skills live under $MEMORY_DIR/skills . They are versioned with the rest of the agent’s memory and travel with agents that are backed up to the cloud.
+See Skills for skill sources, precedence, and authoring.
+Shared memory
+Section titled “Shared memory”
+Each agent has its own MemFS. Use shared memory when multiple cloud-hosted agents need access to the same Git-backed files and working context.
+Managing memory
+Section titled “Managing memory”
+See Memory &#x26; dreaming to initialize memory, teach your agent, configure background reflection, and reorganize a hierarchy that has grown over time.
+Previous
+Conversations
+Work with one agent across independent message threads
+Next
+Shared memory
+Share Git-backed files between cloud-hosted Letta agents
+On this page
+Overview
+Memory structure
+Semantic and vector search
+Versioning and synchronization
+Skills in MemFS
+Shared memory
+Managing memory
