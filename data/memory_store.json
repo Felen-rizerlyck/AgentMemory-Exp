@@ -49,6 +49,12 @@
         "wmic\\s+/node:",
         "net\\s+user\\s+/add",
         "net\\s+localgroup\\s+ad"
+      ],
+      "action_sequence": [
+        "wmic_remote_exec",
+        "whoami_probe",
+        "net_user_add",
+        "net_localgroup_add"
       ]
     },
     {
@@ -139,6 +145,9 @@
       ],
       "pattern_probes": [
         "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b"
+      ],
+      "action_sequence": [
+        "dga_hex_subdomain"
       ]
     },
     {
@@ -197,6 +206,12 @@
       "pattern_probes": [
         "(?:\\.\\./){2,}",
         "169\\.254\\.169\\."
+      ],
+      "action_sequence": [
+        "lfi_traversal",
+        "node_sandbox_escape",
+        "imds_target",
+        "mount_overlay_priv"
       ]
     },
     {
@@ -237,6 +252,11 @@
       ],
       "pattern_probes": [
         "stricthostkeychecking=no"
+      ],
+      "action_sequence": [
+        "ssh_landed_key",
+        "ssh_no_hostcheck",
+        "id_hostname_probe"
       ]
     },
     {
@@ -279,6 +299,12 @@
         "%%32%65|%252e|\\.%2e",
         "cgi-bin/.*bin/sh",
         "echo;id"
+      ],
+      "action_sequence": [
+        "double_encoded_dot",
+        "cgi_sh_path",
+        "echo_id_probe",
+        "xp_cmdshell_probe"
       ]
     },
     {
@@ -325,6 +351,12 @@
         "%ac%ed",
         "cmd=(?:id|whoami|uname)\\b|%26\\s*(?:id|whoami|uname)\\b",
         "com\\.sun\\."
+      ],
+      "action_sequence": [
+        "java_ser_magic",
+        "cmd_id_probe",
+        "com_sun_gadget",
+        "gcp_metadata_ssrf"
       ]
     },
     {
@@ -361,6 +393,10 @@
         "net\\s+view\\s+/domain",
         "net\\s+use\\s",
         "C\\$"
+      ],
+      "action_sequence": [
+        "net_view_domain",
+        "smb_admin_share"
       ]
     },
     {
@@ -397,6 +433,11 @@
         "\\{\\{.*__(?:class|globals|init)__",
         "popen\\(",
         "template=.*\\{\\{"
+      ],
+      "action_sequence": [
+        "ssti_object_chain",
+        "popen_exec",
+        "java_ser_magic"
       ]
     },
     {
@@ -434,6 +475,11 @@
         "'\\s*or\\s+'?1'?\\s*=",
         "\\{\\s*\"?admin\"?\\s*:\\s*true",
         "mass_assignment"
+      ],
+      "action_sequence": [
+        "sqli_tautology",
+        "mass_assignment_admin",
+        "mysql_load_file"
       ]
     },
     {
@@ -471,6 +517,10 @@
         "com\\.tangosol\\.coherence",
         "ShellSession",
         "cmd=127\\.0\\.0\\.1;"
+      ],
+      "action_sequence": [
+        "cmd_loopback_probe",
+        "weblogic_shellsession"
       ]
     },
     {
@@ -508,6 +558,12 @@
         "tmshCmd\\.jsp",
         "command=list\\+auth",
         "\\.\\.;/tmui"
+      ],
+      "action_sequence": [
+        "cmd_loopback_probe",
+        "tmui_semicolon_bypass",
+        "tmshcmd_jsp",
+        "tmsh_list_auth"
       ]
     },
     {
@@ -544,6 +600,12 @@
       "pattern_probes": [
         "__HALT_COMPILER",
         "filename=\\d+\\.phar"
+      ],
+      "action_sequence": [
+        "phar_filename",
+        "phar_magic",
+        "sqli_tautology",
+        "php_ser_payload"
       ]
     },
     {
@@ -582,6 +644,11 @@
         "spring\\.cloud\\.function\\.routing-expression",
         "T\\(java\\.lang\\.Runtime",
         "\\$\\{script:javascript"
+      ],
+      "action_sequence": [
+        "script_javascript",
+        "spring_routing_expr",
+        "spel_type_ref"
       ]
     },
     {
@@ -620,6 +687,12 @@
         "/var/spool/cron",
         "dev/tcp/",
         "bash\\s+-i"
+      ],
+      "action_sequence": [
+        "cron_root_write",
+        "bash_reverse_shell",
+        "dev_tcp_redir",
+        "shebang_cmd_inject"
       ]
     },
     {
@@ -657,6 +730,11 @@
         "cmd_inject=#!//bin/bash",
         "UNION\\s+SELECT.*FROM\\s+users",
         "/user/register"
+      ],
+      "action_sequence": [
+        "user_register_path",
+        "shebang_cmd_inject",
+        "union_select_users"
       ]
     },
     {
@@ -694,6 +772,12 @@
         "/api/exec",
         "cache_key=\\.\\./",
         "smuggle"
+      ],
+      "action_sequence": [
+        "api_exec_path",
+        "cmd_id_probe",
+        "cache_key_traversal",
+        "smuggle_marker"
       ]
     },
     {
@@ -737,6 +821,13 @@
       "pattern_probes": [
         "_method=__construct",
         "filter\\[\\]=system"
+      ],
+      "action_sequence": [
+        "method_construct_override",
+        "filter_system_override",
+        "echo_id_probe",
+        "time_blind_sleep",
+        "server_req_method_probe"
       ]
     },
     {
@@ -773,6 +864,11 @@
       "pattern_probes": [
         "<!ENTITY\\s+\\w+\\s+SYSTEM",
         "<!DOCTYPE"
+      ],
+      "action_sequence": [
+        "smuggle_marker",
+        "xxe_doctype",
+        "xxe_entity_system"
       ]
     },
     {
@@ -811,6 +907,12 @@
         "cat\\s+/etc/shadow",
         "base64\\s+-w0",
         "nslookup\\s+\\$"
+      ],
+      "action_sequence": [
+        "cat_shadow",
+        "base64_w0",
+        "fold_w30",
+        "nslookup_var"
       ]
     },
     {
@@ -845,6 +947,11 @@
       "pattern_probes": [
         "dags/run",
         "execute\\(\\)\\.text"
+      ],
+      "action_sequence": [
+        "dags_run_path",
+        "cmd_inject_semi_id",
+        "script_exec_text"
       ]
     },
     {
@@ -881,6 +988,12 @@
         "/etc/rc\\.local",
         "/tmp/\\.svc",
         "/tmp/\\.implant"
+      ],
+      "action_sequence": [
+        "rclocal_sed_insert",
+        "tmp_svc_drop",
+        "rclocal_append",
+        "tmp_implant_drop"
       ]
     },
     {
@@ -919,6 +1032,11 @@
         "fpm_path",
         "xp_dirtree",
         "master\\.\\.xp_"
+      ],
+      "action_sequence": [
+        "fpm_path_param",
+        "cmd_id_probe",
+        "xp_dirtree_unc"
       ]
     }
   ],
@@ -943,5 +1061,337 @@
         "战役级模式"
       ]
     }
-  ]
+  ],
+  "action_library": {
+    "whoami_probe": {
+      "label": "whoami 侦察探针",
+      "regex": "\\bwhoami\\b",
+      "generic": true
+    },
+    "cmd_id_probe": {
+      "label": "cmd=id 命令探针",
+      "regex": "cmd=id\\b",
+      "generic": true
+    },
+    "cmd_loopback_probe": {
+      "label": "cmd=127.0.0.1;id 命令探针",
+      "regex": "cmd=127\\.0\\.0\\.1;",
+      "generic": true
+    },
+    "echo_id_probe": {
+      "label": "echo;id 命令探针",
+      "regex": "echo;id",
+      "generic": true
+    },
+    "id_hostname_probe": {
+      "label": "id;hostname 侦察",
+      "regex": "id;\\s*hostname",
+      "generic": true
+    },
+    "smuggle_marker": {
+      "label": "HTTP 走私形态标记 smuggle",
+      "regex": "smuggle",
+      "generic": true
+    },
+    "sqli_tautology": {
+      "label": "SQLi 恒真绕过 ' OR '1'='1",
+      "regex": "'\\s*or\\s+'?1'?(?:\\s*=|$)",
+      "generic": false
+    },
+    "java_ser_magic": {
+      "label": "Java 序列化流魔数 rO0AB",
+      "regex": "rO0AB",
+      "generic": false
+    },
+    "wmic_remote_exec": {
+      "label": "WMIC 远程进程创建 (wmic /node:<ip>)",
+      "regex": "wmic\\s+/node:[\\d.]+",
+      "generic": false
+    },
+    "net_user_add": {
+      "label": "创建后门账户 (net user /add)",
+      "regex": "net\\s+user\\s+/add",
+      "generic": false
+    },
+    "net_localgroup_add": {
+      "label": "账户加入本地组 (net localgroup)",
+      "regex": "net\\s+localgroup\\s+ad",
+      "generic": false
+    },
+    "dga_hex_subdomain": {
+      "label": "DGA 随机子域查询 (8位hex.<域>)",
+      "regex": "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b",
+      "generic": false
+    },
+    "lfi_traversal": {
+      "label": "路径穿越 (../ 连写)",
+      "regex": "(?:\\.\\./){2,}",
+      "generic": false
+    },
+    "node_sandbox_escape": {
+      "label": "Node.js 沙箱逃逸链 (constructor/mainModule)",
+      "regex": "this\\.constructor\\.constructor|mainModule\\.require",
+      "generic": false
+    },
+    "imds_target": {
+      "label": "SSRF 云元数据 (169.254.169.254)",
+      "regex": "169\\.254\\.169\\.254",
+      "generic": false
+    },
+    "mount_overlay_priv": {
+      "label": "overlay 挂载提权尝试",
+      "regex": "mount\\s+-t\\s+overlay",
+      "generic": false
+    },
+    "ssh_landed_key": {
+      "label": "落地密钥 SSH 登录 (ssh -i <key>)",
+      "regex": "ssh\\s+-i\\s+\\S+",
+      "generic": false
+    },
+    "ssh_no_hostcheck": {
+      "label": "SSH 免主机校验 (StrictHostKeyChecking=no)",
+      "regex": "stricthostkeychecking=no",
+      "generic": false
+    },
+    "double_encoded_dot": {
+      "label": "双编码路径穿越 (%%32%65 / .%2e)",
+      "regex": "%%32%65|%252e|\\.%2e",
+      "generic": false
+    },
+    "cgi_sh_path": {
+      "label": "CGI 穿越至 /bin/sh",
+      "regex": "cgi-bin/.*bin/sh",
+      "generic": false
+    },
+    "xp_cmdshell_probe": {
+      "label": "MSSQL xp_cmdshell 探针",
+      "regex": "xp_cmdshell\\(",
+      "generic": false
+    },
+    "com_sun_gadget": {
+      "label": "com.sun JNDI gadget 类名",
+      "regex": "com\\.sun\\.",
+      "generic": false
+    },
+    "gcp_metadata_ssrf": {
+      "label": "GCP 元数据 SSRF (metadata.google.internal)",
+      "regex": "metadata\\.google\\.internal",
+      "generic": false
+    },
+    "net_view_domain": {
+      "label": "域枚举 (net view /domain)",
+      "regex": "net\\s+view\\s+/domain",
+      "generic": false
+    },
+    "smb_admin_share": {
+      "label": "SMB 管理共享挂载 (net use \\\\<ip>\\C$)",
+      "regex": "net\\s+use\\s+\\\\\\\\[\\d.]+\\s*\\\\C\\$",
+      "generic": false
+    },
+    "ssti_object_chain": {
+      "label": "SSTI 对象链逃逸 (__class__/__globals__)",
+      "regex": "\\{\\{.*__(?:class|globals|init)__",
+      "generic": false
+    },
+    "popen_exec": {
+      "label": "popen 命令执行",
+      "regex": "popen\\(",
+      "generic": false
+    },
+    "mass_assignment_admin": {
+      "label": "批量赋值 admin=true",
+      "regex": "\\{\\s*\\\\?\\\"?admin\\\\?\\\"?\\s*:\\s*true",
+      "generic": false
+    },
+    "mysql_load_file": {
+      "label": "MySQL LOAD_FILE 外读",
+      "regex": "LOAD_FILE\\(",
+      "generic": false
+    },
+    "weblogic_shellsession": {
+      "label": "WebLogic MVEL ShellSession 句柄",
+      "regex": "com\\.tangosol\\.coherence.{0,60}ShellSession",
+      "generic": false
+    },
+    "tmui_semicolon_bypass": {
+      "label": "F5 分号路径穿越 (..;/tmui)",
+      "regex": "\\.\\.;/tmui",
+      "generic": false
+    },
+    "tmshcmd_jsp": {
+      "label": "F5 tmshCmd 管理接口",
+      "regex": "tmshCmd\\.jsp",
+      "generic": false
+    },
+    "tmsh_list_auth": {
+      "label": "tmsh 账户枚举 (command=list+auth)",
+      "regex": "command=list\\+auth",
+      "generic": false
+    },
+    "phar_magic": {
+      "label": "PHP phar 魔数头 (__HALT_COMPILER)",
+      "regex": "__HALT_COMPILER",
+      "generic": false
+    },
+    "phar_filename": {
+      "label": "phar 伪装上传 (filename=<n>.phar)",
+      "regex": "filename=\\d+\\.phar",
+      "generic": false
+    },
+    "php_ser_payload": {
+      "label": "PHP 序列化载荷字段 (AAIJABIAAAA)",
+      "regex": "AAIJABIAAAA",
+      "generic": false
+    },
+    "spring_routing_expr": {
+      "label": "Spring 路由表达式注入 (routing-expression)",
+      "regex": "spring\\.cloud\\.function\\.routing-expression",
+      "generic": false
+    },
+    "spel_type_ref": {
+      "label": "SpEL 类型引用链 (T(java.lang.Runtime))",
+      "regex": "T\\(java\\.lang\\.Runtime",
+      "generic": false
+    },
+    "script_javascript": {
+      "label": "${script:javascript 脚本变体",
+      "regex": "\\$\\{script:javascript",
+      "generic": false
+    },
+    "cron_root_write": {
+      "label": "写 root crontab (/var/spool/cron)",
+      "regex": "/var/spool/cron",
+      "generic": false
+    },
+    "bash_reverse_shell": {
+      "label": "bash -i 反连",
+      "regex": "bash(\\+|\\s)-i",
+      "generic": false
+    },
+    "dev_tcp_redir": {
+      "label": "/dev/tcp 反连通道",
+      "regex": "dev/tcp/",
+      "generic": false
+    },
+    "shebang_cmd_inject": {
+      "label": "cmd_inject=#!//bin/bash 注入标记",
+      "regex": "cmd_inject[\\\"']?\\s*[:=]\\s*[\\\"']?#!//bin/bash",
+      "generic": false
+    },
+    "user_register_path": {
+      "label": "注册接口 /user/register",
+      "regex": "/user/register",
+      "generic": false
+    },
+    "union_select_users": {
+      "label": "UNION 查询窃取 users 表",
+      "regex": "UNION\\s+SELECT.{0,80}FROM\\s+users",
+      "generic": false
+    },
+    "api_exec_path": {
+      "label": "命令执行接口 /api/exec",
+      "regex": "/api/exec",
+      "generic": false
+    },
+    "cache_key_traversal": {
+      "label": "cache_key 路径穿越",
+      "regex": "cache_key=\\.\\./",
+      "generic": false
+    },
+    "method_construct_override": {
+      "label": "框架 _method=__construct 参数覆盖",
+      "regex": "_method=__construct",
+      "generic": false
+    },
+    "filter_system_override": {
+      "label": "filter[]=system 过滤执行",
+      "regex": "filter\\[\\]=system",
+      "generic": false
+    },
+    "time_blind_sleep": {
+      "label": "时间盲注 SELECT sleep(5)",
+      "regex": "SELECT sleep\\(5\\)",
+      "generic": false
+    },
+    "server_req_method_probe": {
+      "label": "server[REQUEST_METHOD] 探针",
+      "regex": "server\\[REQUEST_METHOD\\]",
+      "generic": false
+    },
+    "xxe_doctype": {
+      "label": "XXE DOCTYPE 声明",
+      "regex": "<!DOCTYPE",
+      "generic": false
+    },
+    "xxe_entity_system": {
+      "label": "XXE 外部实体 <!ENTITY ... SYSTEM",
+      "regex": "<!ENTITY\\s+\\w+\\s+SYSTEM",
+      "generic": false
+    },
+    "cat_shadow": {
+      "label": "读取 /etc/shadow",
+      "regex": "cat\\s+/etc/shadow",
+      "generic": false
+    },
+    "base64_w0": {
+      "label": "base64 -w0 编码",
+      "regex": "base64\\s+-w0",
+      "generic": false
+    },
+    "fold_w30": {
+      "label": "fold -w 30 分片",
+      "regex": "fold\\s+-w\\s+30",
+      "generic": false
+    },
+    "nslookup_var": {
+      "label": "nslookup $<变量域> 外送",
+      "regex": "nslookup\\s+\\$",
+      "generic": false
+    },
+    "dags_run_path": {
+      "label": "调度接口 /dags/run",
+      "regex": "dags/run",
+      "generic": false
+    },
+    "cmd_inject_semi_id": {
+      "label": "cmd_inject=;id 命令续接探针",
+      "regex": "cmd_inject=;id",
+      "generic": false
+    },
+    "script_exec_text": {
+      "label": "脚本内执行并回显 (.execute().text)",
+      "regex": "execute\\(\\)\\.text",
+      "generic": false
+    },
+    "rclocal_sed_insert": {
+      "label": "sed 植入 rc.local 启动项",
+      "regex": "sed\\s+-i.{0,80}rc\\.local",
+      "generic": false
+    },
+    "tmp_svc_drop": {
+      "label": "落地 /tmp/.svc",
+      "regex": "/tmp/\\.svc",
+      "generic": false
+    },
+    "tmp_implant_drop": {
+      "label": "落地 /tmp/.implant",
+      "regex": "/tmp/\\.implant",
+      "generic": false
+    },
+    "rclocal_append": {
+      "label": "追加写 rc.local",
+      "regex": ">>\\s*/etc/rc\\.local",
+      "generic": false
+    },
+    "fpm_path_param": {
+      "label": "PHP fpm_path 路径参数",
+      "regex": "fpm_path",
+      "generic": false
+    },
+    "xp_dirtree_unc": {
+      "label": "MSSQL xp_dirtree UNC 外连",
+      "regex": "xp_dirtree",
+      "generic": false
+    }
+  }
 }
