@@ -1,0 +1,10 @@
+2026-05-01 20:04:36 [waf] WAF0005562 /api/v1/ping?cmd=127.0.0.1;id handle=com.tangosol.coherence.mvel2.sh.ShellSession&cmd=id Mozilla/5.0 (Windows 
+2026-05-01 20:04:37 [web] WEB0005717 /api/v1/ping?cmd=127.0.0.1;id handle=com.tangosol.coherence.mvel2.sh.ShellSession&cmd=id Mozilla/5.0 (Windows 
+2026-05-01 20:04:38 [rasp] RASP0006051 https://app-go-83.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 10
+2026-05-01 20:05:36 [hids] HID0005785 cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /opt/app/main
+2026-05-08 02:07:56 [waf] WAF0048744 /users/sign_in email=' OR '1'='1'--&password=x Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.36 (K
+2026-05-08 02:07:58 [rasp] RASP0053691 https://app-rails-38.ops-corp.com/users/sign_in {"mass_assignment": "{\"admin\":true}", "cmd": "email=' OR '1'
+2026-05-08 02:09:26 [hids] HID0051195 ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.8.183 "id; hostname" ssh ssh -i /tmp/.key -o StrictHos
+2026-05-14 11:15:20 [dns] DNS0098419 2fa0ad21.kpedpm-3d20.net A 203.0.113.35
+2026-05-14 11:17:40 [dns] DNS0098427 5bf5926d.kpedpm-3d20.net A 10.10.27.205
+2026-05-14 11:18:00 [dns] DNS0098430 ce266cce.kpedpm-3d20.net A 10.10.30.8

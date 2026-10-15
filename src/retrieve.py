@@ -5,6 +5,7 @@
 用法:
     python src/retrieve.py "查询文本"          # 单条检索
     python src/retrieve.py --batch file.txt    # 每行一条，逐条检索
+    python src/retrieve.py --chain file.txt    # 链级：批内组装候选链 + 链整体匹配（行级降为分诊）
     （无参数时从 stdin 读取，整行逐条）
 
 双通道机制（详见 主目录 GUIDE.md）:
@@ -34,9 +35,11 @@ def load_store(path=STORE_PATH):
 
 
 def _action_regex(lib, aid):
-    if aid not in _ACTION_RES:
-        _ACTION_RES[aid] = re.compile(lib[aid]["regex"], re.IGNORECASE)
-    return _ACTION_RES[aid]
+    # 缓存键含正则本身：换库（同 id 不同 regex）时不复用旧编译结果（进程内行为可预期）
+    key = (aid, lib[aid]["regex"])
+    if key not in _ACTION_RES:
+        _ACTION_RES[key] = re.compile(lib[aid]["regex"], re.IGNORECASE)
+    return _ACTION_RES[key]
 
 
 # ---------------- 动作通道 ----------------
@@ -264,6 +267,214 @@ def show(query, store, results):
                 print("        -", line)
 
 
+# ---------------- 链级匹配（多日志攻击链：加层，不改上面行级路径） ----------------
+# 设计: docs/MULTI_LOG_CHAIN_DESIGN.md §6 — 链整体对齐（复用 align_case）+ 来源槽位校验
+#       + 顺序一致性检查（行级 align_case 是集合语义，链级补顺序判定，不改既有函数）
+
+_TIER_DOWN = {"强": "中", "中": "弱", "弱": "弱"}
+
+
+def _case_sources(case):
+    """案例每个动作位置的预期观测来源（缺省 any；长度不足按 any 补齐；裸字符串按单值处理）"""
+    seq = case.get("action_sequence", [])
+    srcs = case.get("action_sources") or []
+    if isinstance(srcs, str):                      # 类型漂移：裸串按单值归一化（不按下标取字符）
+        srcs = [srcs]
+    return [(srcs[i] if i < len(srcs) and srcs[i] else "any") for i in range(len(seq))]
+
+
+def _source_accepts(want, observed_sources):
+    """来源槽位校验：any 跳过；列表任一命中即通过（列表内含 'any' 同样跳过）"""
+    if not want or want == "any":
+        return True
+    wants = want if isinstance(want, list) else [want]
+    if not wants or "any" in wants:
+        return True
+    return any(w in observed_sources for w in wants)
+
+
+def _classify_positions(seq, positions):
+    """按**位置集合**复算形态/档位/预测（规则与 align_case 一致）。
+
+    链级必须用位置复算：align_case 是集合语义，若案例序列含重复动作 id，
+    再次按 id 对齐会把"来源不符"的位置重新捞回（子代理审查发现 F1）。
+    """
+    n = len(seq)
+    pos = list(positions)
+    matched = len(pos)
+    contiguous = all(pos[i + 1] == pos[i] + 1 for i in range(len(pos) - 1))
+    start0, endfull = pos[0] == 0, pos[-1] == n - 1
+    if contiguous and start0 and endfull:
+        mtype = "完整"
+    elif contiguous and start0:
+        mtype = "前缀"
+    elif contiguous:
+        mtype = "中段"
+    else:
+        mtype = "缺口"
+    run = best = 1
+    for i in range(1, len(pos)):
+        run = run + 1 if pos[i] == pos[i - 1] + 1 else 1
+        best = max(best, run)
+    tier = "强" if mtype == "完整" else ("中" if matched >= 2 else "弱")
+    pset = set(pos)
+    return dict(matched=matched, total=n, coverage=matched / n, longest_run=best, mtype=mtype,
+                tier=tier, positions=pos,
+                predict=(seq[pos[-1] + 1] if pos[-1] + 1 < n else None),
+                before=seq[:pos[0]],
+                gaps=[seq[i] for i in range(pos[0], pos[-1] + 1) if i not in pset])
+
+
+def _fmt_src(v):
+    if v in (None, "any"):
+        return "any"
+    return "|".join(v) if isinstance(v, list) else v
+
+
+def chain_match(chain, cases, lib):
+    """链整体对每个案例做对齐（复用 align_case）+ 来源槽位校验 + 顺序一致性。
+
+    返回 matches（排序键：档位→命中数→关键词分→覆盖度→案例号），元素字段:
+      {id, attack_type, seq, case_srcs, mtype, tier, matched, total, coverage, before, gaps,
+       positions(案例位置), predict, predict_source, source_ok, source_mismatch, observed_src,
+       order_ok, kw_score, kw_detail, evidence_lines, in_progress}
+    """
+    obs = chain["ordered_actions"]                        # [(action_id, source)] 时间序
+    observed_ids = [a for a, _ in obs]
+    obs_index = {}
+    for ci, (aid, src) in enumerate(obs):
+        obs_index.setdefault(aid, []).append((ci, src))
+    out = []
+    for case in cases:
+        seq = case.get("action_sequence", [])
+        al = align_case(case, observed_ids)                # 复用行级对齐
+        if al is None:
+            continue
+        case_srcs = _case_sources(case)
+        keep, mismatch = [], []
+        for pos in al["positions"]:
+            observed = {s for _, s in obs_index.get(seq[pos], [])}
+            (keep if _source_accepts(case_srcs[pos], observed) else mismatch).append(pos)
+        if not keep:
+            continue                                       # 全部来源不符 → 不列为候选
+        al2 = _classify_positions(seq, keep)               # 按位置复算形态/档位/预测（见函数说明）
+        cpos = {p: min(ci for ci, _ in obs_index[seq[p]]) for p in keep}
+        order = [cpos[p] for p in keep]
+        order_ok = all(x <= y for x, y in zip(order, order[1:]))
+        tier = al2["tier"] if order_ok else _TIER_DOWN[al2["tier"]]
+        predict, predict_pos = al2["predict"], keep[-1] + 1
+        kw, detail = 0, []
+        for l in chain["lines"]:
+            k, d = keyword_score(case, l["content"].lower())
+            kw += k
+            for x in d:
+                if x not in detail:
+                    detail.append(x)
+        hit_ids = {seq[p] for p in keep}
+        evidence = [l["log_id"] or f"L{i + 1}" for i, l in enumerate(chain["lines"])
+                    if any(a["id"] in hit_ids for a in l["actions"])]
+        out.append(dict(
+            id=case.get("id", "?"), attack_type=case.get("attack_type", ""), seq=seq,
+            case_srcs=case_srcs, mtype=al2["mtype"], tier=tier, matched=len(keep), total=len(seq),
+            coverage=len(keep) / len(seq), before=al2["before"], gaps=al2["gaps"],
+            positions=keep, source_ok=not mismatch, source_mismatch=mismatch,
+            observed_src={p: sorted({s for _, s in obs_index[seq[p]]}) for p in keep + mismatch},
+            order_ok=order_ok, predict=predict,
+            predict_source=(case_srcs[predict_pos] if predict and predict_pos < len(seq) else None),
+            kw_score=kw, kw_detail=detail, evidence_lines=evidence,
+            in_progress=(al2["mtype"] != "完整"),
+        ))
+    out.sort(key=lambda h: (-TIER_RANK[h["tier"]], -h["matched"], -h["kw_score"],
+                            -h["coverage"], h["id"]))
+    return out
+
+
+def _chain_line_marks(m, lib):
+    """案例序列渲染：● 命中 / ◐ 来源不符 / ○ 未观察，附观测来源与预期来源"""
+    parts = []
+    for i, aid in enumerate(m["seq"], 1):
+        lbl = lib.get(aid, {}).get("label", aid)
+        want = _fmt_src(m["case_srcs"][i - 1])
+        if i - 1 in m["positions"]:
+            parts.append(f"●{i}.{lbl}[{'/'.join(m['observed_src'].get(i - 1, []))}]")
+        elif i - 1 in m["source_mismatch"]:
+            parts.append(f"◐{i}.{lbl}[预期 {want}｜观测 "
+                         f"{'/'.join(m['observed_src'].get(i - 1, []))}]")
+        else:
+            parts.append(f"○{i}.{lbl}[预期 {want}]")
+    return "  ".join(parts)
+
+
+def show_chain(chain, store, top_n=3):
+    """链级输出（设计文档 §6.4 格式 + §7 进行中语义 + 行级分诊并列）"""
+    cases, lib = store
+    print(f"== 链 {chain['chain_id']}（{len(chain['lines'])} 行证据，"
+          f"{'→'.join(chain['sources'])}；{chain['link_basis']}/{chain['confidence']}）")
+    for f in chain["flags"]:
+        print("   ⚑ " + f)
+    for l in chain["lines"]:
+        acts = "、".join(a["label"] for a in l["actions"]) or "（无动作）"
+        print(f"   · 行 {l['ts']} [{l['source']}] {l['log_id'] or '-'} | {acts}")
+    matches = chain_match(chain, cases, lib)
+    if not matches:
+        print("   [链] 无相似案例命中 → 按【新链案例】处理")
+    for m in matches[:top_n]:
+        print(f"   [链] [{m['id']}] {m['mtype']}匹配 {m['matched']}/{m['total']}（{m['tier']}）"
+              f"{m['attack_type']}")
+        print("        - 已重合: " + _chain_line_marks(m, lib))
+        if m["source_mismatch"]:
+            print("        - 来源不符(◐): 该阶段疑似非本案证据，不计入匹配计数")
+        if not m["order_ok"]:
+            print("        - ⚠ 顺序异常: 链内时间序与案例序列相反（已降档），待确认")
+        if m["predict"]:
+            print(f"        - 预测下一步: {lib.get(m['predict'], {}).get('label', m['predict'])}"
+                  f" [预期来源: {_fmt_src(m['predict_source'])}]")
+        print("        - 证据行: " + ("、".join(m["evidence_lines"]) or "—"))
+        if m["kw_score"] > 0:
+            print(f"        - 关键词(链内合计): score={m['kw_score']}"
+                  f"({_kw_band(m['kw_score'])}) " + "; ".join(m["kw_detail"][:3]))
+    if matches and matches[0]["in_progress"]:
+        ps = matches[0]["predict_source"]
+        tip = (f"建议持续关注 / 拉取 [{_fmt_src(ps)}] 侧证据" if ps
+               else "暂无明确下一步，建议各来源补证")
+        print(f"   ⚠ 链未闭合（{matches[0]['mtype']}匹配）→ 攻击进行中：{tip}")
+    triage = []
+    for l in chain["lines"][:4]:
+        hits, kw_only, _obs = retrieve(l["content"], store)
+        if hits:
+            triage.append(f"{l['log_id'] or '?'}→{hits[0]['id']}({hits[0]['tier']})")
+        elif kw_only:
+            triage.append(f"{l['log_id'] or '?'}→kw:{kw_only[0][1]}(弱)")
+        else:
+            triage.append(f"{l['log_id'] or '?'}→无")
+    if triage:
+        print("   [分诊·行级] " + " / ".join(triage))
+    print()
+
+
+def _load_chain_assembly():
+    import importlib.util
+    p = pathlib.Path(__file__).resolve().parent / "chain_assembly.py"
+    spec = importlib.util.spec_from_file_location("chain_assembly", p)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    return m
+
+
+def run_chain(lines, store, window_s=None):
+    """批内组装候选链 → 逐链链级匹配输出（--chain 入口）"""
+    kw = {} if window_s is None else {"window_s": window_s}
+    chains = _load_chain_assembly().assemble_chains(lines, lib=store[1], matcher=match_actions, **kw)
+    if not chains:
+        print("（无可解析日志行）")
+        return
+    n_multi = sum(1 for c in chains if len(c["lines"]) > 1)
+    print(f"# 链级分析：{len(chains)} 条候选链（多行链 {n_multi}），"
+          f"组装仅做候选生成，链归属由 Agent 确认\n")
+    for ch in chains:
+        show_chain(ch, store)
+
+
 def main():
     cases, lib = load_store()
     args = sys.argv[1:]
@@ -275,6 +486,27 @@ def main():
         lines = text.splitlines()
     elif args[0] == "--batch":
         lines = pathlib.Path(args[1]).read_text(encoding="utf-8").splitlines()
+    elif args[0] == "--chain":
+        # 链级入口：批内组装候选链 → 链整体匹配（行级结果降级为分诊提示）
+        rest = args[1:]
+        window = None
+        if "--window" in rest:
+            i = rest.index("--window")
+            if i + 1 >= len(rest):
+                print("用法: python src/retrieve.py --chain <日志文件> [--window <拆簇窗口秒数>]")
+                return
+            try:
+                window = int(rest[i + 1])
+            except ValueError:
+                print(f"--window 需要整数秒数，收到: {rest[i + 1]!r}")
+                return
+            rest = rest[:i] + rest[i + 2:]
+        if rest:
+            lines = pathlib.Path(rest[0]).read_text(encoding="utf-8").splitlines()
+        else:
+            lines = sys.stdin.read().splitlines()
+        run_chain(lines, (cases, lib), window_s=window)
+        return
     else:
         lines = [" ".join(args)]
     lines = [l for l in lines if l.strip()]

@@ -11,3 +11,7 @@ __pycache__/
 # 不上传到 GitHub 的目录
 log-schema/
 Agent记忆产品落地-调研/
+
+# 内网信息与工具截图，不上传
+mcp.txt
+mcp-tool.png

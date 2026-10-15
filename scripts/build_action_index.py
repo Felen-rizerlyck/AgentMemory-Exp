@@ -22,6 +22,11 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 BASE = pathlib.Path(__file__).resolve().parent.parent
 STORE = BASE / "data" / "memory_store.json"
 
+# 取值域（与 src/chain_assembly.py 的 STAGE_ORDER / 来源枚举保持一致）
+VALID_STAGES = ("recon", "initial_access", "execution", "privilege",
+                "persistence", "lateral", "c2", "exfil")
+VALID_SOURCES = ("waf", "web", "rasp", "hids", "dns", "any")
+
 # ---------------- 动作库 ----------------
 # label: 中文名（去变量后的动作描述）；regex: 结构正则（锚定特有结构，不锚定通用片段）；
 # generic: 是否通用探针（单发命中=弱参照，不单独支撑结论）
@@ -60,7 +65,7 @@ ACTIONS = {
     "xp_cmdshell_probe":     {"label": "MSSQL xp_cmdshell 探针", "regex": r"xp_cmdshell\(", "generic": False},
 
     # ---- CASE-006 Java 反序列化 ----
-    "com_sun_gadget":        {"label": "com.sun JNDI gadget 类名", "regex": r"com\.sun\.", "generic": False},
+    "com_sun_gadget":        {"label": "com.sun JNDI gadget 类名", "regex": r"com\.sun", "generic": False},
     "gcp_metadata_ssrf":     {"label": "GCP 元数据 SSRF (metadata.google.internal)", "regex": r"metadata\.google\.internal", "generic": False},
 
     # ---- CASE-007 SMB 横向 ----
@@ -90,7 +95,7 @@ ACTIONS = {
 
     # ---- CASE-013 Spring SpEL ----
     "spring_routing_expr":   {"label": "Spring 路由表达式注入 (routing-expression)", "regex": r"spring\.cloud\.function\.routing-expression", "generic": False},
-    "spel_type_ref":         {"label": "SpEL 类型引用链 (T(java.lang.Runtime))", "regex": r"T\(java\.lang\.Runtime", "generic": False},
+    "spel_type_ref":         {"label": "SpEL 类型引用链 (java.lang.Runtime)", "regex": r"java\.lang\.Runtime", "generic": False},
     "script_javascript":     {"label": "${script:javascript 脚本变体", "regex": r"\$\{script:javascript", "generic": False},
 
     # ---- CASE-014 cron 持久化反连 ----
@@ -130,13 +135,44 @@ ACTIONS = {
 
     # ---- CASE-021 rc.local 持久化 ----
     "rclocal_sed_insert":    {"label": "sed 植入 rc.local 启动项", "regex": r"sed\s+-i.{0,80}rc\.local", "generic": False},
-    "tmp_svc_drop":          {"label": "落地 /tmp/.svc", "regex": r"/tmp/\.svc", "generic": False},
+    "tmp_svc_drop":          {"label": "落地 /tmp/.svc", "regex": r"tmp\\?/\.svc", "generic": False},
     "tmp_implant_drop":      {"label": "落地 /tmp/.implant", "regex": r"/tmp/\.implant", "generic": False},
     "rclocal_append":        {"label": "追加写 rc.local", "regex": r">>\s*/etc/rc\.local", "generic": False},
 
     # ---- CASE-022 fpm_path + xp_dirtree ----
     "fpm_path_param":        {"label": "PHP fpm_path 路径参数", "regex": r"fpm_path", "generic": False},
     "xp_dirtree_unc":        {"label": "MSSQL xp_dirtree UNC 外连", "regex": r"xp_dirtree", "generic": False},
+
+    # ---- CASE-023 Log4Shell JNDI 注入 ----
+    "jndi_lookup":           {"label": "JNDI 注入查找 (${jndi:...})", "regex": r"\$\{jndi:(?:ldap|rmi|dns|iiop)", "generic": False},
+
+    # ---- CASE-024 上传目录 JSP webshell ----
+    "uploads_jsp_shell":     {"label": "上传目录 JSP webshell (/uploads/*.jsp)", "regex": r"/uploads/[a-z0-9_]+\.jsp", "generic": False},
+
+    # ---- CASE-025 /api/v2/render 反序列化 ----
+    "render_api_path":       {"label": "反序列化渲染接口 /api/v2/render", "regex": r"/api/v2/render", "generic": False},
+
+    # ---- CASE-026 /api/v2/search 时间盲注 ----
+    "search_api_path":       {"label": "搜索接口 /api/v2/search", "regex": r"/api/v2/search", "generic": False},
+    "sqli_and_sleep":        {"label": "盲注 ' AND (SELECT sleep(5))--", "regex": r"'\s*AND\s*\(\s*SELECT\s+sleep\(", "generic": False},
+
+    # ---- CASE-027 Mimikatz 凭据窃取 ----
+    "mimikatz_exec":         {"label": "Mimikatz 工具执行 (mimikatz.exe)", "regex": r"\bmimikatz(?:\.exe)?\b", "generic": False},
+    "mimikatz_privilege_debug": {"label": "Mimikatz privilege::debug 调试提权", "regex": r"privilege::debug", "generic": False},
+    "sekurlsa_logonpasswords": {"label": "Mimikatz sekurlsa::logonpasswords 凭据抓取", "regex": r"sekurlsa::logonpasswords", "generic": False},
+
+    # ---- CASE-028 载荷下载执行链 ----
+    "tmp_dot_download":      {"label": "下载载荷落地 /tmp 隐藏文件 (curl/wget -o/-O)", "regex": r"(?:curl|wget)\b[^\n]{0,80}?-[oO]\s+/tmp/\.\w+", "generic": False},
+    "chmod_x_tmp_dot":       {"label": "chmod +x 落地 /tmp 隐藏文件", "regex": r"chmod\s+\+x\s+/tmp/\.\w+", "generic": False},
+    "exec_tmp_dot":          {"label": "执行落地 /tmp 隐藏文件", "regex": r"&&\s*/tmp/\.\w+", "generic": False},
+
+    # ---- CASE-029 Exchange ProxyLogon 风格利用链（SSRF → IIS 执行 → ASPX webshell → 提权 → 服务持久化 → DNS 外传） ----
+    "exch_proxylogon_ssrf":  {"label": "Exchange ProxyLogon SSRF 请求头 (X-BEResource)", "regex": r"x-beresource=", "generic": False},
+    "w3wp_spawn_cmd":        {"label": "IIS 工作进程派生 cmd.exe (w3wp→cmd)", "regex": r"w3wp\.exe.{0,120}?cmd\.exe", "generic": False},
+    "aspx_shell_path":       {"label": "aspnet_client 目录 ASPX webshell", "regex": r"/aspnet_client/[A-Za-z0-9_/]+\.aspx", "generic": False},
+    "printspoofer_priv":     {"label": "PrintSpoofer 提权工具 (SeImpersonate)", "regex": r"printspoofer(?:\.exe)?", "generic": False},
+    "sc_create_service":     {"label": "sc create 注册 Windows 服务", "regex": r"sc(?:\.exe)?\s+create\s+\w+\s+binpath=", "generic": False},
+    "dns_b64_label_beacon":  {"label": "长 base64 标签 DNS TXT 外传", "regex": r"\b[A-Za-z0-9+/=]{18,}\.[a-z0-9-]+\.[a-z]{2,}\b", "generic": False},
 }
 
 # ---------------- 案例动作序列（按攻击链顺序，人工标注自日志证据） ----------------
@@ -163,6 +199,147 @@ SEQUENCES = {
     "CASE-020": ["dags_run_path", "cmd_inject_semi_id", "script_exec_text"],
     "CASE-021": ["rclocal_sed_insert", "tmp_svc_drop", "rclocal_append", "tmp_implant_drop"],
     "CASE-022": ["fpm_path_param", "cmd_id_probe", "xp_dirtree_unc"],
+    "CASE-023": ["jndi_lookup"],
+    "CASE-024": ["uploads_jsp_shell", "cmd_id_probe"],
+    "CASE-025": ["render_api_path", "java_ser_magic"],
+    "CASE-026": ["search_api_path", "sqli_and_sleep"],
+    "CASE-027": ["mimikatz_exec", "mimikatz_privilege_debug", "sekurlsa_logonpasswords"],
+    "CASE-028": ["tmp_dot_download", "chmod_x_tmp_dot", "exec_tmp_dot"],
+    "CASE-029": ["exch_proxylogon_ssrf", "w3wp_spawn_cmd", "aspx_shell_path",
+                 "printspoofer_priv", "sc_create_service", "dns_b64_label_beacon"],
+}
+
+# >>> ACTION_SOURCES_BEGIN
+# ---------------- 案例动作观测来源（链层来源槽位校验用） ----------------
+# 取值: waf / web / rasp / hids / dns / any（any = 不校验）；多来源用列表（任一命中即通过）
+# 来源: 由 scripts/derive_action_sources.py 依 dataset/ 与 data/incoming_logs.txt 观测推导（可重跑复核）
+# 分支构成: 直接观测 77 / generic→any 12 / 人工覆盖 4 / 回退推断 0（人工覆盖口径见 derive_action_sources.py 的 OVERRIDES）
+SOURCES = {
+    "CASE-001": {"wmic_remote_exec": "hids", "whoami_probe": "any", "net_user_add": "hids", "net_localgroup_add": "hids"},
+    "CASE-002": {"dga_hex_subdomain": "dns"},
+    "CASE-003": {"lfi_traversal": ["waf", "web", "rasp"], "node_sandbox_escape": "waf", "imds_target": ["waf", "web", "rasp"], "mount_overlay_priv": ["waf", "web"]},
+    "CASE-004": {"ssh_landed_key": "hids", "ssh_no_hostcheck": "hids", "id_hostname_probe": "any"},
+    "CASE-005": {"double_encoded_dot": ["waf", "web", "rasp"], "cgi_sh_path": ["waf", "web", "rasp"], "echo_id_probe": "any", "xp_cmdshell_probe": ["waf", "web"]},
+    "CASE-006": {"java_ser_magic": ["waf", "rasp"], "cmd_id_probe": "any", "com_sun_gadget": "rasp", "gcp_metadata_ssrf": ["waf", "web"]},
+    "CASE-007": {"net_view_domain": "hids", "smb_admin_share": "hids"},
+    "CASE-008": {"ssti_object_chain": "waf", "popen_exec": "waf", "java_ser_magic": "waf"},
+    "CASE-009": {"sqli_tautology": ["waf", "rasp"], "mass_assignment_admin": "rasp", "mysql_load_file": ["waf", "web"]},
+    "CASE-010": {"cmd_loopback_probe": "any", "weblogic_shellsession": ["waf", "web"]},
+    "CASE-011": {"cmd_loopback_probe": "any", "tmui_semicolon_bypass": ["waf", "web"], "tmshcmd_jsp": ["waf", "web"], "tmsh_list_auth": ["waf", "web"]},
+    "CASE-012": {"phar_filename": ["waf", "web"], "phar_magic": ["waf", "web"], "sqli_tautology": ["waf", "web", "rasp"], "php_ser_payload": "rasp"},
+    "CASE-013": {"script_javascript": ["waf", "web"], "spring_routing_expr": "rasp", "spel_type_ref": ["waf", "web"]},
+    "CASE-014": {"cron_root_write": ["waf", "web"], "bash_reverse_shell": ["waf", "web"], "dev_tcp_redir": ["waf", "web"], "shebang_cmd_inject": "rasp"},
+    "CASE-015": {"user_register_path": ["waf", "web", "rasp"], "shebang_cmd_inject": ["waf", "web", "rasp"], "union_select_users": ["waf", "web"]},
+    "CASE-016": {"api_exec_path": ["waf", "web", "rasp"], "cmd_id_probe": "any", "cache_key_traversal": ["waf", "web"], "smuggle_marker": "any"},
+    "CASE-017": {"method_construct_override": ["waf", "web", "rasp"], "filter_system_override": ["waf", "web", "rasp"], "echo_id_probe": "any", "time_blind_sleep": ["waf", "web", "rasp"], "server_req_method_probe": ["waf", "web"]},
+    "CASE-018": {"smuggle_marker": "any", "xxe_doctype": ["waf", "web"], "xxe_entity_system": ["waf", "web"]},
+    "CASE-019": {"cat_shadow": "hids", "base64_w0": "hids", "fold_w30": "hids", "nslookup_var": "hids"},
+    "CASE-020": {"dags_run_path": ["waf", "web", "rasp"], "cmd_inject_semi_id": ["waf", "web", "rasp"], "script_exec_text": ["waf", "web"]},
+    "CASE-021": {"rclocal_sed_insert": "hids", "tmp_svc_drop": "hids", "rclocal_append": "hids", "tmp_implant_drop": "hids"},
+    "CASE-022": {"fpm_path_param": ["waf", "web", "rasp"], "cmd_id_probe": "any", "xp_dirtree_unc": ["waf", "web"]},
+    "CASE-023": {"jndi_lookup": "waf"},
+    "CASE-024": {"uploads_jsp_shell": "waf", "cmd_id_probe": "any"},
+    "CASE-025": {"render_api_path": "waf", "java_ser_magic": "waf"},
+    "CASE-026": {"search_api_path": "waf", "sqli_and_sleep": "waf"},
+    "CASE-027": {"mimikatz_exec": "hids", "mimikatz_privilege_debug": "hids", "sekurlsa_logonpasswords": "hids"},
+    "CASE-028": {"tmp_dot_download": ["waf", "hids"], "chmod_x_tmp_dot": ["waf", "hids"], "exec_tmp_dot": ["waf", "hids"]},
+    "CASE-029": {"exch_proxylogon_ssrf": ["waf", "web"], "w3wp_spawn_cmd": "hids", "aspx_shell_path": ["web", "rasp"], "printspoofer_priv": "hids", "sc_create_service": "hids", "dns_b64_label_beacon": "dns"},
+}
+# <<< ACTION_SOURCES_END
+
+# ---------------- 动作阶段标注（链层 Step5 阶段校验 + 链级输出用） ----------------
+# 取值 = STAGE_ORDER（src/chain_assembly.py）: recon / initial_access / execution / privilege
+#        / persistence / lateral / c2 / exfil；recon（侦察类）不参与阶段顺序判定。
+# 口径: 按动作语义（该动作用于攻击链哪一步）+ 案例证据标注，一次性的小标注任务（非自动推导）。
+STAGES = {
+    # ---- 共享通用探针（探针=侦察/执行证据） ----
+    "whoami_probe": "recon",
+    "cmd_id_probe": "execution",
+    "cmd_loopback_probe": "execution",
+    "echo_id_probe": "execution",
+    "id_hostname_probe": "recon",
+    "smuggle_marker": "initial_access",
+    "sqli_tautology": "initial_access",
+    "java_ser_magic": "execution",
+    # ---- CASE-001 ~ 010 ----
+    "wmic_remote_exec": "lateral",
+    "net_user_add": "persistence",
+    "net_localgroup_add": "persistence",
+    "dga_hex_subdomain": "c2",
+    "lfi_traversal": "initial_access",
+    "node_sandbox_escape": "execution",
+    "imds_target": "execution",
+    "mount_overlay_priv": "privilege",
+    "ssh_landed_key": "lateral",
+    "ssh_no_hostcheck": "lateral",
+    "double_encoded_dot": "initial_access",
+    "cgi_sh_path": "initial_access",
+    "xp_cmdshell_probe": "execution",
+    "com_sun_gadget": "execution",
+    "gcp_metadata_ssrf": "execution",
+    "net_view_domain": "recon",
+    "smb_admin_share": "lateral",
+    "ssti_object_chain": "execution",
+    "popen_exec": "execution",
+    "mass_assignment_admin": "privilege",
+    "mysql_load_file": "exfil",
+    "weblogic_shellsession": "execution",
+    # ---- CASE-011 ~ 020 ----
+    "tmui_semicolon_bypass": "initial_access",
+    "tmshcmd_jsp": "execution",
+    "tmsh_list_auth": "recon",
+    "phar_magic": "execution",
+    "phar_filename": "initial_access",
+    "php_ser_payload": "execution",
+    "spring_routing_expr": "initial_access",
+    "spel_type_ref": "execution",
+    "script_javascript": "execution",
+    "cron_root_write": "persistence",
+    "bash_reverse_shell": "c2",
+    "dev_tcp_redir": "c2",
+    "shebang_cmd_inject": "execution",
+    "user_register_path": "initial_access",
+    "union_select_users": "exfil",
+    "api_exec_path": "initial_access",
+    "cache_key_traversal": "initial_access",
+    "method_construct_override": "initial_access",
+    "filter_system_override": "execution",
+    "time_blind_sleep": "execution",
+    "server_req_method_probe": "recon",
+    "xxe_doctype": "initial_access",
+    "xxe_entity_system": "execution",
+    "cat_shadow": "exfil",
+    "base64_w0": "exfil",
+    "fold_w30": "exfil",
+    "nslookup_var": "exfil",
+    "dags_run_path": "initial_access",
+    "cmd_inject_semi_id": "execution",
+    "script_exec_text": "execution",
+    # ---- CASE-021 ~ 028 ----
+    "rclocal_sed_insert": "persistence",
+    "tmp_svc_drop": "persistence",
+    "tmp_implant_drop": "persistence",
+    "rclocal_append": "persistence",
+    "fpm_path_param": "initial_access",
+    "xp_dirtree_unc": "exfil",
+    "jndi_lookup": "execution",
+    "uploads_jsp_shell": "initial_access",
+    "render_api_path": "initial_access",
+    "search_api_path": "initial_access",
+    "sqli_and_sleep": "execution",
+    "mimikatz_exec": "execution",
+    "mimikatz_privilege_debug": "privilege",
+    "sekurlsa_logonpasswords": "exfil",
+    "tmp_dot_download": "execution",
+    "chmod_x_tmp_dot": "execution",
+    "exec_tmp_dot": "execution",
+    # ---- CASE-029 ----
+    "exch_proxylogon_ssrf": "initial_access",
+    "w3wp_spawn_cmd": "execution",
+    "aspx_shell_path": "execution",
+    "printspoofer_priv": "privilege",
+    "sc_create_service": "persistence",
+    "dns_b64_label_beacon": "c2",
 }
 
 
@@ -187,11 +364,39 @@ def validate():
     unused = set(ACTIONS) - used
     if unused:
         errors.append(f"动作库存在未被任何案例引用的动作: {sorted(unused)}")
+    # 阶段标注（STAGES）: 必须与动作库一一对应，取值在枚举内
+    if set(STAGES) != set(ACTIONS):
+        miss, extra = sorted(set(ACTIONS) - set(STAGES)), sorted(set(STAGES) - set(ACTIONS))
+        if miss:
+            errors.append(f"动作缺 stage 标注: {miss}")
+        if extra:
+            errors.append(f"STAGES 含未定义动作: {extra}")
+    for aid, st in STAGES.items():
+        if st not in VALID_STAGES:
+            errors.append(f"动作 {aid} 阶段取值非法: {st}")
+    # 来源标注（SOURCES）: 必须与 SEQUENCES 逐案例、逐位置对齐
+    if set(SOURCES) != set(SEQUENCES):
+        miss, extra = sorted(set(SEQUENCES) - set(SOURCES)), sorted(set(SOURCES) - set(SEQUENCES))
+        if miss:
+            errors.append(f"案例缺 action_sources 标注: {miss}")
+        if extra:
+            errors.append(f"SOURCES 含未定义案例: {extra}")
+    for cid, seq in SEQUENCES.items():
+        srcs = SOURCES.get(cid, {})
+        if list(srcs) != list(seq):
+            errors.append(f"{cid} SOURCES 与 SEQUENCES 未对齐: {list(srcs)} vs {seq}")
+            continue
+        for aid, v in srcs.items():
+            for x in (v if isinstance(v, list) else [v]):
+                if x not in VALID_SOURCES:
+                    errors.append(f"{cid}.{aid} 来源取值非法: {x}")
     if errors:
         for e in errors:
             print("校验失败:", e)
         sys.exit(1)
-    print(f"校验通过: {len(ACTIONS)} 动作 / {len(SEQUENCES)} 案例序列 / 共享动作 {len(ACTIONS) - len(used) + len([a for a in used if sum(1 for s in SEQUENCES.values() if a in s) > 1])} 个")
+    shared = [a for a in used if sum(1 for s in SEQUENCES.values() if a in s) > 1]
+    print(f"校验通过: {len(ACTIONS)} 动作 / {len(SEQUENCES)} 案例序列 / 共享动作 {len(shared)} 个"
+          f" / stage 标注 {len(STAGES)} / action_sources {len(SOURCES)} 案例")
 
 
 def main():
@@ -208,14 +413,17 @@ def main():
         print(f"案例缺少动作序列: {sorted(nocover)}")
         sys.exit(1)
     validate()
-    store["action_library"] = ACTIONS
+    store["action_library"] = {aid: dict(a, stage=STAGES[aid]) for aid, a in ACTIONS.items()}
     for c in cases:
-        c["action_sequence"] = SEQUENCES[c["id"]]
+        cid = c["id"]
+        c["action_sequence"] = SEQUENCES[cid]
+        c["action_sources"] = [SOURCES[cid][aid] for aid in SEQUENCES[cid]]
     if dry:
         print("[--dry-run] 不写盘")
         return
     STORE.write_text(json.dumps(store, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"已写入 {STORE.name}: action_library({len(ACTIONS)}) + {len(cases)} 案例 action_sequence")
+    print(f"已写入 {STORE.name}: action_library({len(ACTIONS)}，含 stage) + "
+          f"{len(cases)} 案例 action_sequence + action_sources")
 
 
 if __name__ == "__main__":

