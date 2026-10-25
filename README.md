@@ -23,7 +23,9 @@
 | `docs/` | 设计文档：`MULTI_LOG_CHAIN_DESIGN.md`（链层方案 + **§12 实现记录/偏差/审查修复**）、`ACTION_SEQUENCE_MATCHING.md`、`ENTITY_*.md`、`LOG_SCHEMA_ADAPTATION.md` |
 | `history/` | 归档区：v1（`old_retrieve.py`、`old_*.md`、`old_eval/`）、链层前快照（`old_GUIDE.md`、`old_retrieve_v2_linelevel.py`、`old_build_action_index_v2.py`、`old_memory_store_pre_chain.json`） |
 | `skills/` | `security-log-case-memory` skill 的仓库内副本：`SKILL.md`（运行流程常读版）+ `references/`（`runtime-playbook.md` **运行手册** · `case-write-spec.md` 写规 · `upgrade-playbook.md` 开发/升级〔⚠ 仅开发阶段〕· `production-log-schema.md` 生产适配）+ `scripts/`（`check_gates.py` 门禁一把梭 · `measure_assembly_quality.py` 组装质量） |
-| `dataset/` | 原始日志批次（`data-901-910` ~ `data-921-930`）+ 解析存档 |
+| `dataset/` | 原始日志批次（`data-901-910` ~ `data-921-930`）+ 解析存档；另有合成批次 `data-1001-1020` ~ `data-1121-1140`（140 组、7 形态/家族）与生成器 `gen/`（`SPEC.md` / 渲染器 / 校验器） |
+| `demo/` | 独立可搬移的**案例记忆原型**（8 个入库案例 + 检索 + 三个 CLI + schema 文档），用于记忆机制的可用性/消融评测 |
+| `eval/usability_ablation/` | **记忆框架评测**：检索层全量扫描、LLM 单轮判定（direct / catalog / assisted）、残缺补全、通道消融、完整性/配对判别；含三套 GT（`gt_units` / `gt_next_phase_60` / `gt_step_level_60`）与报告 |
 | `Agent记忆产品落地-调研/` | 产品落地调研（独立于本验证流程） |
 
 ## 快速开始
@@ -89,6 +91,19 @@ python history/old_eval/run_recall_full.py   # v1 归档框架（对照用，仍
 | 质量保障 | 3 个 deepseek-flash 子代理并行审查（组装/匹配/注入），全部发现逐条修复——见 `docs/MULTI_LOG_CHAIN_DESIGN.md` **§12.7** |
 
 **库规模**：29 案例（CASE-001~029）· 83 动作（全部含 `stage`）· 29 案例含 `action_sources`。
+
+## 记忆框架评测（`demo/` 原型 + `eval/usability_ablation/`）
+
+在 8 案例的 `demo/` 原型上做了一轮可用性与消融评测（qwen2.5:14b / deepseek-r1:14b，单轮、`temperature=0`、每轮独立、测试期不入库，`freeze.json` 校验记忆文件未被写入）：
+
+- **家族层判断**：只给日志 56%（qwen）→ 加 8 条案例摘要 **97%**；再加召回证据无额外增益（94%，r1 为 74%→88%→88%）。
+- **残缺补全**：判断"有没有缺口"不需要记忆（无记忆已 94~95%）；判断"缺哪一步、下一步该出现哪个来源"需要（**61% → 80%**）。
+- **通道消融**（离线，140 unit × 9 配置）：动作通道是唯一能产出 `strong` 的通道；关键词通道主要决定**候选面**（无候选 60→82），`probes`/`mitre` 近乎冗余；`expected_sources` 闸门必要，`order` 校验在本实现下不独立生效。
+- **完整性判断**（场景二真实链）：无记忆时模型恒判"不完整"（特异度 0%，Youden J=0）；配对版能指出差异行，但选择受位置偏置左右（完整版在 B 时仅 53%）。
+
+报告见 `eval/usability_ablation/result_mem_ex.md`（记忆辅助效果）与 `result_retr_ex.md`（通道消融），复现命令与目录约定见该目录 `README.md`。
+
+> **场景二真实数据不在本仓库**：`场景二_202609232225/`（18 个用例，含 pcap/evtx/恶意样本）及其派生目录已写入 `.gitignore`，仅本地保留。
 
 ## 已知边界（诚实标注）
 
