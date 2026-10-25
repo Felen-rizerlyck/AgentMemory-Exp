@@ -1,0 +1,205 @@
+﻿unit,stratum,gt_class,gt_case,n_steps,variant,n_lines,observed,missing,next_step,next_label,next_sources,partial_sources,scorable,note
+1001,exact,exact,CASE-001,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1001,exact,exact,CASE-001,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1001,exact,exact,CASE-001,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1001,exact,exact,CASE-001,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1021,exact,exact,CASE-002,4,full,7,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1021,exact,exact,CASE-002,4,del1,6,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1021,exact,exact,CASE-002,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1021,exact,exact,CASE-002,4,delweb,6,S1|S2|S3|S4,,,,,S1:web,True,
+1042,exact,exact,CASE-003,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1042,exact,exact,CASE-003,3,del1,2,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1042,exact,exact,CASE-003,3,del2,1,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1061,exact,exact,CASE-004,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1061,exact,exact,CASE-004,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1061,exact,exact,CASE-004,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1061,exact,exact,CASE-004,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1081,exact,exact,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1081,exact,exact,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（cipher）,hids,,True,
+1081,exact,exact,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（cipher）,hids,,True,
+1102,exact,exact,CASE-006,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1102,exact,exact,CASE-006,3,del1,2,S1|S3,S2,S2,主机命令（Compress-Archive）,hids,,True,
+1102,exact,exact,CASE-006,3,del2,1,S1,S2|S3,S2,主机命令（Compress-Archive）,hids,,True,
+1121,exact,exact,CASE-007,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1121,exact,exact,CASE-007,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1121,exact,exact,CASE-007,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1121,exact,exact,CASE-007,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1007,variant,family_variant,CASE-001,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1007,variant,family_variant,CASE-001,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1007,variant,family_variant,CASE-001,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1007,variant,family_variant,CASE-001,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1013,variant,family_variant,CASE-004,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1013,variant,family_variant,CASE-004,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1013,variant,family_variant,CASE-004,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1013,variant,family_variant,CASE-004,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1018,variant,family_variant,CASE-001,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1018,variant,family_variant,CASE-001,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1018,variant,family_variant,CASE-001,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1018,variant,family_variant,CASE-001,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1035,variant,family_variant,CASE-008,4,full,7,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1035,variant,family_variant,CASE-008,4,del1,6,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1035,variant,family_variant,CASE-008,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1035,variant,family_variant,CASE-008,4,delweb,6,S1|S2|S3|S4,,,,,S1:web,True,
+1047,variant,family_variant,CASE-005,1,full,1,S1,,,,,,True,对照：不应报缺口
+1047,variant,family_variant,CASE-005,1,del1,0,,S1,S1,主机命令（wevtutil）,hids,,False,删步后无日志（等同 blind 条件）
+1047,variant,family_variant,CASE-005,1,del2,0,,S1,S1,主机命令（wevtutil）,hids,,False,删步后无日志（等同 blind 条件）
+1048,variant,family_variant,CASE-002,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1048,variant,family_variant,CASE-002,2,del1,1,S1,S2,S2,主机命令（id）,hids,,True,
+1048,variant,family_variant,CASE-002,2,del2,1,S1,S2,S2,主机命令（id）,hids,,False,与 del1 等价（只有 2 步）
+1049,variant,family_variant,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1049,variant,family_variant,,2,del1,1,S1,S2,S2,主机命令（mv）,hids,,True,
+1049,variant,family_variant,,2,del2,1,S1,S2,S2,主机命令（mv）,hids,,False,与 del1 等价（只有 2 步）
+1050,variant,family_variant,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1050,variant,family_variant,,2,del1,1,S1,S2,S2,主机命令（whoami）,hids,,True,
+1050,variant,family_variant,,2,del2,1,S1,S2,S2,主机命令（whoami）,hids,,False,与 del1 等价（只有 2 步）
+1073,variant,family_variant,CASE-002,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1073,variant,family_variant,CASE-002,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1073,variant,family_variant,CASE-002,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1073,variant,family_variant,CASE-002,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1074,variant,family_variant,CASE-002,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1074,variant,family_variant,CASE-002,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1074,variant,family_variant,CASE-002,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1074,variant,family_variant,CASE-002,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1082,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1082,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（cipher）,hids,,True,
+1082,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（cipher）,hids,,False,与 del1 等价（只有 2 步）
+1083,variant,family_variant,CASE-005,2,full,4,S1|S2,,,,,,True,对照：不应报缺口
+1083,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,DNS C2（265662bc.tafmez-4b19.net）,dns,,True,
+1083,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,DNS C2（265662bc.tafmez-4b19.net）,dns,,False,与 del1 等价（只有 2 步）
+1084,variant,family_variant,CASE-003,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1084,variant,family_variant,CASE-003,3,del1,2,S1|S3,S2,S2,主机命令（vssadmin）,hids,,True,
+1084,variant,family_variant,CASE-003,3,del2,1,S1,S2|S3,S2,主机命令（vssadmin）,hids,,True,
+1085,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1085,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（powershell）,hids,,True,
+1085,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（powershell）,hids,,False,与 del1 等价（只有 2 步）
+1086,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1086,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（vssadmin）,hids,,True,
+1086,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（vssadmin）,hids,,True,
+1087,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1087,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（for）,hids,,True,
+1087,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（for）,hids,,False,与 del1 等价（只有 2 步）
+1088,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1088,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（rm）,hids,,True,
+1088,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（rm）,hids,,False,与 del1 等价（只有 2 步）
+1089,variant,family_variant,CASE-005,1,full,1,S1,,,,,,True,对照：不应报缺口
+1089,variant,family_variant,CASE-005,1,del1,0,,S1,S1,主机命令（net）,hids,,False,删步后无日志（等同 blind 条件）
+1089,variant,family_variant,CASE-005,1,del2,0,,S1,S1,主机命令（net）,hids,,False,删步后无日志（等同 blind 条件）
+1090,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1090,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（wmic）,hids,,True,
+1090,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（wmic）,hids,,True,
+1091,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1091,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（rm）,hids,,True,
+1091,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（rm）,hids,,False,与 del1 等价（只有 2 步）
+1092,variant,family_variant,CASE-005,3,full,5,S1|S2|S3,,,,,,True,对照：不应报缺口
+1092,variant,family_variant,CASE-005,3,del1,4,S1|S3,S2,S2,主机命令（tar）,hids,,True,
+1092,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（tar）,hids,,True,
+1093,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1093,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（find）,hids,,True,
+1093,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（find）,hids,,True,
+1094,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1094,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（find）,hids,,True,
+1094,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（find）,hids,,True,
+1095,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1095,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（powershell）,hids,,True,
+1095,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（powershell）,hids,,True,
+1096,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1096,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（wbadmin）,hids,,True,
+1096,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（wbadmin）,hids,,True,
+1097,variant,family_variant,CASE-005,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1097,variant,family_variant,CASE-005,2,del1,1,S1,S2,S2,主机命令（psexec）,hids,,True,
+1097,variant,family_variant,CASE-005,2,del2,1,S1,S2,S2,主机命令（psexec）,hids,,False,与 del1 等价（只有 2 步）
+1098,variant,family_variant,CASE-005,3,full,5,S1|S2|S3,,,,,,True,对照：不应报缺口
+1098,variant,family_variant,CASE-005,3,del1,4,S1|S3,S2,S2,主机命令（tar）,hids,,True,
+1098,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（tar）,hids,,True,
+1099,variant,family_variant,CASE-005,1,full,1,S1,,,,,,True,对照：不应报缺口
+1099,variant,family_variant,CASE-005,1,del1,0,,S1,S1,主机命令（curl）,hids,,False,删步后无日志（等同 blind 条件）
+1099,variant,family_variant,CASE-005,1,del2,0,,S1,S1,主机命令（curl）,hids,,False,删步后无日志（等同 blind 条件）
+1100,variant,family_variant,CASE-005,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1100,variant,family_variant,CASE-005,3,del1,2,S1|S3,S2,S2,主机命令（for）,hids,,True,
+1100,variant,family_variant,CASE-005,3,del2,1,S1,S2|S3,S2,主机命令（for）,hids,,True,
+1008,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1008,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1008,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1008,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1002,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1002,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1002,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1002,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1052,new_with_candidate,new,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1052,new_with_candidate,new,,2,del1,1,S1,S2,S2,主机命令（cat）,hids,,True,
+1052,new_with_candidate,new,,2,del2,1,S1,S2,S2,主机命令（cat）,hids,,False,与 del1 等价（只有 2 步）
+1011,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1011,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1011,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1011,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1103,new_with_candidate,new,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1103,new_with_candidate,new,,2,del1,1,S1,S2,S2,主机命令（Rubeus.exe）,hids,,True,
+1103,new_with_candidate,new,,2,del2,1,S1,S2,S2,主机命令（Rubeus.exe）,hids,,False,与 del1 等价（只有 2 步）
+1043,new_with_candidate,new,,1,full,1,S1,,,,,,True,对照：不应报缺口
+1043,new_with_candidate,new,,1,del1,0,,S1,S1,主机命令（sc）,hids,,False,删步后无日志（等同 blind 条件）
+1043,new_with_candidate,new,,1,del2,0,,S1,S1,主机命令（sc）,hids,,False,删步后无日志（等同 blind 条件）
+1009,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1009,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1009,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1009,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1004,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1004,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1004,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1004,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1053,new_with_candidate,new,,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1053,new_with_candidate,new,,3,del1,2,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1053,new_with_candidate,new,,3,del2,1,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1012,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1012,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1012,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1012,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1116,new_with_candidate,new,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1116,new_with_candidate,new,,2,del1,1,S1,S2,S2,主机命令（certipy）,hids,,True,
+1116,new_with_candidate,new,,2,del2,1,S1,S2,S2,主机命令（certipy）,hids,,False,与 del1 等价（只有 2 步）
+1010,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1010,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1010,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1010,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1005,new_with_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1005,new_with_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1005,new_with_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1005,new_with_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1076,new_with_candidate,new,,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1076,new_with_candidate,new,,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1076,new_with_candidate,new,,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1076,new_with_candidate,new,,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1003,new_no_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1003,new_no_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1003,new_no_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1003,new_no_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1017,new_no_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1017,new_no_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1017,new_no_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1017,new_no_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,
+1045,new_no_candidate,new,,1,full,1,S1,,,,,,True,对照：不应报缺口
+1045,new_no_candidate,new,,1,del1,0,,S1,S1,主机命令（xmrig）,hids,,False,删步后无日志（等同 blind 条件）
+1045,new_no_candidate,new,,1,del2,0,,S1,S1,主机命令（xmrig）,hids,,False,删步后无日志（等同 blind 条件）
+1058,new_no_candidate,new,,2,full,2,S1|S2,,,,,,True,对照：不应报缺口
+1058,new_no_candidate,new,,2,del1,1,S1,S2,S2,主机命令（cat）,hids,,True,
+1058,new_no_candidate,new,,2,del2,1,S1,S2,S2,主机命令（cat）,hids,,False,与 del1 等价（只有 2 步）
+1066,new_no_candidate,new,,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1066,new_no_candidate,new,,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1066,new_no_candidate,new,,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1066,new_no_candidate,new,,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1077,new_no_candidate,new,,4,full,5,S1|S2|S3|S4,,,,,,True,对照：不应报缺口
+1077,new_no_candidate,new,,4,del1,4,S1|S3|S4,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1077,new_no_candidate,new,,4,del2,3,S1|S3,S2|S4,S2,应用侧证据（RASP 命中）,rasp,,True,
+1077,new_no_candidate,new,,4,delweb,4,S1|S2|S3|S4,,,,,S1:web,True,
+1101,new_no_candidate,new,,1,full,1,S1,,,,,,True,对照：不应报缺口
+1101,new_no_candidate,new,,1,del1,0,,S1,S1,主机命令（net）,hids,,False,删步后无日志（等同 blind 条件）
+1101,new_no_candidate,new,,1,del2,0,,S1,S1,主机命令（net）,hids,,False,删步后无日志（等同 blind 条件）
+1109,new_no_candidate,new,,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1109,new_no_candidate,new,,3,del1,2,S1|S3,S2,S2,主机命令（kerberos::ptt）,hids,,True,
+1109,new_no_candidate,new,,3,del2,1,S1,S2|S3,S2,主机命令（kerberos::ptt）,hids,,True,
+1113,new_no_candidate,new,,3,full,3,S1|S2|S3,,,,,,True,对照：不应报缺口
+1113,new_no_candidate,new,,3,del1,2,S1|S3,S2,S2,主机命令（net）,hids,,True,
+1113,new_no_candidate,new,,3,del2,1,S1,S2|S3,S2,主机命令（net）,hids,,True,
+1122,new_no_candidate,new,,3,full,4,S1|S2|S3,,,,,,True,对照：不应报缺口
+1122,new_no_candidate,new,,3,del1,3,S1|S3,S2,S2,应用侧证据（RASP 命中）,rasp,,True,
+1122,new_no_candidate,new,,3,del2,2,S1,S2|S3,S2,应用侧证据（RASP 命中）,rasp,,True,
+1122,new_no_candidate,new,,3,delweb,3,S1|S2|S3,,,,,S1:web,True,

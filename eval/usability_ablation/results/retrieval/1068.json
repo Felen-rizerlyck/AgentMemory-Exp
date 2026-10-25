@@ -1,0 +1,57 @@
+{
+ "unit": 1068,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Jenkins CLI remoting 反序列化远程代码执行",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-22 02:59:44",
+   "source": "waf",
+   "log_id": "WAF0346222",
+   "content": "/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3",
+   "event_id": "1068-WAF0346222"
+  },
+  {
+   "timestamp": "2026-06-22 02:59:46",
+   "source": "web",
+   "log_id": "WEB0348475",
+   "content": "/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3",
+   "event_id": "1068-WEB0348475"
+  },
+  {
+   "timestamp": "2026-06-22 02:59:48",
+   "source": "rasp",
+   "log_id": "RASP0383060",
+   "content": "https://app-java-17.ops-corp.com/cli {\"deserialization\": \"rO0ABXNyABFqYXZhLnV0aWw=\", \"cli\": \"remoting\"} Mozill",
+   "event_id": "1068-RASP0383060"
+  },
+  {
+   "timestamp": "2026-06-22 03:01:15",
+   "source": "hids",
+   "log_id": "HID0375206",
+   "content": "id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/java -jar /usr/share/jenkins/jenkins.war",
+   "event_id": "1068-HID0375206"
+  },
+  {
+   "timestamp": "2026-06-22 03:01:59",
+   "source": "hids",
+   "log_id": "HID0375210",
+   "content": "docker -H unix:///var/run/docker.sock exec -u 0 web /bin/sh -c 'id' docker docker -H unix:///var <== /usr/sbin",
+   "event_id": "1068-HID0375210"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,49 @@
+{
+ "unit": 1122,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "PyPI 恶意包 setup.py 构建期执行（构建后端注入）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 22:39:16",
+   "source": "waf",
+   "log_id": "WAF0472361",
+   "content": "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro",
+   "event_id": "1122-WAF0472361"
+  },
+  {
+   "timestamp": "2026-07-10 22:39:18",
+   "source": "web",
+   "log_id": "WEB0475433",
+   "content": "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro",
+   "event_id": "1122-WEB0475433"
+  },
+  {
+   "timestamp": "2026-07-10 22:39:19",
+   "source": "rasp",
+   "log_id": "RASP0522631",
+   "content": "https://app-django-88.ops-corp.com/api/v2/packages/install {\"build_step\": \"setup.py\", \"exec\": \"os.system\"} Moz",
+   "event_id": "1122-RASP0522631"
+  },
+  {
+   "timestamp": "2026-07-10 22:40:47",
+   "source": "hids",
+   "log_id": "HID0511915",
+   "content": "python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip",
+   "event_id": "1122-HID0511915"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

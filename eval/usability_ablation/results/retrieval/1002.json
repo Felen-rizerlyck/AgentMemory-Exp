@@ -1,0 +1,109 @@
+{
+ "unit": 1002,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "Spring4Shell，与 CASE-002 的 Tomcat PUT 上传无关（关键词误命中）"
+ },
+ "technique": "Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-12 07:55:38",
+   "source": "waf",
+   "log_id": "WAF0278444",
+   "content": "/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N",
+   "event_id": "1002-WAF0278444"
+  },
+  {
+   "timestamp": "2026-06-12 07:55:40",
+   "source": "web",
+   "log_id": "WEB0280256",
+   "content": "/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N",
+   "event_id": "1002-WEB0280256"
+  },
+  {
+   "timestamp": "2026-06-12 07:55:41",
+   "source": "rasp",
+   "log_id": "RASP0308063",
+   "content": "https://app-spring-27.ops-corp.com/submit {\"property\": \"classLoader.first\"} Mozilla/5.0 (Windows NT 11.0; Win6",
+   "event_id": "1002-RASP0308063"
+  },
+  {
+   "timestamp": "2026-06-12 07:56:40",
+   "source": "hids",
+   "log_id": "HID0301755",
+   "content": "whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== /usr/local/tomcat/bin/catalina.sh",
+   "event_id": "1002-HID0301755"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: catalina.sh"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

@@ -1,0 +1,293 @@
+待跑 280 次（已完成 2）
+[1/280] 1001 del1   qwen2.5  catalog    8.9s gap=True ns=['rasp', 'hids'] conf=3
+[2/280] 1001 del2   qwen2.5  assisted   2.2s gap=True ns=['hids', 'dns'] conf=3
+[3/280] 1001 del2   qwen2.5  catalog    4.3s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[4/280] 1001 del2   qwen2.5  direct     3.1s gap=True ns=['hids', 'rasp'] conf=3
+[5/280] 1002 del1   qwen2.5  assisted   3.8s gap=True ns=['rasp', 'hids'] conf=3
+[6/280] 1002 del1   qwen2.5  catalog    3.9s gap=True ns=['rasp', 'hids'] conf=3
+[7/280] 1002 del1   qwen2.5  direct     3.2s gap=True ns=['rasp', 'dns'] conf=3
+[8/280] 1002 del2   qwen2.5  assisted   4.9s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[9/280] 1002 del2   qwen2.5  catalog    4.9s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[10/280] 1002 del2   qwen2.5  direct     3.2s gap=True ns=['rasp', 'hids'] conf=3
+[11/280] 1003 del1   qwen2.5  assisted   3.2s gap=True ns=['rasp', 'dns'] conf=3
+[12/280] 1003 del1   qwen2.5  catalog    3.5s gap=True ns=['web', 'rasp'] conf=3
+[13/280] 1003 del1   qwen2.5  direct     3.4s gap=True ns=['rasp', 'dns'] conf=3
+[14/280] 1003 del2   qwen2.5  assisted   3.7s gap=True ns=['rasp', 'hids'] conf=3
+[15/280] 1003 del2   qwen2.5  catalog    3.8s gap=True ns=['rasp', 'hids'] conf=3
+[16/280] 1003 del2   qwen2.5  direct     3.2s gap=True ns=['hids', 'rasp'] conf=3
+[17/280] 1004 del1   qwen2.5  assisted   4.0s gap=True ns=['rasp', 'hids'] conf=3
+[18/280] 1004 del1   qwen2.5  catalog    3.7s gap=True ns=['rasp', 'hids'] conf=3
+[19/280] 1004 del1   qwen2.5  direct     4.4s gap=True ns=['waf', 'web'] conf=3
+[20/280] 1004 del2   qwen2.5  assisted   5.1s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[21/280] 1004 del2   qwen2.5  catalog    5.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[22/280] 1004 del2   qwen2.5  direct     3.2s gap=True ns=['hids', 'rasp'] conf=3
+[23/280] 1005 del1   qwen2.5  assisted   4.1s gap=True ns=['web', 'rasp'] conf=3
+[24/280] 1005 del1   qwen2.5  catalog    3.8s gap=True ns=['rasp', 'hids'] conf=3
+[25/280] 1005 del1   qwen2.5  direct     4.4s gap=True ns=['rasp', 'hids'] conf=3
+[26/280] 1005 del2   qwen2.5  assisted   5.0s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[27/280] 1005 del2   qwen2.5  catalog    5.3s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[28/280] 1005 del2   qwen2.5  direct     3.5s gap=True ns=['hids', 'rasp'] conf=3
+[29/280] 1007 del1   qwen2.5  assisted   4.7s gap=True ns=['rasp', 'hids'] conf=3
+[30/280] 1007 del1   qwen2.5  catalog    3.9s gap=True ns=['rasp', 'hids'] conf=3
+[31/280] 1007 del1   qwen2.5  direct     4.2s gap=True ns=['waf', 'web'] conf=3
+[32/280] 1007 del2   qwen2.5  assisted   5.3s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[33/280] 1007 del2   qwen2.5  catalog    4.5s gap=True ns=['hids', 'rasp'] conf=3
+[34/280] 1007 del2   qwen2.5  direct     3.2s gap=True ns=['hids', 'rasp'] conf=3
+[35/280] 1008 del1   qwen2.5  assisted   4.6s gap=True ns=['web', 'rasp'] conf=3
+[36/280] 1008 del1   qwen2.5  catalog    4.0s gap=True ns=['rasp', 'hids'] conf=3
+[37/280] 1008 del1   qwen2.5  direct     3.5s gap=True ns=['rasp', 'dns'] conf=3
+[38/280] 1008 del2   qwen2.5  assisted   5.4s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[39/280] 1008 del2   qwen2.5  catalog    5.4s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[40/280] 1008 del2   qwen2.5  direct     3.3s gap=True ns=['rasp|hids'] conf=3
+[41/280] 1009 del1   qwen2.5  assisted   5.7s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[42/280] 1009 del1   qwen2.5  catalog    4.1s gap=True ns=['rasp', 'hids'] conf=3
+[43/280] 1009 del1   qwen2.5  direct     3.6s gap=True ns=['rasp', 'dns'] conf=3
+[44/280] 1009 del2   qwen2.5  assisted   5.4s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[45/280] 1009 del2   qwen2.5  catalog    3.9s gap=True ns=['rasp', 'hids'] conf=3
+[46/280] 1009 del2   qwen2.5  direct     5.1s gap=True ns=['waf', 'web', 'rasp', 'hids'] conf=3
+[47/280] 1010 del1   qwen2.5  assisted   4.9s gap=True ns=['waf|web'] conf=3
+[48/280] 1010 del1   qwen2.5  catalog    4.1s gap=True ns=['rasp', 'hids'] conf=3
+[49/280] 1010 del1   qwen2.5  direct     3.6s gap=True ns=['rasp', 'dns'] conf=3
+[50/280] 1010 del2   qwen2.5  assisted   3.7s gap=False ns=['rasp', 'hids', 'dns'] conf=3
+[51/280] 1010 del2   qwen2.5  catalog    4.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[52/280] 1010 del2   qwen2.5  direct     4.9s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[53/280] 1011 del1   qwen2.5  assisted   4.6s gap=True ns=['rasp', 'hids'] conf=3
+[54/280] 1011 del1   qwen2.5  catalog    4.2s gap=True ns=['rasp', 'hids'] conf=3
+[55/280] 1011 del1   qwen2.5  direct     5.1s gap=True ns=['web', 'rasp', 'dns'] conf=3
+[56/280] 1011 del2   qwen2.5  assisted   3.6s gap=False ns=['rasp', 'hids', 'dns'] conf=3
+[57/280] 1011 del2   qwen2.5  catalog    5.6s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[58/280] 1011 del2   qwen2.5  direct     3.4s gap=False ns=['rasp', 'hids'] conf=3
+[59/280] 1012 del1   qwen2.5  assisted   5.3s gap=True ns=['rasp', 'dns'] conf=3
+[60/280] 1012 del1   qwen2.5  catalog    4.4s gap=True ns=['rasp', 'hids'] conf=3
+[61/280] 1012 del1   qwen2.5  direct     4.5s gap=True ns=['rasp', 'web'] conf=3
+[62/280] 1012 del2   qwen2.5  assisted   7.8s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[63/280] 1012 del2   qwen2.5  catalog    6.1s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[64/280] 1012 del2   qwen2.5  direct     5.1s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[65/280] 1013 del1   qwen2.5  assisted   4.3s gap=True ns=['rasp', 'hids'] conf=3
+[66/280] 1013 del1   qwen2.5  catalog    4.9s gap=True ns=['rasp', 'hids'] conf=3
+[67/280] 1013 del1   qwen2.5  direct     5.1s gap=True ns=['rasp', 'dns'] conf=3
+[68/280] 1013 del2   qwen2.5  assisted   3.9s gap=True ns=['hids', 'rasp'] conf=3
+[69/280] 1013 del2   qwen2.5  catalog    4.1s gap=True ns=['hids', 'rasp'] conf=3
+[70/280] 1013 del2   qwen2.5  direct     3.5s gap=True ns=['hids', 'rasp'] conf=3
+[71/280] 1017 del1   qwen2.5  assisted   3.8s gap=False ns=['rasp', 'dns'] conf=3
+[72/280] 1017 del1   qwen2.5  catalog    3.6s gap=False ns=['rasp', 'dns'] conf=3
+[73/280] 1017 del1   qwen2.5  direct     4.2s gap=True ns=['rasp', 'dns'] conf=3
+[74/280] 1017 del2   qwen2.5  assisted   3.2s gap=True ns=['hids', 'rasp'] conf=3
+[75/280] 1017 del2   qwen2.5  catalog    4.2s gap=True ns=['rasp', 'hids'] conf=3
+[76/280] 1017 del2   qwen2.5  direct     3.7s gap=True ns=['hids', 'rasp'] conf=3
+[77/280] 1018 del1   qwen2.5  assisted   5.0s gap=True ns=['rasp', 'hids'] conf=3
+[78/280] 1018 del1   qwen2.5  catalog    4.1s gap=True ns=['rasp', 'hids'] conf=3
+[79/280] 1018 del1   qwen2.5  direct     4.0s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[80/280] 1018 del2   qwen2.5  assisted   5.6s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[81/280] 1018 del2   qwen2.5  catalog    5.7s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[82/280] 1018 del2   qwen2.5  direct     3.8s gap=True ns=['rasp', 'hids'] conf=3
+[83/280] 1021 del1   qwen2.5  assisted   4.4s gap=True ns=['web'] conf=3
+[84/280] 1021 del1   qwen2.5  catalog    4.4s gap=True ns=['web', 'rasp'] conf=3
+[85/280] 1021 del1   qwen2.5  direct     5.6s gap=True ns=['web', 'rasp'] conf=3
+[86/280] 1021 del2   qwen2.5  assisted   4.1s gap=True ns=['web'] conf=3
+[87/280] 1021 del2   qwen2.5  catalog    4.2s gap=True ns=['web', 'rasp'] conf=3
+[88/280] 1021 del2   qwen2.5  direct     5.2s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[89/280] 1035 del1   qwen2.5  assisted   6.5s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[90/280] 1035 del1   qwen2.5  catalog    4.8s gap=True ns=['rasp', 'web', 'hids'] conf=3
+[91/280] 1035 del1   qwen2.5  direct     4.9s gap=True ns=['rasp', 'web'] conf=3
+[92/280] 1035 del2   qwen2.5  assisted   5.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[93/280] 1035 del2   qwen2.5  catalog    4.2s gap=True ns=['rasp', 'hids'] conf=3
+[94/280] 1035 del2   qwen2.5  direct     3.8s gap=True ns=['rasp', 'dns'] conf=3
+[95/280] 1042 del1   qwen2.5  assisted   4.0s gap=True ns=['web', 'rasp'] conf=3
+[96/280] 1042 del1   qwen2.5  catalog    3.4s gap=True ns=['web', 'rasp'] conf=3
+[97/280] 1042 del1   qwen2.5  direct     4.1s gap=True ns=['web|rasp|dns'] conf=3
+[98/280] 1042 del2   qwen2.5  assisted   5.4s gap=True ns=['rasp', 'hids'] conf=3
+[99/280] 1042 del2   qwen2.5  catalog    5.6s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[100/280] 1042 del2   qwen2.5  direct     3.9s gap=True ns=['hids', 'rasp'] conf=3
+[101/280] 1048 del1   qwen2.5  assisted   4.3s gap=True ns=['web', 'rasp'] conf=3
+[102/280] 1048 del1   qwen2.5  catalog    4.2s gap=True ns=['web', 'rasp'] conf=3
+[103/280] 1048 del1   qwen2.5  direct     4.2s gap=True ns=['web', 'waf'] conf=3
+[104/280] 1049 del1   qwen2.5  assisted   4.1s gap=True ns=['hids', 'rasp'] conf=3
+[105/280] 1049 del1   qwen2.5  catalog    6.1s gap=True ns=['web', 'rasp', 'hids', 'dns'] conf=3
+[106/280] 1049 del1   qwen2.5  direct     4.4s gap=True ns=['waf', 'hids', 'web'] conf=3
+[107/280] 1050 del1   qwen2.5  assisted   4.6s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[108/280] 1050 del1   qwen2.5  catalog    5.0s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[109/280] 1050 del1   qwen2.5  direct     3.9s gap=True ns=['web', 'hids'] conf=3
+[110/280] 1052 del1   qwen2.5  assisted   5.2s gap=True ns=['hids', 'rasp'] conf=3
+[111/280] 1052 del1   qwen2.5  catalog    4.7s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[112/280] 1052 del1   qwen2.5  direct     4.7s gap=True ns=['waf', 'hids'] conf=3
+[113/280] 1053 del1   qwen2.5  assisted   4.5s gap=True ns=['rasp', 'hids'] conf=3
+[114/280] 1053 del1   qwen2.5  catalog    4.3s gap=True ns=['rasp', 'hids'] conf=3
+[115/280] 1053 del1   qwen2.5  direct     4.0s gap=True ns=['web|rasp|dns'] conf=3
+[116/280] 1053 del2   qwen2.5  assisted   6.4s gap=True ns=['rasp', 'hids'] conf=3
+[117/280] 1053 del2   qwen2.5  catalog    4.3s gap=True ns=['hids', 'dns'] conf=3
+[118/280] 1053 del2   qwen2.5  direct     4.0s gap=True ns=['hids', 'rasp'] conf=3
+[119/280] 1058 del1   qwen2.5  assisted   4.9s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[120/280] 1058 del1   qwen2.5  catalog    4.3s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[121/280] 1058 del1   qwen2.5  direct     5.1s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[122/280] 1061 del1   qwen2.5  assisted   4.4s gap=True ns=['web'] conf=3
+[123/280] 1061 del1   qwen2.5  catalog    3.5s gap=False ns=['hids', 'web'] conf=3
+[124/280] 1061 del1   qwen2.5  direct     5.6s gap=True ns=['rasp|hids'] conf=3
+[125/280] 1061 del2   qwen2.5  assisted   4.8s gap=True ns=['rasp', 'hids'] conf=3
+[126/280] 1061 del2   qwen2.5  catalog    3.6s gap=False ns=['rasp', 'dns'] conf=3
+[127/280] 1061 del2   qwen2.5  direct     4.9s gap=True ns=['rasp', 'dns'] conf=3
+[128/280] 1066 del1   qwen2.5  assisted   3.3s gap=False ns=['dns'] conf=3
+[129/280] 1066 del1   qwen2.5  catalog    3.1s gap=False ns=['dns'] conf=3
+[130/280] 1066 del1   qwen2.5  direct     3.9s gap=True ns=['web', 'rasp'] conf=3
+[131/280] 1066 del2   qwen2.5  assisted   3.2s gap=False ns=['dns'] conf=3
+[132/280] 1066 del2   qwen2.5  catalog    3.6s gap=False ns=['dns', 'rasp'] conf=3
+[133/280] 1066 del2   qwen2.5  direct     4.1s gap=True ns=['rasp', 'dns'] conf=3
+[134/280] 1073 del1   qwen2.5  assisted   4.6s gap=True ns=['rasp', 'hids'] conf=3
+[135/280] 1073 del1   qwen2.5  catalog    4.1s gap=True ns=['web', 'rasp'] conf=3
+[136/280] 1073 del1   qwen2.5  direct     5.3s gap=True ns=['rasp', 'dns'] conf=3
+[137/280] 1073 del2   qwen2.5  assisted   4.8s gap=True ns=['rasp', 'hids'] conf=3
+[138/280] 1073 del2   qwen2.5  catalog    4.9s gap=True ns=['rasp', 'hids'] conf=3
+[139/280] 1073 del2   qwen2.5  direct     4.2s gap=True ns=['rasp', 'dns'] conf=3
+[140/280] 1074 del1   qwen2.5  assisted   4.9s gap=True ns=['web', 'rasp'] conf=3
+[141/280] 1074 del1   qwen2.5  catalog    5.2s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[142/280] 1074 del1   qwen2.5  direct     6.8s gap=True ns=['rasp', 'dns'] conf=3
+[143/280] 1074 del2   qwen2.5  assisted   5.8s gap=True ns=['rasp', 'hids'] conf=3
+[144/280] 1074 del2   qwen2.5  catalog    4.8s gap=True ns=['rasp', 'hids'] conf=3
+[145/280] 1074 del2   qwen2.5  direct     7.1s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[146/280] 1076 del1   qwen2.5  assisted   7.2s gap=True ns=['web', 'rasp'] conf=3
+[147/280] 1076 del1   qwen2.5  catalog    5.5s gap=True ns=['web', 'rasp'] conf=3
+[148/280] 1076 del1   qwen2.5  direct     5.0s gap=False ns=['rasp', 'dns'] conf=3
+[149/280] 1076 del2   qwen2.5  assisted   3.7s gap=False ns=['dns'] conf=3
+[150/280] 1076 del2   qwen2.5  catalog    4.3s gap=False ns=['dns', 'rasp'] conf=3
+[151/280] 1076 del2   qwen2.5  direct     5.4s gap=False ns=['rasp', 'dns'] conf=3
+[152/280] 1077 del1   qwen2.5  assisted   5.9s gap=True ns=['web', 'rasp'] conf=3
+[153/280] 1077 del1   qwen2.5  catalog    5.0s gap=True ns=['rasp', 'dns'] conf=3
+[154/280] 1077 del1   qwen2.5  direct     5.0s gap=True ns=['rasp', 'hids'] conf=3
+[155/280] 1077 del2   qwen2.5  assisted   4.6s gap=True ns=['rasp', 'hids'] conf=3
+[156/280] 1077 del2   qwen2.5  catalog    5.5s gap=True ns=['rasp', 'dns'] conf=3
+[157/280] 1077 del2   qwen2.5  direct     6.6s gap=True ns=['rasp', 'dns'] conf=3
+[158/280] 1081 del1   qwen2.5  assisted   4.6s gap=True ns=['rasp', 'hids'] conf=3
+[159/280] 1081 del1   qwen2.5  catalog    5.4s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[160/280] 1081 del1   qwen2.5  direct     5.7s gap=False ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[161/280] 1081 del2   qwen2.5  assisted   5.8s gap=True ns=['hids', 'rasp'] conf=3
+[162/280] 1081 del2   qwen2.5  catalog    8.1s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[163/280] 1081 del2   qwen2.5  direct     5.3s gap=True ns=['hids', 'waf'] conf=3
+[164/280] 1082 del1   qwen2.5  assisted   6.8s gap=True ns=['waf', 'web', 'rasp', 'dns'] conf=3
+[165/280] 1082 del1   qwen2.5  catalog    7.1s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[166/280] 1082 del1   qwen2.5  direct     8.2s gap=True ns=['waf', 'web', 'rasp'] conf=3
+[167/280] 1083 del1   qwen2.5  assisted   4.5s gap=False ns=['hids'] conf=3
+[168/280] 1083 del1   qwen2.5  catalog    4.2s gap=False ns=['dns'] conf=3
+[169/280] 1083 del1   qwen2.5  direct    13.8s gap=True ns=['rasp', 'hids', 'web', 'dns'] conf=3
+[170/280] 1084 del1   qwen2.5  assisted   6.0s gap=True ns=['web', 'rasp'] conf=3
+[171/280] 1084 del1   qwen2.5  catalog    7.3s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[172/280] 1084 del1   qwen2.5  direct     6.0s gap=True ns=['waf', 'web', 'rasp'] conf=3
+[173/280] 1084 del2   qwen2.5  assisted   5.4s gap=True ns=['web', 'rasp'] conf=3
+[174/280] 1084 del2   qwen2.5  catalog    6.4s gap=True ns=['web', 'rasp'] conf=3
+[175/280] 1084 del2   qwen2.5  direct     6.3s gap=True ns=['waf', 'web'] conf=3
+[176/280] 1085 del1   qwen2.5  assisted   6.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[177/280] 1085 del1   qwen2.5  catalog    6.9s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[178/280] 1085 del1   qwen2.5  direct     6.8s gap=True ns=['waf', 'web', 'rasp'] conf=3
+[179/280] 1086 del1   qwen2.5  assisted   5.1s gap=True ns=['web', 'rasp'] conf=3
+[180/280] 1086 del1   qwen2.5  catalog    5.2s gap=True ns=['web', 'rasp'] conf=3
+[181/280] 1086 del1   qwen2.5  direct     6.3s gap=True ns=['rasp', 'waf', 'web'] conf=3
+[182/280] 1086 del2   qwen2.5  assisted   6.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[183/280] 1086 del2   qwen2.5  catalog    6.7s gap=True ns=['rasp', 'hids'] conf=3
+[184/280] 1086 del2   qwen2.5  direct     6.1s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[185/280] 1087 del1   qwen2.5  assisted   7.0s gap=True ns=['web', 'rasp', 'dns'] conf=3
+[186/280] 1087 del1   qwen2.5  catalog    6.3s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[187/280] 1087 del1   qwen2.5  direct     6.7s gap=True ns=['waf', 'web'] conf=3
+[188/280] 1088 del1   qwen2.5  assisted   5.6s gap=True ns=['hids', 'web'] conf=3
+[189/280] 1088 del1   qwen2.5  catalog    8.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[190/280] 1088 del1   qwen2.5  direct     7.9s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[191/280] 1090 del1   qwen2.5  assisted   4.4s gap=True ns=['hids', 'web'] conf=3
+[192/280] 1090 del1   qwen2.5  catalog    5.3s gap=True ns=['web', 'rasp'] conf=3
+[193/280] 1090 del1   qwen2.5  direct     5.7s gap=True ns=['waf', 'web', 'rasp', 'hids'] conf=3
+[194/280] 1090 del2   qwen2.5  assisted   6.3s gap=True ns=['rasp', 'hids'] conf=3
+[195/280] 1090 del2   qwen2.5  catalog    6.3s gap=True ns=['web', 'rasp'] conf=3
+[196/280] 1090 del2   qwen2.5  direct     6.2s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[197/280] 1091 del1   qwen2.5  assisted  10.1s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[198/280] 1091 del1   qwen2.5  catalog    4.7s gap=True ns=['web', 'rasp'] conf=3
+[199/280] 1091 del1   qwen2.5  direct     6.7s gap=True ns=['waf', 'web'] conf=3
+[200/280] 1092 del1   qwen2.5  assisted  10.3s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[201/280] 1092 del1   qwen2.5  catalog    5.1s gap=True ns=['web', 'waf', 'rasp', 'hids'] conf=3
+[202/280] 1092 del1   qwen2.5  direct     6.8s gap=True ns=['web', 'waf'] conf=3
+[203/280] 1092 del2   qwen2.5  assisted   9.5s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[204/280] 1092 del2   qwen2.5  catalog    6.2s gap=True ns=['hids', 'web', 'rasp', 'dns'] conf=3
+[205/280] 1092 del2   qwen2.5  direct     8.0s gap=True ns=['hids|rasp'] conf=3
+[206/280] 1093 del1   qwen2.5  assisted   6.6s gap=True ns=['web', 'rasp'] conf=3
+[207/280] 1093 del1   qwen2.5  catalog    5.8s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[208/280] 1093 del1   qwen2.5  direct     6.4s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[209/280] 1093 del2   qwen2.5  assisted   7.9s gap=True ns=['hids', 'rasp', 'web'] conf=3
+[210/280] 1093 del2   qwen2.5  catalog    7.0s gap=True ns=['hids', 'rasp', 'web'] conf=3
+[211/280] 1093 del2   qwen2.5  direct     6.5s gap=True ns=['hids', 'rasp'] conf=3
+[212/280] 1094 del1   qwen2.5  assisted   5.1s gap=True ns=['hids'] conf=3
+[213/280] 1094 del1   qwen2.5  catalog    7.3s gap=True ns=['web', 'rasp', 'dns'] conf=3
+[214/280] 1094 del1   qwen2.5  direct     6.5s gap=True ns=['waf', 'web'] conf=3
+[215/280] 1094 del2   qwen2.5  assisted   9.0s gap=True ns=['web', 'rasp', 'dns'] conf=3
+[216/280] 1094 del2   qwen2.5  catalog   11.2s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[217/280] 1094 del2   qwen2.5  direct     7.0s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[218/280] 1095 del1   qwen2.5  assisted   5.5s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[219/280] 1095 del1   qwen2.5  catalog    4.8s gap=True ns=['web', 'rasp'] conf=3
+[220/280] 1095 del1   qwen2.5  direct     5.8s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[221/280] 1095 del2   qwen2.5  assisted   6.5s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[222/280] 1095 del2   qwen2.5  catalog    5.2s gap=True ns=['web', 'rasp'] conf=3
+[223/280] 1095 del2   qwen2.5  direct     5.5s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[224/280] 1096 del1   qwen2.5  assisted   5.0s gap=True ns=['hids', 'web'] conf=3
+[225/280] 1096 del1   qwen2.5  catalog    7.5s gap=True ns=['hids', 'rasp'] conf=3
+[226/280] 1096 del1   qwen2.5  direct     6.3s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[227/280] 1096 del2   qwen2.5  assisted   6.5s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[228/280] 1096 del2   qwen2.5  catalog    6.4s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[229/280] 1096 del2   qwen2.5  direct     6.4s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[230/280] 1097 del1   qwen2.5  assisted   6.8s gap=True ns=['hids', 'rasp', 'web', 'dns'] conf=3
+[231/280] 1097 del1   qwen2.5  catalog    7.4s gap=True ns=['web', 'rasp'] conf=3
+[232/280] 1097 del1   qwen2.5  direct     7.9s gap=True ns=['hids', 'waf'] conf=3
+[233/280] 1098 del1   qwen2.5  assisted  11.5s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[234/280] 1098 del1   qwen2.5  catalog    4.2s gap=True ns=['web', 'rasp'] conf=3
+[235/280] 1098 del1   qwen2.5  direct     5.8s gap=True ns=['web|waf|rasp'] conf=3
+[236/280] 1098 del2   qwen2.5  assisted   4.6s gap=True ns=['web', 'rasp'] conf=3
+[237/280] 1098 del2   qwen2.5  catalog    5.0s gap=True ns=['web', 'rasp'] conf=3
+[238/280] 1098 del2   qwen2.5  direct     6.6s gap=True ns=['waf|web|rasp|hids|dns'] conf=3
+[239/280] 1100 del1   qwen2.5  assisted   6.6s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[240/280] 1100 del1   qwen2.5  catalog    8.8s gap=True ns=['web', 'rasp', 'hids'] conf=3
+[241/280] 1100 del1   qwen2.5  direct     7.2s gap=True ns=['waf', 'web'] conf=3
+[242/280] 1100 del2   qwen2.5  assisted  10.6s gap=True ns=['hids', 'web'] conf=3
+[243/280] 1100 del2   qwen2.5  catalog    7.4s gap=True ns=['hids', 'dns'] conf=3
+[244/280] 1100 del2   qwen2.5  direct     7.2s gap=True ns=['rasp'] conf=3
+[245/280] 1102 del1   qwen2.5  assisted   3.7s gap=False ns=[] conf=3
+[246/280] 1102 del1   qwen2.5  catalog    6.2s gap=False ns=['dns'] conf=3
+[247/280] 1102 del1   qwen2.5  direct     6.3s gap=False ns=['waf', 'web', 'rasp'] conf=3
+[248/280] 1102 del2   qwen2.5  assisted   5.0s gap=True ns=['hids', 'web'] conf=3
+[249/280] 1102 del2   qwen2.5  catalog    6.4s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[250/280] 1102 del2   qwen2.5  direct     8.8s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[251/280] 1103 del1   qwen2.5  assisted   6.9s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[252/280] 1103 del1   qwen2.5  catalog    6.5s gap=True ns=['rasp', 'hids'] conf=3
+[253/280] 1103 del1   qwen2.5  direct     6.6s gap=True ns=['waf', 'web', 'rasp', 'dns'] conf=3
+[254/280] 1109 del1   qwen2.5  assisted   5.5s gap=True ns=['rasp', 'hids'] conf=3
+[255/280] 1109 del1   qwen2.5  catalog    5.6s gap=True ns=['rasp', 'hids'] conf=3
+[256/280] 1109 del1   qwen2.5  direct     6.4s gap=True ns=['rasp', 'waf', 'dns'] conf=3
+[257/280] 1109 del2   qwen2.5  assisted   6.7s gap=True ns=['hids', 'rasp', 'waf', 'web'] conf=3
+[258/280] 1109 del2   qwen2.5  catalog    6.3s gap=True ns=['rasp', 'hids'] conf=3
+[259/280] 1109 del2   qwen2.5  direct     7.0s gap=True ns=['rasp', 'hids', 'waf'] conf=3
+[260/280] 1113 del1   qwen2.5  assisted   5.0s gap=True ns=['hids'] conf=3
+[261/280] 1113 del1   qwen2.5  catalog    6.0s gap=True ns=['rasp', 'hids', 'web'] conf=3
+[262/280] 1113 del1   qwen2.5  direct     7.7s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[263/280] 1113 del2   qwen2.5  assisted   5.0s gap=True ns=['hids', 'rasp'] conf=3
+[264/280] 1113 del2   qwen2.5  catalog    6.5s gap=True ns=['web', 'rasp', 'dns'] conf=3
+[265/280] 1113 del2   qwen2.5  direct     7.4s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[266/280] 1116 del1   qwen2.5  assisted   5.8s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[267/280] 1116 del1   qwen2.5  catalog    6.5s gap=True ns=['rasp', 'hids'] conf=3
+[268/280] 1116 del1   qwen2.5  direct     5.9s gap=True ns=['waf', 'web'] conf=3
+[269/280] 1121 del1   qwen2.5  assisted   5.7s gap=True ns=['web'] conf=3
+[270/280] 1121 del1   qwen2.5  catalog    5.0s gap=False ns=['rasp', 'dns'] conf=3
+[271/280] 1121 del1   qwen2.5  direct     6.5s gap=True ns=['rasp', 'dns'] conf=3
+[272/280] 1121 del2   qwen2.5  assisted   6.2s gap=True ns=['rasp', 'hids'] conf=3
+[273/280] 1121 del2   qwen2.5  catalog    6.6s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[274/280] 1121 del2   qwen2.5  direct     6.9s gap=True ns=['waf', 'web', 'rasp', 'hids', 'dns'] conf=3
+[275/280] 1122 del1   qwen2.5  assisted   4.2s gap=False ns=['rasp', 'dns'] conf=3
+[276/280] 1122 del1   qwen2.5  catalog    4.3s gap=False ns=['rasp', 'dns'] conf=3
+[277/280] 1122 del1   qwen2.5  direct     8.1s gap=True ns=['rasp', 'dns'] conf=3
+[278/280] 1122 del2   qwen2.5  assisted   6.0s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[279/280] 1122 del2   qwen2.5  catalog    6.2s gap=True ns=['rasp', 'hids', 'dns'] conf=3
+[280/280] 1122 del2   qwen2.5  direct     5.3s gap=True ns=['hids', 'rasp'] conf=3
+# exp3_partial · 残缺日志上的补全/下一步判定
+
+- 调用数：282；解析失败：0
+
+| 模型 | 条件 | 变体 | n | gap 判对 | 下一步来源(覆盖) | 下一步来源(全等) | 缺来源判对 |
+|---|---|---|---|---|---|---|---|
+| qwen2.5:14b | assisted | del1 | 54 | 49 | 40/54 | 2/54 | 0/0 |
+| qwen2.5:14b | assisted | del2 | 40 | 36 | 33/40 | 0/40 | 0/0 |
+| qwen2.5:14b | catalog | del1 | 54 | 47 | 43/54 | 1/54 | 0/0 |
+| qwen2.5:14b | catalog | del2 | 40 | 37 | 34/40 | 0/40 | 0/0 |
+| qwen2.5:14b | direct | del1 | 54 | 51 | 33/54 | 0/54 | 0/0 |
+| qwen2.5:14b | direct | del2 | 40 | 38 | 30/40 | 0/40 | 0/0 |

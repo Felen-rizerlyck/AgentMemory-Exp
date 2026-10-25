@@ -1,0 +1,33 @@
+{
+ "unit": 1058,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+ "sources": [
+  "waf",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-26 09:54:23",
+   "source": "waf",
+   "log_id": "WAF0375895",
+   "content": "/api/v1/backup/download file=../../../../etc/app/config.yml&mode=raw Mozilla/5.0 (Linux; Android 14; Pixel 8) ",
+   "event_id": "1058-WAF0375895"
+  },
+  {
+   "timestamp": "2026-06-26 09:55:51",
+   "source": "hids",
+   "log_id": "HID0407361",
+   "content": "cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd",
+   "event_id": "1058-HID0407361"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

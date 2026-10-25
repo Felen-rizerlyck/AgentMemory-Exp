@@ -1,0 +1,49 @@
+{
+ "unit": 1006,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "WebLogic T3 反序列化流投递（base64 序列化载荷）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 16:47:09",
+   "source": "waf",
+   "log_id": "WAF0308678",
+   "content": "/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1",
+   "event_id": "1006-WAF0308678"
+  },
+  {
+   "timestamp": "2026-06-16 16:47:10",
+   "source": "web",
+   "log_id": "WEB0310687",
+   "content": "/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1",
+   "event_id": "1006-WEB0310687"
+  },
+  {
+   "timestamp": "2026-06-16 16:47:12",
+   "source": "rasp",
+   "log_id": "RASP0341517",
+   "content": "https://app-java-41.ops-corp.com/bea_wls_internal/T3 {\"t3\": \"rO0ABXNyABFqYXZh\"} Mozilla/5.0 (Linux; Android 14",
+   "event_id": "1006-RASP0341517"
+  },
+  {
+   "timestamp": "2026-06-16 16:48:14",
+   "source": "hids",
+   "log_id": "HID0334519",
+   "content": "nohup /tmp/.w -d <== /bin/sh -c 'nohup /tmp/.w -d' <== java -Dweblogic.Name=AdminServer weblogic.Server",
+   "event_id": "1006-HID0334519"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

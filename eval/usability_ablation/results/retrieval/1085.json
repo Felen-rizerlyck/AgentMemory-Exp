@@ -1,0 +1,33 @@
+{
+ "unit": 1085,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "PowerShell 载入器清理安全日志并删除卷影后循环加密文档",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-09 02:34:37",
+   "source": "hids",
+   "log_id": "HID0498135",
+   "content": "wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <==",
+   "event_id": "1085-HID0498135"
+  },
+  {
+   "timestamp": "2026-07-09 02:36:47",
+   "source": "hids",
+   "log_id": "HID0498146",
+   "content": "powershell -c \"$a=[Security.Cryptography.Aes]::Create();gci C:\\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr",
+   "event_id": "1085-HID0498146"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

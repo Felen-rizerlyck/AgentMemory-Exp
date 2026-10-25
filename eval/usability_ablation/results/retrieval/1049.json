@@ -1,0 +1,160 @@
+{
+ "unit": 1049,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": null,
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "webshell 文件管理，缺 CASE-002 的上传/DNS 阶段"
+ },
+ "technique": "PHP webshell 文件管理动作（?act=upload / filemgr）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-13 06:14:34",
+   "source": "rasp",
+   "log_id": "RASP0315182",
+   "content": "https://app-php-92.ops-corp.com/uploads/up.php {\"upload\": \"shell.php\", \"act\": \"upload\"} Mozilla/5.0 (Macintosh",
+   "event_id": "1049-RASP0315182"
+  },
+  {
+   "timestamp": "2026-06-13 06:15:31",
+   "source": "hids",
+   "log_id": "HID0308727",
+   "content": "mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www",
+   "event_id": "1049-HID0308727"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "prefix",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "webshell_upload_action",
+     "label": "上传接口落地 WebShell",
+     "event_ids": [
+      "1049-RASP0315182"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": {
+    "step_id": "S2",
+    "action_id": "cipher_efs_batch_encrypt",
+    "label": "cipher 批量加密目录",
+    "expected_sources": [
+     "hids"
+    ]
+   },
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "prefix",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "上传接口落地 WebShell",
+    "sources": [
+     "rasp"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1049-RASP0315182"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": {
+   "step_id": "S2",
+   "action_id": "cipher_efs_batch_encrypt",
+   "label": "cipher 批量加密目录",
+   "expected_sources": [
+    "hids"
+   ]
+  },
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

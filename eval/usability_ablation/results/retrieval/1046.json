@@ -1,0 +1,33 @@
+{
+ "unit": 1046,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）",
+ "sources": [
+  "waf",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-22 04:42:44",
+   "source": "waf",
+   "log_id": "WAF0346717",
+   "content": "/backup/export src=../../etc/shadow&dst=/tmp/.cache.tgz Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH",
+   "event_id": "1046-WAF0346717"
+  },
+  {
+   "timestamp": "2026-06-22 04:44:12",
+   "source": "hids",
+   "log_id": "HID0375743",
+   "content": "tar czf /tmp/.cache /etc/shadow /etc/passwd tar czf /tmp/.cache <== /bin/sh -c 'tar' <== nginx: worker process",
+   "event_id": "1046-HID0375743"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

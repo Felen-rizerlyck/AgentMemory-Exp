@@ -1,0 +1,17 @@
+﻿event_id,incident_id,case_id,step_id,action_id,link_status,link_basis
+WAF0410001,INC-CASE029-001,CASE-029,S1,exch_proxylogon_ssrf,confirmed,CASE-029 原始参考批次及项目内链级标注
+WEB0410002,INC-CASE029-001,CASE-029,S1,exch_proxylogon_ssrf,confirmed,CASE-029 原始参考批次及项目内链级标注
+HID0410003,INC-CASE029-001,CASE-029,S2,w3wp_spawn_cmd,confirmed,CASE-029 原始参考批次及项目内链级标注
+RASP0410004,INC-CASE029-001,CASE-029,S3,aspx_shell_path,confirmed,CASE-029 原始参考批次及项目内链级标注
+WEB0410005,INC-CASE029-001,CASE-029,S3,aspx_shell_path,confirmed,CASE-029 原始参考批次及项目内链级标注
+HID0410006,INC-CASE029-001,CASE-029,S4,printspoofer_priv,confirmed,CASE-029 原始参考批次及项目内链级标注
+HID0410007,INC-CASE029-001,CASE-029,S5,sc_create_service,confirmed,CASE-029 原始参考批次及项目内链级标注
+DNS0410008,INC-CASE029-001,CASE-029,S6,dns_b64_label_beacon,confirmed,CASE-029 原始参考批次及项目内链级标注
+EVT-SIM029-001,INC-DEMO-CASE029-001,CASE-029,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-002,INC-DEMO-CASE029-001,CASE-029,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-003,INC-DEMO-CASE029-001,CASE-029,S2,w3wp_spawn_cmd,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-004,INC-DEMO-CASE029-001,CASE-029,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-005,INC-DEMO-CASE029-001,CASE-029,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-006,INC-DEMO-CASE029-001,CASE-029,S4,printspoofer_priv,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-007,INC-DEMO-CASE029-001,CASE-029,S5,sc_create_service,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation
+EVT-SIM029-008,INC-DEMO-CASE029-001,CASE-029,S6,dns_b64_label_beacon,fixture,Synthetic positive validation fixture; expected to match CASE-029; not a real-world observation

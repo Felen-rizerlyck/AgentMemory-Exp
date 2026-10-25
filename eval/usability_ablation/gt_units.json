@@ -1,0 +1,985 @@
+{
+ "schema": "gt-v1",
+ "units": {
+  "1001": {
+   "gt_class": "exact",
+   "gt_case": "CASE-001",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-001 入库时使用同一组日志"
+  },
+  "1002": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "Spring4Shell，与 CASE-002 的 Tomcat PUT 上传无关（关键词误命中）"
+  },
+  "1003": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1004": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1005": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1006": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1007": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "JNDI 家族（Fastjson autoType），注入载体与 CASE-001 的 ${jndi: 不同"
+  },
+  "1008": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1009": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1010": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1011": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1012": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1013": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-004",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "Laravel Ignition 同一 CVE 但换端点（/_ignition vs /execute-solution），动作正则不覆盖"
+  },
+  "1014": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1015": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1016": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1017": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1018": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "JNDI 家族（H2 驱动加载），注入载体不同"
+  },
+  "1019": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1020": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1021": {
+   "gt_class": "exact",
+   "gt_case": "CASE-002",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-002 入库时使用同一组日志"
+  },
+  "1022": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1023": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1024": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1025": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1026": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1027": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1028": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1029": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1030": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1031": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1032": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1033": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1034": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1035": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-008",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "Exchange 但为 ProxyNotShell（CVE-2022-41040），与 CASE-008 的 ProxyLogon 不同链"
+  },
+  "1036": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1037": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1038": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1039": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1040": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1041": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1042": {
+   "gt_class": "exact",
+   "gt_case": "CASE-003",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-003 入库时使用同一组日志"
+  },
+  "1043": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1044": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1045": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1046": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1047": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "日志清理+卷影删除，属 CASE-005 的破坏恢复阶段但无批量加密"
+  },
+  "1048": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "webshell 交互，缺 CASE-002 的 PUT 上传与 DNS 阶段"
+  },
+  "1049": {
+   "gt_class": "family_variant",
+   "gt_case": null,
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "webshell 文件管理，缺 CASE-002 的上传/DNS 阶段"
+  },
+  "1050": {
+   "gt_class": "family_variant",
+   "gt_case": null,
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "ASPX webshell 执行，缺 CASE-002 的 PUT 上传与 DNS 阶段"
+  },
+  "1051": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "冰蝎/哥斯拉加密参数流量，与 CASE-005 的勒索加密无关（关键词误命中）"
+  },
+  "1052": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1053": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1054": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1055": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1056": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1057": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1058": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1059": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1060": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1061": {
+   "gt_class": "exact",
+   "gt_case": "CASE-004",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-004 入库时使用同一组日志"
+  },
+  "1062": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1063": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1064": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1065": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1066": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1067": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1068": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1069": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1070": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1071": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1072": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1073": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "confidence": "low",
+   "needs_review": true,
+   "reason": "关键词命中家族，但阶段结构未核实"
+  },
+  "1074": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "confidence": "low",
+   "needs_review": true,
+   "reason": "关键词命中家族，但阶段结构未核实"
+  },
+  "1075": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1076": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1077": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1078": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1079": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1080": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1081": {
+   "gt_class": "exact",
+   "gt_case": "CASE-005",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-005 入库时使用同一组日志"
+  },
+  "1082": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1083": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1084": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-003",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "含 schtasks 持久化但缺 CASE-003 的 waf/rasp 入口阶段"
+  },
+  "1085": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1086": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1087": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1088": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1089": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1090": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1091": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1092": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1093": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1094": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1095": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1096": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1097": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1098": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1099": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1100": {
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+  },
+  "1101": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1102": {
+   "gt_class": "exact",
+   "gt_case": "CASE-006",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-006 入库时使用同一组日志"
+  },
+  "1103": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1104": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1105": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1106": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "medium",
+   "needs_review": true,
+   "reason": "Exchange PrivExchange+中继，与 CASE-008 的 webshell 链不同族"
+  },
+  "1107": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1108": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1109": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1110": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1111": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1112": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1113": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1114": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1115": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1116": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1117": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1118": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1119": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1120": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1121": {
+   "gt_class": "exact",
+   "gt_case": "CASE-007",
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "与 CASE-007 入库时使用同一组日志"
+  },
+  "1122": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1123": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1124": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1125": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1126": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1127": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1128": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1129": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1130": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1131": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1132": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1133": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1134": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1135": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1136": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1137": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1138": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1139": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  },
+  "1140": {
+   "gt_class": "new",
+   "gt_case": null,
+   "confidence": "high",
+   "needs_review": false,
+   "reason": "不属于已入库的 8 个案例家族"
+  }
+ }
+}

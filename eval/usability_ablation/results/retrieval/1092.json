@@ -1,0 +1,148 @@
+{
+ "unit": 1092,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "入侵备份服务器删除备份目录与 LVM 快照并外传文件清单",
+ "sources": [
+  "hids",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-13 00:35:20",
+   "source": "hids",
+   "log_id": "HID0527510",
+   "content": "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 \"rm -rf /backup/*\" <== /bin/bash -c 'ssh' <== /u",
+   "event_id": "1092-HID0527510"
+  },
+  {
+   "timestamp": "2026-07-13 00:36:30",
+   "source": "hids",
+   "log_id": "HID0527516",
+   "content": "tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u",
+   "event_id": "1092-HID0527516"
+  },
+  {
+   "timestamp": "2026-07-13 03:48:30",
+   "source": "dns",
+   "log_id": "DNS0512535",
+   "content": "c0565abc.qovzmi-9c31.net A 192.0.2.51",
+   "event_id": "1092-DNS0512535"
+  },
+  {
+   "timestamp": "2026-07-13 03:49:30",
+   "source": "dns",
+   "log_id": "DNS0512540",
+   "content": "76ecadab.qovzmi-9c31.net A 10.10.25.77",
+   "event_id": "1092-DNS0512540"
+  },
+  {
+   "timestamp": "2026-07-13 03:51:00",
+   "source": "dns",
+   "log_id": "DNS0512547",
+   "content": "d1004d20.qovzmi-9c31.net A 10.10.27.49",
+   "event_id": "1092-DNS0512547"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1092-DNS0512547"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: \\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1092-DNS0512547"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 4,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "unit": 1056,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "消息队列管理台未授权（RabbitMQ management definitions）",
+ "sources": [
+  "waf",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-22 00:01:55",
+   "source": "waf",
+   "log_id": "WAF0345368",
+   "content": "/api/definitions {\"parameters\":[{\"name\":\"cmd\",\"value\":\"/tmp/.rb/run\"}]} Mozilla/5.0 (iPhone; CPU iPhone OS 17_",
+   "event_id": "1056-WAF0345368"
+  },
+  {
+   "timestamp": "2026-06-22 00:01:57",
+   "source": "rasp",
+   "log_id": "RASP0382114",
+   "content": "https://app-java-58.ops-corp.com/api/definitions {\"unauth\": \"/api/definitions\", \"cmd\": \"/tmp/.rb/run\"} Mozilla",
+   "event_id": "1056-RASP0382114"
+  },
+  {
+   "timestamp": "2026-06-22 00:02:56",
+   "source": "hids",
+   "log_id": "HID0374278",
+   "content": "sh -c /tmp/.rb/run /bin/sh sh -c /tmp/.rb/run <== beam.smp -W w -A 64 -- -root <== rabbitmq-server",
+   "event_id": "1056-HID0374278"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

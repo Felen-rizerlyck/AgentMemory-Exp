@@ -1,0 +1,143 @@
+{
+ "full": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 60,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 22,
+   "weak": 51
+  }
+ },
+ "no_probes": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 61,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 21,
+   "weak": 51
+  }
+ },
+ "no_mitre": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 60,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 22,
+   "weak": 51
+  }
+ },
+ "no_keywords": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 12,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.5735294117647058,
+  "mrr_n": 34,
+  "no_cand": 81,
+  "tiers": {
+   "strong": 7,
+   "weak": 51,
+   "keyword_only": 1
+  }
+ },
+ "no_lexical": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 12,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.5588235294117647,
+  "mrr_n": 34,
+  "no_cand": 82,
+  "tiers": {
+   "strong": 7,
+   "weak": 51
+  }
+ },
+ "no_action": {
+  "t0_hit": 0,
+  "t0_n": 7,
+  "var_hit": 14,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6176470588235294,
+  "mrr_n": 34,
+  "no_cand": 70,
+  "tiers": {
+   "keyword_only": 70
+  }
+ },
+ "no_source_gate": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 60,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 22,
+   "weak": 51
+  }
+ },
+ "no_order_check": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 60,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 22,
+   "weak": 51
+  }
+ },
+ "no_tier_rank": {
+  "t0_hit": 7,
+  "t0_n": 7,
+  "var_hit": 13,
+  "var_n": 29,
+  "new_hard": 0,
+  "new_n": 104,
+  "mrr": 0.6029411764705882,
+  "mrr_n": 34,
+  "no_cand": 60,
+  "tiers": {
+   "strong": 7,
+   "keyword_only": 22,
+   "weak": 51
+  }
+ }
+}

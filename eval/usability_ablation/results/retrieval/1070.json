@@ -1,0 +1,115 @@
+{
+ "unit": 1070,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "GitLab ExifTool DjVu 文件解析远程代码执行 (CVE-2021-22205)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-08 07:45:58",
+   "source": "waf",
+   "log_id": "WAF0250718",
+   "content": "/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A",
+   "event_id": "1070-WAF0250718"
+  },
+  {
+   "timestamp": "2026-06-08 07:46:00",
+   "source": "web",
+   "log_id": "WEB0252349",
+   "content": "/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A",
+   "event_id": "1070-WEB0252349"
+  },
+  {
+   "timestamp": "2026-06-08 07:46:01",
+   "source": "rasp",
+   "log_id": "RASP0277383",
+   "content": "https://app-rails-63.ops-corp.com/uploads/user {\"exiftool\": \"DjVu\", \"rce\": \"Image::ExifTool\"} Mozilla/5.0 (Lin",
+   "event_id": "1070-RASP0277383"
+  },
+  {
+   "timestamp": "2026-06-08 07:46:57",
+   "source": "hids",
+   "log_id": "HID0271708",
+   "content": "id /bin/id id <== /bin/bash -c 'id' <== bundle exec puma -C /opt/gitlab/config/puma.rb",
+   "event_id": "1070-HID0271708"
+  },
+  {
+   "timestamp": "2026-06-08 07:48:47",
+   "source": "hids",
+   "log_id": "HID0271718",
+   "content": "cat /etc/shadow | base64 -w0 | split -b 512 - /tmp/.s cat cat /etc/shadow | base64 -w0 | split <== /usr/sbin/s",
+   "event_id": "1070-HID0271718"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: base64"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 3,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

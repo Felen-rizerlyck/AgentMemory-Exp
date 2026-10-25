@@ -1,0 +1,41 @@
+{
+ "unit": 1055,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "容器 API 未授权创建 Pod 执行命令（k8s API 直连）",
+ "sources": [
+  "waf",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-26 07:43:27",
+   "source": "waf",
+   "log_id": "WAF0375266",
+   "content": "/api/v1/namespaces/default/pods {\"metadata\":{\"name\":\"p1\"},\"cmd\":[\"sh\",\"-c\",\"id\"]} Mozilla/5.0 (Linux; Android ",
+   "event_id": "1055-WAF0375266"
+  },
+  {
+   "timestamp": "2026-06-26 07:43:28",
+   "source": "rasp",
+   "log_id": "RASP0415196",
+   "content": "https://app-node-45.ops-corp.com/api/v1/namespaces/default/pods {\"container_api\": \"pods\", \"cmd\": \"id\"} Mozilla",
+   "event_id": "1055-RASP0415196"
+  },
+  {
+   "timestamp": "2026-06-26 07:44:26",
+   "source": "hids",
+   "log_id": "HID0406677",
+   "content": "sh -c id /bin/sh sh -c id <== /usr/bin/containerd-shim <== kubelet --config=/var/lib/kubelet",
+   "event_id": "1055-HID0406677"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

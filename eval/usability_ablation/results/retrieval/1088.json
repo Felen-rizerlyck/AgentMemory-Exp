@@ -1,0 +1,33 @@
+{
+ "unit": 1088,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "批量打包加密业务目录并投放 README_RESTORE.txt 说明文件",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 10:10:15",
+   "source": "rasp",
+   "log_id": "RASP0518648",
+   "content": "https://app-node-33.ops-corp.com/api/v1/files/bulk {\"upload\": \"README_RESTORE.txt\", \"cmd\": \"gpg -c -o /srv.tgz",
+   "event_id": "1088-RASP0518648"
+  },
+  {
+   "timestamp": "2026-07-10 10:12:13",
+   "source": "hids",
+   "log_id": "HID0508017",
+   "content": "rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r",
+   "event_id": "1088-HID0508017"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

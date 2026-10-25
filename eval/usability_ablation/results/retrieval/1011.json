@@ -1,0 +1,109 @@
+{
+ "unit": 1011,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-01 02:47:06",
+   "source": "waf",
+   "log_id": "WAF0200842",
+   "content": "/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A",
+   "event_id": "1011-WAF0200842"
+  },
+  {
+   "timestamp": "2026-06-01 02:47:08",
+   "source": "web",
+   "log_id": "WEB0202149",
+   "content": "/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A",
+   "event_id": "1011-WEB0202149"
+  },
+  {
+   "timestamp": "2026-06-01 02:47:09",
+   "source": "rasp",
+   "log_id": "RASP0222195",
+   "content": "https://app-php-44.ops-corp.com/index.php {\"path_traversal\": \"%252e%252e%252f\"} Mozilla/5.0 (X11; Linux x86_64",
+   "event_id": "1011-RASP0222195"
+  },
+  {
+   "timestamp": "2026-06-01 02:48:35",
+   "source": "hids",
+   "log_id": "HID0217661",
+   "content": "cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www",
+   "event_id": "1011-HID0217661"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

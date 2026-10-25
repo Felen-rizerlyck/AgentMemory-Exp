@@ -1,0 +1,25 @@
+{
+ "unit": 1101,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域控与域管组枚举（net user /domain + nltest /dclist）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-24 07:39:17",
+   "source": "hids",
+   "log_id": "HID0612206",
+   "content": "net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c",
+   "event_id": "1101-HID0612206"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

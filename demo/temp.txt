@@ -1,0 +1,116 @@
+## 可能问题：
+
+P1（高）LCS「一步一观测」把同一 step 的其它证据行整条吞掉
+
+官方样本每 incident 8 行，输出只剩 6 行：S1 只报 WEB0410002（WAF0410001 消失）、S3 只报 WEB0410005（RASP0410004 消失），且选中的是时间较晚那条而非最早那条 → 证据归属不稳，跨源同请求（waf+web 双看，正是原链层信号 2.5 的原料）在输出里也看不出来了。
+更糟的形状：批内 S6(DNS) 行在前、S1..S3 在后 → 证据只报 S1..S3，而 unobserved_steps 里写着 S6，那条 DNS 行在输出中完全不出现（不在 evidence / gap / mismatch）。
+混批回归：12 行 = 两起攻击（host app-a / app-b）、无 incident_id → 落成 1 个 unassigned batch scope，输出 complete 6/6 (strong)，6 条证据全取自第二起攻击，第一起 6 行全部消失（因为 complete，前后段/缺口都是空）。也就是说：incident 分区只对已标注 incident_id 的行生效，新批（ingest 不写 incident_id）照样混，而 LCS 让混批痕迹从"多出的证据行"退化成"完全看不见"。
+建议：形态/tier 继续用 LCS，但 evidence 恢复成"该 step 的全部来源符合命中行（按时间排序）"，另开一个 dropped/out-of-order 桶；unobserved_steps 只算"该动作零观测"的位置。
+
+P2（中高）同名 action_id 的正则不校验，检测取并集 → 跨案例假阳性 实测：造一个 CASE-030，只留 S1、action_regex 改成只匹配 /ecp/ZZZONLY/。build_action_index 把两条正则并集成 exch_proxylogon_ssrf 的 rules，喂一条 /ecp/7b37f0/ 的真样本行 → CASE-030 报 complete 1/1 (strong)，证据正是它自己正则匹配不上的那行。你给 generic 做了跨 pattern 一致性保护，regex 却没有对称保护，且对齐只用 action_id、不复核本步正则。建议：对同 action_id 的不同 regex 直接报错（与 generic 对称），或检测按各 pattern 自己的规则集；顺带说，索引里的 refs 已经能做原方法的"分叉参考"，目前没有输出口。
+
+P3（中）标签与「最新决策」会打架 实测：confirmed 之后再追加一条同 event/step 的 candidate → 标签仍是 case_id=CASE-029/incident_id=INC-LAB-E，而关系表最新一行是 candidate。文档写"latest link = current status"，但标签只在 confirmed/rejected 时变更，降级（candidate/fixture）不回滚；而 lookup_case_logs 是按标签查的，会把已降级的行当既定事实输出。建议按关系表最新状态重算标签，或 lookup 时 join 关系表显示状态。
+
+P4（中）lookup_case_logs.py 把合成 fixture 当 CASE-029 的历史观测输出 --case-id CASE-029 → "16 stored observation(s)"，其中 8 行是 INC-DEMO-CASE029-001（SYNWAF0511001… 合成 fixture）；输出不带 event_id、不带 link_status、没有任何 fixture 标记，而 pattern 的 provenance.observation_count = 1。这与文档"fixture must not be presented as a real observation"直接冲突。建议：join event_pattern_links.csv 打印状态，默认排除 fixture（或加 --include-fixtures）。
+
+P5（中低）标签回写会整文件重写证据文件，并丢列/规整换行 实测：把 raw_logs.csv 改成 LF 并加一列 note（值 keepme），跑一次 confirmed link → 全文件变 CRLF，note 列及其值全部消失（按 RAW_FIELDS 重写 + extrasaction="ignore"）；BOM 与时间戳/来源/内容确实未变。另外「先 append 关系行、再写标签」两步不原子，中间失败会留下"关系表已记、标签没写"。建议：只改受影响行（或保留未知列/不支持就报错），并把两步顺序/原子性说明清楚。
+
+P6（低） 全步骤都标 generic 的 pattern 永远拿不到 strong（matched_non_generic=0），原方法的 1/1 单动作案例（DGA 类）是"完整=强"。文档已按新口径写，但建议 add-pattern 直接拦住"所有步骤都是 generic"的 pattern，而不是静默降档。
+
+P7（低，健壮性） CSV 行短于表头时 content 为 None → extract_log_actions 直接 TypeError 崩栈（我故意构造畸形 CSV 时撞到）；读入侧没有 ingest 那样的列校验。另外"动作命中但来源不符"会显示 shape=none 0/6 (weak)，配着 mismatch 数读起来别扭（原方法是给该位置标 ◐）。
+
+## 可参考清单：
+
+P1 证据完整性（最高优先，其余都可有取舍，这条必须改）
+位置 src/attack_memory/retrieval.py：match_pattern() 的证据构造（现 191–200 行）与 unobserved_steps（217 行）、tier（180–189 行）
+
+改法
+
+shape / positions / longest_run / tier 继续由 _align_sequence（LCS）决定；但 evidence 改回从 detected_by_step 构造——同一 step 的全部"来源符合"命中行都列出，按时间排序，每条带 event_id / source / timestamp（S1 应恢复 WAF0410001 + WEB0410002，sources=waf,web）。为兼容 CLI 保留 event_ids、sources 字段。
+新增字段 detected_steps（= len(detected_by_step)）与 unaligned_detections（列表）：LCS 未采用的那些观测，标注原因 duplicate_of_step_Sx / out_of_order。这样被 LCS 丢掉的行使可见，而不是消失。
+unobserved_steps 改为「在 detected_by_step 中不存在的 step」；同时新增 aligned_event_id（每步 LCS 实际采用的那条）以便审计排序选择。
+matched_steps 语义固定为「对齐位置数」，并在 runtime-playbook.md 写明 matched_steps（对齐）与 detected_steps（检出）的区别。tier 继续用对齐结果，但 weak 判定里把 unaligned_detections 也算作动作证据。
+run_demo.py（55–77 行打印区）：evidence 行支持多事件；新增两行输出 —— additional detections not used by alignment: N (events=…)；unobserved_steps 只在真的零检出时出现。
+验证
+
+E1 官方样本：python src/run_demo.py → 每个 incident 出现的事件数 = 8/8（现为 6/8），S1 同时列出 waf 与 web 两行。
+E2 乱序批（S6 先、S1..S3 后）：S6 行出现在 evidence 或 unaligned_detections 中，且 unobserved_steps 不再包含 S6。
+E3 无 incident_id 的 12 行双攻击批：输出里能看到第二起攻击的行（不再是 6 条全取自一起、另一起隐身），并保留"batch-level candidate only"提示。
+P2 action_id 与正则的绑定（第二优先）
+位置 retrieval.py: build_action_index()（11–28 行）；可选 match_pattern() 的检测来源
+
+改法（推荐 A）
+
+A：与你已经做的 generic 冲突保护对称——同一 action_id 注册到不同 action_regex 时直接 raise ValueError(f"Action {aid} has conflicting action_regex across steps")；正则字符串相同则继续去重合并。语义变成"动作库 = 每个 action_id 一条权威定义"（原方法即如此）。
+B（若确实要按案例保留变体写法）：索引键改为 (action_id, regex)，match_pattern 只接受本步骤自身正则命中的行（LCS 的 compatible() 里加一次 re.search(step["action_regex"], action["log"]["content"])）。代价是跨案例不再共享检测。
+附带（可选、低成本）：用索引里的 refs 输出"共享此动作的其他案例"作为原方法的分叉参考（shared_with 字段）。
+验证
+
+E4 复现当前缺陷：造 CASE-030 只留 S1、正则改 /ecp/ZZZONLY/，喂 /ecp/7b37f0/ 行 → 修复后不得出现 CASE-030 候选（现在是 complete 1/1 (strong)）。
+E5 manage_memory.py add-pattern / validate 对上述模式必须报明确错误（提到 action_id）。
+E6 两个 pattern 用完全相同的正则共享 action_id → 仍允许，两条候选都返回。
+P3 标签 vs「最新决策」口径
+位置 src/attack_memory/manage.py: append_links()（37–44 行）+ storage.py: update_event_labels()（104–128 行）
+
+改法
+
+推荐：新增 recompute_event_labels(event_ids) —— 读 event_pattern_links.csv，取每个 event 的最后一条关系行；标签 = 该 event 最后一条 confirmed 行的 case/incident，否则清空。每次 append 后对涉及的 event 重算，而不是只对 confirmed/rejected 增量改。
+备选（改动更小）：保持"只有 confirmed/rejected 动标签"，但在 README/runtime-playbook 写明"candidate/fixture 只进关系表、不动标签"，并让 lookup_case_logs 显示最新状态（与 P4 合并做）。
+无论选哪个，把"同 event 改判到另一 case/incident"的路径写清：是先 --status rejected 再 confirmed，还是允许直接覆盖（当前是不允许，报错——建议保留，只补文档）。
+验证
+
+E7 confirmed → candidate：标签被清（或 lookup 显示 status=candidate）。
+E8 confirmed → rejected：清空（现行为，作为回归）。
+E9 confirmed(A) → confirmed(B，不同 incident)：仍拒绝并提示先 rejected（现行为，回归）。
+E10 两个 event 同一 case、不同 incident：各自的 incident_id 保持独立。
+P4 lookup_case_logs.py 的诚实性
+位置 src/lookup_case_logs.py（16–26 行）
+
+改法：join event_pattern_links.csv 求每行最新状态；输出加 event_id 与 status=；默认排除 fixture，--include-fixtures 才显示；首行计数拆开写（如 8 stored observation(s); 8 fixture row(s) hidden）；可选 --status confirmed 过滤。这样它与 pattern 的 provenance.observation_count、与文档"fixture 不得当真实观测"就一致了。
+
+验证
+
+E11 --case-id CASE-029 默认输出：8 条真实观测 + 一行 fixture 提示，无合成行混入。
+E12 --include-fixtures：8 条合成行出现且标 status=fixture。
+P5 证据文件重写的保真与原子性
+位置 storage.py: update_event_labels()（104–128 行）；调用顺序 manage.py: append_links()（42–44 行）
+
+改法
+
+只改受影响的行、其它行按原始字节保留；表头用文件自己的表头而非硬编码 RAW_FIELDS；出现 RAW_FIELDS 之外的列（或 DictReader 的 None restkey）就报错拒绝，绝不静默丢列。
+换行风格按原文件检测（读 bytes 判断 \r\n vs \n）后原样写回。
+无实际变化时直接返回，不重写文件（避免 mtime 噪声）。
+原子性：先写证据文件、再 append 关系行（或两个临时文件一起 replace），使"关系已记、标签未写"这种半状态不可能出现；并在 runtime-playbook 里说明该约定。
+验证
+
+E13 LF + 额外列 note=keepme 的副本：confirmed link 后额外列与值仍在（或明确报错拒绝），换行仍为 LF，逐行 diff 只有目标行的标签单元格变化。
+E14 让关系 CSV 只读后执行 link：两个文件都不变（不留半状态）。
+E15 同一条 confirmed link 连跑两次：标签不重复、文件不损坏（幂等）。
+P6 全 generic 的 pattern
+位置 storage.py: validate_pattern()（44–67 行）
+
+改法：所有 step 都 generic: true 时 add-pattern 直接拒绝并说明"无判别性步骤 → 永远到不了支撑档"，避免静默降档（原方法的 1/1 单动作案例是"完整=强"，这个差异要显式化）。
+
+验证：E16 全 generic 模式 → 明确报错；混合模式仍通过。
+
+P7 健壮性与显示口径
+位置 retrieval.py: extract_log_actions()（35 行 content）；storage.py: read_csv()；run_demo.py 的 shape 显示
+
+改法
+
+read_csv 校验：任一行出现 None 值（行短于表头）→ 抛出「row N shorter than header」而不是让 None 漏到检索层（我构造畸形 CSV 时 extract_log_actions 直接 TypeError: expected string or bytes-like object, got 'NoneType'）。
+shape == "none" 但有 mismatch 时，显示改为 source-mismatch only (◐)（或按"忽略来源的动作命中"算 shape 并给不符位置标 ◐），别让 none 0/6 (weak) 挡在 mismatch 数前面。
+验证：E17 短行 CSV → 一行清晰报错、无栈；E18 仅来源不符的批 → 输出点明 ◐ 情形。
+
+回归实验一览（建议固化成 demo/tests/ 的 stdlib unittest，这是 demo 相对主工程唯一还缺的门禁）
+编号
+覆盖
+断言要点
+E1/E2/E3	P1	输入行数 = 输出提及行数；乱序行可见；混批可辨
+E4/E5/E6	P2	正则漂移拒绝；同正则共享放行
+E7–E10	P3	标签 = 关系表最新 confirmed 状态
+E11/E12	P4	fixture 默认隐藏，计数与 provenance 一致
+E13–E15	P5	字节保真、无半状态、幂等
+E16	P6	全 generic 被拒
+E17/E18	P7	畸形 CSV 友好报错；◐ 显示清晰
+建议实施顺序：P1 → P2（先保正确性，避免假 strong）→ P4 → P3（口径一致性）→ P5 → P6 → P7（工程卫生）→ 固化 E1–E18 为 demo/tests/。每步做完立刻跑 E1–E3 与 E4，确认没有把"分区 + LCS"刚修好的东西改回去。

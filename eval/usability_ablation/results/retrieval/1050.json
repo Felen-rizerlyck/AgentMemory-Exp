@@ -1,0 +1,103 @@
+{
+ "unit": 1050,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": null,
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "ASPX webshell 执行，缺 CASE-002 的 PUT 上传与 DNS 阶段"
+ },
+ "technique": "ASPX webshell 执行 whoami（cmd.aspx）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-17 11:43:24",
+   "source": "rasp",
+   "log_id": "RASP0347559",
+   "content": "https://app-iis-20.ops-corp.com/upload/cmd.aspx {\"webshell\": \"cmd.aspx\", \"cmd\": \"whoami\"} Mozilla/5.0 (Windows",
+   "event_id": "1050-RASP0347559"
+  },
+  {
+   "timestamp": "2026-06-17 11:45:19",
+   "source": "hids",
+   "log_id": "HID0340441",
+   "content": "whoami /all C:\\Windows\\System32\\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap \"DefaultApp",
+   "event_id": "1050-HID0340441"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-008",
+   "name": "Exchange ProxyLogon 风格利用链",
+   "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+   "matched_steps": 0,
+   "total_steps": 6,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: webshell"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 6,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4",
+   "S5",
+   "S6"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.003",
+   "T1505.003",
+   "T1068",
+   "T1543.003",
+   "T1048.003"
+  ]
+ }
+}

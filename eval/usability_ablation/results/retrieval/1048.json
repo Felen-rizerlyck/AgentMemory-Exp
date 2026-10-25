@@ -1,0 +1,132 @@
+{
+ "unit": 1048,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-002",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "webshell 交互，缺 CASE-002 的 PUT 上传与 DNS 阶段"
+ },
+ "technique": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-07 22:44:39",
+   "source": "rasp",
+   "log_id": "RASP0274505",
+   "content": "https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {\"webshell\": \"shell.jsp\", \"cmd\": \"id\"} Mozilla/5.0 (Windo",
+   "event_id": "1048-RASP0274505"
+  },
+  {
+   "timestamp": "2026-06-07 22:45:36",
+   "source": "hids",
+   "log_id": "HID0268889",
+   "content": "id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh",
+   "event_id": "1048-HID0268889"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: catalina.sh"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-008",
+   "name": "Exchange ProxyLogon 风格利用链",
+   "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+   "matched_steps": 0,
+   "total_steps": 6,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: webshell"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

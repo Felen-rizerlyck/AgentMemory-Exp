@@ -1,0 +1,25 @@
+{
+ "unit": 1136,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "CI 缓存投毒（缓存包内含恢复后钩子被 runner 执行）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-31 17:21:11",
+   "source": "hids",
+   "log_id": "HID0667730",
+   "content": "tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener",
+   "event_id": "1136-HID0667730"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

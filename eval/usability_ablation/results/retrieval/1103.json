@@ -1,0 +1,91 @@
+{
+ "unit": 1103,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-18 05:46:28",
+   "source": "hids",
+   "log_id": "HID0566625",
+   "content": "setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\\jdoe",
+   "event_id": "1103-HID0566625"
+  },
+  {
+   "timestamp": "2026-07-18 05:54:18",
+   "source": "hids",
+   "log_id": "HID0566666",
+   "content": "Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\\jdoe",
+   "event_id": "1103-HID0566666"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-006",
+   "name": "域内侦察：BloodHound 图谱采集与外传",
+   "summary": "主机侧运行 SharpHound 全量采集 → 压缩采集结果 → 上传到攻击者地址，为后续 Kerberoasting/DCSync 选路。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: corp\\jdoe"
+   ],
+   "mitre": [
+    "T1087.002",
+    "T1069.002",
+    "T1560.001"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 3,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1087.002",
+   "T1069.002",
+   "T1560.001"
+  ]
+ }
+}

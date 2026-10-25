@@ -1,0 +1,121 @@
+﻿unit,stratum,gt_class,gt_case,model,condition,verdict,case_id,family,confidence,parse_ok,latency_s,verdict_correct,exact_hit,overclaim,family_hit,claims_case,next_step
+1001,exact,exact,CASE-001,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,44.6,True,True,,True,,下一步最可能执行更多命令或横向移动
+1021,exact,exact,CASE-002,qwen2.5:14b,catalog,match,CASE-002,Tomcat PUT上传Webshell,3,True,1.9,True,True,,True,,可能上传更多Webshell或执行其他命令
+1042,exact,exact,CASE-003,qwen2.5:14b,catalog,match,CASE-003,Windows 计划任务持久化,3,True,1.8,True,True,,True,,执行 C:\Windows\Temp 下的载荷
+1061,exact,exact,CASE-004,qwen2.5:14b,catalog,match,CASE-004,Laravel Ignition 反序列化 RCE,3,True,1.8,True,True,,True,,可能进一步横向移动或数据窃取
+1081,exact,exact,CASE-005,qwen2.5:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,1.8,True,True,,True,,删除卷影副本后可能尝试数据外传或进一步破坏
+1102,exact,exact,CASE-006,qwen2.5:14b,catalog,match,CASE-006,域内侦察：BloodHound 图谱采集与外传,3,True,2.1,True,True,,True,,后续可能进行 Kerberoasting/DCSync 选路
+1121,exact,exact,CASE-007,qwen2.5:14b,catalog,match,CASE-007,供应链投毒：npm postinstall 钩子执行远程脚本,3,True,2.4,True,True,,True,,执行远程脚本中的命令
+1007,variant,family_variant,CASE-001,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,2.5,False,,True,True,,可能进一步执行其他命令或下载后续载荷
+1013,variant,family_variant,CASE-004,qwen2.5:14b,catalog,match,CASE-004,Laravel Ignition 反序列化 RCE,3,True,1.8,False,,True,True,,追加 crontab 定时回连
+1018,variant,family_variant,CASE-001,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,2.3,False,,True,True,,下一步最可能执行更多命令或下载下一阶段载荷
+1035,variant,family_variant,CASE-008,qwen2.5:14b,catalog,match,CASE-008,Exchange ProxyLogon 利用链,3,True,2.6,False,,True,True,,可能进一步利用权限进行横向移动或数据窃取
+1047,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,删除卷影副本,3,True,1.2,True,,False,True,,下一步可能进行加密或破坏操作
+1048,variant,family_variant,CASE-002,qwen2.5:14b,catalog,match,CASE-002,Tomcat PUT上传Webshell,3,True,1.5,False,,True,True,,执行探针或上传更多Webshell
+1049,variant,family_variant,,qwen2.5:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,1.8,False,,True,,,批量加密目录
+1050,variant,family_variant,,qwen2.5:14b,catalog,new,,WebShell 上传与执行,3,True,1.4,True,,False,,,可能上传更多恶意文件或执行进一步操作
+1073,variant,family_variant,CASE-002,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,2.4,False,,True,False,,下一步最可能执行更多命令或下载下一阶段载荷
+1074,variant,family_variant,CASE-002,qwen2.5:14b,catalog,new,,Tomcat PUT 上传 WebShell,3,True,1.5,True,,False,True,,执行进一步侦察或持久化操作
+1082,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,勒索软件加密与破坏,3,True,1.3,True,,False,True,,删除卷影副本
+1083,variant,family_variant,CASE-005,qwen2.5:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,3.0,False,,True,True,,继续加密其他目录并删除卷影副本
+1084,variant,family_variant,CASE-003,qwen2.5:14b,catalog,match,CASE-003,Windows 计划任务持久化,3,True,3.3,False,,True,True,,删除卷影副本，加密文件
+1085,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,清除日志 + 加密文件,3,True,2.7,True,,False,True,,可能进一步删除或加密更多文件
+1086,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,SQL 数据库破坏与加密,3,True,3.1,True,,False,True,,可能进一步加密其他数据库文件或删除备份
+1087,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,勒索软件加密文档,3,True,2.7,True,,False,True,,删除卷影副本
+1088,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,上传接口落地 WebShell + 数据加密,3,True,2.6,True,,False,True,,删除卷影副本
+1089,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,勒索软件破坏卷影副本,3,True,2.7,True,,False,True,,加密文件并删除卷影副本
+1090,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,WMIC 命令执行 + 文件加密,3,True,3.1,True,,False,True,,可能删除卷影副本
+1091,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,数据加密攻击,3,True,2.5,True,,False,True,,可能删除更多备份文件或加密更多文件
+1092,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,SSH 密钥注入 + 数据删除 + 数据加密 + DNS C2,3,True,3.7,True,,False,True,,可能继续上传加密文件或进一步破坏系统
+1093,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,数据加密勒索,3,True,2.8,True,,False,True,,可能删除更多备份或留下赎金说明
+1094,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,虚拟机快照删除与加密,3,True,3.0,True,,False,True,,下一步可能删除更多备份文件或加密更多文件
+1095,variant,family_variant,CASE-005,qwen2.5:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,3.2,False,,True,True,,删除更多系统日志以清除痕迹
+1096,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,删除卷影副本并加密数据,3,True,2.9,True,,False,True,,可能进一步删除日志或上传webshell
+1097,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,远程执行命令 + 数据破坏,3,True,2.6,True,,False,True,,可能进一步加密或删除重要文件
+1098,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,勒索软件加密与数据破坏,3,True,3.0,True,,False,True,,删除更多备份或系统文件
+1099,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,curl 下载脚本执行,3,True,3.0,True,,False,True,,下一步可能加密或破坏文件
+1100,variant,family_variant,CASE-005,qwen2.5:14b,catalog,new,,SSH 批量删除备份文件 + 数据加密,3,True,3.2,True,,False,True,,可能进一步加密更多文件或删除日志记录
+1008,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Java 反序列化攻击,3,True,2.6,True,,False,,,进一步执行恶意操作
+1002,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Web 参数注入攻击,3,True,2.8,True,,False,,,下一步最可能执行命令或上传 webshell
+1052,new_with_candidate,new,,qwen2.5:14b,catalog,new,,调度接口注入执行,3,True,2.6,True,,False,,,下一步可能上传持久化载荷
+1011,new_with_candidate,new,,qwen2.5:14b,catalog,new,,路径遍历攻击,3,True,3.1,True,,False,,,下一步可能尝试进一步权限提升或部署webshell
+1103,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Kerberoasting 攻击,3,True,3.0,True,,False,,,尝试使用获取的票据进行密码破解
+1043,new_with_candidate,new,,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,2,True,4.3,False,,True,,,下一步最可能做什么：执行后续命令或加载恶意载荷
+1009,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Solr 任意命令执行,3,True,3.4,True,,False,,,下一步最可能尝试文件写入或横向移动
+1004,new_with_candidate,new,,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,4.6,False,,True,,,下一步最可能执行更多命令或下载下一阶段载荷
+1053,new_with_candidate,new,,qwen2.5:14b,catalog,new,,疑似命令注入执行,3,True,3.0,True,,False,,,可能进一步尝试文件上传或持久化
+1012,new_with_candidate,new,,qwen2.5:14b,catalog,new,,PHP反序列化RCE,3,True,3.0,True,,False,,,可能进一步执行持久化操作
+1116,new_with_candidate,new,,qwen2.5:14b,catalog,new,,提权+证书滥用,3,True,2.9,True,,False,,,下一步最可能尝试进一步权限提升或数据外传
+1010,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Jenkins 配置文件读取,3,True,3.3,True,,False,,,下一步最可能读取更多敏感文件或执行命令
+1005,new_with_candidate,new,,qwen2.5:14b,catalog,match,CASE-001,Log4Shell JNDI 注入,3,True,4.3,False,,True,,,下一步最可能执行更多命令或下载载荷
+1076,new_with_candidate,new,,qwen2.5:14b,catalog,new,,Laravel Ignition 类似攻击,3,True,3.5,True,,False,,,下一步可能追加 crontab 定时回连
+1003,new_no_candidate,new,,qwen2.5:14b,catalog,new,,Spring Actuator 远程代码执行,3,True,3.3,True,,False,,,下一步最可能尝试获取系统信息或进一步执行命令
+1017,new_no_candidate,new,,qwen2.5:14b,catalog,new,,文件包含漏洞利用,3,True,3.1,True,,False,,,下一步最可能尝试进一步的命令执行或文件上传
+1045,new_no_candidate,new,,qwen2.5:14b,catalog,new,,挖矿攻击,3,True,2.4,True,,False,,,持续挖矿
+1058,new_no_candidate,new,,qwen2.5:14b,catalog,new,,备份文件下载尝试,3,True,3.1,True,,False,,,下一步最可能尝试读取或篡改配置文件
+1066,new_no_candidate,new,,qwen2.5:14b,catalog,new,,WebShell 执行命令,3,True,3.9,True,,False,,,下一步最可能执行更多命令或上传持久化载荷
+1077,new_no_candidate,new,,qwen2.5:14b,catalog,match,CASE-004,Laravel Ignition 反序列化 RCE,3,True,3.6,False,,True,,,追加 crontab 定时回连
+1101,new_no_candidate,new,,qwen2.5:14b,catalog,new,,域内侦察,3,True,2.8,True,,False,,,下一步可能进行提权操作或横向移动
+1109,new_no_candidate,new,,qwen2.5:14b,catalog,new,,Kerberos Golden Ticket,3,True,3.2,True,,False,,,可能进一步执行权限提升或数据窃取
+1113,new_no_candidate,new,,qwen2.5:14b,catalog,new,,域内提权,3,True,3.3,True,,False,,,下一步最可能尝试更高权限操作或部署恶意软件
+1122,new_no_candidate,new,,qwen2.5:14b,catalog,match,CASE-007,供应链投毒：npm postinstall 钩子执行远程脚本,3,True,4.7,False,,True,,,主机侧 curl 远程脚本并管道执行
+1001,exact,exact,CASE-001,deepseek-r1:14b,catalog,match,CASE-001,JNDI 注入攻击,3,True,39.8,True,True,,True,,执行恶意命令
+1021,exact,exact,CASE-002,deepseek-r1:14b,catalog,match,CASE-002,webshell上传与命令执行,3,True,27.1,True,True,,True,,进行DNS心跳或数据外传
+1042,exact,exact,CASE-003,deepseek-r1:14b,catalog,match,CASE-003,计划任务持久化,3,True,35.4,True,True,,True,,执行C:\Windows\Temp\u.exe
+1061,exact,exact,CASE-004,deepseek-r1:14b,catalog,match,CASE-004,反序列化远程代码执行,3,True,39.8,True,True,,False,,追加 crontab 定时回连
+1081,exact,exact,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,30.5,True,True,,True,,确认加密完成并删除卷影副本以防止数据恢复
+1102,exact,exact,CASE-006,deepseek-r1:14b,catalog,match,CASE-006,域内侦察,3,True,25.3,True,True,,True,,后续可能进行 Kerberoasting 或 DCSync 攻击
+1121,exact,exact,CASE-007,deepseek-r1:14b,catalog,match,CASE-007,供应链投毒,3,True,37.6,True,True,,True,,执行恶意脚本
+1007,variant,family_variant,CASE-001,deepseek-r1:14b,catalog,match,CASE-001,JNDI 注入攻击,3,True,52.0,False,,True,True,,尝试进一步的命令执行或横向移动
+1013,variant,family_variant,CASE-004,deepseek-r1:14b,catalog,match,CASE-004,反序列化远程代码执行,3,True,29.3,False,,True,False,,追加 crontab 定时回连
+1018,variant,family_variant,CASE-001,deepseek-r1:14b,catalog,match,CASE-001,JNDI 注入攻击,3,True,49.3,False,,True,True,,执行恶意命令以获取shell权限
+1035,variant,family_variant,CASE-008,deepseek-r1:14b,catalog,match,CASE-008,Exchange ProxyLogon 利用链,3,True,45.5,False,,True,True,,执行后续恶意操作，如数据窃取或破坏
+1047,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,32.8,False,,True,True,,加密数据并删除卷影副本以防止恢复
+1048,variant,family_variant,CASE-002,deepseek-r1:14b,catalog,match,CASE-002,webshell上传与执行,3,True,31.4,False,,True,True,,执行心跳通信
+1049,variant,family_variant,,deepseek-r1:14b,catalog,match,CASE-002,Webshell上传与执行,3,True,36.7,False,,True,,,执行webshell进行后续操作
+1050,variant,family_variant,,deepseek-r1:14b,catalog,match,CASE-008,WebShell利用与提权,3,True,33.7,False,,True,,,可能进行提权或持久化操作
+1073,variant,family_variant,CASE-002,deepseek-r1:14b,catalog,match,CASE-001,JNDI 注入,3,True,46.0,False,,True,False,,建立C2通信
+1074,variant,family_variant,CASE-002,deepseek-r1:14b,catalog,match,CASE-002,Webshell上传与命令执行,3,True,48.0,False,,True,True,,执行DGA风格子域名解析
+1082,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,26.4,False,,True,True,,删除卷影副本
+1083,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,30.5,False,,True,True,,上传加密数据到远程服务器
+1084,variant,family_variant,CASE-003,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,27.5,False,,True,False,,删除卷影副本以防止数据恢复
+1085,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,39.5,False,,True,True,,支付赎金以解锁文件
+1086,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,31.8,False,,True,True,,等待赎金支付或进一步破坏数据
+1087,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,43.6,False,,True,True,,支付赎金以恢复数据
+1088,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,27.0,False,,True,True,,加密更多数据
+1089,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,33.5,False,,True,True,,加密更多文件或系统关键数据
+1090,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,28.9,False,,True,True,,删除卷影副本以防止数据恢复
+1091,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,28.0,False,,True,True,,进行数据加密并删除备份以防止恢复
+1092,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,new,,勒索式数据破坏,3,True,42.8,True,,False,True,,删除卷影副本
+1093,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,26.9,False,,True,True,,受害者支付赎金
+1094,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,new,,数据破坏,2,True,26.9,True,,False,True,,可能删除更多数据或加密其他文件
+1095,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,38.4,False,,True,True,,等待赎金支付或进一步破坏数据
+1096,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,29.8,False,,True,True,,支付赎金以恢复数据
+1097,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,30.2,False,,True,True,,加密数据
+1098,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,34.9,False,,True,True,,删除卷影副本
+1099,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,45.3,False,,True,True,,加密重要数据
+1100,variant,family_variant,CASE-005,deepseek-r1:14b,catalog,match,CASE-005,勒索式数据破坏,3,True,39.5,False,,True,True,,加密更多数据或留下勒索信息
+1008,new_with_candidate,new,,deepseek-r1:14b,catalog,match,CASE-004,反序列化远程命令执行,3,True,49.3,False,,True,,,追加crontab定时回连
+1002,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,反序列化 RCE,3,True,66.6,True,,False,,,尝试进一步权限提升或数据窃取
+1052,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,命令注入攻击,3,True,45.8,True,,False,,,尝试执行更多系统命令以获取信息或进一步权限提升
+1011,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,文件包含攻击,3,True,78.4,True,,False,,,下一步最可能执行命令获取敏感信息
+1103,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,域内侦察与横向移动,3,True,56.5,True,,False,,,进一步分析是否有后续的票据滥用行为
+1043,new_with_candidate,new,,deepseek-r1:14b,catalog,match,CASE-008,Exchange ProxyLogon 利用链,3,True,33.6,False,,True,,,注册服务以实现持久化
+1009,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,Solr 查询注入攻击,3,True,48.3,True,,False,,,进一步分析Solr服务是否存在漏洞，检查是否有未授权的远程代码执行可能
+1004,new_with_candidate,new,,deepseek-r1:14b,catalog,match,CASE-001,JNDI 注入攻击,3,True,60.4,False,,True,,,尝试进一步的命令执行或横向移动
+1053,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,命令注入攻击,3,True,63.0,True,,False,,,下载并执行恶意脚本以进一步攻击
+1012,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,PHP-FPM 远程代码执行,3,True,68.2,True,,False,,,下载并执行恶意脚本
+1116,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,域内操作,2,True,51.1,True,,False,,,进一步分析Whisker.exe和certipy的使用情况，确认是否为已知恶意工具
+1010,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,文件包含攻击,3,True,61.9,True,,False,,,尝试上传webshell或执行命令
+1005,new_with_candidate,new,,deepseek-r1:14b,catalog,new,,Web应用攻击,3,True,48.7,True,,False,,,尝试进一步权限提升或横向移动
+1076,new_with_candidate,new,,deepseek-r1:14b,catalog,match,CASE-003,Windows计划任务持久化,3,True,55.8,False,,True,,,执行持久化脚本
+1003,new_no_candidate,new,,deepseek-r1:14b,catalog,match,CASE-004,反序列化远程命令执行,3,True,57.9,False,,True,,,追加crontab定时回连
+1017,new_no_candidate,new,,deepseek-r1:14b,catalog,new,,文件包含攻击,3,True,60.0,True,,False,,,尝试获取Grafana配置文件中的敏感信息
+1045,new_no_candidate,new,,deepseek-r1:14b,catalog,new,,恶意进程执行,2,True,46.5,True,,False,,,进一步分析该进程的来源和行为，检查是否有其他异常活动
+1058,new_no_candidate,new,,deepseek-r1:14b,catalog,new,,Web配置信息窃取,3,True,57.0,True,,False,,,尝试访问其他敏感文件或进行横向移动
+1066,new_no_candidate,new,,deepseek-r1:14b,catalog,match,CASE-007,供应链投毒,3,True,66.3,False,,True,,,执行其他恶意命令或建立持久化
+1077,new_no_candidate,new,,deepseek-r1:14b,catalog,new,,Drupalgeddon2 漏洞利用,3,True,69.0,True,,False,,,进一步的横向移动或数据窃取
+1101,new_no_candidate,new,,deepseek-r1:14b,catalog,match,CASE-006,域内侦察,3,True,41.1,False,,True,,,后续可能进行横向移动或权限提升
+1109,new_no_candidate,new,,deepseek-r1:14b,catalog,match,CASE-008,提权攻击,3,True,38.5,False,,True,,,访问域控制器C$共享目录
+1113,new_no_candidate,new,,deepseek-r1:14b,catalog,new,,权限提升与持久化,2,True,40.9,True,,False,,,可能尝试进一步的系统访问或数据外传
+1122,new_no_candidate,new,,deepseek-r1:14b,catalog,match,CASE-007,供应链投毒,3,True,55.2,False,,True,,,下载并执行远程脚本

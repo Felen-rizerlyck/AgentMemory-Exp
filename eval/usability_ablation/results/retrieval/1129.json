@@ -1,0 +1,164 @@
+{
+ "unit": 1129,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "仓库 webhook SSRF 打到云元数据（169.254.169.254 IAM 凭据）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 02:55:13",
+   "source": "waf",
+   "log_id": "WAF0466671",
+   "content": "/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+   "event_id": "1129-WAF0466671"
+  },
+  {
+   "timestamp": "2026-07-10 02:55:14",
+   "source": "web",
+   "log_id": "WEB0469706",
+   "content": "/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+   "event_id": "1129-WEB0469706"
+  },
+  {
+   "timestamp": "2026-07-10 02:55:16",
+   "source": "rasp",
+   "log_id": "RASP0516335",
+   "content": "https://app-nginx-51.ops-corp.com/api/webhook/gitlab {\"webhook_ssrf\": \"169.254.169.254\", \"ref\": \"main\"} Mozill",
+   "event_id": "1129-RASP0516335"
+  },
+  {
+   "timestamp": "2026-07-10 02:56:14",
+   "source": "hids",
+   "log_id": "HID0505746",
+   "content": "curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process",
+   "event_id": "1129-HID0505746"
+  },
+  {
+   "timestamp": "2026-07-10 04:44:14",
+   "source": "dns",
+   "log_id": "DNS0490550",
+   "content": "7011ca84.glbwpt-3f7a.net A 198.51.100.51",
+   "event_id": "1129-DNS0490550"
+  },
+  {
+   "timestamp": "2026-07-10 04:44:47",
+   "source": "dns",
+   "log_id": "DNS0490553",
+   "content": "0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50",
+   "event_id": "1129-DNS0490553"
+  },
+  {
+   "timestamp": "2026-07-10 04:46:04",
+   "source": "dns",
+   "log_id": "DNS0490559",
+   "content": "69e38046.glbwpt-3f7a.net A 10.10.30.206",
+   "event_id": "1129-DNS0490559"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1129-DNS0490559"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: \\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1129-DNS0490559"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 4,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

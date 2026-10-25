@@ -1,0 +1,25 @@
+{
+ "unit": 1104,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-11 06:37:49",
+   "source": "hids",
+   "log_id": "HID0514399",
+   "content": "GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse",
+   "event_id": "1104-HID0514399"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

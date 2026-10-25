@@ -1,0 +1,89 @@
+{
+ "unit": 1052,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-25 14:39:38",
+   "source": "rasp",
+   "log_id": "RASP0409752",
+   "content": "https://app-go-27.ops-corp.com/api/v1/convert {\"cmd_inject\": \"|id\", \"lang\": \"go\"} Mozilla/5.0 (X11; Linux x86_",
+   "event_id": "1052-RASP0409752"
+  },
+  {
+   "timestamp": "2026-06-25 14:41:06",
+   "source": "hids",
+   "log_id": "HID0401348",
+   "content": "cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver",
+   "event_id": "1052-HID0401348"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-003",
+   "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+   "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: cmd_inject"
+   ],
+   "mitre": [
+    "T1053.005",
+    "T1059.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 3,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1053.005",
+   "T1059.003"
+  ]
+ }
+}

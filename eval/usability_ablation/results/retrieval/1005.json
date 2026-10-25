@@ -1,0 +1,152 @@
+{
+ "unit": 1005,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Struts2 S2-045（Content-Type 头 OGNL 表达式注入）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-22 16:00:22",
+   "source": "waf",
+   "log_id": "WAF0349974",
+   "content": "/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0",
+   "event_id": "1005-WAF0349974"
+  },
+  {
+   "timestamp": "2026-06-22 16:00:24",
+   "source": "web",
+   "log_id": "WEB0352251",
+   "content": "/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0",
+   "event_id": "1005-WEB0352251"
+  },
+  {
+   "timestamp": "2026-06-22 16:00:26",
+   "source": "rasp",
+   "log_id": "RASP0387210",
+   "content": "https://app-tomcat-71.ops-corp.com/user/login.action {\"ognl\": \"(#cmd='id')\"} Mozilla/5.0 (Windows NT 10.0; Win",
+   "event_id": "1005-RASP0387210"
+  },
+  {
+   "timestamp": "2026-06-22 16:02:23",
+   "source": "hids",
+   "log_id": "HID0379274",
+   "content": "id;hostname /usr/bin/id id;hostname <== /bin/sh -c 'id;hostname' <== /usr/local/tomcat/bin/catalina.sh",
+   "event_id": "1005-HID0379274"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "tomcat_child_id_hostname",
+     "label": "Tomcat 进程派生子 shell 执行探针",
+     "event_ids": [
+      "1005-HID0379274"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: catalina.sh"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S4"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": {
+    "step_id": "S4",
+    "action_id": "dga_hex_subdomain_beacon",
+    "label": "DGA 风格子域突发解析",
+    "expected_sources": [
+     "dns"
+    ]
+   },
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "Tomcat 进程派生子 shell 执行探针",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1005-HID0379274"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": {
+   "step_id": "S4",
+   "action_id": "dga_hex_subdomain_beacon",
+   "label": "DGA 风格子域突发解析",
+   "expected_sources": [
+    "dns"
+   ]
+  },
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

@@ -1,0 +1,46 @@
+﻿event_id,incident_id,case_id,step_id,action_id,link_status,link_basis
+WAF0410001,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注
+WEB0410002,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注
+HID0410003,INC-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,confirmed,CASE-008 原始参考批次及项目内链级标注
+RASP0410004,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注
+WEB0410005,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注
+HID0410006,INC-CASE008-001,CASE-008,S4,printspoofer_priv,confirmed,CASE-008 原始参考批次及项目内链级标注
+HID0410007,INC-CASE008-001,CASE-008,S5,sc_create_service,confirmed,CASE-008 原始参考批次及项目内链级标注
+DNS0410008,INC-CASE008-001,CASE-008,S6,dns_b64_label_beacon,confirmed,CASE-008 原始参考批次及项目内链级标注
+EVT-SIM008-001,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-002,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-003,INC-DEMO-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-004,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-005,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-006,INC-DEMO-CASE008-001,CASE-008,S4,printspoofer_priv,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-007,INC-DEMO-CASE008-001,CASE-008,S5,sc_create_service,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-SIM008-008,INC-DEMO-CASE008-001,CASE-008,S6,dns_b64_label_beacon,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
+EVT-CASE001-01,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
+EVT-CASE001-02,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
+EVT-CASE001-03,INC-CASE-001-001,CASE-001,S2,log4shell_app_jndi_lookup,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
+EVT-CASE001-04,INC-CASE-001-001,CASE-001,S3,log4shell_java_child_cmd,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
+EVT-CASE002-01,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-02,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-03,INC-CASE-002-001,CASE-002,S2,jsp_upload_rce_marker,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-04,INC-CASE-002-001,CASE-002,S3,tomcat_child_id_hostname,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-05,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-06,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE002-07,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
+EVT-CASE003-01,INC-CASE-003-001,CASE-003,S1,scheduler_cmd_inject,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
+EVT-CASE003-02,INC-CASE-003-001,CASE-003,S2,scheduler_cmd_inject_rasp,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
+EVT-CASE003-03,INC-CASE-003-001,CASE-003,S3,schtasks_interval_task,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
+EVT-CASE004-01,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
+EVT-CASE004-02,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
+EVT-CASE004-03,INC-CASE-004-001,CASE-004,S2,ignition_phar_deserialization,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
+EVT-CASE004-04,INC-CASE-004-001,CASE-004,S3,php_fpm_child_id,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
+EVT-CASE004-05,INC-CASE-004-001,CASE-004,S3,php_fpm_child_id,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
+EVT-CASE005-01,INC-CASE-005-001,CASE-005,S1,webshell_upload_action,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
+EVT-CASE005-02,INC-CASE-005-001,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
+EVT-CASE005-03,INC-CASE-005-001,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
+EVT-CASE006-01,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
+EVT-CASE006-02,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
+EVT-CASE006-03,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
+EVT-CASE007-01,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
+EVT-CASE007-02,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
+EVT-CASE007-03,INC-CASE-007-001,CASE-007,S2,npm_lifecycle_postinstall_spawn,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
+EVT-CASE007-04,INC-CASE-007-001,CASE-007,S3,npm_hook_remote_shell,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）

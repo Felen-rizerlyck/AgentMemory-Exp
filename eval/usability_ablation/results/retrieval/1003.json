@@ -1,0 +1,49 @@
+{
+ "unit": 1003,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-26 10:52:35",
+   "source": "waf",
+   "log_id": "WAF0376175",
+   "content": "/actuator/gateway {\"name\":\"RewritePath\",\"args\":{\"_genkey_0\":\"#{T(java.lang.Runtime)}\"}} Mozilla/5.0 (X11; Linu",
+   "event_id": "1003-WAF0376175"
+  },
+  {
+   "timestamp": "2026-06-26 10:52:36",
+   "source": "web",
+   "log_id": "WEB0378622",
+   "content": "/actuator/gateway {\"name\":\"RewritePath\",\"args\":{\"_genkey_0\":\"#{T(java.lang.Runtime)}\"}} Mozilla/5.0 (X11; Linu",
+   "event_id": "1003-WEB0378622"
+  },
+  {
+   "timestamp": "2026-06-26 10:52:37",
+   "source": "rasp",
+   "log_id": "RASP0416202",
+   "content": "https://app-spring-95.ops-corp.com/actuator/gateway {\"spel\": \"#{T(java.lang.Runtime)}\"} Mozilla/5.0 (X11; Linu",
+   "event_id": "1003-RASP0416202"
+  },
+  {
+   "timestamp": "2026-06-26 10:54:03",
+   "source": "hids",
+   "log_id": "HID0407665",
+   "content": "ssh -o StrictHostKeyChecking=no -i /tmp/.k root@10.20.4.23 id ssh ssh -o StrictHostKeyChecking=no -i /tmp/.k <",
+   "event_id": "1003-HID0407665"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

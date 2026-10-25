@@ -1,0 +1,21 @@
+主机重号 F2#6 app-java-152 → app-java-204
+主机重号 F2#10 app-java-88 → app-java-171
+主机重号 F3#19 app-php-84 → app-php-114
+主机重号 F3#20 app-java-76 → app-java-68
+主机重号 F4#2 app-java-12 → app-java-179
+主机重号 F4#13 app-spring-9 → app-spring-141
+主机重号 F4#19 app-php-27 → app-php-153
+F2#4 stack php → iis（.NET/IIS 应用）
+F2#15 stack nginx → iis（.NET/IIS 应用）
+F3#10 stack java → iis（.NET/IIS 应用）
+F2#11 stack django → python（Airflow）
+F2#15 手法名改为 ProxyNotShell
+F2#4 hids 补父链 → 154 字符
+F3#3 修正 sc 语法/POSIX 路径 → 156 字符
+F3#10 hids 改 IIS 父链 → 132 字符
+F4#16 重定位（EJS）99/112 字符
+F4#13 Spring4Shell 换成 prefix/suffix/directory 配置向量
+F4#12 换为 Webmin CVE-2019-15107（原 Grafana 与 F2#8 实质换皮）
+F1#19 extractvalue(MySQL) → PostgreSQL CAST 报错注入
+F3#12 pprof 虚构载荷 → Go exec.Command 注入
+F1#16 头形态改为 5 段 x-middleware-subrequest

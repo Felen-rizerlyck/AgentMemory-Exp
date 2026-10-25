@@ -1,0 +1,152 @@
+待跑 240 次（已完成 0）
+[1/240] 1001 qwen2.5  direct     2.9s attack   JNDI注入攻击 conf=3
+[2/240] 1021 qwen2.5  direct     2.9s attack   WebShell植入 conf=3
+[3/240] 1042 qwen2.5  direct     2.8s attack   命令注入与计划任务创建 conf=3
+[4/240] 1061 qwen2.5  direct     3.2s attack   PHP反序列化漏洞利用 conf=3
+[5/240] 1081 qwen2.5  direct     2.8s attack   WebShell利用 conf=3
+[6/240] 1102 qwen2.5  direct     2.7s attack   凭证盗窃与横向移动 conf=3
+[7/240] 1121 qwen2.5  direct     2.4s attack   供应链攻击 conf=3
+[8/240] 1007 qwen2.5  direct     2.6s attack   Java反序列化攻击 conf=3
+[9/240] 1013 qwen2.5  direct     2.7s attack   PHP反序列化攻击 conf=3
+[10/240] 1018 qwen2.5  direct     2.8s attack   JNDI注入攻击 conf=3
+[11/240] 1035 qwen2.5  direct     3.1s attack   SSRF和命令执行 conf=3
+[12/240] 1047 qwen2.5  direct     2.6s attack   清除日志痕迹 conf=3
+[13/240] 1048 qwen2.5  direct     2.5s attack   WebShell植入 conf=3
+[14/240] 1049 qwen2.5  direct     2.4s attack   WebShell植入 conf=3
+[15/240] 1050 qwen2.5  direct     2.6s attack   WebShell植入 conf=3
+[16/240] 1073 qwen2.5  direct     2.7s attack   Spring4Shell漏洞利用 conf=3
+[17/240] 1074 qwen2.5  direct     2.8s attack   WebShell植入 conf=3
+[18/240] 1082 qwen2.5  direct     2.6s attack   远程代码执行 conf=3
+[19/240] 1083 qwen2.5  direct     3.4s attack   远程桌面劫持 conf=3
+[20/240] 1084 qwen2.5  direct     2.8s attack   持久化与数据加密 conf=3
+[21/240] 1085 qwen2.5  direct     2.8s attack   文件加密勒索软件 conf=3
+[22/240] 1086 qwen2.5  direct     2.8s attack   勒索软件 conf=3
+[23/240] 1087 qwen2.5  direct     3.3s attack   勒索软件 conf=3
+[24/240] 1088 qwen2.5  direct     2.4s attack   数据擦除攻击 conf=3
+[25/240] 1089 qwen2.5  direct     2.6s attack   后门植入 conf=3
+[26/240] 1090 qwen2.5  direct     3.0s attack   后门植入 conf=3
+[27/240] 1091 qwen2.5  direct     2.7s attack   数据加密勒索 conf=3
+[28/240] 1092 qwen2.5  direct     3.4s attack   远程命令执行 conf=3
+[29/240] 1093 qwen2.5  direct     2.8s attack   勒索软件 conf=3
+[30/240] 1094 qwen2.5  direct     2.7s attack   勒索软件 conf=3
+[31/240] 1095 qwen2.5  direct     2.8s attack   数据擦除攻击 conf=3
+[32/240] 1096 qwen2.5  direct     2.9s attack   恶意软件后门 conf=3
+[33/240] 1097 qwen2.5  direct     2.6s attack   远程代码执行 conf=3
+[34/240] 1098 qwen2.5  direct     2.9s attack   数据擦除与泄露 conf=3
+[35/240] 1099 qwen2.5  direct     2.7s attack   远程代码执行 conf=3
+[36/240] 1100 qwen2.5  direct     2.8s attack   远程命令执行 conf=3
+[37/240] 1008 qwen2.5  direct     2.7s attack   Java反序列化攻击 conf=3
+[38/240] 1002 qwen2.5  direct     2.9s attack   Spring Cloud Bus配置注入 conf=3
+[39/240] 1052 qwen2.5  direct     2.5s attack   命令注入 conf=3
+[40/240] 1011 qwen2.5  direct     2.9s attack   路径遍历攻击 conf=3
+[41/240] 1103 qwen2.5  direct     3.0s attack   Kerberoasting conf=3
+[42/240] 1043 qwen2.5  direct     2.4s attack   服务后门 conf=3
+[43/240] 1009 qwen2.5  direct     2.8s attack   Solr 任意代码执行 conf=3
+[44/240] 1004 qwen2.5  direct     3.0s attack   Java反序列化漏洞利用 conf=3
+[45/240] 1053 qwen2.5  direct     2.7s attack   命令注入攻击 conf=3
+[46/240] 1012 qwen2.5  direct     3.2s attack   PHP反序列化漏洞利用 conf=3
+[47/240] 1116 qwen2.5  direct     2.6s attack   凭据转储 conf=3
+[48/240] 1010 qwen2.5  direct     2.7s attack   文件读取攻击 conf=3
+[49/240] 1005 qwen2.5  direct     3.1s attack   Struts2 OGNL注入攻击 conf=3
+[50/240] 1076 qwen2.5  direct     3.2s attack   WebShell植入 conf=3
+[51/240] 1003 qwen2.5  direct     3.0s attack   Spring Cloud Gateway 漏洞利用 conf=3
+[52/240] 1017 qwen2.5  direct     2.9s attack   路径遍历攻击 conf=3
+[53/240] 1045 qwen2.5  direct     2.6s attack   挖矿恶意软件 conf=3
+[54/240] 1058 qwen2.5  direct     2.8s attack   文件读取攻击 conf=3
+[55/240] 1066 qwen2.5  direct     2.9s attack   远程代码执行 conf=3
+[56/240] 1077 qwen2.5  direct     3.3s attack   Drupalgeddon2漏洞利用 conf=3
+[57/240] 1101 qwen2.5  direct     2.9s attack   凭据转储 conf=3
+[58/240] 1109 qwen2.5  direct     2.6s attack   金钥攻击 conf=3
+[59/240] 1113 qwen2.5  direct     3.3s attack   凭据盗窃与权限提升 conf=3
+[60/240] 1122 qwen2.5  direct     2.8s attack   恶意软件安装 conf=3
+[61/240] 1001 qwen2.5  assisted   4.4s match    CASE-001 conf=3
+[62/240] 1021 qwen2.5  assisted   4.8s match    CASE-002 conf=3
+[63/240] 1042 qwen2.5  assisted   3.8s match    CASE-003 conf=3
+[64/240] 1061 qwen2.5  assisted   4.0s match    CASE-004 conf=3
+[65/240] 1081 qwen2.5  assisted   4.0s match    CASE-005 conf=3
+[66/240] 1102 qwen2.5  assisted   4.1s match    CASE-006 conf=3
+[67/240] 1121 qwen2.5  assisted   5.4s match    CASE-007 conf=3
+Traceback (most recent call last):
+  File "F:\AI_Learning\AgentMemory\eval\usability_ablation\harness\run_llm_arm.py", line 315, in <module>
+    main()
+  File "F:\AI_Learning\AgentMemory\eval\usability_ablation\harness\run_llm_arm.py", line 203, in main
+    sys_p, user_p = build_prompt(cond, uj, cat, uj["evidence_for_agent"])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\AI_Learning\AgentMemory\eval\usability_ablation\harness\run_llm_arm.py", line 106, in build_prompt
+    user = (fmt_catalog(cat) + "\n\n" + fmt_evidence(ev)
+                                        ^^^^^^^^^^^^^^^^
+  File "F:\AI_Learning\AgentMemory\eval\usability_ablation\harness\run_llm_arm.py", line 91, in fmt_evidence
+    miss = "、".join(f"{s['step_id']}:{s['label']}" for s in ev["unobserved_steps"]) or "无"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "F:\AI_Learning\AgentMemory\eval\usability_ablation\harness\run_llm_arm.py", line 91, in <genexpr>
+    miss = "、".join(f"{s['step_id']}:{s['label']}" for s in ev["unobserved_steps"]) or "无"
+                        ~^^^^^^^^^^^
+TypeError: string indices must be integers, not 'str'
+待跑 173 次（已完成 67）
+[1/173] 1007 qwen2.5  assisted  10.9s new      疑似 Log4Shell JNDI 注入 conf=2
+[2/173] 1013 qwen2.5  assisted   3.6s new      疑似 Laravel Ignition 反序列化 R conf=3
+[3/173] 1018 qwen2.5  assisted   3.9s new      疑似 Log4Shell JNDI 注入 conf=3
+[4/173] 1035 qwen2.5  assisted   3.8s new      Exchange ProxyLogon SSRF利用 conf=3
+[5/173] 1047 qwen2.5  assisted   2.6s new      勒索软件行为 conf=3
+[6/173] 1048 qwen2.5  assisted   3.1s new      Tomcat PUT 上传 JSP webshell conf=3
+[7/173] 1049 qwen2.5  assisted   3.2s new      疑似 WebShell 上传与加密 conf=3
+[8/173] 1050 qwen2.5  assisted   3.2s new      WebShell 执行系统命令 conf=3
+[9/173] 1073 qwen2.5  assisted   3.6s new      疑似 Spring4Shell 漏洞利用 conf=3
+[10/173] 1074 qwen2.5  assisted   3.2s new      Tomcat PUT 上传 WebShell conf=3
+[11/173] 1082 qwen2.5  assisted   2.5s new      勒索式数据破坏 conf=3
+[12/173] 1083 qwen2.5  assisted   2.6s new      勒索式数据破坏 conf=3
+[13/173] 1084 qwen2.5  assisted   3.2s new      未知攻击类型 conf=3
+[14/173] 1085 qwen2.5  assisted   3.2s new      清除日志 + 加密文件 conf=3
+[15/173] 1086 qwen2.5  assisted   3.4s new      疑似勒索软件攻击 conf=3
+[16/173] 1087 qwen2.5  assisted   3.2s new      疑似勒索软件加密文档 conf=3
+[17/173] 1088 qwen2.5  assisted   2.9s new      疑似勒索软件加密行为 conf=3
+[18/173] 1089 qwen2.5  assisted   2.7s new      勒索软件行为 conf=3
+[19/173] 1090 qwen2.5  assisted   2.9s new      勒索式数据破坏 conf=3
+[20/173] 1091 qwen2.5  assisted   2.8s new      数据加密与清理 conf=3
+[21/173] 1092 qwen2.5  assisted   3.6s new      未知行为模式 conf=3
+[22/173] 1093 qwen2.5  assisted   3.5s new      MySQL 数据库破坏与加密 conf=3
+[23/173] 1094 qwen2.5  assisted   3.9s new      虚拟机快照删除与加密 conf=3
+[24/173] 1095 qwen2.5  assisted   2.6s new      勒索式数据破坏 conf=3
+[25/173] 1096 qwen2.5  assisted   3.1s new      疑似数据破坏与持久化尝试 conf=3
+[26/173] 1097 qwen2.5  assisted   3.1s new      勒索软件或数据破坏 conf=3
+[27/173] 1098 qwen2.5  assisted   3.5s new      勒索式数据破坏 conf=3
+[28/173] 1099 qwen2.5  assisted   3.7s new      疑似供应链投毒或恶意脚本执行 conf=3
+[29/173] 1100 qwen2.5  assisted   3.6s new      疑似批量删除备份文件并加密数据 conf=3
+[30/173] 1008 qwen2.5  assisted   3.0s new      Java 应用反序列化 RCE conf=3
+[31/173] 1002 qwen2.5  assisted   2.5s new      未知攻击类型 conf=3
+[32/173] 1052 qwen2.5  assisted   2.8s new      未知攻击类型 conf=3
+[33/173] 1011 qwen2.5  assisted   3.5s new      路径遍历漏洞利用 conf=3
+[34/173] 1103 qwen2.5  assisted   3.5s new      域内侦察：Kerberoasting conf=3
+[35/173] 1043 qwen2.5  assisted   2.7s new      未知攻击行为 conf=3
+[36/173] 1009 qwen2.5  assisted   3.4s new      疑似 Java 进程执行恶意命令 conf=3
+[37/173] 1004 qwen2.5  assisted   3.8s new      疑似 Log4Shell JNDI 注入尝试 conf=2
+[38/173] 1053 qwen2.5  assisted   2.9s new      未知攻击类型 conf=3
+[39/173] 1012 qwen2.5  assisted   3.3s new      PHP配置文件注入 conf=3
+[40/173] 1116 qwen2.5  assisted   2.9s new      未知攻击行为 conf=3
+[41/173] 1010 qwen2.5  assisted   3.8s new      疑似 Java 应用程序命令执行 conf=3
+[42/173] 1005 qwen2.5  assisted   3.4s new      疑似 OGNL 注入攻击 conf=2
+[43/173] 1076 qwen2.5  assisted   3.4s new      疑似计划任务持久化攻击 conf=3
+[44/173] 1003 qwen2.5  assisted   3.7s new      Spring Actuator 远程代码执行 conf=3
+[45/173] 1017 qwen2.5  assisted   3.7s new      文件包含漏洞利用 conf=3
+[46/173] 1045 qwen2.5  assisted   2.9s new      疑似挖矿行为 conf=3
+[47/173] 1058 qwen2.5  assisted   3.3s new      备份接口配置文件读取尝试 conf=3
+[48/173] 1066 qwen2.5  assisted   3.8s new      疑似 Node.js 进程派生 shell conf=3
+[49/173] 1077 qwen2.5  assisted   3.7s new      Drupalgeddon2 RCE conf=3
+[50/173] 1101 qwen2.5  assisted   2.9s new      域内侦察 conf=3
+[51/173] 1109 qwen2.5  assisted   3.6s new      Kerberos Golden Ticket conf=3
+[52/173] 1113 qwen2.5  assisted   3.9s new      域内提权 conf=3
+[53/173] 1122 qwen2.5  assisted   3.8s new      CI流水线依赖安装后派生shell conf=3
+[54/173] 1001 deepseek-r1 direct    38.1s attack   JNDI 注入攻击 conf=3
+[55/173] 1021 deepseek-r1 direct    35.6s attack   远程命令执行攻击 conf=3
+[56/173] 1042 deepseek-r1 direct    37.7s attack   恶意计划任务创建 conf=3
+[57/173] 1061 deepseek-r1 direct    55.8s attack   WebShell攻击 conf=3
+[58/173] 1081 deepseek-r1 direct    62.8s attack   勒索软件 conf=3
+[59/173] 1102 deepseek-r1 direct    55.2s attack   数据窃取攻击 conf=3
+[60/173] 1121 deepseek-r1 direct    66.8s attack   供应链攻击 conf=3
+[61/173] 1007 deepseek-r1 direct    57.6s attack   反序列化攻击 conf=3
+[62/173] 1013 deepseek-r1 direct    66.1s attack   PHAR反序列化漏洞利用 conf=3
+[63/173] 1018 deepseek-r1 direct   414.8s attack   JNDI 注入攻击 conf=3
+[64/173] 1035 deepseek-r1 direct   [1/110] 1035 deepseek-r1 direct    99.1s at[65/173] 1047 deepseek-r1 direct    80.[2/110] 1047 deepseek-r1 direct    70.9[66/173] 1048 deepseek-r1 direct[3/110] 1048 deepseek-r1 direct    67.6s a[67/173] 1049 deepseek-r1 direc[4/110] 1049 deepseek-r1 direct    73.0s at[68/173] 1050 deepseek-r1 dire[5/110] 1050 deepseek-r1 direct    91.4s att[69/173] 1073 deepseek-r1 dir[6/110] 1073 deepseek-r1 direct   104.9s attack   Sprin[70/173] 1074 deepseek-r1 di[7/110] 1074 deepseek-r1 direct   103.9s attac[71/173] 1082 deepseek-r1 d[8/110] 1082 deepseek-r1 direct   107.6s atta[72/173] 1083 deepseek-r1 [9/110] 1083 deepseek-r1 direct   101.4s attack   勒索软[73/173] 1084 deepseek-r1[10/110] 1084 deepseek-r1 direct    78.4s attac[74/173] 1085 deepseek-r1[11/110] 1085 deepseek-r1 direct    66.0s attack   �[75/173] 1086 deeps[12/110] 1086 deepseek-r1 direct    84.1s attack   勒索�[76/173] 1087 deeps[13/110] 1087 deepseek-r1 direct    79.7s attack   �[77/173] 1088 deeps[14/110] 1088 deepseek-r1 direct   107.9s attack   勒索�[78/173] 1089[15/110] 1089 deepseek-r1 direct    55.3s attack   勒索�[79/173] 1090 deeps[16/110] 1090 deepseek-r1 direct    75.5s attack   勒索�[80/173] 1091[17/110] 1091 deepseek-r1 direct   108.2s attack   勒索软件�[81/173] 1092[18/110] 1092 deepseek-r1 direct    77.1s attack   数据窃取�[82/173] 1093[19/110] 1093 deepseek-r1 direct    64.3s attack   勒索软件�[83/173] 1094[20/110] 1094 deepseek-r1 direct   105.7s attack   数据擦除�[84/173] 1095[21/110] 1095 deepseek-r1 direct    93.7s attack   勒索软件 conf=3
+[22/110] 1096 deepseek-r1 direct   114.4s attack   间谍活动 conf=3
+[23/110] 1097 deepseek-r1 direct    67.5s attack   勒索软件攻击 conf=3
+[24/110] 1098 deepseek-r1 direct   102.2s attack   数据窃取攻击 conf=3[[25/110] 1099 deepseek-r1 direct    77.9s attack   恶意软件下载与执行[89/173] [26/110] 1100 deepseek-r1 direct   141.2s attack   勒索软件攻击[90/173] [27/110] 1008 deepseek-r1 direct    94.7s attack   Java反序列化�[91/173] 1002[28/110] 1002 deepseek-r1 direct    74.2s attack   命令注入�[92/173] 1052[29/110] 1052 deepseek-r1 direct   118.8s attack   命令注�[93/173] 1011 dee[30/110] 1011 deepseek-r1 direct    92.8s attack   路径遍�[94/173] 1103 deep[31/110] 1103 deepseek-r1 direct    86.1s attack   凭证转d[95/173] 1043 deepseek-r1 direct    77.5s attack   恶意软件/后门 conf=3

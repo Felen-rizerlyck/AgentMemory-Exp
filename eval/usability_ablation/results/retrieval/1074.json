@@ -1,0 +1,57 @@
+{
+ "unit": 1074,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-002",
+  "confidence": "low",
+  "needs_review": true,
+  "reason": "关键词命中家族，但阶段结构未核实"
+ },
+ "technique": "Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-14 22:59:04",
+   "source": "waf",
+   "log_id": "WAF0296626",
+   "content": "/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1",
+   "event_id": "1074-WAF0296626"
+  },
+  {
+   "timestamp": "2026-06-14 22:59:06",
+   "source": "web",
+   "log_id": "WEB0298556",
+   "content": "/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1",
+   "event_id": "1074-WEB0298556"
+  },
+  {
+   "timestamp": "2026-06-14 22:59:07",
+   "source": "rasp",
+   "log_id": "RASP0328181",
+   "content": "https://app-tomcat-171.ops-corp.com/manager/deploy?path=/svc&update=true {\"war_deploy\": \"manager/deploy\", \"arc",
+   "event_id": "1074-RASP0328181"
+  },
+  {
+   "timestamp": "2026-06-14 23:00:33",
+   "source": "hids",
+   "log_id": "HID0321460",
+   "content": "cmd.exe /c ipconfig /all cmd.exe cmd.exe /c ipconfig /all <== services.exe <== wininit.exe",
+   "event_id": "1074-HID0321460"
+  },
+  {
+   "timestamp": "2026-06-14 23:01:04",
+   "source": "hids",
+   "log_id": "HID0321463",
+   "content": "cmd.exe /c net user /add svc_backup Xr7#pqZ2! cmd.exe cmd.exe /c net user /add svc_backup Xr7#pqZ2! <== servic",
+   "event_id": "1074-HID0321463"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

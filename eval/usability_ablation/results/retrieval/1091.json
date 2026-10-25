@@ -1,0 +1,33 @@
+{
+ "unit": 1091,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-25 09:12:35",
+   "source": "hids",
+   "log_id": "HID0620191",
+   "content": "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -",
+   "event_id": "1091-HID0620191"
+  },
+  {
+   "timestamp": "2026-07-25 09:16:55",
+   "source": "hids",
+   "log_id": "HID0620214",
+   "content": "rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash",
+   "event_id": "1091-HID0620214"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,10 @@
+{
+  "frozen_at": "2026-10-21 13:58:46",
+  "note": "可用性/消融实验冻结基线；任一 hash 变化 → 该轮作废（大纲 §14）",
+  "files": {
+    "demo/data/attack_patterns.json": "5fd0e72e6798ed3fb7e6ea51ce00c0b90c7db57d014070131b0e6295db191131",
+    "demo/data/raw_logs.csv": "4491c5e6ecbd4e53dcc660bf8aeccfc5825aeb12b346b9c7f9de020029407bb5",
+    "demo/data/event_pattern_links.csv": "2e8ab2487b56b618eee08b25a0dad95c87833321c2e061c72ffacde3ffe0d9a5",
+    "eval/usability_ablation/case_id_map.json": "87d74e17cdee3bc45f3f0ec75c490dbc2195153ffeb9f88c49f0a527338d2a6a"
+  }
+}

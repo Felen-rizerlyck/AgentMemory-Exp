@@ -1,0 +1,97 @@
+{
+ "unit": 1053,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+ "sources": [
+  "waf",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-05 03:32:52",
+   "source": "waf",
+   "log_id": "WAF0228741",
+   "content": "/api/v2/proxy/exec ip=10.20.3.14;id;cat /etc/hostname Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537",
+   "event_id": "1053-WAF0228741"
+  },
+  {
+   "timestamp": "2026-06-05 03:32:53",
+   "source": "rasp",
+   "log_id": "RASP0253066",
+   "content": "https://app-go-64.ops-corp.com/api/v2/proxy/exec {\"cmd_inject\": \";id;cat /etc/hostname\", \"gw\": true} Mozilla/5",
+   "event_id": "1053-RASP0253066"
+  },
+  {
+   "timestamp": "2026-06-05 03:34:52",
+   "source": "hids",
+   "log_id": "HID0247898",
+   "content": "curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw",
+   "event_id": "1053-HID0247898"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-003",
+   "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+   "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: cmd_inject"
+   ],
+   "mitre": [
+    "T1053.005",
+    "T1059.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 3,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1053.005",
+   "T1059.003"
+  ]
+ }
+}

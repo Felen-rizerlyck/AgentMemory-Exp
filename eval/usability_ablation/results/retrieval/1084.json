@@ -1,0 +1,162 @@
+{
+ "unit": 1084,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-003",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "含 schtasks 持久化但缺 CASE-003 的 waf/rasp 入口阶段"
+ },
+ "technique": "注册每日计划任务投放加密脚本并删除 C 盘卷影副本",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-12 14:11:38",
+   "source": "hids",
+   "log_id": "HID0524261",
+   "content": "schtasks /create /tn OpsSync /tr \"cmd.exe /c C:\\ProgramData\\ops.bat\" /sc daily /ru SYSTEM <== cmd.exe /c schta",
+   "event_id": "1084-HID0524261"
+  },
+  {
+   "timestamp": "2026-07-12 14:12:18",
+   "source": "hids",
+   "log_id": "HID0524265",
+   "content": "vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c ",
+   "event_id": "1084-HID0524265"
+  },
+  {
+   "timestamp": "2026-07-12 14:19:18",
+   "source": "hids",
+   "log_id": "HID0524301",
+   "content": "openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\\share\\2026Q2.xlsx -out C:\\share\\2026Q2.xlsx.lock <== cmd.exe /c ",
+   "event_id": "1084-HID0524301"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "vssadmin_delete_shadows_all",
+     "label": "删除全部卷影副本",
+     "event_ids": [
+      "1084-HID0524265"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "generic": false
+    }
+   ],
+   "source_mismatches": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: vssadmin delete shadows",
+    "probe +4: vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 1
+  },
+  {
+   "case_id": "CASE-003",
+   "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+   "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+   "matched_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: schtasks /create",
+    "probe +4: schtasks\\s+/create"
+   ],
+   "mitre": [
+    "T1053.005",
+    "T1059.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "删除全部卷影副本",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1084-HID0524265"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

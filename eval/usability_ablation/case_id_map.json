@@ -1,0 +1,14 @@
+{
+  "generated_at": "2026-10-21",
+  "note": "demo 案例库改号映射：新增 7 个案例占用 CASE-001..007，原 CASE-029 顺序改号为 CASE-008。",
+  "map": {
+    "CASE-029": "CASE-008",
+    "CASE-001": "dataset unit 1001",
+    "CASE-002": "dataset unit 1021",
+    "CASE-003": "dataset unit 1042",
+    "CASE-004": "dataset unit 1061",
+    "CASE-005": "dataset unit 1081",
+    "CASE-006": "dataset unit 1102",
+    "CASE-007": "dataset unit 1121"
+  }
+}

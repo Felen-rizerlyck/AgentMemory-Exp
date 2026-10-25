@@ -15,3 +15,16 @@ Agent记忆产品落地-调研/
 # 内网信息与工具截图，不上传
 mcp.txt
 mcp-tool.png
+
+# 场景二原始数据（18 个测试用例 + 答案，含 pcap/evtx/恶意样本，不入库）
+场景二_202609232225/
+
+# 其他文件
+mem_struc.pptx
+
+# 场景二的衍生数据（原始目录 场景二_202609232225/ 已在上面忽略），体积大且为第三方数据
+eval/usability_ablation/场景二_14源日志_18例_202607/
+eval/usability_ablation/场景二_攻击链_202607/
+
+# 临时分析缓存
+eval/usability_ablation/_stats.pkl

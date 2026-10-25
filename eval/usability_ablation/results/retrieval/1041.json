@@ -1,0 +1,25 @@
+{
+ "unit": 1041,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-02 02:14:00",
+   "source": "hids",
+   "log_id": "HID0224980",
+   "content": "mimikatz.exe \"privilege::debug\" \"sekurlsa::logonpasswords\" mimikatz.exe cmd.exe /c C:\\Windows\\Temp\\m.exe <== /",
+   "event_id": "1041-HID0224980"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

