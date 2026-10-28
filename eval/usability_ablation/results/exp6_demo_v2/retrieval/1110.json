@@ -1,0 +1,25 @@
+{
+ "unit": 1110,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-05 16:30:40",
+   "source": "hids",
+   "log_id": "HID0472493",
+   "content": "kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C",
+   "event_id": "1110-HID0472493"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

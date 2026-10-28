@@ -1,0 +1,90 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-005",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "勒索式数据破坏：删卷影 + 批量加密",
+  "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+  "pattern_scope": {
+    "attack_family": "勒索与数据破坏（加密 + 恢复能力破坏）",
+    "variant_note": "单样本归纳；样本内部顺序为「加密→删卷影」，与多数勒索链顺序相反，已按观测记录。"
+  },
+  "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "persistence",
+      "action_id": "webshell_upload_action",
+      "label": "上传接口落地 WebShell",
+      "action_regex": "(?i)wp-admin/admin-ajax\\.php\\?action=upload|\\\"upload\\\"\\s*:\\s*\\\"[a-z0-9_.-]{1,40}\\.php\\\"",
+      "expected_sources": [
+        "rasp"
+      ],
+      "evidence_patterns": [
+        "action=upload"
+      ],
+      "generic": true
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "impact",
+      "action_id": "cipher_efs_batch_encrypt",
+      "label": "cipher 批量加密目录",
+      "action_regex": "(?i)(?:^|\\s)cipher(?:\\.exe)?\\s+/e\\s+/s:",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "cipher /e /s:"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "impact",
+      "action_id": "vssadmin_delete_shadows_all",
+      "label": "删除全部卷影副本",
+      "action_regex": "(?i)vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "vssadmin delete shadows /all"
+      ],
+      "generic": false
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "cipher /e",
+      "vssadmin delete shadows",
+      "action=upload"
+    ],
+    "pattern_probes": [
+      "cipher(?:\\.exe)?\\s+/e\\s+/s:",
+      "vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all",
+      "action=upload"
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "勒索信",
+      "横向扩散",
+      "备份服务器删除"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "evidence_status": "single_observation_demo"
+  },
+  "version": 3,
+  "supersedes": 2,
+  "updated_at": "2026-10-28T05:43:30Z",
+  "family_id": "ransomware"
+}

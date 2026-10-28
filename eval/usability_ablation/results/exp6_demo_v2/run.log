@@ -1,0 +1,109 @@
+待跑 120 次（已完成 0）
+[1/120] 1001 qwen2.5  catalog    0.0s None     None conf=None
+[2/120] 1021 qwen2.5  catalog    0.0s None     None conf=None
+[3/120] 1042 qwen2.5  catalog    0.0s None     None conf=None
+[4/120] 1061 qwen2.5  catalog   3[1/119] 1001 qwen2.5  catalog  [5/120] 1081 qwen2.5  catalog    [2/119] 1021 qwen2.5  catalog  [6/120] 1102 qwen2.5  catalog    [3/119] 1061 qwen2.5  catalog  [7/120] 1121 qwen2.5  catalog    [4/119] 1081 qwen2.5  catalog  [8/120] 1007 qwen2.5  catalog    [5/119] 1102 qwen2.5  catalog  [9/120] 1013 qwen2.5  catalog    [6/119] 1121 qwen2.5  catalog  [10/120] 1018 qwen2.5  catalog   [7/119] 1007 qwen2.5  catalog   [11/120] 1035 qwen2.5  catalog  [8/119] 1013 qwen2.5  catalog    [12/120] 1047 qwen2.5  catalog [9/119] 1018 qwen2.5  catalog    7.1s match [13/120] 1048 qwen2.[10/119] 1035 qwen2.5  catalog    8.3s match [14/120] 1049 qwen2.[11/119] 1047 qwen2.5  catalog    5.4s new      删除卷影�[15/120] 1050 [12/119] 1048 qwen2.5  catalog    6.0s match    CASE-002 conf=3
+[13/119] 1049 qwen2.5  catalog    7.7s new      WebShell 上传与�[17/120] 1074 [14/119] 1050 qwen2.5  catalog    6.0s new      WebShell 上传与执[18/120] 108[15/119] 1073 qwen2.5  catalog    7.5s match    CASE-001 conf=3
+[16/119] 1074 qwen2.5  catalog    6.8s new      Tomcat PUT 上传 WebShe[20/120] 10[17/119] 1082 qwen2.5  catalog    6.2s new      勒索[21/120] 1085 qwen2.5  catalog[18/119] 1083 qwen2.5  catalog    6.9s match    CASE-0[22/120] 10[19/119] 1084 qwen2.5  catalog    6.7s match    CASE-003 conf=3
+[20/119] 1085 qwen2.5  catalog    6.1s new      清除日志 + 加密文件 conf=3
+[21/119] 1086 qwen2.5  catalog    6.2s new      SQL 数据库破坏与加密 conf=3
+[22/119] 1087 qwen2.5  catalog    6.0s new      勒索软件加密文档 conf=3
+[23/119] 1088 qwen2.5  catalog    6.1s new      上传接口落地 WebShell + 数据加密 conf=3
+[24/119] 1089 qwen2.5  catalog    5.7s new      勒索软件破坏卷影副本 conf=3
+[25/119] 1090 qwen2.5  catalog    7.5s new      WMIC 命令执行 + 文件加密 conf=3
+[26/119] 1091 qwen2.5  catalog    5.9s new      数据加密攻击 conf=3
+[27/119] 1092 qwen2.5  catalog    7.6s new      SSH 密钥注入 + 数据删除 + 数据加密 + D conf=3
+[28/119] 1093 qwen2.5  catalog    6.4s new      数据加密勒索 [32/120][29/119] 1094 qwen2.5  catalog    6.0s new      虚拟机快照删除�[33/120] 1097 qwe[30/119] 1095 qwen2.5  catalog    6.5s match    CASE-005 conf=3
+[31/119] 1096 qwen2.5  catalog    6.0s new      数据破坏与加密 conf=3
+[32/119] 1097 qwen2.5  catalog    6.3s new      远程执行命令 + 数据破坏 conf=3
+[33/119] 1098 qwen2.5  catalog    6.9s new      勒索软件加密与数据破坏 conf=3
+[34/119] 1099 qwen2.5  catalog    6.3s new      curl 下载脚本执行 conf=3
+[35/119] 1100 qwen2.5  catalog    6.7s new      SSH 批量删除备份文件 + 数据加密 conf=3
+[36/119] 1008 qwen2.5  catalog    5.9s new      Java 反序列化攻击 conf=3
+[37/119] 1002 qwen2.5  catalog    6.6s new      Web 参数注入攻击 conf=3[4[38/119] 1052 qwen2.5  catalog    6.5s new      Go 语言注入执行 conf=[42[39/119] 1011 qwen2.5  catalog    8.5s new      路径遍历�[43/120] 1009[40/119] 1103 qwen2.5  catalog    6.9s new      Kerberoasting 攻�[44/120] 1[41/119] 1043 qwen2.5  catalog   10.4s match    CASE-00[45/120] 1[42/119] 1009 qwen2.5  catalog    7.0s new      Solr 任意命令执行[46/120] [43/119] 1004 qwen2.5  catalog    8.6s match    CASE-001 conf=3
+[44/119] 1053 qwen2.5  catalog    6.7s new      疑似命令注入执行 conf[48/[45/119] 1012 qwen2.5  catalog    7.1s new      PHP反序列化RCE conf=3
+[46/119] 1116 qwen2.5  catalog    8.2s new      提权+证书滥用 c[50/120[47/119] 1010 qwen2.5  catalog    7.7s new      Jenkins 配置文件读取 conf[51/[48/119] 1005 qwen2.5  catalog    8.6s match    CASE-001 conf=3
+[49/119] 1076 qwen2.5  catalog    7.6s new      Laravel Ignition 类似攻击 conf=3
+[50/119] 1003 qwen2.5  catalog    6.7s new      Spring Actuator 远程代码执行 con[54/1[51/119] 1017 qwen2.5  catalog    7.2s new      文件包含漏洞利用 con[55/1[52/119] 1045 qwen2.5  catalog    7.4s new      挖矿攻击 conf=3
+[53/119] 1058 qwen2.5  catalog    7.8s new      备份文件下载尝[57/120] 110[54/119] 1066 qwen2.5  catalog    8.3s new      WebShell [58/120] 1109 qwen2.5[55/119] 1077 qwen2.5  catalog    8.0s match    CASE-004 c[59/120[56/119] 1101 qwen2.5  catalog    7.9s new      域内侦察 c[60/120[57/119] 1109 qwen2.5  catalog    9.3s new      Kerberos G[61/120] 1001 qwen2.5[58/119] 1113 qwen2.5  catalog   10.2s new      �[62/120] 1021 qwen2.[59/119] 1122 qwen2.5  catalog   11.1s match    CA[63/120] 1042 q[60/119] 1001 qwen2.5  assisted_free   8.8s match    CA[64/120] 1061 q[61/119] 1021 qwen2.5  assisted_free  11.3s match    CA[65/120] 1081 q[62/119] 1042 qwen2.5  assisted_free   8.4s match    CA[66/120] 1102 q[63/119] 1061 qwen2.5  assisted_free   9.4s match    CA[67/120] 1121 q[64/119] 1081 qwen2.5  assisted_free  10.4s match    CA[68/120] 1007 q[65/119] 1102 qwen2.5  assisted_free   8.9s match    CA[69/120] 1013 q[66/119] 1121 qwen2.5  assisted_free  11.5s match    CA[70/120] 1018 q[67/119] 1007 qwen2.5  assisted_free   9.1s match    CA[71/120] 1035 q[68/119] 1013 qwen2.5  assisted_free   9.6s match    CA[72/120] 1047 q[69/119] 1018 qwen2.5  assisted_free   8.7s match    CA[73/120] 1048 q[70/119] 1035 qwen2.5  assisted_free   8.9s match    CA[74/120] 1049 q[71/119] 1047 qwen2.5  assisted_free   7.7s match    CA[75/120] 1050 q[72/119] 1048 qwen2.5  assisted_free   8.4s match    CA[76/120] 1073 q[73/119] 1049 qwen2.5  assisted_free   9.0s match    CASE-005 conf=3
+[74/119] 1050 qwen2.5  assisted_free   9.4s match    CASE-001 conf=3
+[75/119] 1073 qwen2.5  assisted_free   9.4s new      疑似 Spring4Shell 漏洞利用 conf=3
+[76/119] 1074 qwen2.5  assisted_free   9.9s new      Tomcat PUT 上传 We[80/120] 1084 q[77/119] 1082 qwen2.5  assisted_free   8.1s match    CA[81/120] 1085 q[78/119] 1083 qwen2.5  assisted_free  10.6s match    CASE-005 conf=3
+[79/119] 1084 qwen2.5  assisted_free   7.5s match    CASE-005 conf=3
+[80/119] 1085 qwen2.5  assisted_free   7.6s new      清除日志 + 加密文件 conf=3
+[81/119] 1086 qwen2.5  assisted_free   7.1s match    CASE-005 conf=3
+[82/119] 1087 qwen2.5  assisted_free   8.7s new      疑似勒索软件加密文档 conf=3
+[83/119] 1088 qwen2.5  assisted_free   9.0s new      疑似加密备份[87/120] 1091 q[84/119] 1089 qwen2.5  assisted_free   9.1s match    CASE-005 conf=3[8[85/119] 1090 qwen2.5  assisted_free  10.7s match    CASE-005 conf=3[8[86/119] 1091 qwen2.5  assisted_free  10.4s new      数据加密与清理 conf=3
+[87/119] 1092 qwen2.5  assisted_free  12.6s match    CASE-002 conf=3
+[88/119] 1093 qwen2.5  assisted_free  11.3s new      MySQL 数据库破坏与加密 conf=3
+[89/119] 1094 qwen2.5  assisted_free  11.2s new      虚拟机快照删除与加密 conf=3
+[90/119] 1095 qwen2.5  assisted_free   9.8s match    CASE-005 conf=3
+[91/119] 1096 qwen2.5  assisted_free  10.4s new      删除卷影副本并加密数据 conf=3
+[92/119] 1097 qwen2.5  assisted_free  10.8s new      疑似勒索软件攻击 conf=3
+[93/119] 1098 qwen2.5  assisted_free  11.3s new      勒索式数据破坏 conf=3
+[94/119] 1099 qwen2.5  assisted_free  10.8s new      curl 下载脚本执行 conf=3
+[95/119] 1100 qwen2.5  assisted_free  10.8s new      SSH命令执行与文件加密 conf=3
+[96/119] 1008 qwen2.5  assisted_free   9.7s new      Java 应用反序列化 RCE conf=3
+[97/119] 1002 qwen2.5  assisted_free  10.4s new      疑似 Web 参数注入攻击 conf=3
+[98/119] 1052 qwen2.5  assisted_free  11.9s match    CASE-003 conf=2
+[99/119] 1011 qwen2.5  assisted_free  10.3s new      路径遍历漏洞利用 conf=3
+[100/119] 1103 qwen2.5  assisted_free  12.9s match    CASE-006 conf=3
+[101/119] 1043 qwen2.5  assisted_free  11.2s match    CASE-008 conf=3
+[102/119] 1009 qwen2.5  assisted_free  12.7s new      疑似 Solr 任意代码执行 conf=3
+[103/119] 1004 qwen2.5  assisted_free  10.9s new      疑似 Log4Shell JNDI 注入尝试 conf=2
+[104/119] 1053 qwen2.5  assisted_free   9.1s new      疑似命令注入尝试 conf=2
+[105/119] 1012 qwen2.5  assisted_free  11.3s new      PHP配置文件注入 conf=3
+[106/119] 1116 qwen2.5  assisted_free  11.0s new      证书滥用 conf=3
+[107/119] 1010 qwen2.5  assisted_free  12.3s new      疑似 Java 应用程序命令执行 conf=3
+[108/119] 1005 qwen2.5  assisted_free  11.6s new      疑似 OGNL 注入攻击 conf=3
+[109/119] 1076 qwen2.5  assisted_free  11.2s match    CASE-003 conf=3
+[110/119] 1003 qwen2.5  assisted_free  10.3s new      Spring Actuator 远程代码执行 conf=3
+[111/119] 1017 qwen2.5  assisted_free  11.0s new      文件包含漏洞利用 conf=3
+[112/119] 1045 qwen2.5  assisted_free  10.6s new      疑似挖矿行为 conf=3
+[113/119] 1058 qwen2.5  assisted_free  11.3s new      备份文件下载尝试 conf=3
+[114/119] 1066 qwen2.5  assisted_free  10.4s new      疑似 Node.js 进程派生 shell conf=3
+[115/119] 1077 qwen2.5  assisted_free  11.7s new      Drupalgeddon2 RCE conf=3
+[116/119] 1101 qwen2.5  assisted_free  10.1s new      域内侦察 conf=3
+[117/119] 1109 qwen2.5  assisted_free  11.2s new      Kerberos Golden Ticket conf=3
+[118/119] 1113 qwen2.5  assisted_free   5.2s new      域用户权限提升 conf=3
+[119/119] 1122 qwen2.5  assisted_free   5.1s new      疑似供应链投毒 conf=3
+# exp6_demo_v2 · 60 unit × 条件 × 模型（单轮判定）
+
+- 调用总数：121；解析失败：1；平均耗时：8.8s
+- `assisted` = 带【档位非 strong 不得判 match】提示；`assisted_free` = 不给该提示，自行权衡证据
+
+## catalog（只给案例摘要，无检索）
+
+| 模型 | n | 归属正确 | 精确重复命中 | 变体/新案例误判 match | 平均置信 |
+|---|---|---|---|---|---|
+| qwen2.5:14b | 60 | 45 | 6/7 | 14/53 | 2.98 |
+
+
+- （`catalog` 不给检索，锚定率不适用）
+| 分层 | 模型 | n | 正确 | 判 match | 判 new |
+|---|---|---|---|---|---|
+| exact | qwen2.5:14b | 7 | 6 | 6 | 0 |
+| variant | qwen2.5:14b | 29 | 20 | 9 | 20 |
+| new_with_candidate | qwen2.5:14b | 14 | 11 | 3 | 11 |
+| new_no_candidate | qwen2.5:14b | 10 | 8 | 2 | 8 |
+
+## assisted_free（日志 + 案例库 + 召回证据）
+
+| 模型 | n | 归属正确 | 精确重复命中 | 变体/新案例误判 match | 平均置信 |
+|---|---|---|---|---|---|
+| qwen2.5:14b | 61 | 41 | 7/7 | 20/54 | 2.95 |
+
+
+- 锚定率：qwen2.5:14b：判 match 27 条，case_id=检索 top1 的 26 条（96%）
+| 分层 | 模型 | n | 正确 | 判 match | 判 new |
+|---|---|---|---|---|---|
+| exact | qwen2.5:14b | 7 | 7 | 7 | 0 |
+| variant | qwen2.5:14b | 29 | 13 | 16 | 13 |
+| new_with_candidate | qwen2.5:14b | 14 | 10 | 4 | 10 |
+| new_no_candidate | qwen2.5:14b | 11 | 11 | 0 | 11 |
+
+## 置信度错配（assisted* 中 conf≥4 但判错）
+
+共 0 条：无
+
+→ F:\AI_Learning\AgentMemory\eval\usability_ablation\results\exp6_demo_v2\report_exp6_demo_v2.md · F:\AI_Learning\AgentMemory\eval\usability_ablation\results\exp6_demo_v2\runs_summary.csv

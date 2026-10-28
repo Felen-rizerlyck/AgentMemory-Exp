@@ -1,0 +1,110 @@
+{
+ "unit": 1117,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-28 05:08:42",
+   "source": "hids",
+   "log_id": "HID0641418",
+   "content": "nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\\jdoe",
+   "event_id": "1117-HID0641418"
+  },
+  {
+   "timestamp": "2026-07-28 05:15:52",
+   "source": "hids",
+   "log_id": "HID0641455",
+   "content": "net use \\\\dc02.eu.corp.local\\ADMIN$ /user:EU\\admin net.exe net use \\\\dc02.eu.corp.local\\ADMIN$ <== CORP\\admin",
+   "event_id": "1117-HID0641455"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-006",
+   "name": "域内侦察：BloodHound 图谱采集与外传",
+   "summary": "主机侧运行 SharpHound 全量采集 → 压缩采集结果 → 上传到攻击者地址，为后续 Kerberoasting/DCSync 选路。",
+   "matched_steps": 0,
+   "detected_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: corp\\jdoe"
+   ],
+   "mitre": [
+    "T1087.002",
+    "T1069.002",
+    "T1560.001"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "AD 域内侦察（BloodHound）",
+    "variant_note": "由单个合成样本归纳；采集参数与上传地址来自该样本，未覆盖其它采集器。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "Kerberoasting",
+     "DCSync",
+     "横向移动"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 3,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1087.002",
+   "T1069.002",
+   "T1560.001"
+  ]
+ }
+}

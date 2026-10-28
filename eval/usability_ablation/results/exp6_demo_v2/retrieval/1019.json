@@ -1,0 +1,49 @@
+{
+ "unit": 1019,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Django 报表接口报错型 SQL 注入（PostgreSQL CAST 报错）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-03 21:23:12",
+   "source": "waf",
+   "log_id": "WAF0220045",
+   "content": "/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53",
+   "event_id": "1019-WAF0220045"
+  },
+  {
+   "timestamp": "2026-06-03 21:23:14",
+   "source": "web",
+   "log_id": "WEB0221477",
+   "content": "/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53",
+   "event_id": "1019-WEB0221477"
+  },
+  {
+   "timestamp": "2026-06-03 21:23:15",
+   "source": "rasp",
+   "log_id": "RASP0243444",
+   "content": "https://app-django-187.ops-corp.com/report/export {\"sqli\": \"cast_error\", \"engine\": \"postgres\"} Mozilla/5.0 (X1",
+   "event_id": "1019-RASP0243444"
+  },
+  {
+   "timestamp": "2026-06-03 21:25:14",
+   "source": "hids",
+   "log_id": "HID0238475",
+   "content": "cat /opt/app/settings.py <== /bin/sh -c 'cat /opt/app/settings.py' <== /usr/bin/python3 /opt/app/manage.py",
+   "event_id": "1019-HID0238475"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

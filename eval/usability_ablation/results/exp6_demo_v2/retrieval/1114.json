@@ -1,0 +1,33 @@
+{
+ "unit": 1114,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-26 08:14:03",
+   "source": "hids",
+   "log_id": "HID0627385",
+   "content": "Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif",
+   "event_id": "1114-HID0627385"
+  },
+  {
+   "timestamp": "2026-07-26 08:20:33",
+   "source": "hids",
+   "log_id": "HID0627419",
+   "content": "Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\\Admin",
+   "event_id": "1114-HID0627419"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

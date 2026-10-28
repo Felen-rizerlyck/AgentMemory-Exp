@@ -1,0 +1,19 @@
+{
+  "staged_units": 91,
+  "before": {
+    "provisional": 90,
+    "promotable": 0,
+    "promoted": 1,
+    "rejected": 0
+  },
+  "after": {
+    "provisional": 90,
+    "promotable": 0,
+    "promoted": 1,
+    "rejected": 0
+  },
+  "candidate_count": 91,
+  "promotable": 0,
+  "note": "each technique signature appears once in this dataset, so all are provisional",
+  "candidates_path": "F:\\AI_Learning\\AgentMemory\\demo\\data\\case_candidates.json"
+}

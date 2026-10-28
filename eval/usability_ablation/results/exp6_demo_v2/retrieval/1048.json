@@ -1,0 +1,169 @@
+{
+ "unit": 1048,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-002",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "webshell 交互，缺 CASE-002 的 PUT 上传与 DNS 阶段"
+ },
+ "technique": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-07 22:44:39",
+   "source": "rasp",
+   "log_id": "RASP0274505",
+   "content": "https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {\"webshell\": \"shell.jsp\", \"cmd\": \"id\"} Mozilla/5.0 (Windo",
+   "event_id": "1048-RASP0274505"
+  },
+  {
+   "timestamp": "2026-06-07 22:45:36",
+   "source": "hids",
+   "log_id": "HID0268889",
+   "content": "id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh",
+   "event_id": "1048-HID0268889"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 0,
+   "detected_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: catalina.sh"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Tomcat 任意文件上传（PUT）+ DNS C2",
+    "variant_note": "单样本归纳；webshell 落地路径与 C2 域名均来自该样本，变体形态未验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "数据外带内容",
+     "持久化"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  },
+  {
+   "case_id": "CASE-008",
+   "name": "Exchange ProxyLogon 风格利用链",
+   "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+   "matched_steps": 0,
+   "detected_steps": 0,
+   "total_steps": 6,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: webshell"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Exchange ProxyLogon 风格利用",
+    "variant_note": "这是从单次样例归纳的模式；步骤顺序和可选性尚未由多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "Aggregate count of real observations; raw case content and identifiers are stored in CSV files."
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

@@ -86,10 +86,9 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "web-exploit"
     },
     {
       "schema_version": "demo-1.0",
@@ -191,10 +190,9 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "web-exploit"
     },
     {
       "schema_version": "demo-1.0",
@@ -278,10 +276,9 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "host-persistence"
     },
     {
       "schema_version": "demo-1.0",
@@ -383,10 +380,9 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "web-exploit"
     },
     {
       "schema_version": "demo-1.0",
@@ -471,10 +467,12 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "version": 3,
+      "supersedes": 2,
+      "updated_at": "2026-10-28T05:43:30Z",
+      "family_id": "ransomware"
     },
     {
       "schema_version": "demo-1.0",
@@ -560,10 +558,9 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "domain-identity"
     },
     {
       "schema_version": "demo-1.0",
@@ -647,10 +644,12 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "version": 3,
+      "supersedes": 2,
+      "updated_at": "2026-10-28T05:43:30Z",
+      "family_id": "supply-chain"
     },
     {
       "schema_version": "demo-1.0",
@@ -796,10 +795,88 @@
         "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
       },
       "provenance": {
-        "observation_count": 1,
-        "evidence_status": "single_observation_demo",
-        "observation_count_note": "Aggregate count of real observations; raw case content and identifiers are stored in CSV files."
-      }
+        "evidence_status": "single_observation_demo"
+      },
+      "family_id": "web-exploit"
+    },
+    {
+      "case_id": "CASE-009",
+      "name": "Spring4Shell 属性链写入与容器命令执行",
+      "summary": "Spring4Shell/CVE-2022-22965：通过 class.module.classLoader 属性链改写 Tomcat 日志配置写入 JSP，随后由 catalina.sh 派生 whoami 验证执行。",
+      "mitre": [
+        "T1190",
+        "T1059.004"
+      ],
+      "retrieval": {
+        "keywords": [
+          "class.module.classLoader",
+          "pipeline.first",
+          "classLoader.first",
+          "catalina.sh"
+        ],
+        "pattern_probes": [
+          "class\\.module\\.classLoader",
+          "pipeline\\.first",
+          "classLoader\\.first"
+        ]
+      },
+      "steps": [
+        {
+          "step_id": "S1",
+          "order": 1,
+          "action_id": "spring4shell_classloader_probe",
+          "label": "class.module.classLoader 属性链探测（WAF/Web）",
+          "action_regex": "(?i)class\\.module\\.classLoader|pipeline\\.first\\.pattern",
+          "expected_sources": [
+            "waf",
+            "web"
+          ],
+          "generic": false,
+          "required": true
+        },
+        {
+          "step_id": "S2",
+          "order": 2,
+          "action_id": "spring4shell_rasp_property",
+          "label": "RASP 观察到 classLoader.first 属性访问",
+          "action_regex": "(?i)classLoader\\.first|class\\.module\\.classLoader",
+          "expected_sources": [
+            "rasp"
+          ],
+          "generic": false,
+          "required": true
+        },
+        {
+          "step_id": "S3",
+          "order": 3,
+          "action_id": "spring4shell_container_exec",
+          "label": "Tomcat catalina.sh 派生 whoami 执行",
+          "action_regex": "(?i)(?:catalina\\.sh.*whoami|whoami.*catalina\\.sh)",
+          "expected_sources": [
+            "hids"
+          ],
+          "generic": false,
+          "required": true
+        }
+      ],
+      "pattern_scope": {
+        "variant_note": "单样本晋升：只覆盖探测→属性访问→容器命令执行；未观察到内存马落地或横向。"
+      },
+      "negative_and_unknown_evidence": {
+        "not_observed": [
+          "JSP webshell 落地文件",
+          "横向移动",
+          "持久化"
+        ],
+        "interpretation": "单样本模式；required 骨架是本次观测到的三步，不代表所有 Spring4Shell 利用都具备同样顺序。"
+      },
+      "provenance": {
+        "evidence_status": "single_observation"
+      },
+      "version": 1,
+      "family_id": "web-exploit",
+      "review_status": "unreviewed",
+      "admission_id": "ADM-CASE-009"
     }
   ]
 }

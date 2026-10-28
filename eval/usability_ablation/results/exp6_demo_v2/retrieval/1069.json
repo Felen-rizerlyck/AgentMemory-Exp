@@ -1,0 +1,57 @@
+{
+ "unit": 1069,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Apache APISIX 管理接口未授权 Lua 代码注入",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-24 10:11:43",
+   "source": "waf",
+   "log_id": "WAF0362138",
+   "content": "/apisix/admin/routes/r1 {\"uri\":\"/*\",\"plugins\":{\"serverless-pre-function\":{\"phase\":\"access\"}}} Mozilla/5.0 (Win",
+   "event_id": "1069-WAF0362138"
+  },
+  {
+   "timestamp": "2026-06-24 10:11:44",
+   "source": "web",
+   "log_id": "WEB0364494",
+   "content": "/apisix/admin/routes/r1 {\"uri\":\"/*\",\"plugins\":{\"serverless-pre-function\":{\"phase\":\"access\"}}} Mozilla/5.0 (Win",
+   "event_id": "1069-WEB0364494"
+  },
+  {
+   "timestamp": "2026-06-24 10:11:46",
+   "source": "rasp",
+   "log_id": "RASP0400670",
+   "content": "https://app-nginx-88.ops-corp.com/apisix/admin/routes/r1 {\"lua\": \"serverless-pre-function\", \"bypass\": \"X-REAL-",
+   "event_id": "1069-RASP0400670"
+  },
+  {
+   "timestamp": "2026-06-24 10:13:47",
+   "source": "hids",
+   "log_id": "HID0392457",
+   "content": "id /bin/id id <== /bin/dash -c 'id' <== openresty: worker process",
+   "event_id": "1069-HID0392457"
+  },
+  {
+   "timestamp": "2026-06-24 10:14:50",
+   "source": "hids",
+   "log_id": "HID0392462",
+   "content": "cat /var/run/secrets/kubernetes.io/serviceaccount/token > /tmp/.t cat cat /var/run/secrets/kubernet <== /usr/s",
+   "event_id": "1069-HID0392462"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

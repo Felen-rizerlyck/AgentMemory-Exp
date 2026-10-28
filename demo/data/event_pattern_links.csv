@@ -1,46 +1,266 @@
-﻿event_id,incident_id,case_id,step_id,action_id,link_status,link_basis
-WAF0410001,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注
-WEB0410002,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注
-HID0410003,INC-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,confirmed,CASE-008 原始参考批次及项目内链级标注
-RASP0410004,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注
-WEB0410005,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注
-HID0410006,INC-CASE008-001,CASE-008,S4,printspoofer_priv,confirmed,CASE-008 原始参考批次及项目内链级标注
-HID0410007,INC-CASE008-001,CASE-008,S5,sc_create_service,confirmed,CASE-008 原始参考批次及项目内链级标注
-DNS0410008,INC-CASE008-001,CASE-008,S6,dns_b64_label_beacon,confirmed,CASE-008 原始参考批次及项目内链级标注
-EVT-SIM008-001,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-002,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-003,INC-DEMO-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-004,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-005,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-006,INC-DEMO-CASE008-001,CASE-008,S4,printspoofer_priv,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-007,INC-DEMO-CASE008-001,CASE-008,S5,sc_create_service,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-SIM008-008,INC-DEMO-CASE008-001,CASE-008,S6,dns_b64_label_beacon,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation
-EVT-CASE001-01,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
-EVT-CASE001-02,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
-EVT-CASE001-03,INC-CASE-001-001,CASE-001,S2,log4shell_app_jndi_lookup,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
-EVT-CASE001-04,INC-CASE-001-001,CASE-001,S3,log4shell_java_child_cmd,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）
-EVT-CASE002-01,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-02,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-03,INC-CASE-002-001,CASE-002,S2,jsp_upload_rce_marker,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-04,INC-CASE-002-001,CASE-002,S3,tomcat_child_id_hostname,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-05,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-06,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE002-07,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）
-EVT-CASE003-01,INC-CASE-003-001,CASE-003,S1,scheduler_cmd_inject,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
-EVT-CASE003-02,INC-CASE-003-001,CASE-003,S2,scheduler_cmd_inject_rasp,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
-EVT-CASE003-03,INC-CASE-003-001,CASE-003,S3,schtasks_interval_task,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）
-EVT-CASE004-01,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
-EVT-CASE004-02,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
-EVT-CASE004-03,INC-CASE-004-001,CASE-004,S2,ignition_phar_deserialization,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
-EVT-CASE004-04,INC-CASE-004-001,CASE-004,S3,php_fpm_child_id,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
-EVT-CASE004-05,INC-CASE-004-001,CASE-004,S3,php_fpm_child_id,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）
-EVT-CASE005-01,INC-CASE-005-001,CASE-005,S1,webshell_upload_action,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
-EVT-CASE005-02,INC-CASE-005-001,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
-EVT-CASE005-03,INC-CASE-005-001,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）
-EVT-CASE006-01,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
-EVT-CASE006-02,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
-EVT-CASE006-03,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）
-EVT-CASE007-01,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
-EVT-CASE007-02,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
-EVT-CASE007-03,INC-CASE-007-001,CASE-007,S2,npm_lifecycle_postinstall_spawn,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
-EVT-CASE007-04,INC-CASE-007-001,CASE-007,S3,npm_hook_remote_shell,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）
+﻿event_id,incident_id,case_id,step_id,action_id,link_status,link_basis,decided_at
+WAF0410001,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注,
+WEB0410002,INC-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,confirmed,CASE-008 原始参考批次及项目内链级标注,
+HID0410003,INC-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,confirmed,CASE-008 原始参考批次及项目内链级标注,
+RASP0410004,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注,
+WEB0410005,INC-CASE008-001,CASE-008,S3,aspx_shell_path,confirmed,CASE-008 原始参考批次及项目内链级标注,
+HID0410006,INC-CASE008-001,CASE-008,S4,printspoofer_priv,confirmed,CASE-008 原始参考批次及项目内链级标注,
+HID0410007,INC-CASE008-001,CASE-008,S5,sc_create_service,confirmed,CASE-008 原始参考批次及项目内链级标注,
+DNS0410008,INC-CASE008-001,CASE-008,S6,dns_b64_label_beacon,confirmed,CASE-008 原始参考批次及项目内链级标注,
+EVT-SIM008-001,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-002,INC-DEMO-CASE008-001,CASE-008,S1,exch_proxylogon_ssrf,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-003,INC-DEMO-CASE008-001,CASE-008,S2,w3wp_spawn_cmd,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-004,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-005,INC-DEMO-CASE008-001,CASE-008,S3,aspx_shell_path,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-006,INC-DEMO-CASE008-001,CASE-008,S4,printspoofer_priv,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-007,INC-DEMO-CASE008-001,CASE-008,S5,sc_create_service,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-SIM008-008,INC-DEMO-CASE008-001,CASE-008,S6,dns_b64_label_beacon,fixture,Synthetic positive validation fixture; expected to match CASE-008; not a real-world observation,
+EVT-CASE001-01,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）,
+EVT-CASE001-02,INC-CASE-001-001,CASE-001,S1,log4shell_jndi_param,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）,
+EVT-CASE001-03,INC-CASE-001-001,CASE-001,S2,log4shell_app_jndi_lookup,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）,
+EVT-CASE001-04,INC-CASE-001-001,CASE-001,S3,log4shell_java_child_cmd,confirmed,CASE-001 首批代表样本（dataset unit 1001，每类第 1 组）,
+EVT-CASE002-01,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-02,INC-CASE-002-001,CASE-002,S1,tomcat_put_jsp_upload,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-03,INC-CASE-002-001,CASE-002,S2,jsp_upload_rce_marker,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-04,INC-CASE-002-001,CASE-002,S3,tomcat_child_id_hostname,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-05,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-06,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE002-07,INC-CASE-002-001,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,CASE-002 首批代表样本（dataset unit 1021，每类第 1 组）,
+EVT-CASE003-01,INC-CASE-003-001,CASE-003,S1,scheduler_cmd_inject,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）,
+EVT-CASE003-02,INC-CASE-003-001,CASE-003,S2,scheduler_cmd_inject_rasp,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）,
+EVT-CASE003-03,INC-CASE-003-001,CASE-003,S3,schtasks_interval_task,confirmed,CASE-003 首批代表样本（dataset unit 1042，每类第 1 组）,
+EVT-CASE004-01,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）,
+EVT-CASE004-02,INC-CASE-004-001,CASE-004,S1,laravel_ignition_execute_solution,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）,
+EVT-CASE004-03,INC-CASE-004-001,CASE-004,S2,ignition_phar_deserialization,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）,
+EVT-CASE004-04,INC-CASE-004-001,CASE-004,S3,php_fpm_child_id,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）,
+EVT-CASE004-05,INC-CASE-004-001,CASE-004,S4,cron_persistence_append,confirmed,CASE-004 首批代表样本（dataset unit 1061，每类第 1 组）,
+EVT-CASE005-01,INC-CASE-005-001,CASE-005,S1,webshell_upload_action,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）,
+EVT-CASE005-02,INC-CASE-005-001,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）,
+EVT-CASE005-03,INC-CASE-005-001,CASE-005,S3,vssadmin_delete_shadows_all,confirmed,CASE-005 首批代表样本（dataset unit 1081，每类第 1 组）,
+EVT-CASE006-01,INC-CASE-006-001,CASE-006,S1,sharphound_collect_all,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）,
+EVT-CASE006-02,INC-CASE-006-001,CASE-006,S2,archive_collect_result,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）,
+EVT-CASE006-03,INC-CASE-006-001,CASE-006,S3,upload_collected_zip,confirmed,CASE-006 首批代表样本（dataset unit 1102，每类第 1 组）,
+EVT-CASE007-01,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）,
+EVT-CASE007-02,INC-CASE-007-001,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）,
+EVT-CASE007-03,INC-CASE-007-001,CASE-007,S2,npm_lifecycle_postinstall_spawn,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）,
+EVT-CASE007-04,INC-CASE-007-001,CASE-007,S3,npm_hook_remote_shell,confirmed,CASE-007 首批代表样本（dataset unit 1121，每类第 1 组）,
+SIM-1001-1,SIM-INC-1001,CASE-001,S1,log4shell_jndi_param,confirmed,applied unit 1001: strong chain matched CASE-001/S1,2026-10-27T09:18:27Z
+SIM-1001-2,SIM-INC-1001,CASE-001,S1,log4shell_jndi_param,confirmed,applied unit 1001: strong chain matched CASE-001/S1,2026-10-27T09:18:27Z
+SIM-1001-3,SIM-INC-1001,CASE-001,S2,log4shell_app_jndi_lookup,confirmed,applied unit 1001: strong chain matched CASE-001/S2,2026-10-27T09:18:27Z
+SIM-1001-4,SIM-INC-1001,CASE-001,S3,log4shell_java_child_cmd,confirmed,applied unit 1001: strong chain matched CASE-001/S3,2026-10-27T09:18:27Z
+SIM-1021-1,SIM-INC-1021,CASE-002,S1,tomcat_put_jsp_upload,confirmed,applied unit 1021: strong chain matched CASE-002/S1,2026-10-27T09:18:27Z
+SIM-1021-2,SIM-INC-1021,CASE-002,S1,tomcat_put_jsp_upload,confirmed,applied unit 1021: strong chain matched CASE-002/S1,2026-10-27T09:18:27Z
+SIM-1021-3,SIM-INC-1021,CASE-002,S2,jsp_upload_rce_marker,confirmed,applied unit 1021: strong chain matched CASE-002/S2,2026-10-27T09:18:27Z
+SIM-1021-4,SIM-INC-1021,CASE-002,S3,tomcat_child_id_hostname,confirmed,applied unit 1021: strong chain matched CASE-002/S3,2026-10-27T09:18:27Z
+SIM-1021-5,SIM-INC-1021,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,applied unit 1021: strong chain matched CASE-002/S4,2026-10-27T09:18:27Z
+SIM-1021-6,SIM-INC-1021,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,applied unit 1021: strong chain matched CASE-002/S4,2026-10-27T09:18:27Z
+SIM-1021-7,SIM-INC-1021,CASE-002,S4,dga_hex_subdomain_beacon,confirmed,applied unit 1021: strong chain matched CASE-002/S4,2026-10-27T09:18:27Z
+SIM-1035-2,SIM-INC-1035,CASE-008,S3,aspx_shell_path,related,applied unit 1035: weak tail shares CASE-008/S3,2026-10-27T09:18:28Z
+SIM-1042-1,SIM-INC-1042,CASE-003,S1,scheduler_cmd_inject,confirmed,applied unit 1042: strong chain matched CASE-003/S1,2026-10-27T09:18:28Z
+SIM-1042-2,SIM-INC-1042,CASE-003,S2,scheduler_cmd_inject_rasp,confirmed,applied unit 1042: strong chain matched CASE-003/S2,2026-10-27T09:18:28Z
+SIM-1042-3,SIM-INC-1042,CASE-003,S3,schtasks_interval_task,confirmed,applied unit 1042: strong chain matched CASE-003/S3,2026-10-27T09:18:28Z
+SIM-1043-1,SIM-INC-1043,CASE-008,S5,sc_create_service,related,applied unit 1043: weak tail shares CASE-008/S5,2026-10-27T09:18:28Z
+SIM-1047-1,SIM-INC-1047,CASE-005,S3,vssadmin_delete_shadows_all,related,applied unit 1047: weak tail shares CASE-005/S3,2026-10-27T09:18:28Z
+SIM-1061-1,SIM-INC-1061,CASE-004,S1,laravel_ignition_execute_solution,confirmed,applied unit 1061: strong chain matched CASE-004/S1,2026-10-27T09:18:28Z
+SIM-1061-2,SIM-INC-1061,CASE-004,S1,laravel_ignition_execute_solution,confirmed,applied unit 1061: strong chain matched CASE-004/S1,2026-10-27T09:18:28Z
+SIM-1061-3,SIM-INC-1061,CASE-004,S2,ignition_phar_deserialization,confirmed,applied unit 1061: strong chain matched CASE-004/S2,2026-10-27T09:18:28Z
+SIM-1061-4,SIM-INC-1061,CASE-004,S3,php_fpm_child_id,confirmed,applied unit 1061: strong chain matched CASE-004/S3,2026-10-27T09:18:28Z
+SIM-1061-5,SIM-INC-1061,CASE-004,S4,cron_persistence_append,confirmed,applied unit 1061: strong chain matched CASE-004/S4,2026-10-27T09:18:28Z
+SIM-1076-5,SIM-INC-1076,CASE-003,S3,schtasks_interval_task,related,applied unit 1076: weak tail shares CASE-003/S3,2026-10-27T09:18:29Z
+SIM-1081-1,SIM-INC-1081,CASE-005,S1,webshell_upload_action,confirmed,applied unit 1081: strong chain matched CASE-005/S1,2026-10-27T09:18:29Z
+SIM-1081-2,SIM-INC-1081,CASE-005,S2,cipher_efs_batch_encrypt,confirmed,applied unit 1081: strong chain matched CASE-005/S2,2026-10-27T09:18:29Z
+SIM-1081-3,SIM-INC-1081,CASE-005,S3,vssadmin_delete_shadows_all,confirmed,applied unit 1081: strong chain matched CASE-005/S3,2026-10-27T09:18:29Z
+SIM-1082-1,SIM-INC-1082,CASE-005,,,related,applied unit 1082: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1082-2,SIM-INC-1082,CASE-005,,,related,applied unit 1082: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1083-1,SIM-INC-1083,CASE-005,,,related,applied unit 1083: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1083-2,SIM-INC-1083,CASE-005,,,related,applied unit 1083: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1083-3,SIM-INC-1083,CASE-005,,,related,applied unit 1083: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1083-4,SIM-INC-1083,CASE-005,,,related,applied unit 1083: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1084-1,SIM-INC-1084,CASE-005,,,related,applied unit 1084: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1084-2,SIM-INC-1084,CASE-005,,,related,applied unit 1084: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1084-3,SIM-INC-1084,CASE-005,,,related,applied unit 1084: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1085-1,SIM-INC-1085,CASE-005,,,related,applied unit 1085: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1085-2,SIM-INC-1085,CASE-005,,,related,applied unit 1085: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1086-1,SIM-INC-1086,CASE-005,,,related,applied unit 1086: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1086-2,SIM-INC-1086,CASE-005,,,related,applied unit 1086: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1086-3,SIM-INC-1086,CASE-005,,,related,applied unit 1086: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1087-1,SIM-INC-1087,CASE-005,,,related,applied unit 1087: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1087-2,SIM-INC-1087,CASE-005,,,related,applied unit 1087: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1088-1,SIM-INC-1088,CASE-005,,,related,applied unit 1088: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1088-2,SIM-INC-1088,CASE-005,,,related,applied unit 1088: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1089-1,SIM-INC-1089,CASE-005,,,related,applied unit 1089: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1090-1,SIM-INC-1090,CASE-005,,,related,applied unit 1090: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1090-2,SIM-INC-1090,CASE-005,,,related,applied unit 1090: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1090-3,SIM-INC-1090,CASE-005,,,related,applied unit 1090: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1091-1,SIM-INC-1091,CASE-005,,,related,applied unit 1091: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1091-2,SIM-INC-1091,CASE-005,,,related,applied unit 1091: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1092-1,SIM-INC-1092,CASE-005,,,related,applied unit 1092: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1092-2,SIM-INC-1092,CASE-005,,,related,applied unit 1092: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1092-3,SIM-INC-1092,CASE-005,,,related,applied unit 1092: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1092-4,SIM-INC-1092,CASE-005,,,related,applied unit 1092: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1092-5,SIM-INC-1092,CASE-005,,,related,applied unit 1092: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1093-1,SIM-INC-1093,CASE-005,,,related,applied unit 1093: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1093-2,SIM-INC-1093,CASE-005,,,related,applied unit 1093: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1093-3,SIM-INC-1093,CASE-005,,,related,applied unit 1093: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1094-1,SIM-INC-1094,CASE-005,,,related,applied unit 1094: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1094-2,SIM-INC-1094,CASE-005,,,related,applied unit 1094: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1094-3,SIM-INC-1094,CASE-005,,,related,applied unit 1094: FA ransomware family,2026-10-27T09:18:29Z
+SIM-1095-1,SIM-INC-1095,CASE-005,,,related,applied unit 1095: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1095-2,SIM-INC-1095,CASE-005,,,related,applied unit 1095: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1095-3,SIM-INC-1095,CASE-005,,,related,applied unit 1095: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1096-1,SIM-INC-1096,CASE-005,,,related,applied unit 1096: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1096-2,SIM-INC-1096,CASE-005,,,related,applied unit 1096: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1096-3,SIM-INC-1096,CASE-005,,,related,applied unit 1096: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1097-1,SIM-INC-1097,CASE-005,,,related,applied unit 1097: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1097-2,SIM-INC-1097,CASE-005,,,related,applied unit 1097: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1098-1,SIM-INC-1098,CASE-005,,,related,applied unit 1098: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1098-2,SIM-INC-1098,CASE-005,,,related,applied unit 1098: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1098-3,SIM-INC-1098,CASE-005,,,related,applied unit 1098: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1098-4,SIM-INC-1098,CASE-005,,,related,applied unit 1098: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1098-5,SIM-INC-1098,CASE-005,,,related,applied unit 1098: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1099-1,SIM-INC-1099,CASE-005,,,related,applied unit 1099: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1100-1,SIM-INC-1100,CASE-005,,,related,applied unit 1100: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1100-2,SIM-INC-1100,CASE-005,,,related,applied unit 1100: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1100-3,SIM-INC-1100,CASE-005,,,related,applied unit 1100: FA ransomware family,2026-10-27T09:18:30Z
+SIM-1102-1,SIM-INC-1102,CASE-006,S1,sharphound_collect_all,confirmed,applied unit 1102: strong chain matched CASE-006/S1,2026-10-27T09:18:30Z
+SIM-1102-2,SIM-INC-1102,CASE-006,S2,archive_collect_result,confirmed,applied unit 1102: strong chain matched CASE-006/S2,2026-10-27T09:18:30Z
+SIM-1102-3,SIM-INC-1102,CASE-006,S3,upload_collected_zip,confirmed,applied unit 1102: strong chain matched CASE-006/S3,2026-10-27T09:18:30Z
+SIM-1121-1,SIM-INC-1121,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,applied unit 1121: strong chain matched CASE-007/S1,2026-10-27T09:18:30Z
+SIM-1121-2,SIM-INC-1121,CASE-007,S1,ci_pipeline_npm_postinstall,confirmed,applied unit 1121: strong chain matched CASE-007/S1,2026-10-27T09:18:30Z
+SIM-1121-3,SIM-INC-1121,CASE-007,S2,npm_lifecycle_postinstall_spawn,confirmed,applied unit 1121: strong chain matched CASE-007/S2,2026-10-27T09:18:30Z
+SIM-1121-4,SIM-INC-1121,CASE-007,S3,npm_hook_remote_shell,confirmed,applied unit 1121: strong chain matched CASE-007/S3,2026-10-27T09:18:30Z
+SIM-1122-1,SIM-INC-1122,CASE-007,,,related,applied unit 1122: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1122-2,SIM-INC-1122,CASE-007,,,related,applied unit 1122: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1122-3,SIM-INC-1122,CASE-007,,,related,applied unit 1122: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1122-4,SIM-INC-1122,CASE-007,,,related,applied unit 1122: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1123-1,SIM-INC-1123,CASE-007,,,related,applied unit 1123: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1123-2,SIM-INC-1123,CASE-007,,,related,applied unit 1123: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1123-3,SIM-INC-1123,CASE-007,,,related,applied unit 1123: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1123-4,SIM-INC-1123,CASE-007,,,related,applied unit 1123: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1124-1,SIM-INC-1124,CASE-007,,,related,applied unit 1124: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1124-2,SIM-INC-1124,CASE-007,,,related,applied unit 1124: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1124-3,SIM-INC-1124,CASE-007,,,related,applied unit 1124: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1124-4,SIM-INC-1124,CASE-007,,,related,applied unit 1124: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1125-1,SIM-INC-1125,CASE-007,,,related,applied unit 1125: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1125-2,SIM-INC-1125,CASE-007,,,related,applied unit 1125: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1125-3,SIM-INC-1125,CASE-007,,,related,applied unit 1125: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1125-4,SIM-INC-1125,CASE-007,,,related,applied unit 1125: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1125-5,SIM-INC-1125,CASE-007,,,related,applied unit 1125: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1126-1,SIM-INC-1126,CASE-007,,,related,applied unit 1126: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1126-2,SIM-INC-1126,CASE-007,,,related,applied unit 1126: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1126-3,SIM-INC-1126,CASE-007,,,related,applied unit 1126: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1126-4,SIM-INC-1126,CASE-007,,,related,applied unit 1126: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1126-5,SIM-INC-1126,CASE-007,,,related,applied unit 1126: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1127-1,SIM-INC-1127,CASE-007,,,related,applied unit 1127: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1127-2,SIM-INC-1127,CASE-007,,,related,applied unit 1127: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1127-3,SIM-INC-1127,CASE-007,,,related,applied unit 1127: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1127-4,SIM-INC-1127,CASE-007,,,related,applied unit 1127: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1127-5,SIM-INC-1127,CASE-007,,,related,applied unit 1127: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-1,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-2,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-3,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-4,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-5,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-6,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1128-7,SIM-INC-1128,CASE-007,,,related,applied unit 1128: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-1,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-2,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-3,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-4,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-5,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-6,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1129-7,SIM-INC-1129,CASE-007,,,related,applied unit 1129: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1130-1,SIM-INC-1130,CASE-007,,,related,applied unit 1130: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1130-2,SIM-INC-1130,CASE-007,,,related,applied unit 1130: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1131-1,SIM-INC-1131,CASE-007,,,related,applied unit 1131: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1131-2,SIM-INC-1131,CASE-007,,,related,applied unit 1131: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1132-1,SIM-INC-1132,CASE-007,,,related,applied unit 1132: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1132-2,SIM-INC-1132,CASE-007,,,related,applied unit 1132: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1133-1,SIM-INC-1133,CASE-007,,,related,applied unit 1133: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1133-2,SIM-INC-1133,CASE-007,,,related,applied unit 1133: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1134-1,SIM-INC-1134,CASE-007,,,related,applied unit 1134: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1134-2,SIM-INC-1134,CASE-007,,,related,applied unit 1134: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1135-1,SIM-INC-1135,CASE-007,,,related,applied unit 1135: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1135-2,SIM-INC-1135,CASE-007,,,related,applied unit 1135: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1135-3,SIM-INC-1135,CASE-007,,,related,applied unit 1135: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1136-1,SIM-INC-1136,CASE-007,,,related,applied unit 1136: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1137-1,SIM-INC-1137,CASE-007,,,related,applied unit 1137: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1137-2,SIM-INC-1137,CASE-007,,,related,applied unit 1137: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1138-1,SIM-INC-1138,CASE-007,,,related,applied unit 1138: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1138-2,SIM-INC-1138,CASE-007,,,related,applied unit 1138: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1138-3,SIM-INC-1138,CASE-007,,,related,applied unit 1138: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1139-1,SIM-INC-1139,CASE-007,,,related,applied unit 1139: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1139-2,SIM-INC-1139,CASE-007,,,related,applied unit 1139: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1139-3,SIM-INC-1139,CASE-007,,,related,applied unit 1139: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1139-4,SIM-INC-1139,CASE-007,,,related,applied unit 1139: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1140-1,SIM-INC-1140,CASE-007,,,related,applied unit 1140: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1140-2,SIM-INC-1140,CASE-007,,,related,applied unit 1140: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1140-3,SIM-INC-1140,CASE-007,,,related,applied unit 1140: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1140-4,SIM-INC-1140,CASE-007,,,related,applied unit 1140: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1140-5,SIM-INC-1140,CASE-007,,,related,applied unit 1140: FC supply-chain family,2026-10-27T09:18:31Z
+SIM-1082-1,SIM-INC-1082,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1082: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1082-2,SIM-INC-1082,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1082: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1083-1,SIM-INC-1083,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1083: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1084-2,SIM-INC-1084,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1084: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1084-3,SIM-INC-1084,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1084: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1085-1,SIM-INC-1085,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1085: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1086-2,SIM-INC-1086,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1086: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1086-3,SIM-INC-1086,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1086: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1087-1,SIM-INC-1087,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1087: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1087-2,SIM-INC-1087,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1087: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1088-1,SIM-INC-1088,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1088: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1088-2,SIM-INC-1088,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1088: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1089-1,SIM-INC-1089,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1089: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1090-3,SIM-INC-1090,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1090: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1091-1,SIM-INC-1091,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1091: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1091-2,SIM-INC-1091,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1091: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1092-1,SIM-INC-1092,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1092: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1092-2,SIM-INC-1092,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1092: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1093-2,SIM-INC-1093,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1093: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1094-2,SIM-INC-1094,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1094: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1095-1,SIM-INC-1095,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1095: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1095-2,SIM-INC-1095,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1095: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1095-3,SIM-INC-1095,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1095: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1096-1,SIM-INC-1096,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1096: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1096-2,SIM-INC-1096,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1096: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1096-3,SIM-INC-1096,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1096: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1097-2,SIM-INC-1097,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1097: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1098-1,SIM-INC-1098,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1098: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1098-2,SIM-INC-1098,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1098: instantiates CASE-005/S9,2026-10-27T09:18:32Z
+SIM-1099-1,SIM-INC-1099,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1099: instantiates CASE-005/S9,2026-10-27T09:18:33Z
+SIM-1100-2,SIM-INC-1100,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1100: instantiates CASE-005/S9,2026-10-27T09:18:33Z
+SIM-1100-3,SIM-INC-1100,CASE-005,S9,fa_recovery_or_encrypt_variant,related,applied unit 1100: instantiates CASE-005/S9,2026-10-27T09:18:33Z
+SIM-1122-1,SIM-INC-1122,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1122: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1122-2,SIM-INC-1122,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1122: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1122-3,SIM-INC-1122,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1122: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1122-4,SIM-INC-1122,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1122: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1123-4,SIM-INC-1123,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1123: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1124-1,SIM-INC-1124,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1124: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1124-2,SIM-INC-1124,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1124: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1124-3,SIM-INC-1124,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1124: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1125-5,SIM-INC-1125,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1125: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1126-4,SIM-INC-1126,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1126: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1126-5,SIM-INC-1126,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1126: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1127-1,SIM-INC-1127,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1127: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1127-2,SIM-INC-1127,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1127: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1127-4,SIM-INC-1127,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1127: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1130-1,SIM-INC-1130,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1130: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1130-2,SIM-INC-1130,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1130: instantiates CASE-007/S4,2026-10-27T09:18:33Z
+SIM-1131-2,SIM-INC-1131,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1131: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1132-2,SIM-INC-1132,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1132: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1133-2,SIM-INC-1133,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1133: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1134-2,SIM-INC-1134,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1134: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1135-1,SIM-INC-1135,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1135: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1135-2,SIM-INC-1135,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1135: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1135-3,SIM-INC-1135,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1135: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1136-1,SIM-INC-1136,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1136: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1137-1,SIM-INC-1137,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1137: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1138-1,SIM-INC-1138,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1138: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1138-2,SIM-INC-1138,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1138: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1139-1,SIM-INC-1139,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1139: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1140-1,SIM-INC-1140,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1140: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1140-2,SIM-INC-1140,CASE-007,S4,fc_ci_execution_variant,related,applied unit 1140: instantiates CASE-007/S4,2026-10-27T09:18:34Z
+SIM-1002-1,SIM-INC-1002,CASE-009,S1,spring4shell_classloader_probe,confirmed,promoted from CAND-0001; reviewed singleton,2026-10-28T03:25:23Z
+SIM-1002-2,SIM-INC-1002,CASE-009,S1,spring4shell_classloader_probe,confirmed,promoted from CAND-0001; reviewed singleton,2026-10-28T03:25:23Z
+SIM-1002-3,SIM-INC-1002,CASE-009,S2,spring4shell_rasp_property,confirmed,promoted from CAND-0001; reviewed singleton,2026-10-28T03:25:24Z
+SIM-1002-4,SIM-INC-1002,CASE-009,S3,spring4shell_container_exec,confirmed,promoted from CAND-0001; reviewed singleton,2026-10-28T03:25:24Z

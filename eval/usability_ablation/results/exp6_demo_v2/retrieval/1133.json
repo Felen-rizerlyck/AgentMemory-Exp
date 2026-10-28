@@ -1,0 +1,33 @@
+{
+ "unit": 1133,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "容器 registry 凭据滥用（CI 身份推送被篡改镜像 tag）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 19:59:40",
+   "source": "rasp",
+   "log_id": "RASP0521783",
+   "content": "https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {\"registry_push\": \"api-gateway:2.8.0\",",
+   "event_id": "1133-RASP0521783"
+  },
+  {
+   "timestamp": "2026-07-10 20:00:38",
+   "source": "hids",
+   "log_id": "HID0511081",
+   "content": "docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim",
+   "event_id": "1133-HID0511081"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

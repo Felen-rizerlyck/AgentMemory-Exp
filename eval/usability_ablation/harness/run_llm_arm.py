@@ -199,6 +199,7 @@ def load_done():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--exp", default="exp1_memory_vs_retrieval")
+    ap.add_argument("--retrieval-dir", default="")
     ap.add_argument("--models", default="qwen2.5:14b")
     ap.add_argument("--conditions", default="direct,assisted")
     ap.add_argument("--limit", type=int, default=0)
@@ -207,7 +208,8 @@ def main():
     ap.add_argument("--no-resume", action="store_true")
     a = ap.parse_args()
 
-    global OUTDIR, RUNS, EXPNAME
+    global OUTDIR, RUNS, EXPNAME, RETR
+    RETR = pathlib.Path(a.retrieval_dir) if a.retrieval_dir else (RES / "retrieval")
     EXPNAME = a.exp
     OUTDIR = RES / a.exp
     OUTDIR.mkdir(parents=True, exist_ok=True)
@@ -227,7 +229,7 @@ def main():
             if (m["unit"], mo, c) not in done]
     print(f"待跑 {len(todo)} 次（已完成 {len(done)}）", flush=True)
     for i, (unit, meta, model, cond) in enumerate(todo, 1):
-        uj = json.loads((RES / "retrieval" / f"{unit}.json").read_text(encoding="utf-8"))
+        uj = json.loads((RETR / f"{unit}.json").read_text(encoding="utf-8"))
         sys_p, user_p = build_prompt(cond, uj, cat, uj["evidence_for_agent"])
         mt = 1600 if "r1" in model else 700
         ok, raw, reasoning, lat, err = False, "", "", 0.0, ""

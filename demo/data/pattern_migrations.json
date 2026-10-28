@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "migrations": [
+    {
+      "migration_id": "MIG-CASE-005-v3",
+      "case_id": "CASE-005",
+      "from_version": 2,
+      "to_version": 3,
+      "kind": "move_step_to_family",
+      "step_id": "S9",
+      "family_id": "ransomware",
+      "basis": "reviewed schema migration: move S9 from CASE-005 v2 into ransomware family; v003 snapshot kept",
+      "decided_at": "2026-10-28T05:54:38Z",
+      "snapshot": "pattern_versions/CASE-005/v003.json"
+    },
+    {
+      "migration_id": "MIG-CASE-007-v3",
+      "case_id": "CASE-007",
+      "from_version": 2,
+      "to_version": 3,
+      "kind": "move_step_to_family",
+      "step_id": "S4",
+      "family_id": "supply-chain",
+      "basis": "reviewed schema migration: move S4 from CASE-007 v2 into supply-chain family; v003 snapshot kept",
+      "decided_at": "2026-10-28T05:54:38Z",
+      "snapshot": "pattern_versions/CASE-007/v003.json"
+    }
+  ]
+}

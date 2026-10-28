@@ -40,6 +40,11 @@ def load_units():
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser(); ap.add_argument("--out", default="")
+    a = ap.parse_args()
+    global OUT
+    if a.out: OUT = BASE / "eval" / "usability_ablation" / "results" / a.out
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "retrieval").mkdir(exist_ok=True)
     patterns = load_patterns()["attack_patterns"]

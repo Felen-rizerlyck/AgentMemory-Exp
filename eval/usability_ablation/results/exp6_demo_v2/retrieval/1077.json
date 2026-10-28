@@ -1,0 +1,57 @@
+{
+ "unit": 1077,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Drupal Form API 注入远程代码执行 (Drupalgeddon2)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-29 03:09:03",
+   "source": "waf",
+   "log_id": "WAF0394707",
+   "content": "/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;",
+   "event_id": "1077-WAF0394707"
+  },
+  {
+   "timestamp": "2026-06-29 03:09:04",
+   "source": "web",
+   "log_id": "WEB0397275",
+   "content": "/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;",
+   "event_id": "1077-WEB0397275"
+  },
+  {
+   "timestamp": "2026-06-29 03:09:06",
+   "source": "rasp",
+   "log_id": "RASP0436708",
+   "content": "https://app-php-198.ops-corp.com/user/register {\"drupalgeddon2\": \"element_parents\", \"cmd\": \"id\"} Mozilla/5.0 (",
+   "event_id": "1077-RASP0436708"
+  },
+  {
+   "timestamp": "2026-06-29 03:11:03",
+   "source": "hids",
+   "log_id": "HID0427750",
+   "content": "id /usr/bin/id id <== /bin/bash -c 'id' <== /usr/sbin/apache2 -k start",
+   "event_id": "1077-HID0427750"
+  },
+  {
+   "timestamp": "2026-06-29 03:11:51",
+   "source": "hids",
+   "log_id": "HID0427755",
+   "content": "rm -f /var/log/apache2/access.log /tmp/.i* && history -c rm rm -f /var/log/apache2/access.log /tmp/.i* <== /us",
+   "event_id": "1077-HID0427755"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

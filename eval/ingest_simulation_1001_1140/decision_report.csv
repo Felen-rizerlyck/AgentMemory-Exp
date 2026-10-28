@@ -1,0 +1,141 @@
+﻿unit,form,technique,sources,line_count,top1,tier,weak_kind,decision,case_id,step_id,linked_events
+1001,F1,Log4Shell JNDI 注入（LDAP 回连 + Base64 命令）,waf->web->rasp->hids,4,CASE-001,strong,,confirmed_existing,CASE-001,,4
+1002,F1,Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）,waf->web->rasp->hids,4,CASE-002,keyword_only,,unclassified,,,0
+1003,F1,Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1004,F1,Confluence OGNL 注入 CVE-2022-26134（doenterpagevariables.action）,waf->web->rasp->hids,4,CASE-002,keyword_only,,unclassified,,,0
+1005,F1,Struts2 S2-045（Content-Type 头 OGNL 表达式注入）,waf->web->rasp->hids,4,CASE-002,weak,generic_only,unclassified,,,0
+1006,F1,WebLogic T3 反序列化流投递（base64 序列化载荷）,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1007,F1,Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）,waf->web->rasp->hids,4,CASE-001,weak,generic_only,unclassified,,,0
+1008,F1,Apache OFBiz XML-RPC 反序列化 CVE-2023-51467,waf->web->rasp->hids,4,CASE-001,weak,generic_only,unclassified,,,0
+1009,F1,Apache Solr Velocity 模板 RCE CVE-2019-17558（wt=velocity）,waf->web->rasp->hids,4,CASE-001,weak,generic_only,unclassified,,,0
+1010,F1,Jenkins CLI 任意文件读取 CVE-2024-23897（@/etc/passwd 风格）,waf->web->rasp->hids,4,CASE-001,weak,generic_only,unclassified,,,0
+1011,F1,PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）,waf->web->rasp->hids,4,CASE-004,keyword_only,,unclassified,,,0
+1012,F1,PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）,waf->web->rasp->hids,4,CASE-004,keyword_only,,unclassified,,,0
+1013,F1,Laravel Ignition 反序列化 CVE-2021-3129（phar:// 触发）,waf->web->rasp->hids,4,CASE-004,weak,mismatch_only,unclassified,,,0
+1014,F1,ThinkPHP 多语言参数 RCE（invokefunction / call_user_func_array）,waf->web->rasp->hids,4,CASE-004,keyword_only,,unclassified,,,0
+1015,F1,Node.js vm 沙箱逃逸（constructor.constructor / process.binding 取 child_process）,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1016,F1,Next.js 中间件子请求伪造（x-middleware-subrequest）→ SSRF 读云元数据,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1017,F1,Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1018,F1,H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）,waf->web->rasp->hids,4,CASE-001,weak,generic_only,unclassified,,,0
+1019,F1,Django 报表接口报错型 SQL 注入（PostgreSQL CAST 报错）,waf->web->rasp->hids,4,,none,,unclassified,,,0
+1020,F1,Rails Marshal 反序列化（ActiveSupport base64 载荷）,waf->web->rasp->hids,4,CASE-004,weak,generic_only,unclassified,,,0
+1021,F2,Apache Tomcat PUT 上传 JSP webshell + DNS C2 心跳,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,strong,,confirmed_existing,CASE-002,,7
+1022,F2,JBoss jmx-console MLet MBean 部署（HtmlAdaptor invokeOpByName）,waf->web->rasp->hids->dns->dns->dns,7,CASE-001,weak,generic_only,unclassified,,,0
+1023,F2,Apache Axis2 admin 上传 aar webshell 部署服务,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1024,F2,UEditor 任意文件上传（net controller.ashx catchimage 写马）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1025,F2,Spring Boot Actuator heapdump 下载后从内存提取凭据 DNS 外传,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1026,F2,WebLogic wls-wsat 未授权反序列化（CoordinatorPortType XMLDecoder）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1027,F2,Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1028,F2,Grafana CVE-2024-9264 SQL 表达式命令执行（api/ds/query COPY TO PROGRAM）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1029,F2,Apache Dubbo Hessian 反序列化（application/x-java-serialized-object）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1030,F2,Jenkins Groovy 脚本控制台命令执行（scriptText）,waf->web->rasp->hids->dns->dns->dns,7,CASE-001,weak,generic_only,unclassified,,,0
+1031,F2,Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1032,F2,Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）,waf->web->rasp->hids->dns->dns->dns,7,CASE-001,weak,generic_only,unclassified,,,0
+1033,F2,Drupal Drupalgeddon2 CVE-2018-7600 mail post_render 命令执行,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1034,F2,Confluence CVE-2023-22515 权限提升创建管理员账号,waf->web->rasp->hids->dns->dns->dns,7,CASE-001,weak,generic_only,unclassified,,,0
+1035,F2,Exchange ProxyNotShell 风格（autodiscover SSRF → EWS 写文件）,waf->web->rasp->hids->dns->dns->dns,7,CASE-008,weak,tail,related_step,CASE-008,S3,1
+1036,F2,GitLab ExifTool CVE-2021-22205 上传 DjVu 图片 RCE,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1037,F2,Zabbix CVE-2024-22120 审计日志接口 SQL 注入后客户端外带,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1038,F2,SQL 盲注 OOB 外带（xp_dirtree UNC 令数据库发起 DNS 请求）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1039,F2,XXE OOB 外带（外部实体指向攻击者 DNS 服务器）,waf->web->rasp->hids->dns->dns->dns,7,CASE-001,weak,generic_only,unclassified,,,0
+1040,F2,Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,unclassified,,,0
+1041,F3,Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）,hids,1,,none,,unclassified,,,0
+1042,F3,Windows 计划任务持久化（schtasks /create /sc minute）,waf->rasp->hids,3,CASE-003,strong,,confirmed_existing,CASE-003,,3
+1043,F3,Windows 服务持久化（sc create binPath 指向 C:\Windows\Temp 载荷）,hids,1,CASE-008,weak,tail,related_step,CASE-008,S5,1
+1044,F3,Linux 反连 shell（bash -i 重定向 /dev/tcp）,hids,1,,none,,unclassified,,,0
+1045,F3,挖矿进程 xmrig 连接矿池（高 CPU 占用）,hids,1,,none,,unclassified,,,0
+1046,F3,凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）,waf->hids,2,,none,,unclassified,,,0
+1047,F3,日志与卷影清理（wevtutil cl Security + vssadmin delete shadows）,hids,1,CASE-005,weak,tail,related_step,CASE-005,S3,1
+1048,F3,JSP webshell 交互执行（shell.jsp 传 cmd 参数）,rasp->hids,2,CASE-002,keyword_only,,unclassified,,,0
+1049,F3,PHP webshell 文件管理动作（?act=upload / filemgr）,rasp->hids,2,CASE-005,weak,generic_only,unclassified,,,0
+1050,F3,ASPX webshell 执行 whoami（cmd.aspx）,rasp->hids,2,CASE-008,keyword_only,,unclassified,,,0
+1051,F3,冰蝎/哥斯拉加密参数命令执行（payload Base64 参数）,rasp->hids,2,CASE-001,weak,generic_only,unclassified,,,0
+1052,F3,Go 应用参数注入（exec.Command 拼接 shell 元字符）,rasp->hids,2,CASE-003,keyword_only,,unclassified,,,0
+1053,F3,API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）,waf->rasp->hids,3,CASE-003,keyword_only,,unclassified,,,0
+1054,F3,gRPC-web 接口参数注入导致命令执行,waf->rasp->hids,3,CASE-001,keyword_only,,unclassified,,,0
+1055,F3,容器 API 未授权创建 Pod 执行命令（k8s API 直连）,waf->rasp->hids,3,,none,,unclassified,,,0
+1056,F3,消息队列管理台未授权（RabbitMQ management definitions）,waf->rasp->hids,3,,none,,unclassified,,,0
+1057,F3,数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）,waf->rasp->hids,3,CASE-004,keyword_only,,unclassified,,,0
+1058,F3,备份接口路径穿越读取配置（WAF 命中、应用无日志）,waf->hids,2,,none,,unclassified,,,0
+1059,F3,上传接口覆盖 .htaccess 后触发命令,waf->hids,2,,none,,unclassified,,,0
+1060,F3,SSRF 探测云元数据后主机侧 curl 内网,waf->hids,2,CASE-001,keyword_only,,unclassified,,,0
+1061,F4,Laravel Ignition 调试模式反序列化 RCE (CVE-2021-3129),waf->web->rasp->hids->hids,5,CASE-004,strong,,confirmed_existing,CASE-004,,5
+1062,F4,Fastjson autoType 反序列化远程加载 (CVE-2022-25845),waf->web->rasp->hids->hids,5,CASE-001,weak,generic_only,unclassified,,,0
+1063,F4,Apache Solr Velocity 模板注入 RCE (CVE-2019-17558),waf->web->rasp->hids->hids,5,CASE-001,weak,generic_only,unclassified,,,0
+1064,F4,Confluence createpage-entervariables OGNL 注入（CVE-2022-26134 备用向量）,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1065,F4,Spring Cloud Gateway SpEL 注入 RCE (CVE-2022-22947),waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1066,F4,Node.js vm2 沙箱逃逸（process.binding('spawn_sync') 直接起进程）,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1067,F4,PHPUnit eval-stdin.php 未授权远程代码执行,waf->web->rasp->hids->hids,5,CASE-004,keyword_only,,unclassified,,,0
+1068,F4,Jenkins CLI remoting 反序列化远程代码执行,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1069,F4,Apache APISIX 管理接口未授权 Lua 代码注入,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1070,F4,GitLab ExifTool DjVu 文件解析远程代码执行 (CVE-2021-22205),waf->web->rasp->hids->hids,5,CASE-001,keyword_only,,unclassified,,,0
+1071,F4,Symfony _fragment 控制器模板注入 RCE,waf->web->rasp->hids->hids,5,CASE-004,keyword_only,,unclassified,,,0
+1072,F4,Webmin password_change.cgi 后门命令执行 (CVE-2019-15107),waf->web->rasp->hids->hids,5,CASE-001,keyword_only,,unclassified,,,0
+1073,F4,Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965),waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1074,F4,Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1075,F4,Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467),waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1076,F4,Node.js EJS 模板注入（outputFunctionName → mainModule 加载 child_process）CVE-2022-29078,waf->web->rasp->hids->hids,5,CASE-003,weak,tail,related_step,CASE-003,S3,1
+1077,F4,Drupal Form API 注入远程代码执行 (Drupalgeddon2),waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1078,F4,Django RawSQL 注入 PostgreSQL COPY TO PROGRAM 命令执行,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1079,F4,phpMyAdmin 任意文件包含导致会话文件代码执行,waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1080,F4,Apache Druid JavaScript 过滤器远程代码执行 (CVE-2021-25646),waf->web->rasp->hids->hids,5,,none,,unclassified,,,0
+1081,FA,文件上传落地 WebShell 后删除卷影并批量加密共享目录,rasp->hids->hids,3,CASE-005,strong,,confirmed_existing,CASE-005,,3
+1082,FA,凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘,hids->hids,2,CASE-005,weak,tail,related_family,CASE-005,,2
+1083,FA,RDP 弱口令爆破成功后删除备份编录并外传加密密钥,hids->dns->dns->dns,4,CASE-005,weak,tail,related_family,CASE-005,,4
+1084,FA,注册每日计划任务投放加密脚本并删除 C 盘卷影副本,hids->hids->hids,3,CASE-005,weak,tail,related_family,CASE-005,,3
+1085,FA,PowerShell 载入器清理安全日志并删除卷影后循环加密文档,hids->hids,2,,none,,related_family,CASE-005,,2
+1086,FA,停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件,hids->hids->hids,3,CASE-005,weak,tail,related_family,CASE-005,,3
+1087,FA,挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档,hids->hids,2,,none,,related_family,CASE-005,,2
+1088,FA,批量打包加密业务目录并投放 README_RESTORE.txt 说明文件,rasp->hids,2,,none,,related_family,CASE-005,,2
+1089,FA,停用实时防护进程后删除卷影并用 cipher 批量加密运维目录,hids,1,CASE-005,weak,tail,related_family,CASE-005,,1
+1090,FA,通过 wmic 远程节点分发加密器并清除目标主机编录,hids->hids->hids,3,CASE-005,weak,tail,related_family,CASE-005,,3
+1091,FA,加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁,hids->hids,2,,none,,related_family,CASE-005,,2
+1092,FA,入侵备份服务器删除备份目录与 LVM 快照并外传文件清单,hids->hids->dns->dns->dns,5,CASE-002,weak,generic_only,related_family,CASE-005,,5
+1093,FA,停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件,hids->hids->hids,3,,none,,related_family,CASE-005,,3
+1094,FA,删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份,hids->hids->hids,3,,none,,related_family,CASE-005,,3
+1095,FA,删除卷影副本、全盘加密并投放 !RECOVER!.txt 说明文件,hids->hids->hids,3,CASE-005,weak,tail,related_family,CASE-005,,3
+1096,FA,配置安全模式启动后删除备份编录并加密数据分区,hids->hids->hids,3,,none,,related_family,CASE-005,,3
+1097,FA,PsExec 远程会话投放并运行加密器清空共享目录,hids->hids,2,CASE-005,weak,tail,related_family,CASE-005,,2
+1098,FA,本地压缩加密后取走备份并删除原始数据目录形成双重破坏,hids->hids->dns->dns->dns,5,CASE-002,weak,generic_only,related_family,CASE-005,,5
+1099,FA,curl 下载加密脚本落地即执行并删除归档备份目录,hids,1,,none,,related_family,CASE-005,,1
+1100,FA,Web 接口触发横向扩散后加密多台主机并清理认证日志,rasp->hids->hids,3,,none,,related_family,CASE-005,,3
+1101,FB,域控与域管组枚举（net user /domain + nltest /dclist）,hids,1,,none,,unclassified,,,0
+1102,FB,BloodHound 图谱采集（SharpHound All + LDAP 批量查询）,hids->hids->hids,3,CASE-006,strong,,confirmed_existing,CASE-006,,3
+1103,FB,Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）,hids->hids,2,CASE-006,keyword_only,,unclassified,,,0
+1104,FB,AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）,hids,1,,none,,unclassified,,,0
+1105,FB,域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）,rasp->hids,2,,none,,unclassified,,,0
+1106,FB,PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync,rasp->hids->hids,3,,none,,unclassified,,,0
+1107,FB,DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传,hids->hids->dns->dns->dns,5,CASE-002,weak,generic_only,unclassified,,,0
+1108,FB,ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）,hids->dns->dns->dns,4,CASE-002,weak,generic_only,unclassified,,,0
+1109,FB,黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）,hids->hids->hids,3,,none,,unclassified,,,0
+1110,FB,白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）,hids,1,,none,,unclassified,,,0
+1111,FB,域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）,hids->hids->hids,3,,none,,unclassified,,,0
+1112,FB,组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）,hids->hids,2,,none,,unclassified,,,0
+1113,FB,域账号后门（net user /add /domain + 加入 Domain Admins）,hids->hids->hids,3,,none,,unclassified,,,0
+1114,FB,约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）,hids->hids,2,,none,,unclassified,,,0
+1115,FB,ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）,rasp->hids,2,,none,,unclassified,,,0
+1116,FB,影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）,hids->hids,2,CASE-006,keyword_only,,unclassified,,,0
+1117,FB,域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）,hids->hids,2,CASE-006,keyword_only,,unclassified,,,0
+1118,FB,组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）,hids,1,CASE-006,keyword_only,,unclassified,,,0
+1119,FB,会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）,hids->hids,2,CASE-006,keyword_only,,unclassified,,,0
+1120,FB,域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）,hids->hids->hids,3,,none,,unclassified,,,0
+1121,FC,npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）,waf->web->rasp->hids,4,CASE-007,strong,,confirmed_existing,CASE-007,,4
+1122,FC,PyPI 恶意包 setup.py 构建期执行（构建后端注入）,waf->web->rasp->hids,4,,none,,related_family,CASE-007,,4
+1123,FC,私服 Maven SNAPSHOT 制品覆盖投毒（构建期加载后门 jar）,waf->web->rasp->hids,4,,none,,related_family,CASE-007,,4
+1124,FC,Docker 基础镜像投毒（恶意 ENTRYPOINT 在流水线构建期触发）,waf->web->rasp->hids,4,,none,,related_family,CASE-007,,4
+1125,FC,CI 构建参数命令注入（branch 参数拼接 shell 并外带 CI_JOB_TOKEN）,waf->web->rasp->hids->hids,5,,none,,related_family,CASE-007,,5
+1126,FC,GitHub Actions workflow 篡改（PR 分支注入 run 步骤后强推）,waf->web->rasp->hids->hids,5,,none,,related_family,CASE-007,,5
+1127,FC,CI 环境变量密钥窃取（after_script 读取 agent.env 外带 AWS 密钥）,waf->web->rasp->hids->hids,5,CASE-001,weak,generic_only,related_family,CASE-007,,5
+1128,FC,构建产物投毒（发布 jar 内替换 class 后 C2 回连确认）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,related_family,CASE-007,,7
+1129,FC,仓库 webhook SSRF 打到云元数据（169.254.169.254 IAM 凭据）,waf->web->rasp->hids->dns->dns->dns,7,CASE-002,weak,generic_only,related_family,CASE-007,,7
+1130,FC,Git 凭据文件窃取（runner 任务接口打包 .git-credentials）,waf->hids,2,CASE-004,keyword_only,,related_family,CASE-007,,2
+1131,FC,CI 覆盖率上传脚本篡改（uploader 端点改指攻击者主机）,waf->hids,2,,none,,related_family,CASE-007,,2
+1132,FC,IaC 模板投毒（Terraform local-exec provisioner 执行远程脚本）,waf->hids,2,,none,,related_family,CASE-007,,2
+1133,FC,容器 registry 凭据滥用（CI 身份推送被篡改镜像 tag）,rasp->hids,2,,none,,related_family,CASE-007,,2
+1134,FC,包管理器源劫持（pip index-url 指向攻击者私服）,rasp->hids,2,,none,,related_family,CASE-007,,2
+1135,FC,CI runner 逃逸到集群（docker.sock 挂载 + ServiceAccount token 提权）,rasp->hids->hids,3,,none,,related_family,CASE-007,,3
+1136,FC,CI 缓存投毒（缓存包内含恢复后钩子被 runner 执行）,hids,1,,none,,related_family,CASE-007,,1
+1137,FC,依赖混淆（占用内网包名的高版本公网同名包被自动拉取）,hids->hids,2,,none,,related_family,CASE-007,,2
+1138,FC,发布 token 滥用（构建机持 token 直接推送恶意 gem 版本）,hids->hids->hids,3,,none,,related_family,CASE-007,,3
+1139,FC,制品校验绕过发生产（校验脚本被改后部署未签名包）,hids->dns->dns->dns,4,CASE-002,weak,generic_only,related_family,CASE-007,,4
+1140,FC,供应链 C2 回连（打包 CI 凭据后经 DNS 隧道外传）,hids->hids->dns->dns->dns,5,CASE-002,weak,generic_only,related_family,CASE-007,,5

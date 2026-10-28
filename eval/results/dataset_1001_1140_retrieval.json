@@ -1,0 +1,7312 @@
+{
+  "summary": {
+    "units": 140,
+    "lines": 536,
+    "units_with_any_candidate": 80,
+    "units_with_action_evidence": 58,
+    "units_medium_or_better": 7,
+    "units_strong": 7,
+    "top1_cases": {
+      "CASE-001": 19,
+      "CASE-002": 26,
+      "null": 60,
+      "CASE-004": 10,
+      "CASE-008": 3,
+      "CASE-003": 4,
+      "CASE-005": 11,
+      "CASE-006": 6,
+      "CASE-007": 1
+    },
+    "top1_tiers": {
+      "strong": 7,
+      "keyword_only": 22,
+      "null": 60,
+      "weak": 51
+    },
+    "case_candidate_counts": {
+      "CASE-001": 29,
+      "CASE-002": 33,
+      "CASE-004": 12,
+      "CASE-008": 5,
+      "CASE-003": 6,
+      "CASE-005": 11,
+      "CASE-006": 6,
+      "CASE-007": 1
+    },
+    "weak_step_counts": {
+      "CASE-002/S4": 21,
+      "CASE-001/S3": 14,
+      "CASE-005/S3": 6,
+      "CASE-005/S2": 3,
+      "CASE-001/S2": 2,
+      "CASE-002/S3": 1,
+      "CASE-004/S4": 1,
+      "CASE-008/S3": 1,
+      "CASE-008/S5": 1,
+      "CASE-005/S1": 1,
+      "CASE-003/S3": 1
+    },
+    "weak_kind_counts": {
+      "generic_only": 38,
+      "mismatch_only": 1,
+      "tail": 12
+    },
+    "keyword_only_cases": {
+      "CASE-002": 3,
+      "CASE-004": 7,
+      "CASE-008": 1,
+      "CASE-003": 2,
+      "CASE-001": 4,
+      "CASE-006": 5
+    },
+    "per_form": {
+      "F1": {
+        "units": 20,
+        "strong": 1,
+        "medium_or_better": 1,
+        "keyword_only": 5,
+        "none": 6,
+        "weak": 8
+      },
+      "F2": {
+        "units": 20,
+        "strong": 1,
+        "medium_or_better": 1,
+        "weak": 19
+      },
+      "F3": {
+        "units": 20,
+        "none": 8,
+        "strong": 1,
+        "medium_or_better": 1,
+        "weak": 4,
+        "keyword_only": 7
+      },
+      "F4": {
+        "units": 20,
+        "strong": 1,
+        "medium_or_better": 1,
+        "weak": 3,
+        "none": 12,
+        "keyword_only": 4
+      },
+      "FA": {
+        "units": 20,
+        "strong": 1,
+        "medium_or_better": 1,
+        "weak": 10,
+        "none": 9
+      },
+      "FB": {
+        "units": 20,
+        "none": 12,
+        "strong": 1,
+        "medium_or_better": 1,
+        "keyword_only": 5,
+        "weak": 2
+      },
+      "FC": {
+        "units": 20,
+        "strong": 1,
+        "medium_or_better": 1,
+        "none": 13,
+        "weak": 5,
+        "keyword_only": 1
+      }
+    },
+    "line_level": {
+      "total": 536,
+      "action_lines": 149,
+      "tiers": {
+        "weak": 149,
+        "none": 342,
+        "keyword_only": 45
+      },
+      "top1": {
+        "CASE-001": 40,
+        "<none>": 342,
+        "CASE-002": 95,
+        "CASE-004": 18,
+        "CASE-008": 6,
+        "CASE-003": 7,
+        "CASE-005": 14,
+        "CASE-006": 10,
+        "CASE-007": 4
+      }
+    }
+  },
+  "units": [
+    {
+      "unit": 1001,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 3,
+          "required": 3,
+          "matched_required": 3,
+          "detected": 3,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 24,
+          "steps": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "Web 参数中的 ${jndi:…} 注入",
+              "required": true,
+              "event_ids": [
+                "U1001-1",
+                "U1001-2"
+              ],
+              "sources": [
+                "waf",
+                "web"
+              ],
+              "aligned": "U1001-2"
+            },
+            {
+              "step_id": "S2",
+              "label": "应用侧 JNDI 解析并回连",
+              "required": true,
+              "event_ids": [
+                "U1001-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1001-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1001-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1001-4"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1001-1",
+              "step_id": "S1",
+              "reason": "extra_detection_for_S1"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 1,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1002,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1003,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1004,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Confluence OGNL 注入 CVE-2022-26134（doenterpagevariables.action）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1005,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Struts2 S2-045（Content-Type 头 OGNL 表达式注入）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 3,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "Tomcat 进程派生子 shell 执行探针",
+              "required": true,
+              "event_ids": [
+                "U1005-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1005-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1006,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "WebLogic T3 反序列化流投递（base64 序列化载荷）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1007,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1007-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1007-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1008,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Apache OFBiz XML-RPC 反序列化 CVE-2023-51467",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1008-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1008-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1009,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Apache Solr Velocity 模板 RCE CVE-2019-17558（wt=velocity）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1009-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1009-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1010,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Jenkins CLI 任意文件读取 CVE-2024-23897（@/etc/passwd 风格）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1010-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1010-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1011,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1012,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1013,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Laravel Ignition 反序列化 CVE-2021-3129（phar:// 触发）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "weak",
+          "weak_kind": "mismatch_only",
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 1,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 9,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [
+            {
+              "event_id": "U1013-1",
+              "step_id": "S2",
+              "observed_source": "waf"
+            },
+            {
+              "event_id": "U1013-2",
+              "step_id": "S2",
+              "observed_source": "web"
+            }
+          ],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1014,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "ThinkPHP 多语言参数 RCE（invokefunction / call_user_func_array）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1015,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Node.js vm 沙箱逃逸（constructor.constructor / process.binding 取 child_process）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1016,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Next.js 中间件子请求伪造（x-middleware-subrequest）→ SSRF 读云元数据",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1017,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1018,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 2,
+          "required": 3,
+          "matched_required": 2,
+          "detected": 2,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 8,
+          "steps": [
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S2",
+              "label": "应用侧 JNDI 解析并回连",
+              "required": true,
+              "event_ids": [
+                "U1018-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1018-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1018-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1018-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1019,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Django 报表接口报错型 SQL 注入（PostgreSQL CAST 报错）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1020,
+      "form": "F1",
+      "file": "data-1001-1020.txt",
+      "technique": "Rails Marshal 反序列化（ActiveSupport base64 载荷）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "追加 crontab 定时回连",
+              "required": true,
+              "event_ids": [
+                "U1020-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1020-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1021,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Apache Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 4,
+          "required": 4,
+          "matched_required": 4,
+          "detected": 4,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 24,
+          "steps": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "PUT 写入 JSP webshell",
+              "required": true,
+              "event_ids": [
+                "U1021-1",
+                "U1021-2"
+              ],
+              "sources": [
+                "waf",
+                "web"
+              ],
+              "aligned": "U1021-2"
+            },
+            {
+              "step_id": "S2",
+              "label": "应用侧记录 webshell 上传与 exec",
+              "required": true,
+              "event_ids": [
+                "U1021-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1021-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "Tomcat 进程派生子 shell 执行探针",
+              "required": true,
+              "event_ids": [
+                "U1021-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1021-4"
+            },
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1021-5",
+                "U1021-6",
+                "U1021-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1021-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1021-1",
+              "step_id": "S1",
+              "reason": "extra_detection_for_S1"
+            },
+            {
+              "event_id": "U1021-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1021-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 3,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1022,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "JBoss jmx-console MLet MBean 部署（HtmlAdaptor invokeOpByName）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 3,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1022-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1022-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1022-5",
+                "U1022-6",
+                "U1022-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1022-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1022-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1022-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 6
+    },
+    {
+      "unit": 1023,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Apache Axis2 admin 上传 aar webshell 部署服务",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1023-5",
+                "U1023-6",
+                "U1023-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1023-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1023-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1023-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1024,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "UEditor 任意文件上传（net controller.ashx catchimage 写马）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1024-5",
+                "U1024-6",
+                "U1024-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1024-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1024-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1024-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1025,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Spring Boot Actuator heapdump 下载后从内存提取凭据 DNS 外传",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1025-5",
+                "U1025-6",
+                "U1025-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1025-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1025-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1025-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1026,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "WebLogic wls-wsat 未授权反序列化（CoordinatorPortType XMLDecoder）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1026-5",
+                "U1026-6",
+                "U1026-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1026-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1026-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1026-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1027,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1027-5",
+                "U1027-6",
+                "U1027-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1027-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1027-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1027-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1028,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Grafana CVE-2024-9264 SQL 表达式命令执行（api/ds/query COPY TO PROGRAM）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1028-5",
+                "U1028-6",
+                "U1028-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1028-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1028-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1028-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1029,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Apache Dubbo Hessian 反序列化（application/x-java-serialized-object）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1029-5",
+                "U1029-6",
+                "U1029-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1029-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1029-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1029-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1030,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Jenkins Groovy 脚本控制台命令执行（scriptText）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1030-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1030-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1030-5",
+                "U1030-6",
+                "U1030-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1030-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1030-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1030-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 6
+    },
+    {
+      "unit": 1031,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1031-5",
+                "U1031-6",
+                "U1031-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1031-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1031-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1031-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1032,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1032-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1032-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1032-5",
+                "U1032-6",
+                "U1032-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1032-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1032-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1032-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 6
+    },
+    {
+      "unit": 1033,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Drupal Drupalgeddon2 CVE-2018-7600 mail post_render 命令执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1033-5",
+                "U1033-6",
+                "U1033-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1033-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1033-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1033-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1034,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Confluence CVE-2023-22515 权限提升创建管理员账号",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1034-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1034-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1034-5",
+                "U1034-6",
+                "U1034-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1034-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1034-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1034-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 6
+    },
+    {
+      "unit": 1035,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Exchange ProxyNotShell 风格（autodiscover SSRF → EWS 写文件）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-008",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 6,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "aspnet_client 下 ASPX webshell",
+              "required": true,
+              "event_ids": [
+                "U1035-2"
+              ],
+              "sources": [
+                "web"
+              ],
+              "aligned": "U1035-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [
+            {
+              "event_id": "U1035-1",
+              "step_id": "S3",
+              "observed_source": "waf"
+            }
+          ],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1035-5",
+                "U1035-6",
+                "U1035-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1035-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1035-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1035-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-008",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1036,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "GitLab ExifTool CVE-2021-22205 上传 DjVu 图片 RCE",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1036-5",
+                "U1036-6",
+                "U1036-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1036-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1036-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1036-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1037,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Zabbix CVE-2024-22120 审计日志接口 SQL 注入后客户端外带",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1037-5",
+                "U1037-6",
+                "U1037-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1037-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1037-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1037-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1038,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "SQL 盲注 OOB 外带（xp_dirtree UNC 令数据库发起 DNS 请求）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1038-5",
+                "U1038-6",
+                "U1038-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1038-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1038-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1038-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1039,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1039-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1039-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1039-5",
+                "U1039-6",
+                "U1039-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1039-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1039-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1039-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 6
+    },
+    {
+      "unit": 1040,
+      "form": "F2",
+      "file": "data-1021-1040.txt",
+      "technique": "Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1040-5",
+                "U1040-6",
+                "U1040-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1040-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1040-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1040-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1041,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1042,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "Windows 计划任务持久化（schtasks /create /sc minute）",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-003",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 3,
+          "required": 3,
+          "matched_required": 3,
+          "detected": 3,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 21,
+          "steps": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "调度接口命令注入（cmd=schtasks）",
+              "required": true,
+              "event_ids": [
+                "U1042-1"
+              ],
+              "sources": [
+                "waf"
+              ],
+              "aligned": "U1042-1"
+            },
+            {
+              "step_id": "S2",
+              "label": "应用侧记录 cmd_inject=schtasks",
+              "required": true,
+              "event_ids": [
+                "U1042-2"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1042-2"
+            },
+            {
+              "step_id": "S3",
+              "label": "创建周期计划任务执行载荷",
+              "required": true,
+              "event_ids": [
+                "U1042-3"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1042-3"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [
+            {
+              "event_id": "U1042-1",
+              "step_id": "S3",
+              "observed_source": "waf"
+            },
+            {
+              "event_id": "U1042-2",
+              "step_id": "S3",
+              "observed_source": "rasp"
+            }
+          ],
+          "extra_detections": 0,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-003",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1043,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "Windows 服务持久化（sc create binPath 指向 C:\\Windows\\Temp 载荷）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [
+        {
+          "case_id": "CASE-008",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 6,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S5"
+          ],
+          "evidence": [
+            {
+              "step_id": "S5",
+              "label": "sc.exe create 注册服务",
+              "required": true,
+              "event_ids": [
+                "U1043-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1043-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S6"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-008",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1044,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "Linux 反连 shell（bash -i 重定向 /dev/tcp）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1045,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1046,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1047,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "日志与卷影清理（wevtutil cl Security + vssadmin delete shadows）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1047-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1047-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1048,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-008",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 6,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1049,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "PHP webshell 文件管理动作（?act=upload / filemgr）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "prefix",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S1"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "上传接口落地 WebShell",
+              "required": true,
+              "event_ids": [
+                "U1049-1"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1049-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1050,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "ASPX webshell 执行 whoami（cmd.aspx）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-008",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 6,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-008",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1051,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "冰蝎/哥斯拉加密参数命令执行（payload Base64 参数）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1051-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1051-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1052,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-003",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-003",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1053,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-003",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-003",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1054,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "gRPC-web 接口参数注入导致命令执行",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-003",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1055,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "容器 API 未授权创建 Pod 执行命令（k8s API 直连）",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1056,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "消息队列管理台未授权（RabbitMQ management definitions）",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1057,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）",
+      "sources": [
+        "waf",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-008",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 6,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4",
+            "S5",
+            "S6"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1058,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1059,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "上传接口覆盖 .htaccess 后触发命令",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1060,
+      "form": "F3",
+      "file": "data-1041-1060.txt",
+      "technique": "SSRF 探测云元数据后主机侧 curl 内网",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 4,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1061,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Laravel Ignition 调试模式反序列化 RCE (CVE-2021-3129)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 4,
+          "required": 4,
+          "matched_required": 4,
+          "detected": 4,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 27,
+          "steps": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "_ignition/execute-solution 触发",
+              "required": true,
+              "event_ids": [
+                "U1061-1",
+                "U1061-2"
+              ],
+              "sources": [
+                "waf",
+                "web"
+              ],
+              "aligned": "U1061-2"
+            },
+            {
+              "step_id": "S2",
+              "label": "应用侧 phar:// 反序列化载荷",
+              "required": true,
+              "event_ids": [
+                "U1061-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1061-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "PHP-FPM 派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1061-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1061-4"
+            },
+            {
+              "step_id": "S4",
+              "label": "追加 crontab 定时回连",
+              "required": true,
+              "event_ids": [
+                "U1061-5"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1061-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1061-1",
+              "step_id": "S1",
+              "reason": "extra_detection_for_S1"
+            }
+          ],
+          "mismatches": [
+            {
+              "event_id": "U1061-1",
+              "step_id": "S2",
+              "observed_source": "waf"
+            },
+            {
+              "event_id": "U1061-2",
+              "step_id": "S2",
+              "observed_source": "web"
+            }
+          ],
+          "extra_detections": 1,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1062,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Fastjson autoType 反序列化远程加载 (CVE-2022-25845)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 2,
+          "required": 3,
+          "matched_required": 2,
+          "detected": 2,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 8,
+          "steps": [
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S2",
+              "label": "应用侧 JNDI 解析并回连",
+              "required": true,
+              "event_ids": [
+                "U1062-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1062-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1062-5"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1062-5"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1063,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Apache Solr Velocity 模板注入 RCE (CVE-2019-17558)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 3,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1063-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1063-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1064,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Confluence createpage-entervariables OGNL 注入（CVE-2022-26134 备用向量）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1065,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Spring Cloud Gateway SpEL 注入 RCE (CVE-2022-22947)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1066,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Node.js vm2 沙箱逃逸（process.binding('spawn_sync') 直接起进程）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1067,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "PHPUnit eval-stdin.php 未授权远程代码执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1068,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Jenkins CLI remoting 反序列化远程代码执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1069,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Apache APISIX 管理接口未授权 Lua 代码注入",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1070,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "GitLab ExifTool DjVu 文件解析远程代码执行 (CVE-2021-22205)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1071,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Symfony _fragment 控制器模板注入 RCE",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1072,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Webmin password_change.cgi 后门命令执行 (CVE-2019-15107)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1073,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1074,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1075,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1076,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Node.js EJS 模板注入（outputFunctionName → mainModule 加载 child_process）CVE-2022-29078",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-003",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "创建周期计划任务执行载荷",
+              "required": true,
+              "event_ids": [
+                "U1076-5"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1076-5"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-003",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1077,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Drupal Form API 注入远程代码执行 (Drupalgeddon2)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1078,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Django RawSQL 注入 PostgreSQL COPY TO PROGRAM 命令执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1079,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "phpMyAdmin 任意文件包含导致会话文件代码执行",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1080,
+      "form": "F4",
+      "file": "data-1061-1080.txt",
+      "technique": "Apache Druid JavaScript 过滤器远程代码执行 (CVE-2021-25646)",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1081,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "文件上传落地 WebShell 后删除卷影并批量加密共享目录",
+      "sources": [
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 3,
+          "required": 3,
+          "matched_required": 3,
+          "detected": 3,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 21,
+          "steps": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "上传接口落地 WebShell",
+              "required": true,
+              "event_ids": [
+                "U1081-1"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1081-1"
+            },
+            {
+              "step_id": "S2",
+              "label": "cipher 批量加密目录",
+              "required": true,
+              "event_ids": [
+                "U1081-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1081-2"
+            },
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1081-3"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1081-3"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1082,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "凭据复用横向登录文件服务器后关闭恢复环境并加密数据盘",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S2"
+          ],
+          "evidence": [
+            {
+              "step_id": "S2",
+              "label": "cipher 批量加密目录",
+              "required": true,
+              "event_ids": [
+                "U1082-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1082-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1083,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "RDP 弱口令爆破成功后删除备份编录并外传加密密钥",
+      "sources": [
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S2"
+          ],
+          "evidence": [
+            {
+              "step_id": "S2",
+              "label": "cipher 批量加密目录",
+              "required": true,
+              "event_ids": [
+                "U1083-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1083-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1083-2",
+                "U1083-3",
+                "U1083-4"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1083-4"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1083-2",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1083-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1084,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "注册每日计划任务投放加密脚本并删除 C 盘卷影副本",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1084-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1084-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-003",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 7,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1085,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "PowerShell 载入器清理安全日志并删除卷影后循环加密文档",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1086,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "停用 SQL Server 业务服务后删除卷影并加密 MDF 数据文件",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1086-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1086-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1087,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "挂载共享盘并删除编录后用 gpg 递归批量加密 Office 文档",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1088,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "批量打包加密业务目录并投放 README_RESTORE.txt 说明文件",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1089,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "停用实时防护进程后删除卷影并用 cipher 批量加密运维目录",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1089-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1089-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1090,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "通过 wmic 远程节点分发加密器并清除目标主机编录",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S2"
+          ],
+          "evidence": [
+            {
+              "step_id": "S2",
+              "label": "cipher 批量加密目录",
+              "required": true,
+              "event_ids": [
+                "U1090-3"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1090-3"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1091,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "加密完成后删除本地归档备份并 shred 加密脚本与密钥自毁",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1092,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "入侵备份服务器删除备份目录与 LVM 快照并外传文件清单",
+      "sources": [
+        "hids",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1092-3",
+                "U1092-4",
+                "U1092-5"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1092-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1092-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1092-4",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1093,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "停用 mysqld 后删除归档备份并加密 InnoDB 表空间文件",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1094,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "删除虚拟机快照后加密 vmdk 镜像文件并清除镜像备份",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1095,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "删除卷影副本、全盘加密并投放 !RECOVER!.txt 说明文件",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 10,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1095-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1095-1"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1096,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "配置安全模式启动后删除备份编录并加密数据分区",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1097,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "PsExec 远程会话投放并运行加密器清空共享目录",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-005",
+          "tier": "weak",
+          "weak_kind": "tail",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 7,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "删除全部卷影副本",
+              "required": true,
+              "event_ids": [
+                "U1097-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1097-2"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-005",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1098,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "本地压缩加密后取走备份并删除原始数据目录形成双重破坏",
+      "sources": [
+        "hids",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1098-3",
+                "U1098-4",
+                "U1098-5"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1098-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1098-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1098-4",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1099,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "curl 下载加密脚本落地即执行并删除归档备份目录",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1100,
+      "form": "FA",
+      "file": "data-1081-1100.txt",
+      "technique": "Web 接口触发横向扩散后加密多台主机并清理认证日志",
+      "sources": [
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1101,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域控与域管组枚举（net user /domain + nltest /dclist）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1102,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "BloodHound 图谱采集（SharpHound All + LDAP 批量查询）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 3,
+          "required": 3,
+          "matched_required": 3,
+          "detected": 3,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 24,
+          "steps": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "SharpHound 全量采集",
+              "required": true,
+              "event_ids": [
+                "U1102-1"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1102-1"
+            },
+            {
+              "step_id": "S2",
+              "label": "压缩采集结果",
+              "required": true,
+              "event_ids": [
+                "U1102-2"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1102-2"
+            },
+            {
+              "step_id": "S3",
+              "label": "上传采集压缩包",
+              "required": true,
+              "event_ids": [
+                "U1102-3"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1102-3"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1103,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1104,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1105,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1106,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+      "sources": [
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1107,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+      "sources": [
+        "hids",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1107-3",
+                "U1107-4",
+                "U1107-5"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1107-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1107-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1107-4",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1108,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）",
+      "sources": [
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1108-2",
+                "U1108-3",
+                "U1108-4"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1108-4"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1108-2",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1108-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1109,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1110,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1111,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1112,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1113,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1114,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1115,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1116,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1117,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1118,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1119,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-006",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-006",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1120,
+      "form": "FB",
+      "file": "data-1101-1120.txt",
+      "technique": "域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1121,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "npm 依赖 postinstall 钩子投毒（安装期拉取远程脚本）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-007",
+          "tier": "strong",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 3,
+          "required": 3,
+          "matched_required": 3,
+          "detected": 3,
+          "shape": "complete",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 21,
+          "steps": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S1",
+              "label": "CI 流水线触发依赖安装",
+              "required": true,
+              "event_ids": [
+                "U1121-1",
+                "U1121-2"
+              ],
+              "sources": [
+                "waf",
+                "web"
+              ],
+              "aligned": "U1121-2"
+            },
+            {
+              "step_id": "S2",
+              "label": "应用侧 postinstall 派生 shell",
+              "required": true,
+              "event_ids": [
+                "U1121-3"
+              ],
+              "sources": [
+                "rasp"
+              ],
+              "aligned": "U1121-3"
+            },
+            {
+              "step_id": "S3",
+              "label": "钩子拉取远程脚本并执行",
+              "required": true,
+              "event_ids": [
+                "U1121-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1121-4"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1121-1",
+              "step_id": "S1",
+              "reason": "extra_detection_for_S1"
+            }
+          ],
+          "mismatches": [
+            {
+              "event_id": "U1121-3",
+              "step_id": "S1",
+              "observed_source": "rasp"
+            }
+          ],
+          "extra_detections": 1,
+          "unobserved_required": [],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-007",
+      "top1_tier": "strong",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": true,
+      "unexplained_for_top1": 0
+    },
+    {
+      "unit": 1122,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "PyPI 恶意包 setup.py 构建期执行（构建后端注入）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1123,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "私服 Maven SNAPSHOT 制品覆盖投毒（构建期加载后门 jar）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1124,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "Docker 基础镜像投毒（恶意 ENTRYPOINT 在流水线构建期触发）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids"
+      ],
+      "line_count": 4,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1125,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "CI 构建参数命令注入（branch 参数拼接 shell 并外带 CI_JOB_TOKEN）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1126,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "GitHub Actions workflow 篡改（PR 分支注入 run 步骤后强推）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 5
+    },
+    {
+      "unit": 1127,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "CI 环境变量密钥窃取（after_script 读取 agent.env 外带 AWS 密钥）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1127-4",
+                "U1127-5"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1127-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1127-4",
+              "step_id": "S3",
+              "reason": "extra_detection_for_S3"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 1,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-001",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1128,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "构建产物投毒（发布 jar 内替换 class 后 C2 回连确认）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1128-5",
+                "U1128-6",
+                "U1128-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1128-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1128-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1128-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 3,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 0,
+          "steps": [
+            "S3"
+          ],
+          "evidence": [
+            {
+              "step_id": "S3",
+              "label": "java 进程派生子 shell 执行命令",
+              "required": true,
+              "event_ids": [
+                "U1128-4"
+              ],
+              "sources": [
+                "hids"
+              ],
+              "aligned": "U1128-4"
+            }
+          ],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1129,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "仓库 webhook SSRF 打到云元数据（169.254.169.254 IAM 凭据）",
+      "sources": [
+        "waf",
+        "web",
+        "rasp",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 7,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1129-5",
+                "U1129-6",
+                "U1129-7"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1129-7"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1129-5",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1129-6",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 4
+    },
+    {
+      "unit": 1130,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "Git 凭据文件窃取（runner 任务接口打包 .git-credentials）",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-004",
+      "top1_tier": "keyword_only",
+      "any_candidate": true,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1131,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "CI 覆盖率上传脚本篡改（uploader 端点改指攻击者主机）",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1132,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "IaC 模板投毒（Terraform local-exec provisioner 执行远程脚本）",
+      "sources": [
+        "waf",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1133,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "容器 registry 凭据滥用（CI 身份推送被篡改镜像 tag）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1134,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "包管理器源劫持（pip index-url 指向攻击者私服）",
+      "sources": [
+        "rasp",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1135,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "CI runner 逃逸到集群（docker.sock 挂载 + ServiceAccount token 提权）",
+      "sources": [
+        "rasp",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1136,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "CI 缓存投毒（缓存包内含恢复后钩子被 runner 执行）",
+      "sources": [
+        "hids"
+      ],
+      "line_count": 1,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1137,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "依赖混淆（占用内网包名的高版本公网同名包被自动拉取）",
+      "sources": [
+        "hids",
+        "hids"
+      ],
+      "line_count": 2,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    },
+    {
+      "unit": 1138,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "发布 token 滥用（构建机持 token 直接推送恶意 gem 版本）",
+      "sources": [
+        "hids",
+        "hids",
+        "hids"
+      ],
+      "line_count": 3,
+      "candidates": [],
+      "top1": null,
+      "top1_tier": null,
+      "any_candidate": false,
+      "any_action_evidence": false,
+      "medium_or_better": false,
+      "unexplained_for_top1": 3
+    },
+    {
+      "unit": 1139,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "制品校验绕过发生产（校验脚本被改后部署未签名包）",
+      "sources": [
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 4,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1139-2",
+                "U1139-3",
+                "U1139-4"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1139-4"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1139-2",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1139-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 1
+    },
+    {
+      "unit": 1140,
+      "form": "FC",
+      "file": "data-1121-1140.txt",
+      "technique": "供应链 C2 回连（打包 CI 凭据后经 DNS 隧道外传）",
+      "sources": [
+        "hids",
+        "hids",
+        "dns",
+        "dns",
+        "dns"
+      ],
+      "line_count": 5,
+      "candidates": [
+        {
+          "case_id": "CASE-002",
+          "tier": "weak",
+          "weak_kind": "generic_only",
+          "version": 1,
+          "matched": 1,
+          "required": 4,
+          "matched_required": 1,
+          "detected": 1,
+          "shape": "middle",
+          "order_ok": true,
+          "order_assessable": true,
+          "source_fit": 1.0,
+          "keyword": 4,
+          "steps": [
+            "S4"
+          ],
+          "evidence": [
+            {
+              "step_id": "S4",
+              "label": "DGA 风格子域突发解析",
+              "required": true,
+              "event_ids": [
+                "U1140-3",
+                "U1140-4",
+                "U1140-5"
+              ],
+              "sources": [
+                "dns"
+              ],
+              "aligned": "U1140-5"
+            }
+          ],
+          "unaligned": [
+            {
+              "event_id": "U1140-3",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            },
+            {
+              "event_id": "U1140-4",
+              "step_id": "S4",
+              "reason": "extra_detection_for_S4"
+            }
+          ],
+          "mismatches": [],
+          "extra_detections": 2,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-001",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 3,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "unobserved_optional": []
+        },
+        {
+          "case_id": "CASE-004",
+          "tier": "keyword_only",
+          "weak_kind": null,
+          "version": 1,
+          "matched": 0,
+          "required": 4,
+          "matched_required": 0,
+          "detected": 0,
+          "shape": "none",
+          "order_ok": false,
+          "order_assessable": false,
+          "source_fit": 0.0,
+          "keyword": 3,
+          "steps": [],
+          "evidence": [],
+          "unaligned": [],
+          "mismatches": [],
+          "extra_detections": 0,
+          "unobserved_required": [
+            "S1",
+            "S2",
+            "S3",
+            "S4"
+          ],
+          "unobserved_optional": []
+        }
+      ],
+      "top1": "CASE-002",
+      "top1_tier": "weak",
+      "any_candidate": true,
+      "any_action_evidence": true,
+      "medium_or_better": false,
+      "unexplained_for_top1": 2
+    }
+  ]
+}

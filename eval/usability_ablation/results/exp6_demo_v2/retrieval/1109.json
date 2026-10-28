@@ -1,0 +1,41 @@
+{
+ "unit": 1109,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-27 00:36:09",
+   "source": "hids",
+   "log_id": "HID0632500",
+   "content": "kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8",
+   "event_id": "1109-HID0632500"
+  },
+  {
+   "timestamp": "2026-07-27 00:36:34",
+   "source": "hids",
+   "log_id": "HID0632502",
+   "content": "kerberos::ptt C:\\temp\\adm.kirbi tk.exe kerberos::ptt C:\\temp\\adm.kirbi <== cmd.exe /c tk.exe <== services.exe",
+   "event_id": "1109-HID0632502"
+  },
+  {
+   "timestamp": "2026-07-27 00:38:54",
+   "source": "hids",
+   "log_id": "HID0632514",
+   "content": "dir \\\\dc01.corp.local\\C$ cmd.exe cmd.exe /c dir \\\\dc01.corp.local\\C$ <== cmd.exe /c dir <== svchost.exe",
+   "event_id": "1109-HID0632514"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

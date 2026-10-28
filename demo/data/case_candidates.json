@@ -1,0 +1,4193 @@
+{
+  "schema_version": 1,
+  "candidates": [
+    {
+      "candidate_id": "CAND-0001",
+      "signature": "F1::Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）",
+      "label": "Spring4Shell CVE-2022-22965（class.module.classLoader 属性链写 JSP webshell）",
+      "status": "promoted",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1002",
+          "event_ids": [
+            "SIM-1002-1",
+            "SIM-1002-2",
+            "SIM-1002-3",
+            "SIM-1002-4"
+          ],
+          "source_batch": "SIM-B-1002",
+          "first_seen": "2026-10-28T02:51:50Z"
+        },
+        {
+          "incident_id": "SIM-INC-1073",
+          "event_ids": [
+            "SIM-1073-1",
+            "SIM-1073-2",
+            "SIM-1073-3",
+            "SIM-1073-4",
+            "SIM-1073-5"
+          ],
+          "source_batch": "SIM-B-1073",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": "CASE-009",
+      "family_id": "web-exploit",
+      "signature_key": "cb7586b1291ed571",
+      "signature_terms": [
+        "CVE-2022-22965",
+        "spring",
+        "tomcat",
+        "spring4shell",
+        "webshell",
+        "node"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-22965"
+        ],
+        "products": [
+          "spring",
+          "tomcat"
+        ],
+        "actions": [
+          "spring4shell",
+          "webshell"
+        ],
+        "primary_product": "spring",
+        "primary_action": "spring4shell",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0066"
+      ],
+      "aliases": [
+        "CAND-0066"
+      ],
+      "pending_case_links": [
+        "SIM-INC-1073"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0002",
+      "signature": "F1::Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）",
+      "label": "Spring Cloud Gateway Actuator SpEL（CVE-2022-22947 新增路由触发 RCE）",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1003",
+          "event_ids": [
+            "SIM-1003-1",
+            "SIM-1003-2",
+            "SIM-1003-3",
+            "SIM-1003-4"
+          ],
+          "source_batch": "SIM-B-1003",
+          "first_seen": "2026-10-28T02:51:50Z"
+        },
+        {
+          "incident_id": "SIM-INC-1065",
+          "event_ids": [
+            "SIM-1065-1",
+            "SIM-1065-2",
+            "SIM-1065-3",
+            "SIM-1065-4",
+            "SIM-1065-5"
+          ],
+          "source_batch": "SIM-B-1065",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "65b2e5da5c3b5cf5",
+      "signature_terms": [
+        "CVE-2022-22947",
+        "spring",
+        "spring-cloud-gateway",
+        "actuator",
+        "gateway",
+        "spel"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-22947"
+        ],
+        "products": [
+          "spring",
+          "spring-cloud-gateway"
+        ],
+        "actions": [
+          "actuator",
+          "gateway",
+          "spel"
+        ],
+        "primary_product": "spring",
+        "primary_action": "gateway",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0058"
+      ],
+      "aliases": [
+        "CAND-0058"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0003",
+      "signature": "F1::Confluence OGNL 注入 CVE-2022-26134（doenterpagevariables.action）",
+      "label": "Confluence OGNL 注入 CVE-2022-26134（doenterpagevariables.action）",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1004",
+          "event_ids": [
+            "SIM-1004-1",
+            "SIM-1004-2",
+            "SIM-1004-3",
+            "SIM-1004-4"
+          ],
+          "source_batch": "SIM-B-1004",
+          "first_seen": "2026-10-28T02:51:50Z"
+        },
+        {
+          "incident_id": "SIM-INC-1064",
+          "event_ids": [
+            "SIM-1064-1",
+            "SIM-1064-2",
+            "SIM-1064-3",
+            "SIM-1064-4",
+            "SIM-1064-5"
+          ],
+          "source_batch": "SIM-B-1064",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "79636ffd16efb3df",
+      "signature_terms": [
+        "CVE-2022-26134",
+        "confluence",
+        "ognl",
+        "tomcat"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-26134"
+        ],
+        "products": [
+          "confluence"
+        ],
+        "actions": [
+          "ognl"
+        ],
+        "primary_product": "confluence",
+        "primary_action": "ognl",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0057"
+      ],
+      "aliases": [
+        "CAND-0057"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0004",
+      "signature": "F1::Struts2 S2-045（Content-Type 头 OGNL 表达式注入）",
+      "label": "Struts2 S2-045（Content-Type 头 OGNL 表达式注入）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1005",
+          "event_ids": [
+            "SIM-1005-1",
+            "SIM-1005-2",
+            "SIM-1005-3",
+            "SIM-1005-4"
+          ],
+          "source_batch": "SIM-B-1005",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:14Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "7f6ea2b8d78b93ac",
+      "signature_terms": [
+        "struts",
+        "tomcat",
+        "ognl",
+        "struts2"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "struts",
+          "tomcat"
+        ],
+        "actions": [
+          "ognl",
+          "struts2"
+        ],
+        "primary_product": "struts",
+        "primary_action": "struts2",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0005",
+      "signature": "F1::WebLogic T3 反序列化流投递（base64 序列化载荷）",
+      "label": "WebLogic T3 反序列化流投递（base64 序列化载荷）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1006",
+          "event_ids": [
+            "SIM-1006-1",
+            "SIM-1006-2",
+            "SIM-1006-3",
+            "SIM-1006-4"
+          ],
+          "source_batch": "SIM-B-1006",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "e9eba84269742b32",
+      "signature_terms": [
+        "weblogic",
+        "t3"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "weblogic"
+        ],
+        "actions": [
+          "t3"
+        ],
+        "primary_product": "weblogic",
+        "primary_action": "t3",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0006",
+      "signature": "F1::Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+      "label": "Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1007",
+          "event_ids": [
+            "SIM-1007-1",
+            "SIM-1007-2",
+            "SIM-1007-3",
+            "SIM-1007-4"
+          ],
+          "source_batch": "SIM-B-1007",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "db4dcb8acaab82c4",
+      "signature_terms": [
+        "fastjson",
+        "jndi",
+        "ldap"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "fastjson"
+        ],
+        "actions": [
+          "jndi",
+          "ldap"
+        ],
+        "primary_product": "fastjson",
+        "primary_action": "jndi",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0007",
+      "signature": "F1::Apache OFBiz XML-RPC 反序列化 CVE-2023-51467",
+      "label": "Apache OFBiz XML-RPC 反序列化 CVE-2023-51467",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1008",
+          "event_ids": [
+            "SIM-1008-1",
+            "SIM-1008-2",
+            "SIM-1008-3",
+            "SIM-1008-4"
+          ],
+          "source_batch": "SIM-B-1008",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "26803c0c3c0871f6",
+      "signature_terms": [
+        "CVE-2023-51467",
+        "ofbiz",
+        "xmlrpc"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2023-51467"
+        ],
+        "products": [
+          "ofbiz"
+        ],
+        "actions": [
+          "xmlrpc"
+        ],
+        "primary_product": "ofbiz",
+        "primary_action": "xmlrpc",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0008",
+      "signature": "F1::Apache Solr Velocity 模板 RCE CVE-2019-17558（wt=velocity）",
+      "label": "Apache Solr Velocity 模板 RCE CVE-2019-17558（wt=velocity）",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1009",
+          "event_ids": [
+            "SIM-1009-1",
+            "SIM-1009-2",
+            "SIM-1009-3",
+            "SIM-1009-4"
+          ],
+          "source_batch": "SIM-B-1009",
+          "first_seen": "2026-10-28T02:51:50Z"
+        },
+        {
+          "incident_id": "SIM-INC-1063",
+          "event_ids": [
+            "SIM-1063-1",
+            "SIM-1063-2",
+            "SIM-1063-3",
+            "SIM-1063-4",
+            "SIM-1063-5"
+          ],
+          "source_batch": "SIM-B-1063",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "2d0d0f4b663b675b",
+      "signature_terms": [
+        "CVE-2019-17558",
+        "solr"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2019-17558"
+        ],
+        "products": [
+          "solr"
+        ],
+        "actions": [],
+        "primary_product": "solr",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0056"
+      ],
+      "aliases": [
+        "CAND-0056"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0009",
+      "signature": "F1::Jenkins CLI 任意文件读取 CVE-2024-23897（@/etc/passwd 风格）",
+      "label": "Jenkins CLI 任意文件读取 CVE-2024-23897（@/etc/passwd 风格）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1010",
+          "event_ids": [
+            "SIM-1010-1",
+            "SIM-1010-2",
+            "SIM-1010-3",
+            "SIM-1010-4"
+          ],
+          "source_batch": "SIM-B-1010",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "638c73184f8aec14",
+      "signature_terms": [
+        "CVE-2024-23897",
+        "jenkins"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2024-23897"
+        ],
+        "products": [
+          "jenkins"
+        ],
+        "actions": [],
+        "primary_product": "jenkins",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0010",
+      "signature": "F1::PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
+      "label": "PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1011",
+          "event_ids": [
+            "SIM-1011-1",
+            "SIM-1011-2",
+            "SIM-1011-3",
+            "SIM-1011-4"
+          ],
+          "source_batch": "SIM-B-1011",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "ecd869ff5b2d7932",
+      "signature_terms": [
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0011",
+      "signature": "F1::PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
+      "label": "PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1012",
+          "event_ids": [
+            "SIM-1012-1",
+            "SIM-1012-2",
+            "SIM-1012-3",
+            "SIM-1012-4"
+          ],
+          "source_batch": "SIM-B-1012",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "f24473e064ca6a7b",
+      "signature_terms": [
+        "CVE-2019-11043",
+        "php"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2019-11043"
+        ],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0012",
+      "signature": "F1::Laravel Ignition 反序列化 CVE-2021-3129（phar:// 触发）",
+      "label": "Laravel Ignition 反序列化 CVE-2021-3129（phar:// 触发）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1013",
+          "event_ids": [
+            "SIM-1013-1",
+            "SIM-1013-2",
+            "SIM-1013-3",
+            "SIM-1013-4"
+          ],
+          "source_batch": "SIM-B-1013",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "ac0c73c3be7e9932",
+      "signature_terms": [
+        "CVE-2021-3129",
+        "php",
+        "ignition",
+        "phar"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2021-3129"
+        ],
+        "products": [
+          "php"
+        ],
+        "actions": [
+          "ignition",
+          "phar"
+        ],
+        "primary_product": "php",
+        "primary_action": "ignition",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0013",
+      "signature": "F1::ThinkPHP 多语言参数 RCE（invokefunction / call_user_func_array）",
+      "label": "ThinkPHP 多语言参数 RCE（invokefunction / call_user_func_array）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1014",
+          "event_ids": [
+            "SIM-1014-1",
+            "SIM-1014-2",
+            "SIM-1014-3",
+            "SIM-1014-4"
+          ],
+          "source_batch": "SIM-B-1014",
+          "first_seen": "2026-10-28T02:51:50Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "b9c1c04532cc231d",
+      "signature_terms": [
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0014",
+      "signature": "F1::Node.js vm 沙箱逃逸（constructor.constructor / process.binding 取 child_process）",
+      "label": "Node.js vm 沙箱逃逸（constructor.constructor / process.binding 取 child_process）",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1015",
+          "event_ids": [
+            "SIM-1015-1",
+            "SIM-1015-2",
+            "SIM-1015-3",
+            "SIM-1015-4"
+          ],
+          "source_batch": "SIM-B-1015",
+          "first_seen": "2026-10-28T02:51:50Z"
+        },
+        {
+          "incident_id": "SIM-INC-1066",
+          "event_ids": [
+            "SIM-1066-1",
+            "SIM-1066-2",
+            "SIM-1066-3",
+            "SIM-1066-4",
+            "SIM-1066-5"
+          ],
+          "source_batch": "SIM-B-1066",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:50Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "52accf8747ada63e",
+      "signature_terms": [
+        "node",
+        "vm-escape"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "node"
+        ],
+        "actions": [
+          "vm-escape"
+        ],
+        "primary_product": "node",
+        "primary_action": "vm-escape",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0059"
+      ],
+      "aliases": [
+        "CAND-0059"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0015",
+      "signature": "F1::Next.js 中间件子请求伪造（x-middleware-subrequest）→ SSRF 读云元数据",
+      "label": "Next.js 中间件子请求伪造（x-middleware-subrequest）→ SSRF 读云元数据",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1016",
+          "event_ids": [
+            "SIM-1016-1",
+            "SIM-1016-2",
+            "SIM-1016-3",
+            "SIM-1016-4"
+          ],
+          "source_batch": "SIM-B-1016",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "c092be5934659680",
+      "signature_terms": [
+        "node"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "node"
+        ],
+        "actions": [],
+        "primary_product": "node",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0016",
+      "signature": "F1::Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）",
+      "label": "Grafana 插件路径穿越 CVE-2021-43798（读取 grafana.db / grafana.ini）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1017",
+          "event_ids": [
+            "SIM-1017-1",
+            "SIM-1017-2",
+            "SIM-1017-3",
+            "SIM-1017-4"
+          ],
+          "source_batch": "SIM-B-1017",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "659b76a042d05077",
+      "signature_terms": [
+        "CVE-2021-43798",
+        "grafana"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2021-43798"
+        ],
+        "products": [
+          "grafana"
+        ],
+        "actions": [],
+        "primary_product": "grafana",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0017",
+      "signature": "F1::H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）",
+      "label": "H2 Console JNDI 驱动加载（/h2-console/login.do 远程类）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1018",
+          "event_ids": [
+            "SIM-1018-1",
+            "SIM-1018-2",
+            "SIM-1018-3",
+            "SIM-1018-4"
+          ],
+          "source_batch": "SIM-B-1018",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "ef869fa005dbb232",
+      "signature_terms": [
+        "h2",
+        "spring",
+        "h2-console",
+        "jndi",
+        "ldap"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "h2",
+          "spring"
+        ],
+        "actions": [
+          "h2-console",
+          "jndi",
+          "ldap"
+        ],
+        "primary_product": "h2",
+        "primary_action": "jndi",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0018",
+      "signature": "F1::Django 报表接口报错型 SQL 注入（PostgreSQL CAST 报错）",
+      "label": "Django 报表接口报错型 SQL 注入（PostgreSQL CAST 报错）",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1019",
+          "event_ids": [
+            "SIM-1019-1",
+            "SIM-1019-2",
+            "SIM-1019-3",
+            "SIM-1019-4"
+          ],
+          "source_batch": "SIM-B-1019",
+          "first_seen": "2026-10-28T02:51:51Z"
+        },
+        {
+          "incident_id": "SIM-INC-1078",
+          "event_ids": [
+            "SIM-1078-1",
+            "SIM-1078-2",
+            "SIM-1078-3",
+            "SIM-1078-4",
+            "SIM-1078-5"
+          ],
+          "source_batch": "SIM-B-1078",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "6bf293da4614ee21",
+      "signature_terms": [
+        "django",
+        "sql-injection"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "django"
+        ],
+        "actions": [
+          "sql-injection"
+        ],
+        "primary_product": "django",
+        "primary_action": "sql-injection",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0070"
+      ],
+      "aliases": [
+        "CAND-0070"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0019",
+      "signature": "F1::Rails Marshal 反序列化（ActiveSupport base64 载荷）",
+      "label": "Rails Marshal 反序列化（ActiveSupport base64 载荷）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1020",
+          "event_ids": [
+            "SIM-1020-1",
+            "SIM-1020-2",
+            "SIM-1020-3",
+            "SIM-1020-4"
+          ],
+          "source_batch": "SIM-B-1020",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "238719c00aa3221a",
+      "signature_terms": [
+        "rails"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "rails"
+        ],
+        "actions": [],
+        "primary_product": "rails",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0020",
+      "signature": "F2::JBoss jmx-console MLet MBean 部署（HtmlAdaptor invokeOpByName）",
+      "label": "JBoss jmx-console MLet MBean 部署（HtmlAdaptor invokeOpByName）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1022",
+          "event_ids": [
+            "SIM-1022-1",
+            "SIM-1022-2",
+            "SIM-1022-3",
+            "SIM-1022-4",
+            "SIM-1022-5",
+            "SIM-1022-6",
+            "SIM-1022-7"
+          ],
+          "source_batch": "SIM-B-1022",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "103c31a24971aa70",
+      "signature_terms": [
+        "jboss",
+        "jmx",
+        "mlet"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "jboss"
+        ],
+        "actions": [
+          "jmx",
+          "mlet"
+        ],
+        "primary_product": "jboss",
+        "primary_action": "jmx",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0021",
+      "signature": "F2::Apache Axis2 admin 上传 aar webshell 部署服务",
+      "label": "Apache Axis2 admin 上传 aar webshell 部署服务",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1023",
+          "event_ids": [
+            "SIM-1023-1",
+            "SIM-1023-2",
+            "SIM-1023-3",
+            "SIM-1023-4",
+            "SIM-1023-5",
+            "SIM-1023-6",
+            "SIM-1023-7"
+          ],
+          "source_batch": "SIM-B-1023",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "87e1cf30f4170c1d",
+      "signature_terms": [
+        "axis2",
+        "aar",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "axis2"
+        ],
+        "actions": [
+          "aar",
+          "webshell"
+        ],
+        "primary_product": "axis2",
+        "primary_action": "webshell",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0022",
+      "signature": "F2::UEditor 任意文件上传（net controller.ashx catchimage 写马）",
+      "label": "UEditor 任意文件上传（net controller.ashx catchimage 写马）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1024",
+          "event_ids": [
+            "SIM-1024-1",
+            "SIM-1024-2",
+            "SIM-1024-3",
+            "SIM-1024-4",
+            "SIM-1024-5",
+            "SIM-1024-6",
+            "SIM-1024-7"
+          ],
+          "source_batch": "SIM-B-1024",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "a81cd3caacbcea92",
+      "signature_terms": [
+        "node",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "node"
+        ],
+        "actions": [
+          "webshell"
+        ],
+        "primary_product": "node",
+        "primary_action": "webshell",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0023",
+      "signature": "F2::Spring Boot Actuator heapdump 下载后从内存提取凭据 DNS 外传",
+      "label": "Spring Boot Actuator heapdump 下载后从内存提取凭据 DNS 外传",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1025",
+          "event_ids": [
+            "SIM-1025-1",
+            "SIM-1025-2",
+            "SIM-1025-3",
+            "SIM-1025-4",
+            "SIM-1025-5",
+            "SIM-1025-6",
+            "SIM-1025-7"
+          ],
+          "source_batch": "SIM-B-1025",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "b2262fae3b873b85",
+      "signature_terms": [
+        "spring",
+        "actuator",
+        "dns",
+        "heapdump"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "spring"
+        ],
+        "actions": [
+          "actuator",
+          "dns",
+          "heapdump"
+        ],
+        "primary_product": "spring",
+        "primary_action": "actuator",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0024",
+      "signature": "F2::WebLogic wls-wsat 未授权反序列化（CoordinatorPortType XMLDecoder）",
+      "label": "WebLogic wls-wsat 未授权反序列化（CoordinatorPortType XMLDecoder）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1026",
+          "event_ids": [
+            "SIM-1026-1",
+            "SIM-1026-2",
+            "SIM-1026-3",
+            "SIM-1026-4",
+            "SIM-1026-5",
+            "SIM-1026-6",
+            "SIM-1026-7"
+          ],
+          "source_batch": "SIM-B-1026",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "f082794cfa6ac3ef",
+      "signature_terms": [
+        "weblogic",
+        "jmx"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "weblogic"
+        ],
+        "actions": [
+          "jmx"
+        ],
+        "primary_product": "weblogic",
+        "primary_action": "jmx",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0025",
+      "signature": "F2::Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行",
+      "label": "Nacos 默认 JWT 密钥伪造 token 后配置注入触发命令执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1027",
+          "event_ids": [
+            "SIM-1027-1",
+            "SIM-1027-2",
+            "SIM-1027-3",
+            "SIM-1027-4",
+            "SIM-1027-5",
+            "SIM-1027-6",
+            "SIM-1027-7"
+          ],
+          "source_batch": "SIM-B-1027",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "760d782af99b87f3",
+      "signature_terms": [
+        "nacos",
+        "spring",
+        "nacos"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "nacos",
+          "spring"
+        ],
+        "actions": [
+          "nacos"
+        ],
+        "primary_product": "nacos",
+        "primary_action": "nacos",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0026",
+      "signature": "F2::Grafana CVE-2024-9264 SQL 表达式命令执行（api/ds/query COPY TO PROGRAM）",
+      "label": "Grafana CVE-2024-9264 SQL 表达式命令执行（api/ds/query COPY TO PROGRAM）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1028",
+          "event_ids": [
+            "SIM-1028-1",
+            "SIM-1028-2",
+            "SIM-1028-3",
+            "SIM-1028-4",
+            "SIM-1028-5",
+            "SIM-1028-6",
+            "SIM-1028-7"
+          ],
+          "source_batch": "SIM-B-1028",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "d17b4364772b523d",
+      "signature_terms": [
+        "CVE-2024-9264",
+        "grafana",
+        "sql-injection"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2024-9264"
+        ],
+        "products": [
+          "grafana"
+        ],
+        "actions": [
+          "sql-injection"
+        ],
+        "primary_product": "grafana",
+        "primary_action": "sql-injection",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0027",
+      "signature": "F2::Apache Dubbo Hessian 反序列化（application/x-java-serialized-object）",
+      "label": "Apache Dubbo Hessian 反序列化（application/x-java-serialized-object）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1029",
+          "event_ids": [
+            "SIM-1029-1",
+            "SIM-1029-2",
+            "SIM-1029-3",
+            "SIM-1029-4",
+            "SIM-1029-5",
+            "SIM-1029-6",
+            "SIM-1029-7"
+          ],
+          "source_batch": "SIM-B-1029",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "781ba31076fb420a",
+      "signature_terms": [
+        "dubbo",
+        "t3"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "dubbo"
+        ],
+        "actions": [
+          "t3"
+        ],
+        "primary_product": "dubbo",
+        "primary_action": "t3",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0028",
+      "signature": "F2::Jenkins Groovy 脚本控制台命令执行（scriptText）",
+      "label": "Jenkins Groovy 脚本控制台命令执行（scriptText）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1030",
+          "event_ids": [
+            "SIM-1030-1",
+            "SIM-1030-2",
+            "SIM-1030-3",
+            "SIM-1030-4",
+            "SIM-1030-5",
+            "SIM-1030-6",
+            "SIM-1030-7"
+          ],
+          "source_batch": "SIM-B-1030",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "e44656829e9e40a6",
+      "signature_terms": [
+        "jenkins",
+        "groovy"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "jenkins"
+        ],
+        "actions": [
+          "groovy"
+        ],
+        "primary_product": "jenkins",
+        "primary_action": "groovy",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0029",
+      "signature": "F2::Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）",
+      "label": "Apache Airflow 示例 DAG 解析 RCE（DagBag 反序列化）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1031",
+          "event_ids": [
+            "SIM-1031-1",
+            "SIM-1031-2",
+            "SIM-1031-3",
+            "SIM-1031-4",
+            "SIM-1031-5",
+            "SIM-1031-6",
+            "SIM-1031-7"
+          ],
+          "source_batch": "SIM-B-1031",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "908eaa7b6708af5f",
+      "signature_terms": [
+        "airflow"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "airflow"
+        ],
+        "actions": [],
+        "primary_product": "airflow",
+        "primary_action": "",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0030",
+      "signature": "F2::Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）",
+      "label": "Metabase CVE-2023-38646 未授权 RCE（api/setup/validate H2 RUNSCRIPT）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1032",
+          "event_ids": [
+            "SIM-1032-1",
+            "SIM-1032-2",
+            "SIM-1032-3",
+            "SIM-1032-4",
+            "SIM-1032-5",
+            "SIM-1032-6",
+            "SIM-1032-7"
+          ],
+          "source_batch": "SIM-B-1032",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "08511c0614ddabe4",
+      "signature_terms": [
+        "CVE-2023-38646",
+        "h2",
+        "metabase",
+        "h2-console"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2023-38646"
+        ],
+        "products": [
+          "h2",
+          "metabase"
+        ],
+        "actions": [
+          "h2-console"
+        ],
+        "primary_product": "metabase",
+        "primary_action": "h2-console",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0031",
+      "signature": "F2::Drupal Drupalgeddon2 CVE-2018-7600 mail post_render 命令执行",
+      "label": "Drupal Drupalgeddon2 CVE-2018-7600 mail post_render 命令执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1033",
+          "event_ids": [
+            "SIM-1033-1",
+            "SIM-1033-2",
+            "SIM-1033-3",
+            "SIM-1033-4",
+            "SIM-1033-5",
+            "SIM-1033-6",
+            "SIM-1033-7"
+          ],
+          "source_batch": "SIM-B-1033",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "ae7eed2697568229",
+      "signature_terms": [
+        "CVE-2018-7600",
+        "drupal",
+        "php"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2018-7600"
+        ],
+        "products": [
+          "drupal",
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "drupal",
+        "primary_action": "",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0032",
+      "signature": "F2::Confluence CVE-2023-22515 权限提升创建管理员账号",
+      "label": "Confluence CVE-2023-22515 权限提升创建管理员账号",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1034",
+          "event_ids": [
+            "SIM-1034-1",
+            "SIM-1034-2",
+            "SIM-1034-3",
+            "SIM-1034-4",
+            "SIM-1034-5",
+            "SIM-1034-6",
+            "SIM-1034-7"
+          ],
+          "source_batch": "SIM-B-1034",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "36f33e48fa405e33",
+      "signature_terms": [
+        "CVE-2023-22515",
+        "confluence"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2023-22515"
+        ],
+        "products": [
+          "confluence"
+        ],
+        "actions": [],
+        "primary_product": "confluence",
+        "primary_action": "",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0033",
+      "signature": "F2::GitLab ExifTool CVE-2021-22205 上传 DjVu 图片 RCE",
+      "label": "GitLab ExifTool CVE-2021-22205 上传 DjVu 图片 RCE",
+      "status": "promotable",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1036",
+          "event_ids": [
+            "SIM-1036-1",
+            "SIM-1036-2",
+            "SIM-1036-3",
+            "SIM-1036-4",
+            "SIM-1036-5",
+            "SIM-1036-6",
+            "SIM-1036-7"
+          ],
+          "source_batch": "SIM-B-1036",
+          "first_seen": "2026-10-28T02:51:51Z"
+        },
+        {
+          "incident_id": "SIM-INC-1070",
+          "event_ids": [
+            "SIM-1070-1",
+            "SIM-1070-2",
+            "SIM-1070-3",
+            "SIM-1070-4",
+            "SIM-1070-5"
+          ],
+          "source_batch": "SIM-B-1070",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T07:48:44Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "8c9ca596879c6d34",
+      "signature_terms": [
+        "CVE-2021-22205",
+        "gitlab",
+        "rails",
+        "djvu",
+        "exiftool"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2021-22205"
+        ],
+        "products": [
+          "gitlab",
+          "rails"
+        ],
+        "actions": [
+          "djvu",
+          "exiftool"
+        ],
+        "primary_product": "gitlab",
+        "primary_action": "exiftool",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_from": [
+        "CAND-0063"
+      ],
+      "aliases": [
+        "CAND-0063"
+      ]
+    },
+    {
+      "candidate_id": "CAND-0034",
+      "signature": "F2::Zabbix CVE-2024-22120 审计日志接口 SQL 注入后客户端外带",
+      "label": "Zabbix CVE-2024-22120 审计日志接口 SQL 注入后客户端外带",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1037",
+          "event_ids": [
+            "SIM-1037-1",
+            "SIM-1037-2",
+            "SIM-1037-3",
+            "SIM-1037-4",
+            "SIM-1037-5",
+            "SIM-1037-6",
+            "SIM-1037-7"
+          ],
+          "source_batch": "SIM-B-1037",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "414d5b09bd620de1",
+      "signature_terms": [
+        "CVE-2024-22120",
+        "php",
+        "zabbix",
+        "sql-injection"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2024-22120"
+        ],
+        "products": [
+          "php",
+          "zabbix"
+        ],
+        "actions": [
+          "sql-injection"
+        ],
+        "primary_product": "zabbix",
+        "primary_action": "sql-injection",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0035",
+      "signature": "F2::SQL 盲注 OOB 外带（xp_dirtree UNC 令数据库发起 DNS 请求）",
+      "label": "SQL 盲注 OOB 外带（xp_dirtree UNC 令数据库发起 DNS 请求）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1038",
+          "event_ids": [
+            "SIM-1038-1",
+            "SIM-1038-2",
+            "SIM-1038-3",
+            "SIM-1038-4",
+            "SIM-1038-5",
+            "SIM-1038-6",
+            "SIM-1038-7"
+          ],
+          "source_batch": "SIM-B-1038",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:15Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "5f6ff452c131913d",
+      "signature_terms": [
+        "php",
+        "dns",
+        "sql-injection"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [
+          "dns",
+          "sql-injection"
+        ],
+        "primary_product": "php",
+        "primary_action": "sql-injection",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0036",
+      "signature": "F2::XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
+      "label": "XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1039",
+          "event_ids": [
+            "SIM-1039-1",
+            "SIM-1039-2",
+            "SIM-1039-3",
+            "SIM-1039-4",
+            "SIM-1039-5",
+            "SIM-1039-6",
+            "SIM-1039-7"
+          ],
+          "source_batch": "SIM-B-1039",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "bbdf6305be3d9b93",
+      "signature_terms": [
+        "dns",
+        "xxe"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "dns",
+          "xxe"
+        ],
+        "primary_product": "",
+        "primary_action": "xxe",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0037",
+      "signature": "F2::Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标",
+      "label": "Java XStream 反序列化 dynamic-proxy 组件加载 + DNS 信标",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1040",
+          "event_ids": [
+            "SIM-1040-1",
+            "SIM-1040-2",
+            "SIM-1040-3",
+            "SIM-1040-4",
+            "SIM-1040-5",
+            "SIM-1040-6",
+            "SIM-1040-7"
+          ],
+          "source_batch": "SIM-B-1040",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "dca50a75f2747c90",
+      "signature_terms": [
+        "dns"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "dns"
+        ],
+        "primary_product": "",
+        "primary_action": "dns",
+        "sources": [
+          "dns",
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0038",
+      "signature": "F3::Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+      "label": "Mimikatz 抓取 LSASS 凭据（sekurlsa::logonpasswords）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1041",
+          "event_ids": [
+            "SIM-1041-1"
+          ],
+          "source_batch": "SIM-B-1041",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "86893b18c8df3047",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0039",
+      "signature": "F3::Linux 反连 shell（bash -i 重定向 /dev/tcp）",
+      "label": "Linux 反连 shell（bash -i 重定向 /dev/tcp）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1044",
+          "event_ids": [
+            "SIM-1044-1"
+          ],
+          "source_batch": "SIM-B-1044",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "7bcbf28162d36e0e",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0040",
+      "signature": "F3::挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+      "label": "挖矿进程 xmrig 连接矿池（高 CPU 占用）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1045",
+          "event_ids": [
+            "SIM-1045-1"
+          ],
+          "source_batch": "SIM-B-1045",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "f4c0c52d8184fe03",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0041",
+      "signature": "F3::凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）",
+      "label": "凭据打包落地（tar 打包 /etc/shadow 到隐藏路径）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1046",
+          "event_ids": [
+            "SIM-1046-1",
+            "SIM-1046-2"
+          ],
+          "source_batch": "SIM-B-1046",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "60128cb9c35e927f",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0042",
+      "signature": "F3::JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+      "label": "JSP webshell 交互执行（shell.jsp 传 cmd 参数）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1048",
+          "event_ids": [
+            "SIM-1048-1",
+            "SIM-1048-2"
+          ],
+          "source_batch": "SIM-B-1048",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "e75f4b0a26719a1c",
+      "signature_terms": [
+        "tomcat",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "tomcat"
+        ],
+        "actions": [
+          "webshell"
+        ],
+        "primary_product": "tomcat",
+        "primary_action": "webshell",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0043",
+      "signature": "F3::PHP webshell 文件管理动作（?act=upload / filemgr）",
+      "label": "PHP webshell 文件管理动作（?act=upload / filemgr）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1049",
+          "event_ids": [
+            "SIM-1049-1",
+            "SIM-1049-2"
+          ],
+          "source_batch": "SIM-B-1049",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "58fc0809ea7a3525",
+      "signature_terms": [
+        "php",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [
+          "webshell"
+        ],
+        "primary_product": "php",
+        "primary_action": "webshell",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0044",
+      "signature": "F3::ASPX webshell 执行 whoami（cmd.aspx）",
+      "label": "ASPX webshell 执行 whoami（cmd.aspx）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1050",
+          "event_ids": [
+            "SIM-1050-1",
+            "SIM-1050-2"
+          ],
+          "source_batch": "SIM-B-1050",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "4263448346a0f78d",
+      "signature_terms": [
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "webshell"
+        ],
+        "primary_product": "",
+        "primary_action": "webshell",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0045",
+      "signature": "F3::冰蝎/哥斯拉加密参数命令执行（payload Base64 参数）",
+      "label": "冰蝎/哥斯拉加密参数命令执行（payload Base64 参数）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1051",
+          "event_ids": [
+            "SIM-1051-1",
+            "SIM-1051-2"
+          ],
+          "source_batch": "SIM-B-1051",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "cc6b69ba43cad747",
+      "signature_terms": [
+        "spring",
+        "gateway"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "spring"
+        ],
+        "actions": [
+          "gateway"
+        ],
+        "primary_product": "spring",
+        "primary_action": "gateway",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0046",
+      "signature": "F3::Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+      "label": "Go 应用参数注入（exec.Command 拼接 shell 元字符）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1052",
+          "event_ids": [
+            "SIM-1052-1",
+            "SIM-1052-2"
+          ],
+          "source_batch": "SIM-B-1052",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "a5ed1965306a0648",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0047",
+      "signature": "F3::API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+      "label": "API 网关直连命令注入（边缘 WAF 命中、无 web 访问日志）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1053",
+          "event_ids": [
+            "SIM-1053-1",
+            "SIM-1053-2",
+            "SIM-1053-3"
+          ],
+          "source_batch": "SIM-B-1053",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "654288d2e120c5da",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0048",
+      "signature": "F3::gRPC-web 接口参数注入导致命令执行",
+      "label": "gRPC-web 接口参数注入导致命令执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1054",
+          "event_ids": [
+            "SIM-1054-1",
+            "SIM-1054-2",
+            "SIM-1054-3"
+          ],
+          "source_batch": "SIM-B-1054",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "160364d200261126",
+      "signature_terms": [
+        "gateway"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "gateway"
+        ],
+        "primary_product": "",
+        "primary_action": "gateway",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0049",
+      "signature": "F3::容器 API 未授权创建 Pod 执行命令（k8s API 直连）",
+      "label": "容器 API 未授权创建 Pod 执行命令（k8s API 直连）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1055",
+          "event_ids": [
+            "SIM-1055-1",
+            "SIM-1055-2",
+            "SIM-1055-3"
+          ],
+          "source_batch": "SIM-B-1055",
+          "first_seen": "2026-10-28T02:51:51Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:51Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "8b5ebed98f141181",
+      "signature_terms": [
+        "node"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "node"
+        ],
+        "actions": [],
+        "primary_product": "node",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0050",
+      "signature": "F3::消息队列管理台未授权（RabbitMQ management definitions）",
+      "label": "消息队列管理台未授权（RabbitMQ management definitions）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1056",
+          "event_ids": [
+            "SIM-1056-1",
+            "SIM-1056-2",
+            "SIM-1056-3"
+          ],
+          "source_batch": "SIM-B-1056",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "259b760498d024f5",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0051",
+      "signature": "F3::数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）",
+      "label": "数据库 Web 管理台写 webshell（phpMyAdmin INTO OUTFILE）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1057",
+          "event_ids": [
+            "SIM-1057-1",
+            "SIM-1057-2",
+            "SIM-1057-3"
+          ],
+          "source_batch": "SIM-B-1057",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "b6cc6ff7ceb2c0c6",
+      "signature_terms": [
+        "php",
+        "phpmyadmin",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php",
+          "phpmyadmin"
+        ],
+        "actions": [
+          "webshell"
+        ],
+        "primary_product": "phpmyadmin",
+        "primary_action": "webshell",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0052",
+      "signature": "F3::备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+      "label": "备份接口路径穿越读取配置（WAF 命中、应用无日志）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1058",
+          "event_ids": [
+            "SIM-1058-1",
+            "SIM-1058-2"
+          ],
+          "source_batch": "SIM-B-1058",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "7ac36d4390845217",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0053",
+      "signature": "F3::上传接口覆盖 .htaccess 后触发命令",
+      "label": "上传接口覆盖 .htaccess 后触发命令",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1059",
+          "event_ids": [
+            "SIM-1059-1",
+            "SIM-1059-2"
+          ],
+          "source_batch": "SIM-B-1059",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "d2e0a9aee17e67cd",
+      "signature_terms": [
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0054",
+      "signature": "F3::SSRF 探测云元数据后主机侧 curl 内网",
+      "label": "SSRF 探测云元数据后主机侧 curl 内网",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1060",
+          "event_ids": [
+            "SIM-1060-1",
+            "SIM-1060-2"
+          ],
+          "source_batch": "SIM-B-1060",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "host-persistence",
+      "signature_key": "767e8792290fde65",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "waf"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0055",
+      "signature": "F4::Fastjson autoType 反序列化远程加载 (CVE-2022-25845)",
+      "label": "Fastjson autoType 反序列化远程加载 (CVE-2022-25845)",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1062",
+          "event_ids": [
+            "SIM-1062-1",
+            "SIM-1062-2",
+            "SIM-1062-3",
+            "SIM-1062-4",
+            "SIM-1062-5"
+          ],
+          "source_batch": "SIM-B-1062",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "2b03cf7ffd26246b",
+      "signature_terms": [
+        "CVE-2022-25845",
+        "fastjson",
+        "jndi",
+        "ldap"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-25845"
+        ],
+        "products": [
+          "fastjson"
+        ],
+        "actions": [
+          "jndi",
+          "ldap"
+        ],
+        "primary_product": "fastjson",
+        "primary_action": "ldap",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0056",
+      "signature": "F4::Apache Solr Velocity 模板注入 RCE (CVE-2019-17558)",
+      "label": "Apache Solr Velocity 模板注入 RCE (CVE-2019-17558)",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1063",
+          "event_ids": [
+            "SIM-1063-1",
+            "SIM-1063-2",
+            "SIM-1063-3",
+            "SIM-1063-4",
+            "SIM-1063-5"
+          ],
+          "source_batch": "SIM-B-1063",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "2d0d0f4b663b675b",
+      "signature_terms": [
+        "CVE-2019-17558",
+        "solr"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2019-17558"
+        ],
+        "products": [
+          "solr"
+        ],
+        "actions": [],
+        "primary_product": "solr",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0008",
+      "merged_basis": "step 2: duplicate signature_key 2d0d0f4b663b675b",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0057",
+      "signature": "F4::Confluence createpage-entervariables OGNL 注入（CVE-2022-26134 备用向量）",
+      "label": "Confluence createpage-entervariables OGNL 注入（CVE-2022-26134 备用向量）",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1064",
+          "event_ids": [
+            "SIM-1064-1",
+            "SIM-1064-2",
+            "SIM-1064-3",
+            "SIM-1064-4",
+            "SIM-1064-5"
+          ],
+          "source_batch": "SIM-B-1064",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "79636ffd16efb3df",
+      "signature_terms": [
+        "CVE-2022-26134",
+        "confluence",
+        "tomcat",
+        "ognl"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-26134"
+        ],
+        "products": [
+          "confluence",
+          "tomcat"
+        ],
+        "actions": [
+          "ognl"
+        ],
+        "primary_product": "confluence",
+        "primary_action": "ognl",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0003",
+      "merged_basis": "step 2: duplicate signature_key 79636ffd16efb3df",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0058",
+      "signature": "F4::Spring Cloud Gateway SpEL 注入 RCE (CVE-2022-22947)",
+      "label": "Spring Cloud Gateway SpEL 注入 RCE (CVE-2022-22947)",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1065",
+          "event_ids": [
+            "SIM-1065-1",
+            "SIM-1065-2",
+            "SIM-1065-3",
+            "SIM-1065-4",
+            "SIM-1065-5"
+          ],
+          "source_batch": "SIM-B-1065",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "65b2e5da5c3b5cf5",
+      "signature_terms": [
+        "CVE-2022-22947",
+        "spring",
+        "spring-cloud-gateway",
+        "actuator",
+        "gateway",
+        "spel"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-22947"
+        ],
+        "products": [
+          "spring",
+          "spring-cloud-gateway"
+        ],
+        "actions": [
+          "actuator",
+          "gateway",
+          "spel"
+        ],
+        "primary_product": "spring",
+        "primary_action": "gateway",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0002",
+      "merged_basis": "step 2: duplicate signature_key 65b2e5da5c3b5cf5",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0059",
+      "signature": "F4::Node.js vm2 沙箱逃逸（process.binding('spawn_sync') 直接起进程）",
+      "label": "Node.js vm2 沙箱逃逸（process.binding('spawn_sync') 直接起进程）",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1066",
+          "event_ids": [
+            "SIM-1066-1",
+            "SIM-1066-2",
+            "SIM-1066-3",
+            "SIM-1066-4",
+            "SIM-1066-5"
+          ],
+          "source_batch": "SIM-B-1066",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "52accf8747ada63e",
+      "signature_terms": [
+        "node",
+        "vm-escape"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "node"
+        ],
+        "actions": [
+          "vm-escape"
+        ],
+        "primary_product": "node",
+        "primary_action": "vm-escape",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0014",
+      "merged_basis": "step 2: duplicate signature_key 52accf8747ada63e",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0060",
+      "signature": "F4::PHPUnit eval-stdin.php 未授权远程代码执行",
+      "label": "PHPUnit eval-stdin.php 未授权远程代码执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1067",
+          "event_ids": [
+            "SIM-1067-1",
+            "SIM-1067-2",
+            "SIM-1067-3",
+            "SIM-1067-4",
+            "SIM-1067-5"
+          ],
+          "source_batch": "SIM-B-1067",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "efa5e2b946471065",
+      "signature_terms": [
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0061",
+      "signature": "F4::Jenkins CLI remoting 反序列化远程代码执行",
+      "label": "Jenkins CLI remoting 反序列化远程代码执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1068",
+          "event_ids": [
+            "SIM-1068-1",
+            "SIM-1068-2",
+            "SIM-1068-3",
+            "SIM-1068-4",
+            "SIM-1068-5"
+          ],
+          "source_batch": "SIM-B-1068",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "acd0d1eaa779b5de",
+      "signature_terms": [
+        "jenkins"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "jenkins"
+        ],
+        "actions": [],
+        "primary_product": "jenkins",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0062",
+      "signature": "F4::Apache APISIX 管理接口未授权 Lua 代码注入",
+      "label": "Apache APISIX 管理接口未授权 Lua 代码注入",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1069",
+          "event_ids": [
+            "SIM-1069-1",
+            "SIM-1069-2",
+            "SIM-1069-3",
+            "SIM-1069-4",
+            "SIM-1069-5"
+          ],
+          "source_batch": "SIM-B-1069",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "5a891b7257608ea9",
+      "signature_terms": [
+        "apisix"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "apisix"
+        ],
+        "actions": [],
+        "primary_product": "apisix",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0063",
+      "signature": "F4::GitLab ExifTool DjVu 文件解析远程代码执行 (CVE-2021-22205)",
+      "label": "GitLab ExifTool DjVu 文件解析远程代码执行 (CVE-2021-22205)",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1070",
+          "event_ids": [
+            "SIM-1070-1",
+            "SIM-1070-2",
+            "SIM-1070-3",
+            "SIM-1070-4",
+            "SIM-1070-5"
+          ],
+          "source_batch": "SIM-B-1070",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "8c9ca596879c6d34",
+      "signature_terms": [
+        "CVE-2021-22205",
+        "gitlab",
+        "rails",
+        "djvu",
+        "exiftool"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2021-22205"
+        ],
+        "products": [
+          "gitlab",
+          "rails"
+        ],
+        "actions": [
+          "djvu",
+          "exiftool"
+        ],
+        "primary_product": "gitlab",
+        "primary_action": "exiftool",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0033",
+      "merged_basis": "step 2: duplicate signature_key 8c9ca596879c6d34",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0064",
+      "signature": "F4::Symfony _fragment 控制器模板注入 RCE",
+      "label": "Symfony _fragment 控制器模板注入 RCE",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1071",
+          "event_ids": [
+            "SIM-1071-1",
+            "SIM-1071-2",
+            "SIM-1071-3",
+            "SIM-1071-4",
+            "SIM-1071-5"
+          ],
+          "source_batch": "SIM-B-1071",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "9a3f56f6800a133d",
+      "signature_terms": [
+        "php",
+        "symfony"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php",
+          "symfony"
+        ],
+        "actions": [],
+        "primary_product": "symfony",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0065",
+      "signature": "F4::Webmin password_change.cgi 后门命令执行 (CVE-2019-15107)",
+      "label": "Webmin password_change.cgi 后门命令执行 (CVE-2019-15107)",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1072",
+          "event_ids": [
+            "SIM-1072-1",
+            "SIM-1072-2",
+            "SIM-1072-3",
+            "SIM-1072-4",
+            "SIM-1072-5"
+          ],
+          "source_batch": "SIM-B-1072",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "1a75eb4eabeb001c",
+      "signature_terms": [
+        "CVE-2019-15107",
+        "webmin"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2019-15107"
+        ],
+        "products": [
+          "webmin"
+        ],
+        "actions": [],
+        "primary_product": "webmin",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0066",
+      "signature": "F4::Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965)",
+      "label": "Spring4Shell 参数绑定 Tomcat 日志写入 JSP (CVE-2022-22965)",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1073",
+          "event_ids": [
+            "SIM-1073-1",
+            "SIM-1073-2",
+            "SIM-1073-3",
+            "SIM-1073-4",
+            "SIM-1073-5"
+          ],
+          "source_batch": "SIM-B-1073",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:16Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "cb7586b1291ed571",
+      "signature_terms": [
+        "CVE-2022-22965",
+        "node",
+        "spring",
+        "tomcat",
+        "spring4shell",
+        "webshell"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2022-22965"
+        ],
+        "products": [
+          "node",
+          "spring",
+          "tomcat"
+        ],
+        "actions": [
+          "spring4shell",
+          "webshell"
+        ],
+        "primary_product": "spring",
+        "primary_action": "spring4shell",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0001",
+      "merged_basis": "step 2: duplicate signature_key cb7586b1291ed571",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0067",
+      "signature": "F4::Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）",
+      "label": "Tomcat Manager 未授权 WAR 部署（PUT war 到 manager/deploy 后执行命令）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1074",
+          "event_ids": [
+            "SIM-1074-1",
+            "SIM-1074-2",
+            "SIM-1074-3",
+            "SIM-1074-4",
+            "SIM-1074-5"
+          ],
+          "source_batch": "SIM-B-1074",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "ac1940ec7fa8d9e5",
+      "signature_terms": [
+        "tomcat"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "tomcat"
+        ],
+        "actions": [],
+        "primary_product": "tomcat",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0068",
+      "signature": "F4::Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
+      "label": "Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1075",
+          "event_ids": [
+            "SIM-1075-1",
+            "SIM-1075-2",
+            "SIM-1075-3",
+            "SIM-1075-4",
+            "SIM-1075-5"
+          ],
+          "source_batch": "SIM-B-1075",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "3d9aa0659d759b65",
+      "signature_terms": [
+        "CVE-2023-51467",
+        "ofbiz",
+        "groovy"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2023-51467"
+        ],
+        "products": [
+          "ofbiz"
+        ],
+        "actions": [
+          "groovy"
+        ],
+        "primary_product": "ofbiz",
+        "primary_action": "groovy",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0069",
+      "signature": "F4::Drupal Form API 注入远程代码执行 (Drupalgeddon2)",
+      "label": "Drupal Form API 注入远程代码执行 (Drupalgeddon2)",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1077",
+          "event_ids": [
+            "SIM-1077-1",
+            "SIM-1077-2",
+            "SIM-1077-3",
+            "SIM-1077-4",
+            "SIM-1077-5"
+          ],
+          "source_batch": "SIM-B-1077",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "a31a38a7ac0a8304",
+      "signature_terms": [
+        "drupal",
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "drupal",
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "drupal",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0070",
+      "signature": "F4::Django RawSQL 注入 PostgreSQL COPY TO PROGRAM 命令执行",
+      "label": "Django RawSQL 注入 PostgreSQL COPY TO PROGRAM 命令执行",
+      "status": "merged",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1078",
+          "event_ids": [
+            "SIM-1078-1",
+            "SIM-1078-2",
+            "SIM-1078-3",
+            "SIM-1078-4",
+            "SIM-1078-5"
+          ],
+          "source_batch": "SIM-B-1078",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "6bf293da4614ee21",
+      "signature_terms": [
+        "django",
+        "sql-injection"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "django"
+        ],
+        "actions": [
+          "sql-injection"
+        ],
+        "primary_product": "django",
+        "primary_action": "sql-injection",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      },
+      "merged_into": "CAND-0018",
+      "merged_basis": "step 2: duplicate signature_key 6bf293da4614ee21",
+      "merged_at": "2026-10-28T07:48:44Z"
+    },
+    {
+      "candidate_id": "CAND-0071",
+      "signature": "F4::phpMyAdmin 任意文件包含导致会话文件代码执行",
+      "label": "phpMyAdmin 任意文件包含导致会话文件代码执行",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1079",
+          "event_ids": [
+            "SIM-1079-1",
+            "SIM-1079-2",
+            "SIM-1079-3",
+            "SIM-1079-4",
+            "SIM-1079-5"
+          ],
+          "source_batch": "SIM-B-1079",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "9357806dcf3dfd00",
+      "signature_terms": [
+        "php",
+        "phpmyadmin"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php",
+          "phpmyadmin"
+        ],
+        "actions": [],
+        "primary_product": "phpmyadmin",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0072",
+      "signature": "F4::Apache Druid JavaScript 过滤器远程代码执行 (CVE-2021-25646)",
+      "label": "Apache Druid JavaScript 过滤器远程代码执行 (CVE-2021-25646)",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1080",
+          "event_ids": [
+            "SIM-1080-1",
+            "SIM-1080-2",
+            "SIM-1080-3",
+            "SIM-1080-4",
+            "SIM-1080-5"
+          ],
+          "source_batch": "SIM-B-1080",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "web-exploit",
+      "signature_key": "365f0b21d898b166",
+      "signature_terms": [
+        "CVE-2021-25646",
+        "druid"
+      ],
+      "signature_features": {
+        "cves": [
+          "CVE-2021-25646"
+        ],
+        "products": [
+          "druid"
+        ],
+        "actions": [],
+        "primary_product": "druid",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp",
+          "waf",
+          "web"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0073",
+      "signature": "FB::域控与域管组枚举（net user /domain + nltest /dclist）",
+      "label": "域控与域管组枚举（net user /domain + nltest /dclist）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1101",
+          "event_ids": [
+            "SIM-1101-1"
+          ],
+          "source_batch": "SIM-B-1101",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "083ee70bc62f07f2",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0074",
+      "signature": "FB::Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+      "label": "Kerberoasting（setspn 枚举 SPN + Rubeus kerberoast 导出票据）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1103",
+          "event_ids": [
+            "SIM-1103-1",
+            "SIM-1103-2"
+          ],
+          "source_batch": "SIM-B-1103",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "54a8289d9c99c8dc",
+      "signature_terms": [
+        "kerberoast"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "kerberoast"
+        ],
+        "primary_product": "",
+        "primary_action": "kerberoast",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0075",
+      "signature": "FB::AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+      "label": "AS-REP Roasting（GetNPUsers.py -request 免认证用户票据抓取）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1104",
+          "event_ids": [
+            "SIM-1104-1"
+          ],
+          "source_batch": "SIM-B-1104",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "a429a099956ff442",
+      "signature_terms": [
+        "asrep"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "asrep"
+        ],
+        "primary_product": "",
+        "primary_action": "asrep",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0076",
+      "signature": "FB::域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+      "label": "域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1105",
+          "event_ids": [
+            "SIM-1105-1",
+            "SIM-1105-2"
+          ],
+          "source_batch": "SIM-B-1105",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "34ced131d8d43e5b",
+      "signature_terms": [
+        "php"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "php"
+        ],
+        "actions": [],
+        "primary_product": "php",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0077",
+      "signature": "FB::PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+      "label": "PrivExchange 推送订阅 + ntlmrelayx 中继 LDAP → secretsdump DCSync",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1106",
+          "event_ids": [
+            "SIM-1106-1",
+            "SIM-1106-2",
+            "SIM-1106-3"
+          ],
+          "source_batch": "SIM-B-1106",
+          "first_seen": "2026-10-28T02:51:52Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:52Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "0ee34f6430013680",
+      "signature_terms": [
+        "exchange",
+        "dcsync",
+        "ldap"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [
+          "exchange"
+        ],
+        "actions": [
+          "dcsync",
+          "ldap"
+        ],
+        "primary_product": "exchange",
+        "primary_action": "ldap",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0078",
+      "signature": "FB::DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+      "label": "DCSync 拉取 krbtgt 哈希（lsadump::dcsync）并 DNS 隧道外传",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1107",
+          "event_ids": [
+            "SIM-1107-1",
+            "SIM-1107-2",
+            "SIM-1107-3",
+            "SIM-1107-4",
+            "SIM-1107-5"
+          ],
+          "source_batch": "SIM-B-1107",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "1e1ace2352ad0611",
+      "signature_terms": [
+        "dcsync",
+        "dns"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "dcsync",
+          "dns"
+        ],
+        "primary_product": "",
+        "primary_action": "dcsync",
+        "sources": [
+          "dns",
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0079",
+      "signature": "FB::ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）",
+      "label": "ntds.dit 影子副本复制外带（ntdsutil ifm → DNS 隧道）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1108",
+          "event_ids": [
+            "SIM-1108-1",
+            "SIM-1108-2",
+            "SIM-1108-3",
+            "SIM-1108-4"
+          ],
+          "source_batch": "SIM-B-1108",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "9809e41cc1dc899d",
+      "signature_terms": [
+        "dns",
+        "ntds"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "dns",
+          "ntds"
+        ],
+        "primary_product": "",
+        "primary_action": "ntds",
+        "sources": [
+          "dns",
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0080",
+      "signature": "FB::黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+      "label": "黄金票据伪造（kerberos::golden /krbtgt: → ptt → 访问 DC C$）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1109",
+          "event_ids": [
+            "SIM-1109-1",
+            "SIM-1109-2",
+            "SIM-1109-3"
+          ],
+          "source_batch": "SIM-B-1109",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "8620f4c74be38fae",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0081",
+      "signature": "FB::白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+      "label": "白银票据伪造（kerberos::golden /service:cifs 直连文件服务器）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1110",
+          "event_ids": [
+            "SIM-1110-1"
+          ],
+          "source_batch": "SIM-B-1110",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "4c44c5b1fe4ef96c",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0082",
+      "signature": "FB::域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+      "label": "域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1111",
+          "event_ids": [
+            "SIM-1111-1",
+            "SIM-1111-2",
+            "SIM-1111-3"
+          ],
+          "source_batch": "SIM-B-1111",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "f9fba683d2fb03e0",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0083",
+      "signature": "FB::组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+      "label": "组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1112",
+          "event_ids": [
+            "SIM-1112-1",
+            "SIM-1112-2"
+          ],
+          "source_batch": "SIM-B-1112",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "a0abda4830cf279e",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0084",
+      "signature": "FB::域账号后门（net user /add /domain + 加入 Domain Admins）",
+      "label": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1113",
+          "event_ids": [
+            "SIM-1113-1",
+            "SIM-1113-2",
+            "SIM-1113-3"
+          ],
+          "source_batch": "SIM-B-1113",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "f725d0da3ef225b9",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0085",
+      "signature": "FB::约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+      "label": "约束委派滥用（Rubeus s4u S4U2Self/S4U2Proxy 冒充域管）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1114",
+          "event_ids": [
+            "SIM-1114-1",
+            "SIM-1114-2"
+          ],
+          "source_batch": "SIM-B-1114",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "5c40fe52298b0bab",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0086",
+      "signature": "FB::ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+      "label": "ADCS 证书模板滥用 ESC1（certsrv 申请 + certipy req 冒充域管）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1115",
+          "event_ids": [
+            "SIM-1115-1",
+            "SIM-1115-2"
+          ],
+          "source_batch": "SIM-B-1115",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "2532f13689e9a952",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids",
+          "rasp"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0087",
+      "signature": "FB::影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+      "label": "影凭据攻击（Whisker 写 msDS-KeyCredentialLink + certipy auth）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1116",
+          "event_ids": [
+            "SIM-1116-1",
+            "SIM-1116-2"
+          ],
+          "source_batch": "SIM-B-1116",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "f979e52b28223527",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0088",
+      "signature": "FB::域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+      "label": "域信任枚举与跨域横向（nltest /domain_trusts → 子域 DC ADMIN$）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1117",
+          "event_ids": [
+            "SIM-1117-1",
+            "SIM-1117-2"
+          ],
+          "source_batch": "SIM-B-1117",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "0c13975b1418429c",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0089",
+      "signature": "FB::组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）",
+      "label": "组策略首选项密码读取（SYSVOL Groups.xml cpassword 解密）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1118",
+          "event_ids": [
+            "SIM-1118-1"
+          ],
+          "source_batch": "SIM-B-1118",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "1ea14452f75bdb6c",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0090",
+      "signature": "FB::会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）",
+      "label": "会话枚举与令牌窃取（quser + Invoke-TokenManipulation 窃取域管会话）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1119",
+          "event_ids": [
+            "SIM-1119-1",
+            "SIM-1119-2"
+          ],
+          "source_batch": "SIM-B-1119",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "a1947f9b05ae970f",
+      "signature_terms": [],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [],
+        "primary_product": "",
+        "primary_action": "",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    },
+    {
+      "candidate_id": "CAND-0091",
+      "signature": "FB::域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+      "label": "域控持久化（DSRM 口令重置 + DsrmAdminLogonBehavior + AdminSDHolder）",
+      "status": "provisional",
+      "incidents": [
+        {
+          "incident_id": "SIM-INC-1120",
+          "event_ids": [
+            "SIM-1120-1",
+            "SIM-1120-2",
+            "SIM-1120-3"
+          ],
+          "source_batch": "SIM-B-1120",
+          "first_seen": "2026-10-28T02:51:53Z"
+        }
+      ],
+      "created_at": "2026-10-28T02:51:53Z",
+      "updated_at": "2026-10-28T03:32:17Z",
+      "promoted_case_id": null,
+      "family_id": "domain-identity",
+      "signature_key": "9e49cb5d2e285eba",
+      "signature_terms": [
+        "ntds"
+      ],
+      "signature_features": {
+        "cves": [],
+        "products": [],
+        "actions": [
+          "ntds"
+        ],
+        "primary_product": "",
+        "primary_action": "ntds",
+        "sources": [
+          "hids"
+        ],
+        "label_used": true
+      }
+    }
+  ]
+}

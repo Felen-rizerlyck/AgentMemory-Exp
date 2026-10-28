@@ -1,0 +1,169 @@
+{
+ "unit": 1043,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Windows 服务持久化（sc create binPath 指向 C:\\Windows\\Temp 载荷）",
+ "sources": [
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-23 22:37:25",
+   "source": "hids",
+   "log_id": "HID0388830",
+   "content": "sc create SmSvc binPath= C:\\Windows\\Temp\\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\\Win",
+   "event_id": "1043-HID0388830"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-008",
+   "name": "Exchange ProxyLogon 风格利用链",
+   "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 6,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S5",
+     "action_id": "sc_create_service",
+     "label": "sc.exe create 注册服务",
+     "generic": false,
+     "event_ids": [
+      "1043-HID0388830"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1043-HID0388830",
+     "detections": [
+      {
+       "event_id": "1043-HID0388830",
+       "source": "hids",
+       "timestamp": "2026-06-23 22:37:25"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: sc create",
+    "probe +4: sc(?:\\.exe)?\\s+create\\s+\\w+\\s+binpath="
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S6"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "gap_steps": [],
+   "predict_next": {
+    "step_id": "S6",
+    "action_id": "dns_b64_label_beacon",
+    "label": "长标签 DNS TXT beacon",
+    "expected_sources": [
+     "dns"
+    ]
+   },
+   "matched_non_generic_steps": 1,
+   "pattern_scope": {
+    "attack_family": "Exchange ProxyLogon 风格利用",
+    "variant_note": "这是从单次样例归纳的模式；步骤顺序和可选性尚未由多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "Aggregate count of real observations; raw case content and identifiers are stored in CSV files."
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 6,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S5",
+    "label": "sc.exe create 注册服务",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1043-HID0388830"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4",
+   "S6"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "predict_next": {
+   "step_id": "S6",
+   "action_id": "dns_b64_label_beacon",
+   "label": "长标签 DNS TXT beacon",
+   "expected_sources": [
+    "dns"
+   ]
+  },
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1190",
+   "T1059.003",
+   "T1505.003",
+   "T1068",
+   "T1543.003",
+   "T1048.003"
+  ]
+ }
+}

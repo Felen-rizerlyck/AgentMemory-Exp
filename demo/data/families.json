@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "families": [
+    {
+      "family_id": "web-exploit",
+      "name": "Web 应用利用与 RCE",
+      "description": "公网 Web 入口的参数注入、反序列化、文件上传与属性链 RCE；具体链仍由 case 表达。",
+      "case_ids": ["CASE-001", "CASE-002", "CASE-004", "CASE-008", "CASE-009"],
+      "steps": []
+    },
+    {
+      "family_id": "host-persistence",
+      "name": "主机持久化与后渗透",
+      "description": "计划任务、服务、WebShell 交互等主机侧驻留与执行。",
+      "case_ids": ["CASE-003"],
+      "steps": []
+    },
+    {
+      "family_id": "ransomware",
+      "name": "勒索与数据破坏",
+      "description": "加密、删除卷影与恢复能力破坏；家族级变体多，具体链由 case 表达。",
+      "case_ids": ["CASE-005"],
+      "steps": [
+        {
+          "step_id": "S9",
+          "order": 9,
+          "action_id": "fa_recovery_or_encrypt_variant",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "action_regex": "(?i)vssadmin|wbadmin|bcdedit|wevtutil|delete\\s+catalog|shred|gpg|openssl\\s+enc|cipher\\s+/e|rm\\s+-rf\\s+/backup",
+          "expected_sources": ["hids"],
+          "generic": true
+        }
+      ]
+    },
+    {
+      "family_id": "domain-identity",
+      "name": "AD 域身份攻击",
+      "description": "域内侦察、Kerberos 滥用、DCSync 与域控持久化。",
+      "case_ids": ["CASE-006"],
+      "steps": []
+    },
+    {
+      "family_id": "supply-chain",
+      "name": "供应链与 CI 攻击",
+      "description": "依赖投毒、构建期执行与 CI 凭据访问。",
+      "case_ids": ["CASE-007"],
+      "steps": [
+        {
+          "step_id": "S4",
+          "order": 4,
+          "action_id": "fc_ci_execution_variant",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "action_regex": "(?i)setup\\.py|pip install|npm i\\b|mvn\\b|docker|kubectl|terraform|gem (?:build|push)|ci_job_token|runner|agent\\.env|\\.git-credentials|id_rsa|sha256sum|nslookup|git push",
+          "expected_sources": ["hids"],
+          "generic": true
+        }
+      ]
+    }
+  ]
+}

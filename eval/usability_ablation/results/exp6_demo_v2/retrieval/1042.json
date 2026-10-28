@@ -1,0 +1,240 @@
+{
+ "unit": 1042,
+ "gt": {
+  "gt_class": "exact",
+  "gt_case": "CASE-003",
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "与 CASE-003 入库时使用同一组日志"
+ },
+ "technique": "Windows 计划任务持久化（schtasks /create /sc minute）",
+ "sources": [
+  "waf",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-14 07:08:35",
+   "source": "waf",
+   "log_id": "WAF0292058",
+   "content": "/api/v1/scheduler/run cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe Mozilla/5.0 (Win",
+   "event_id": "1042-WAF0292058"
+  },
+  {
+   "timestamp": "2026-06-14 07:08:36",
+   "source": "rasp",
+   "log_id": "RASP0323127",
+   "content": "https://app-tomcat-47.ops-corp.com/api/v1/scheduler/run {\"cmd_inject\": \"schtasks /create /sc minute\", \"sched_t",
+   "event_id": "1042-RASP0323127"
+  },
+  {
+   "timestamp": "2026-06-14 07:10:02",
+   "source": "hids",
+   "log_id": "HID0316510",
+   "content": "schtasks /create /tn Upd /sc minute /mo 5 /tr C:\\Windows\\Temp\\u.exe schtasks.exe java.exe -jar C:\\svc\\gw.jar <",
+   "event_id": "1042-HID0316510"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-003",
+   "name": "Windows 计划任务持久化（schtasks 周期拉起载荷）",
+   "summary": "调度接口被注入 schtasks 命令 → 应用侧记录 cmd_inject=schtasks → 主机侧创建周期计划任务执行 C:\\Windows\\Temp 下的载荷。",
+   "matched_steps": 3,
+   "detected_steps": 3,
+   "total_steps": 3,
+   "shape": "complete",
+   "longest_run": 3,
+   "tier": "strong",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "scheduler_cmd_inject",
+     "label": "调度接口命令注入（cmd=schtasks）",
+     "generic": false,
+     "event_ids": [
+      "1042-WAF0292058"
+     ],
+     "sources": [
+      "waf"
+     ],
+     "aligned_event_id": "1042-WAF0292058",
+     "detections": [
+      {
+       "event_id": "1042-WAF0292058",
+       "source": "waf",
+       "timestamp": "2026-06-14 07:08:35"
+      }
+     ]
+    },
+    {
+     "step_id": "S2",
+     "action_id": "scheduler_cmd_inject_rasp",
+     "label": "应用侧记录 cmd_inject=schtasks",
+     "generic": false,
+     "event_ids": [
+      "1042-RASP0323127"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1042-RASP0323127",
+     "detections": [
+      {
+       "event_id": "1042-RASP0323127",
+       "source": "rasp",
+       "timestamp": "2026-06-14 07:08:36"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "schtasks_interval_task",
+     "label": "创建周期计划任务执行载荷",
+     "generic": false,
+     "event_ids": [
+      "1042-HID0316510"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1042-HID0316510",
+     "detections": [
+      {
+       "event_id": "1042-HID0316510",
+       "source": "hids",
+       "timestamp": "2026-06-14 07:10:02"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [
+    {
+     "step_id": "S3",
+     "event_id": "1042-WAF0292058",
+     "observed_source": "waf",
+     "expected_sources": [
+      "hids"
+     ]
+    },
+    {
+     "step_id": "S3",
+     "event_id": "1042-RASP0323127",
+     "observed_source": "rasp",
+     "expected_sources": [
+      "hids"
+     ]
+    }
+   ],
+   "unaligned_detections": [],
+   "keyword_score": 21,
+   "keyword_details": [
+    "keyword +3: schtasks /create",
+    "keyword +3: /api/v1/scheduler/run",
+    "keyword +3: cmd_inject",
+    "probe +4: schtasks\\s+/create",
+    "probe +4: \\\"cmd_inject\\\"\\s*:\\s*\\\"schtasks",
+    "probe +4: /api/v1/scheduler/run"
+   ],
+   "mitre": [
+    "T1053.005",
+    "T1059.003"
+   ],
+   "unobserved_steps": [],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 3,
+   "pattern_scope": {
+    "attack_family": "Windows 计划任务持久化",
+    "variant_note": "由单个合成样本归纳；任务名/触发间隔/载荷路径均来自该样本，未验证其它调度器变体。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "载荷内容"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "strong",
+  "shape": "complete",
+  "matched_steps": 3,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "调度接口命令注入（cmd=schtasks）",
+    "sources": [
+     "waf"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1042-WAF0292058"
+    ]
+   },
+   {
+    "step_id": "S2",
+    "label": "应用侧记录 cmd_inject=schtasks",
+    "sources": [
+     "rasp"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1042-RASP0323127"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "创建周期计划任务执行载荷",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1042-HID0316510"
+    ]
+   }
+  ],
+  "unobserved_steps": [],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [
+   {
+    "step_id": "S3",
+    "observed_source": "waf",
+    "expected_sources": [
+     "hids"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "observed_source": "rasp",
+    "expected_sources": [
+     "hids"
+    ]
+   }
+  ],
+  "keyword_score": 21,
+  "mitre": [
+   "T1053.005",
+   "T1059.003"
+  ]
+ }
+}

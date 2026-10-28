@@ -1,0 +1,41 @@
+{
+ "unit": 1113,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域账号后门（net user /add /domain + 加入 Domain Admins）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-29 01:39:02",
+   "source": "hids",
+   "log_id": "HID0647825",
+   "content": "net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\\admin",
+   "event_id": "1113-HID0647825"
+  },
+  {
+   "timestamp": "2026-07-29 01:39:47",
+   "source": "hids",
+   "log_id": "HID0647829",
+   "content": "net group \"Domain Admins\" svc_sqladd /add /domain net.exe net group \"Domain Admins\" svc_sqladd <== CORP\\admin",
+   "event_id": "1113-HID0647829"
+  },
+  {
+   "timestamp": "2026-07-29 01:44:47",
+   "source": "hids",
+   "log_id": "HID0647855",
+   "content": "runas /netonly /user:corp.local\\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\\admin",
+   "event_id": "1113-HID0647855"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

@@ -1,0 +1,101 @@
+{
+  "units": 140,
+  "rows_added": 536,
+  "incident_ids_withheld": 0,
+  "links_before": 45,
+  "links_after": 261,
+  "decisions": {
+    "confirmed_existing": 7,
+    "unclassified": 91,
+    "related_step": 4,
+    "related_family": 38
+  },
+  "patterns_before": 8,
+  "patterns_after": 8,
+  "new_cases_created": 0,
+  "versions_after": {
+    "CASE-005": 2,
+    "CASE-007": 2
+  },
+  "related_incidents": {
+    "CASE-001": 0,
+    "CASE-002": 0,
+    "CASE-003": 1,
+    "CASE-004": 0,
+    "CASE-005": 20,
+    "CASE-006": 0,
+    "CASE-007": 19,
+    "CASE-008": 2
+  },
+  "accepted_proposals": [
+    {
+      "case_id": "CASE-005",
+      "step_id": "S9",
+      "version": 2
+    },
+    {
+      "case_id": "CASE-007",
+      "step_id": "S4",
+      "version": 2
+    }
+  ],
+  "proposals": [
+    {
+      "case_id": "CASE-005",
+      "step_id": "S9",
+      "ok": true,
+      "problems": [],
+      "metrics": {
+        "support_incidents": 19,
+        "support_events": 32,
+        "confirmed_incidents": 2,
+        "related_incidents": 20,
+        "maturity": "repeated",
+        "foreign_matches": 0,
+        "top1_changes": [],
+        "coverage_before": 1.0,
+        "coverage_after": 1.0,
+        "strong_before": 2,
+        "strong_after": 2
+      },
+      "proposal_id": "PROP-20261027T091024Z",
+      "status": "ready",
+      "accepted_version": 2
+    },
+    {
+      "case_id": "CASE-007",
+      "step_id": "S4",
+      "ok": true,
+      "problems": [],
+      "metrics": {
+        "support_incidents": 17,
+        "support_events": 30,
+        "confirmed_incidents": 2,
+        "related_incidents": 19,
+        "maturity": "repeated",
+        "foreign_matches": 0,
+        "top1_changes": [],
+        "coverage_before": 1.0,
+        "coverage_after": 1.0,
+        "strong_before": 2,
+        "strong_after": 2
+      },
+      "proposal_id": "PROP-20261027T091025Z",
+      "status": "ready",
+      "accepted_version": 2
+    }
+  ],
+  "guard": {
+    "singleton": "a new pattern needs at least 2 supporting incidents; pass --supporting-incident-ids, or --force for a reviewed singleton",
+    "two_incidents": [
+      "INC-CASE-001-001",
+      "INC-CASE-002-001"
+    ]
+  },
+  "unclassified_units": 91,
+  "family_units_attached": 38,
+  "step_variants_attached": 4,
+  "naive_new_cases_counterfactual": 133,
+  "sandbox_data": "F:\\AI_Learning\\AgentMemory\\eval\\ingest_simulation_1001_1140\\demo\\data",
+  "audit_problems": []
+}

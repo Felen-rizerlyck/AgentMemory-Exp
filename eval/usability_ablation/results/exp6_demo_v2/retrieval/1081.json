@@ -1,0 +1,210 @@
+{
+ "unit": 1081,
+ "gt": {
+  "gt_class": "exact",
+  "gt_case": "CASE-005",
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "与 CASE-005 入库时使用同一组日志"
+ },
+ "technique": "文件上传落地 WebShell 后删除卷影并批量加密共享目录",
+ "sources": [
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-13 15:32:46",
+   "source": "rasp",
+   "log_id": "RASP0543334",
+   "content": "https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {\"upload\": \"upd.php\", \"cmd\": \"vssadmin d",
+   "event_id": "1081-RASP0543334"
+  },
+  {
+   "timestamp": "2026-07-13 15:34:14",
+   "source": "hids",
+   "log_id": "HID0532191",
+   "content": "cipher /e /s:C:\\inetpub\\data cipher.exe cipher.exe /e /s:C:\\inetpub\\data <== php-cgi.exe",
+   "event_id": "1081-HID0532191"
+  },
+  {
+   "timestamp": "2026-07-13 15:38:34",
+   "source": "hids",
+   "log_id": "HID0532213",
+   "content": "vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe",
+   "event_id": "1081-HID0532213"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-005",
+   "name": "勒索式数据破坏：删卷影 + 批量加密",
+   "summary": "上传接口落地 WebShell → 主机侧用 cipher 批量加密共享目录 → 删除全部卷影副本破坏恢复能力（先加密后破坏，与样本时间序一致）。",
+   "matched_steps": 3,
+   "detected_steps": 3,
+   "total_steps": 3,
+   "shape": "complete",
+   "longest_run": 3,
+   "tier": "strong",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "webshell_upload_action",
+     "label": "上传接口落地 WebShell",
+     "generic": true,
+     "event_ids": [
+      "1081-RASP0543334"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1081-RASP0543334",
+     "detections": [
+      {
+       "event_id": "1081-RASP0543334",
+       "source": "rasp",
+       "timestamp": "2026-07-13 15:32:46"
+      }
+     ]
+    },
+    {
+     "step_id": "S2",
+     "action_id": "cipher_efs_batch_encrypt",
+     "label": "cipher 批量加密目录",
+     "generic": false,
+     "event_ids": [
+      "1081-HID0532191"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1081-HID0532191",
+     "detections": [
+      {
+       "event_id": "1081-HID0532191",
+       "source": "hids",
+       "timestamp": "2026-07-13 15:34:14"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "vssadmin_delete_shadows_all",
+     "label": "删除全部卷影副本",
+     "generic": false,
+     "event_ids": [
+      "1081-HID0532213"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1081-HID0532213",
+     "detections": [
+      {
+       "event_id": "1081-HID0532213",
+       "source": "hids",
+       "timestamp": "2026-07-13 15:38:34"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 21,
+   "keyword_details": [
+    "keyword +3: cipher /e",
+    "keyword +3: vssadmin delete shadows",
+    "keyword +3: action=upload",
+    "probe +4: cipher(?:\\.exe)?\\s+/e\\s+/s:",
+    "probe +4: vssadmin(?:\\.exe)?\\s+delete\\s+shadows\\s+/all",
+    "probe +4: action=upload"
+   ],
+   "mitre": [
+    "T1486",
+    "T1490",
+    "T1505.003"
+   ],
+   "unobserved_steps": [],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 2,
+   "pattern_scope": {
+    "attack_family": "勒索与数据破坏（加密 + 恢复能力破坏）",
+    "variant_note": "单样本归纳；样本内部顺序为「加密→删卷影」，与多数勒索链顺序相反，已按观测记录。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "勒索信",
+     "横向扩散",
+     "备份服务器删除"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "strong",
+  "shape": "complete",
+  "matched_steps": 3,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "上传接口落地 WebShell",
+    "sources": [
+     "rasp"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1081-RASP0543334"
+    ]
+   },
+   {
+    "step_id": "S2",
+    "label": "cipher 批量加密目录",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1081-HID0532191"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "删除全部卷影副本",
+    "sources": [
+     "hids"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1081-HID0532213"
+    ]
+   }
+  ],
+  "unobserved_steps": [],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 21,
+  "mitre": [
+   "T1486",
+   "T1490",
+   "T1505.003"
+  ]
+ }
+}

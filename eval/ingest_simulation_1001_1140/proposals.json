@@ -1,0 +1,46 @@
+[
+  {
+    "case_id": "CASE-005",
+    "step_id": "S9",
+    "ok": true,
+    "problems": [],
+    "metrics": {
+      "support_incidents": 19,
+      "support_events": 32,
+      "confirmed_incidents": 2,
+      "related_incidents": 20,
+      "maturity": "repeated",
+      "foreign_matches": 0,
+      "top1_changes": [],
+      "coverage_before": 1.0,
+      "coverage_after": 1.0,
+      "strong_before": 2,
+      "strong_after": 2
+    },
+    "proposal_id": "PROP-20261027T091024Z",
+    "status": "ready",
+    "accepted_version": 2
+  },
+  {
+    "case_id": "CASE-007",
+    "step_id": "S4",
+    "ok": true,
+    "problems": [],
+    "metrics": {
+      "support_incidents": 17,
+      "support_events": 30,
+      "confirmed_incidents": 2,
+      "related_incidents": 19,
+      "maturity": "repeated",
+      "foreign_matches": 0,
+      "top1_changes": [],
+      "coverage_before": 1.0,
+      "coverage_after": 1.0,
+      "strong_before": 2,
+      "strong_after": 2
+    },
+    "proposal_id": "PROP-20261027T091025Z",
+    "status": "ready",
+    "accepted_version": 2
+  }
+]

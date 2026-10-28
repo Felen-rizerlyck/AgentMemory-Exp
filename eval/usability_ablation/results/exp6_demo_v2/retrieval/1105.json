@@ -1,0 +1,33 @@
+{
+ "unit": 1105,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域账号密码喷洒（crackmapexec smb 对 10.20.3.0/24）",
+ "sources": [
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-02 22:44:18",
+   "source": "rasp",
+   "log_id": "RASP0461402",
+   "content": "https://app-php-37.ops-corp.com/api/v2/auth/login {\"auth_spray\": \"svc_backup\"} Mozilla/5.0 (Windows NT 10.0; W",
+   "event_id": "1105-RASP0461402"
+  },
+  {
+   "timestamp": "2026-07-02 22:45:54",
+   "source": "hids",
+   "log_id": "HID0451950",
+   "content": "crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm",
+   "event_id": "1105-HID0451950"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

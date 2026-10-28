@@ -1,0 +1,49 @@
+{
+ "unit": 1123,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "私服 Maven SNAPSHOT 制品覆盖投毒（构建期加载后门 jar）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-08 11:31:07",
+   "source": "waf",
+   "log_id": "WAF0455310",
+   "content": "/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe",
+   "event_id": "1123-WAF0455310"
+  },
+  {
+   "timestamp": "2026-07-08 11:31:08",
+   "source": "web",
+   "log_id": "WEB0458271",
+   "content": "/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe",
+   "event_id": "1123-WEB0458271"
+  },
+  {
+   "timestamp": "2026-07-08 11:31:10",
+   "source": "rasp",
+   "log_id": "RASP0503765",
+   "content": "https://app-java-95.ops-corp.com/repository/maven-snapshots {\"artifact\": \"build-tools.jar\", \"snapshot\": \"overw",
+   "event_id": "1123-RASP0503765"
+  },
+  {
+   "timestamp": "2026-07-08 11:33:08",
+   "source": "hids",
+   "log_id": "HID0493440",
+   "content": "java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn",
+   "event_id": "1123-HID0493440"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

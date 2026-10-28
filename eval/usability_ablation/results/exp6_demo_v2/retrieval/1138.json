@@ -1,0 +1,41 @@
+{
+ "unit": 1138,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "发布 token 滥用（构建机持 token 直接推送恶意 gem 版本）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-05 19:50:51",
+   "source": "hids",
+   "log_id": "HID0473535",
+   "content": "gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r",
+   "event_id": "1138-HID0473535"
+  },
+  {
+   "timestamp": "2026-07-05 19:52:19",
+   "source": "hids",
+   "log_id": "HID0473543",
+   "content": "gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake",
+   "event_id": "1138-HID0473543"
+  },
+  {
+   "timestamp": "2026-07-05 19:53:04",
+   "source": "hids",
+   "log_id": "HID0473547",
+   "content": "git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem",
+   "event_id": "1138-HID0473547"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

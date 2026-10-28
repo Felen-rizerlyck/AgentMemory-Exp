@@ -1,0 +1,41 @@
+{
+ "unit": 1111,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "域控 SMB 横向（smbclient.py 探测 + psexec.py 落 DC）",
+ "sources": [
+  "hids",
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-20 13:35:09",
+   "source": "hids",
+   "log_id": "HID0584064",
+   "content": "smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi",
+   "event_id": "1111-HID0584064"
+  },
+  {
+   "timestamp": "2026-07-20 13:38:09",
+   "source": "hids",
+   "log_id": "HID0584079",
+   "content": "psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c",
+   "event_id": "1111-HID0584079"
+  },
+  {
+   "timestamp": "2026-07-20 13:39:14",
+   "source": "hids",
+   "log_id": "HID0584085",
+   "content": "cmd.exe /c net share; net use \\\\dc01.corp.local\\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\\administrator",
+   "event_id": "1111-HID0584085"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

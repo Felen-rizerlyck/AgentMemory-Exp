@@ -1,0 +1,167 @@
+{
+ "unit": 1020,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "Rails Marshal 反序列化（ActiveSupport base64 载荷）",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-30 09:33:08",
+   "source": "waf",
+   "log_id": "WAF0403473",
+   "content": "/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M",
+   "event_id": "1020-WAF0403473"
+  },
+  {
+   "timestamp": "2026-06-30 09:33:09",
+   "source": "web",
+   "log_id": "WEB0406098",
+   "content": "/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M",
+   "event_id": "1020-WEB0406098"
+  },
+  {
+   "timestamp": "2026-06-30 09:33:11",
+   "source": "rasp",
+   "log_id": "RASP0446407",
+   "content": "https://app-rails-55.ops-corp.com/api/v3/session {\"deserialization\": \"Marshal\"} Mozilla/5.0 (Macintosh; Intel ",
+   "event_id": "1020-RASP0446407"
+  },
+  {
+   "timestamp": "2026-06-30 09:34:41",
+   "source": "hids",
+   "log_id": "HID0437247",
+   "content": "echo @reboot /tmp/.r>>/var/spool/cron/root <== /bin/sh -c 'echo @reboot /tmp/.r' <== ruby /opt/app/bin/rails",
+   "event_id": "1020-HID0437247"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-004",
+   "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+   "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+   "matched_steps": 1,
+   "detected_steps": 1,
+   "total_steps": 4,
+   "shape": "middle",
+   "longest_run": 1,
+   "tier": "weak",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S4",
+     "action_id": "cron_persistence_append",
+     "label": "追加 crontab 定时回连",
+     "generic": true,
+     "event_ids": [
+      "1020-HID0437247"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1020-HID0437247",
+     "detections": [
+      {
+       "event_id": "1020-HID0437247",
+       "source": "hids",
+       "timestamp": "2026-06-30 09:34:41"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [],
+   "keyword_score": 7,
+   "keyword_details": [
+    "keyword +3: /var/spool/cron/root",
+    "probe +4: >>\\s*/var/spool/cron/root"
+   ],
+   "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+   ],
+   "unobserved_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "before_steps": [
+    "S1",
+    "S2",
+    "S3"
+   ],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 0,
+   "pattern_scope": {
+    "attack_family": "Laravel Ignition 反序列化（CVE-2021-3129）",
+    "variant_note": "单样本归纳；phar 落地路径与持久化命令来自该样本。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "weak",
+  "shape": "middle",
+  "matched_steps": 1,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S4",
+    "label": "追加 crontab 定时回连",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1020-HID0437247"
+    ]
+   }
+  ],
+  "unobserved_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "gap_steps": [],
+  "before_steps": [
+   "S1",
+   "S2",
+   "S3"
+  ],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 7,
+  "mitre": [
+   "T1190",
+   "T1059.004",
+   "T1053.003"
+  ]
+ }
+}

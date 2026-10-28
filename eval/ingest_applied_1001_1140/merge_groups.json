@@ -1,0 +1,65 @@
+{
+  "before": {
+    "provisional": 90,
+    "promotable": 0,
+    "promoted": 1,
+    "rejected": 0,
+    "merged": 0
+  },
+  "after": {
+    "provisional": 77,
+    "promotable": 6,
+    "promoted": 1,
+    "rejected": 0,
+    "merged": 7
+  },
+  "merges": [
+    {
+      "primary": "CAND-0008",
+      "alias": "CAND-0056",
+      "signature_key": "2d0d0f4b663b675b"
+    },
+    {
+      "primary": "CAND-0014",
+      "alias": "CAND-0059",
+      "signature_key": "52accf8747ada63e"
+    },
+    {
+      "primary": "CAND-0002",
+      "alias": "CAND-0058",
+      "signature_key": "65b2e5da5c3b5cf5"
+    },
+    {
+      "primary": "CAND-0018",
+      "alias": "CAND-0070",
+      "signature_key": "6bf293da4614ee21"
+    },
+    {
+      "primary": "CAND-0003",
+      "alias": "CAND-0057",
+      "signature_key": "79636ffd16efb3df"
+    },
+    {
+      "primary": "CAND-0033",
+      "alias": "CAND-0063",
+      "signature_key": "8c9ca596879c6d34"
+    },
+    {
+      "primary": "CAND-0001",
+      "alias": "CAND-0066",
+      "signature_key": "cb7586b1291ed571"
+    }
+  ],
+  "active_candidates": 84,
+  "merged_aliases": 7,
+  "promotable": 6,
+  "promoted_pending_links": [
+    {
+      "candidate_id": "CAND-0001",
+      "case_id": "CASE-009",
+      "pending": [
+        "SIM-INC-1073"
+      ]
+    }
+  ]
+}

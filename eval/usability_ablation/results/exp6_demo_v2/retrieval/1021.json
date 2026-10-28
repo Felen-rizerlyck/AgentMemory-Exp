@@ -1,0 +1,322 @@
+{
+ "unit": 1021,
+ "gt": {
+  "gt_class": "exact",
+  "gt_case": "CASE-002",
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "与 CASE-002 入库时使用同一组日志"
+ },
+ "technique": "Apache Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+ "sources": [
+  "waf",
+  "web",
+  "rasp",
+  "hids",
+  "dns",
+  "dns",
+  "dns"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-06-27 10:04:59",
+   "source": "waf",
+   "log_id": "WAF0382866",
+   "content": "/uploads/cmd.jsp/ PUT <%@ page import=\"java.util.*\"%><% Runtime.getRuntime().exec(\"id\")%> Mozilla/5.0 (Windows",
+   "event_id": "1021-WAF0382866"
+  },
+  {
+   "timestamp": "2026-06-27 10:05:00",
+   "source": "web",
+   "log_id": "WEB0385357",
+   "content": "/uploads/cmd.jsp/ PUT <%@ page import=\"java.util.*\"%><% Runtime.getRuntime().exec(\"id\")%> Mozilla/5.0 (Windows",
+   "event_id": "1021-WEB0385357"
+  },
+  {
+   "timestamp": "2026-06-27 10:05:02",
+   "source": "rasp",
+   "log_id": "RASP0423606",
+   "content": "https://app-tomcat-77.ops-corp.com/uploads/cmd.jsp/ {\"upload\": \"cmd.jsp\", \"rce\": \"exec\"} Mozilla/5.0 (Windows ",
+   "event_id": "1021-RASP0423606"
+  },
+  {
+   "timestamp": "2026-06-27 10:07:04",
+   "source": "hids",
+   "log_id": "HID0414919",
+   "content": "id; hostname /usr/bin/id id; hostname <== /bin/sh -c 'id; hostname' <== /usr/local/tomcat/bin/catalina.sh",
+   "event_id": "1021-HID0414919"
+  },
+  {
+   "timestamp": "2026-06-27 12:31:04",
+   "source": "dns",
+   "log_id": "DNS0398919",
+   "content": "a16f2990.vqmxld-2b71.net A 10.10.23.180",
+   "event_id": "1021-DNS0398919"
+  },
+  {
+   "timestamp": "2026-06-27 12:31:27",
+   "source": "dns",
+   "log_id": "DNS0398921",
+   "content": "ae823f83.vqmxld-2b71.net A 10.10.36.219",
+   "event_id": "1021-DNS0398921"
+  },
+  {
+   "timestamp": "2026-06-27 12:32:02",
+   "source": "dns",
+   "log_id": "DNS0398924",
+   "content": "af0c3d5f.vqmxld-2b71.net A 203.0.113.109",
+   "event_id": "1021-DNS0398924"
+  }
+ ],
+ "retrieval_full": [
+  {
+   "case_id": "CASE-002",
+   "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+   "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+   "matched_steps": 4,
+   "detected_steps": 4,
+   "total_steps": 4,
+   "shape": "complete",
+   "longest_run": 4,
+   "tier": "strong",
+   "order_ok": true,
+   "order_assessable": true,
+   "source_fit_ratio": 1.0,
+   "evidence": [
+    {
+     "step_id": "S1",
+     "action_id": "tomcat_put_jsp_upload",
+     "label": "PUT 写入 JSP webshell",
+     "generic": false,
+     "event_ids": [
+      "1021-WAF0382866",
+      "1021-WEB0385357"
+     ],
+     "sources": [
+      "waf",
+      "web"
+     ],
+     "aligned_event_id": "1021-WEB0385357",
+     "detections": [
+      {
+       "event_id": "1021-WAF0382866",
+       "source": "waf",
+       "timestamp": "2026-06-27 10:04:59"
+      },
+      {
+       "event_id": "1021-WEB0385357",
+       "source": "web",
+       "timestamp": "2026-06-27 10:05:00"
+      }
+     ]
+    },
+    {
+     "step_id": "S2",
+     "action_id": "jsp_upload_rce_marker",
+     "label": "应用侧记录 webshell 上传与 exec",
+     "generic": false,
+     "event_ids": [
+      "1021-RASP0423606"
+     ],
+     "sources": [
+      "rasp"
+     ],
+     "aligned_event_id": "1021-RASP0423606",
+     "detections": [
+      {
+       "event_id": "1021-RASP0423606",
+       "source": "rasp",
+       "timestamp": "2026-06-27 10:05:02"
+      }
+     ]
+    },
+    {
+     "step_id": "S3",
+     "action_id": "tomcat_child_id_hostname",
+     "label": "Tomcat 进程派生子 shell 执行探针",
+     "generic": true,
+     "event_ids": [
+      "1021-HID0414919"
+     ],
+     "sources": [
+      "hids"
+     ],
+     "aligned_event_id": "1021-HID0414919",
+     "detections": [
+      {
+       "event_id": "1021-HID0414919",
+       "source": "hids",
+       "timestamp": "2026-06-27 10:07:04"
+      }
+     ]
+    },
+    {
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "label": "DGA 风格子域突发解析",
+     "generic": true,
+     "event_ids": [
+      "1021-DNS0398919",
+      "1021-DNS0398921",
+      "1021-DNS0398924"
+     ],
+     "sources": [
+      "dns"
+     ],
+     "aligned_event_id": "1021-DNS0398924",
+     "detections": [
+      {
+       "event_id": "1021-DNS0398919",
+       "source": "dns",
+       "timestamp": "2026-06-27 12:31:04"
+      },
+      {
+       "event_id": "1021-DNS0398921",
+       "source": "dns",
+       "timestamp": "2026-06-27 12:31:27"
+      },
+      {
+       "event_id": "1021-DNS0398924",
+       "source": "dns",
+       "timestamp": "2026-06-27 12:32:02"
+      }
+     ]
+    }
+   ],
+   "source_mismatches": [],
+   "unaligned_detections": [
+    {
+     "event_id": "1021-WAF0382866",
+     "step_id": "S1",
+     "action_id": "tomcat_put_jsp_upload",
+     "source": "waf",
+     "timestamp": "2026-06-27 10:04:59",
+     "reason": "extra_detection_for_S1"
+    },
+    {
+     "event_id": "1021-DNS0398919",
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "source": "dns",
+     "timestamp": "2026-06-27 12:31:04",
+     "reason": "extra_detection_for_S4"
+    },
+    {
+     "event_id": "1021-DNS0398921",
+     "step_id": "S4",
+     "action_id": "dga_hex_subdomain_beacon",
+     "source": "dns",
+     "timestamp": "2026-06-27 12:31:27",
+     "reason": "extra_detection_for_S4"
+    }
+   ],
+   "keyword_score": 24,
+   "keyword_details": [
+    "keyword +3: cmd.jsp",
+    "keyword +3: catalina.sh",
+    "keyword +3: id; hostname",
+    "keyword +3: vqmxld",
+    "probe +4: /uploads?/[a-z0-9_.-]+\\.jsp/?\\s+PUT",
+    "probe +4: \\\"rce\\\"\\s*:\\s*\\\"exec\\\"",
+    "probe +4: \\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+   ],
+   "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+   ],
+   "unobserved_steps": [],
+   "before_steps": [],
+   "gap_steps": [],
+   "predict_next": null,
+   "matched_non_generic_steps": 2,
+   "pattern_scope": {
+    "attack_family": "Tomcat 任意文件上传（PUT）+ DNS C2",
+    "variant_note": "单样本归纳；webshell 落地路径与 C2 域名均来自该样本，变体形态未验证。"
+   },
+   "negative_and_unknown_evidence": {
+    "not_observed": [
+     "横向移动",
+     "数据外带内容",
+     "持久化"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+   },
+   "provenance": {
+    "observation_count": 1,
+    "evidence_status": "single_observation_demo",
+    "observation_count_note": "由 dataset 每类第 1 个 unit 作为首批代表样本入库；原始行保存在 raw_logs.csv。"
+   }
+  }
+ ],
+ "evidence_for_agent": {
+  "tier": "strong",
+  "shape": "complete",
+  "matched_steps": 4,
+  "total_steps": 4,
+  "order_ok": true,
+  "order_assessable": true,
+  "source_fit_ratio": 1.0,
+  "steps": [
+   {
+    "step_id": "S1",
+    "label": "PUT 写入 JSP webshell",
+    "sources": [
+     "waf",
+     "web"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1021-WAF0382866",
+     "1021-WEB0385357"
+    ]
+   },
+   {
+    "step_id": "S2",
+    "label": "应用侧记录 webshell 上传与 exec",
+    "sources": [
+     "rasp"
+    ],
+    "generic": false,
+    "event_ids": [
+     "1021-RASP0423606"
+    ]
+   },
+   {
+    "step_id": "S3",
+    "label": "Tomcat 进程派生子 shell 执行探针",
+    "sources": [
+     "hids"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1021-HID0414919"
+    ]
+   },
+   {
+    "step_id": "S4",
+    "label": "DGA 风格子域突发解析",
+    "sources": [
+     "dns"
+    ],
+    "generic": true,
+    "event_ids": [
+     "1021-DNS0398919",
+     "1021-DNS0398921",
+     "1021-DNS0398924"
+    ]
+   }
+  ],
+  "unobserved_steps": [],
+  "gap_steps": [],
+  "before_steps": [],
+  "predict_next": null,
+  "source_mismatches": [],
+  "keyword_score": 24,
+  "mitre": [
+   "T1190",
+   "T1505.003",
+   "T1071.004"
+  ]
+ }
+}

@@ -1,0 +1,33 @@
+{
+ "unit": 1112,
+ "gt": {
+  "gt_class": "new",
+  "gt_case": null,
+  "confidence": "high",
+  "needs_review": false,
+  "reason": "不属于已入库的 8 个案例家族"
+ },
+ "technique": "组策略滥用（SharpGPOAbuse 计算机任务 + GPP 注册表开机项）",
+ "sources": [
+  "hids",
+  "hids"
+ ],
+ "logs": [
+  {
+   "timestamp": "2026-07-10 12:32:17",
+   "source": "hids",
+   "log_id": "HID0508746",
+   "content": "SharpGPOAbuse.exe --AddComputerTask --TaskName Corp_Logon --Author CORP\\gpo_admin --Command cmd.exe --Argument",
+   "event_id": "1112-HID0508746"
+  },
+  {
+   "timestamp": "2026-07-10 12:40:57",
+   "source": "hids",
+   "log_id": "HID0508791",
+   "content": "Set-GPPrefRegistryValue -Name Corp_Logon -Context Domain -Key \"HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\",
+   "event_id": "1112-HID0508791"
+  }
+ ],
+ "retrieval_full": [],
+ "evidence_for_agent": null
+}
