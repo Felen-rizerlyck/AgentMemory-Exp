@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 
 from . import admissions as admission_store
@@ -10,7 +11,9 @@ from . import chains as chain_store
 from . import families as family_store
 from . import lifecycle as lifecycle_store
 from . import migrations as migration_store
+from . import retention as retention_store
 from . import signatures as signature_store
+from . import storage
 from .catalog import (VERSIONS_DIR, add_pattern, add_pattern_from_candidate,
                       load_validated_catalog, merge_case, pattern_version,
                       reactivate_case, require_pattern_support, retire_case, review_case,
@@ -46,6 +49,17 @@ def main() -> None:
     split_cmd.add_argument("--basis", required=True)
     lifecycle_cmd = catalog_sub.add_parser("lifecycle", help="List case lifecycle events")
     lifecycle_cmd.add_argument("--case-id")
+    retention_cmd = catalog_sub.add_parser("retention", help="Incident retention report or apply")
+    retention_cmd.add_argument("--variant-days", type=int, default=180)
+    retention_cmd.add_argument("--candidate-days", type=int, default=150)
+    retention_cmd.add_argument("--unclassified-days", type=int, default=90)
+    retention_cmd.add_argument("--as-of", help="YYYY-MM-DD; default today")
+    retention_cmd.add_argument("--apply", action="store_true", help="Archive expired incidents")
+    retention_cmd.add_argument("--max-active-bytes", type=int, default=0,
+                               help="0 disables; archive oldest eligible incidents until under cap")
+    retention_cmd.add_argument("--archive-max-days", type=int, default=365,
+                               help="0 disables; delete whole archive groups older than this")
+    retention_cmd.add_argument("--json", action="store_true")
     retire_cmd = catalog_sub.add_parser("retire", help="Retire a case (keeps its history)")
     retire_cmd.add_argument("--case-id", required=True)
     retire_cmd.add_argument("--basis", required=True)
@@ -196,6 +210,46 @@ def main() -> None:
             for event in events:
                 print(f"  {event.get('event_id')}  {event.get('action'):<11}  "
                       f"{event.get('case_id')} -> {event.get('target') or '-'}")
+        elif args.action == "retention":
+            as_of = dt.date.fromisoformat(args.as_of) if args.as_of else dt.date.today()
+            report = retention_store.build_report(
+                load_validated_catalog()["attack_patterns"],
+                read_csv(RAW_LOGS_PATH), read_links(LINKS_PATH),
+                candidate_store.list_candidates(include_merged=True),
+                load_proposals(PROPOSALS_PATH),
+                chain_store.load_chains()["chains"],
+                as_of=as_of,
+                variant_days=args.variant_days,
+                candidate_days=args.candidate_days,
+                unclassified_days=args.unclassified_days,
+                data_dir=storage.DATA_DIR,
+            )
+            if args.json:
+                if args.apply:
+                    print(json.dumps({"report": report,
+                                      "apply": retention_store.apply_report(
+                                          report, data_dir=storage.DATA_DIR,
+                                          max_active_bytes=args.max_active_bytes,
+                                          archive_max_days=args.archive_max_days)},
+                                     ensure_ascii=False, indent=2))
+                else:
+                    print(json.dumps(report, ensure_ascii=False, indent=2))
+            else:
+                print("\n".join(retention_store.format_lines(report)))
+                if args.apply:
+                    result = retention_store.apply_report(
+                        report, data_dir=storage.DATA_DIR,
+                        max_active_bytes=args.max_active_bytes,
+                        archive_max_days=args.archive_max_days)
+                    print(f"APPLY archived {result['archived_incidents']} incident(s), "
+                          f"{result['archived_events']} event(s), {result['archived_links']} link(s), "
+                          f"{result['removed_candidates']} candidate(s) -> {result['archive_dir']}")
+                    print(f"  tombstone summaries={result['incident_summaries']} "
+                          f"referenced={result['tombstones']} active_bytes={result['active_bytes']}")
+                    if result.get("cap_selected"):
+                        print(f"  cap-selected: {', '.join(result['cap_selected'])}")
+                    if result.get("pruned"):
+                        print(f"  pruned: {result['pruned']}")
         elif args.action == "retire":
             result = retire_case(args.case_id, args.basis, reviewer=args.reviewer)
             print(f"Retired {result['case_id']} ({result['event']['event_id']}).")
@@ -294,6 +348,7 @@ def main() -> None:
             problems += admission_store.audit_admissions(data["attack_patterns"])
             problems += chain_store.audit_chains(data["attack_patterns"], read_csv(RAW_LOGS_PATH))
             problems += lifecycle_store.audit_lifecycle(data["attack_patterns"])
+            problems += retention_store.audit_archives()
             if problems:
                 for problem in problems:
                     print(f"  PROBLEM: {problem}")
@@ -303,7 +358,8 @@ def main() -> None:
                   f"{len(migration_store.load_migrations()['migrations'])} migration(s), "
                   f"{len(admission_store.load_admissions()['admissions'])} admission(s), "
                   f"{len(chain_store.load_chains()['chains'])} chain(s), "
-                  f"{len(lifecycle_store.load_lifecycle()['events'])} lifecycle event(s).")
+                  f"{len(lifecycle_store.load_lifecycle()['events'])} lifecycle event(s), "
+                  f"{len(retention_store.load_tombstones()['runs'])} retention run(s).")
         else:
             if args.from_candidate and args.supporting_incident_ids:
                 parser.error("use --from-candidate or --supporting-incident-ids, not both")
@@ -391,20 +447,22 @@ def main() -> None:
         admissions = admission_store.load_admissions()["admissions"]
         chains = chain_store.load_chains()["chains"]
         lifecycle = lifecycle_store.load_lifecycle()["events"]
+        archive_runs = retention_store.load_tombstones()["runs"]
         problems = audit_problems(patterns, logs, links, proposals)
         problems += family_store.audit_families(family_data, patterns, candidates)
         problems += migration_store.audit_migrations(patterns)
         problems += admission_store.audit_admissions(patterns)
         problems += chain_store.audit_chains(patterns, logs)
         problems += lifecycle_store.audit_lifecycle(patterns)
+        problems += retention_store.audit_archives()
         problems += candidate_store.audit_candidates(
             patterns, family_ids=family_store.family_ids(family_data))
         print(f"Audited {len(links)} link row(s) against {len(logs)} event(s), "
               f"{len(patterns)} pattern(s), {len(proposals)} proposal(s), "
               f"{len(candidates)} active candidate(s) (+{merged_count} merged), "
               f"{len(family_data['families'])} family(ies), {len(migrations)} migration(s), "
-              f"{len(admissions)} admission(s), {len(chains)} chain(s) and "
-              f"{len(lifecycle)} lifecycle event(s).")
+              f"{len(admissions)} admission(s), {len(chains)} chain(s), "
+              f"{len(lifecycle)} lifecycle event(s) and {len(archive_runs)} archive run(s).")
         if args.verbose:
             print("\n".join(diagnostic_lines(args.case_id)))
         if problems:

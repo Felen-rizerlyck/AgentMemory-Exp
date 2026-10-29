@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import copy
 import csv
+import datetime as dt
 import json
 import pathlib
 import sys
@@ -25,6 +26,7 @@ from attack_memory import families as families_module  # noqa: E402
 from attack_memory import links as links_module  # noqa: E402
 from attack_memory import lifecycle as lifecycle_module  # noqa: E402
 from attack_memory import migrations as migrations_module  # noqa: E402
+from attack_memory import retention as retention_module  # noqa: E402
 from attack_memory import signatures as signatures_module  # noqa: E402
 from attack_memory import storage  # noqa: E402
 from attack_memory.catalog import (add_pattern, add_pattern_from_candidate,  # noqa: E402
@@ -1082,6 +1084,141 @@ class CaseLifecycleTests(unittest.TestCase):
                 self.assertEqual(lifecycle_module.audit_lifecycle(patterns), [])
 
 
+class RetentionTests(unittest.TestCase):
+    def test_incident_classes_protection_and_unassigned(self):
+        logs = [
+            {"event_id": "E-A", "incident_id": "INC-A", "timestamp": "2025-01-01", "source": "hids", "content": "a"},
+            {"event_id": "E-V", "incident_id": "INC-V", "timestamp": "2025-01-01", "source": "hids", "content": "v"},
+            {"event_id": "E-C", "incident_id": "INC-C", "timestamp": "2025-01-01", "source": "hids", "content": "c"},
+            {"event_id": "E-P", "incident_id": "INC-P", "timestamp": "2025-01-01", "source": "hids", "content": "p"},
+            {"event_id": "E-F", "incident_id": "INC-F", "timestamp": "2025-01-01", "source": "hids", "content": "f"},
+            {"event_id": "E-U", "incident_id": "INC-U", "timestamp": "2025-01-01", "source": "hids", "content": "u"},
+            {"event_id": "E-X", "incident_id": "", "timestamp": "2025-01-01", "source": "hids", "content": "x"},
+        ]
+        links = [
+            {"event_id": "E-A", "incident_id": "INC-A", "case_id": "CASE-001", "step_id": "S1", "link_status": "confirmed"},
+            {"event_id": "E-V", "incident_id": "INC-V", "case_id": "CASE-001", "step_id": "S1", "link_status": "related"},
+            {"event_id": "E-F", "incident_id": "INC-F", "case_id": "CASE-001", "step_id": "S1", "link_status": "fixture"},
+        ]
+        candidates = [
+            {"candidate_id": "CAND-0001", "status": "provisional",
+             "incidents": [{"incident_id": "INC-C", "event_ids": ["E-C"]}]},
+            {"candidate_id": "CAND-0002", "status": "promotable",
+             "incidents": [{"incident_id": "INC-P", "event_ids": ["E-P"]}]},
+        ]
+        report = retention_module.build_report(
+            [{"case_id": "CASE-001", "status": "active"}], logs, links, candidates,
+            as_of=dt.date(2026, 1, 1), variant_days=180, candidate_days=90,
+            unclassified_days=90)
+        self.assertEqual(report["classes"],
+                         {"anchor": 1, "candidate": 2, "fixture": 1, "unclassified": 1, "variant": 1})
+        self.assertEqual(report["expired_incidents"], 3)
+        self.assertEqual(report["expirable_events"], 3)
+        self.assertEqual(report["protected_incidents"], 3)
+        self.assertEqual(report["raw_events"], 7)
+        self.assertEqual(report["unassigned_events"], 1)
+        expired = {item["incident_id"] for item in report["expired"]}
+        self.assertEqual(expired, {"INC-C", "INC-U", "INC-V"})
+        protected = {item["incident_id"]: item["reasons"] for item in report["protected"]}
+        self.assertIn("candidate:CAND-0002", protected["INC-P"])
+
+
+class RetentionApplyTests(unittest.TestCase):
+    def test_apply_archives_expired_incident_and_writes_tombstones(self):
+        with tempfile.TemporaryDirectory() as folder:
+            data_dir = pathlib.Path(folder)
+            raw_fields = ["event_id", "batch_id", "incident_id", "case_id",
+                          "timestamp", "source", "log_id", "content"]
+            with (data_dir / "raw_logs.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=raw_fields)
+                writer.writeheader()
+                writer.writerow({"event_id": "E-A", "incident_id": "INC-A", "timestamp": "2025-01-01",
+                                 "source": "hids", "content": "a"})
+                writer.writerow({"event_id": "E-C", "incident_id": "", "timestamp": "2025-01-01",
+                                 "source": "hids", "content": "c"})
+            links = [{"event_id": "E-A", "incident_id": "INC-A", "case_id": "CASE-001",
+                      "step_id": "S1", "link_status": "confirmed"}]
+            with (data_dir / "event_pattern_links.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=["event_id", "incident_id", "case_id",
+                                                            "step_id", "link_status"])
+                writer.writeheader()
+                writer.writerows(links)
+            (data_dir / "incident_chains.json").write_text(json.dumps({"schema_version": 1, "chains": [
+                {"incident_id": "INC-A", "case_id": "CASE-001", "events": [{"event_id": "E-A"}]},
+            ]}), encoding="utf-8")
+            candidates = [{"candidate_id": "CAND-0001", "status": "provisional",
+                           "incidents": [{"incident_id": "INC-C", "event_ids": ["E-C"]}]}]
+            (data_dir / "case_candidates.json").write_text(
+                json.dumps({"schema_version": 1, "candidates": candidates}), encoding="utf-8")
+            logs = [{"event_id": "E-A", "incident_id": "INC-A", "timestamp": "2025-01-01",
+                     "source": "hids", "content": "a"},
+                    {"event_id": "E-C", "incident_id": "", "timestamp": "2025-01-01",
+                     "source": "hids", "content": "c"}]
+            report = retention_module.build_report(
+                [{"case_id": "CASE-001", "status": "active"}], logs, links, candidates,
+                as_of=dt.date(2026, 1, 1), candidate_days=90)
+            result = retention_module.apply_report(report, data_dir=data_dir)
+            self.assertEqual(result["archived_events"], 1)
+            self.assertEqual(result["removed_candidates"], 1)
+            archive = data_dir / result["archive_dir"]
+            self.assertTrue((archive / "raw_logs.csv.gz").exists())
+            self.assertEqual(retention_module.audit_archives(data_dir), [])
+            with (data_dir / "raw_logs.csv").open(encoding="utf-8-sig", newline="") as handle:
+                active = list(csv.DictReader(handle))
+            self.assertEqual([row["event_id"] for row in active], ["E-A"])
+            candidates_after = json.loads((data_dir / "case_candidates.json").read_text(encoding="utf-8"))
+            self.assertEqual(candidates_after["candidates"], [])
+            tombstones = retention_module.load_tombstones(data_dir)
+            self.assertEqual(tombstones["runs"][0]["incident_summaries"][0]["incident_id"], "INC-C")
+            self.assertEqual(tombstones["runs"][0]["referenced_tombstones"], [])
+
+    def test_active_cap_and_archive_prune(self):
+        with tempfile.TemporaryDirectory() as folder:
+            data_dir = pathlib.Path(folder)
+            today = dt.date.today().isoformat()
+            raw_fields = ["event_id", "batch_id", "incident_id", "case_id",
+                          "timestamp", "source", "log_id", "content"]
+            with (data_dir / "raw_logs.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=raw_fields)
+                writer.writeheader()
+                writer.writerow({"event_id": "E-A", "incident_id": "INC-A", "timestamp": today,
+                                 "source": "hids", "content": "a"})
+                writer.writerow({"event_id": "E-U", "incident_id": "INC-U", "timestamp": today,
+                                 "source": "hids", "content": "u"})
+            links = [{"event_id": "E-A", "incident_id": "INC-A", "case_id": "CASE-001",
+                      "step_id": "S1", "link_status": "confirmed"}]
+            with (data_dir / "event_pattern_links.csv").open("w", encoding="utf-8-sig", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=["event_id", "incident_id", "case_id",
+                                                            "step_id", "link_status"])
+                writer.writeheader()
+                writer.writerows(links)
+            (data_dir / "incident_chains.json").write_text(json.dumps({"schema_version": 1, "chains": [
+                {"incident_id": "INC-A", "case_id": "CASE-001", "events": [{"event_id": "E-A"}]},
+            ]}), encoding="utf-8")
+            (data_dir / "case_candidates.json").write_text(
+                json.dumps({"schema_version": 1, "candidates": []}), encoding="utf-8")
+            logs = [{"event_id": "E-A", "incident_id": "INC-A", "timestamp": today,
+                     "source": "hids", "content": "a"},
+                    {"event_id": "E-U", "incident_id": "INC-U", "timestamp": today,
+                     "source": "hids", "content": "u"}]
+            report = retention_module.build_report(
+                [{"case_id": "CASE-001", "status": "active"}], logs, links, [],
+                as_of=dt.date.fromisoformat(today), data_dir=data_dir)
+            self.assertGreater(report["bytes"]["active"], 0)
+            result = retention_module.apply_report(report, data_dir=data_dir, max_active_bytes=1)
+            self.assertIn("INC-U", result["cap_selected"])
+            self.assertEqual(retention_module.audit_archives(data_dir), [])
+            tombstone_data = retention_module.load_tombstones(data_dir)
+            tombstone_data["runs"][0]["archived_at"] = "2020-01-01T00:00:00Z"
+            (data_dir / "retention_tombstones.json").write_text(
+                json.dumps(tombstone_data), encoding="utf-8")
+            pruned = retention_module.prune_archives(
+                data_dir, max_days=1, as_of=dt.date.today())
+            self.assertEqual(pruned["removed_runs"], 1)
+            self.assertEqual(retention_module.load_tombstones(data_dir)["runs"], [])
+            self.assertEqual(retention_module.audit_archives(data_dir), [])
+
+
 class ChainTests(unittest.TestCase):
     def test_real_chains_are_clean_and_have_unclassified_events(self):
         patterns = load_validated_catalog()["attack_patterns"]
@@ -1226,13 +1363,22 @@ class SignatureTests(unittest.TestCase):
         self.assertIn("CVE-2022-22965", first["cves"])
 
     def test_ofbiz_same_cve_different_technique_stays_apart(self):
-        xmlrpc = self._features("CAND-0007")
-        groovy = self._features("CAND-0068")
+        xmlrpc = signatures_module.extract_features(
+            "Apache OFBiz XML-RPC 反序列化 CVE-2023-51467", ["xmlrpc"], ["hids"], "web-exploit")
+        groovy = signatures_module.extract_features(
+            "Apache OFBiz 认证绕过 Groovy 代码执行 CVE-2023-51467", ["groovy"], ["hids"], "web-exploit")
         self.assertNotEqual(xmlrpc["signature_key"], groovy["signature_key"])
 
     def test_product_alone_does_not_merge_php_variants(self):
-        keys = {self._features(candidate)["signature_key"]
-                for candidate in ("CAND-0010", "CAND-0013", "CAND-0060")}
+        keys = {
+            signatures_module.extract_features(
+                label, [content], ["hids"], "web-exploit")["signature_key"]
+            for label, content in (
+                ("PHP 双编码路径穿越", "php path traversal"),
+                ("ThinkPHP 多语言参数 RCE", "thinkphp rce"),
+                ("PHPUnit eval-stdin 远程代码执行", "phpunit eval"),
+            )
+        }
         self.assertEqual(len(keys), 3)
 
     def test_group_candidates_pairs_spring4shell(self):

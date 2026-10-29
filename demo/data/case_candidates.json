@@ -521,49 +521,6 @@
       }
     },
     {
-      "candidate_id": "CAND-0010",
-      "signature": "F1::PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
-      "label": "PHP 双编码路径穿越（%252e%252e 形态读 /etc/passwd）",
-      "status": "provisional",
-      "incidents": [
-        {
-          "incident_id": "SIM-INC-1011",
-          "event_ids": [
-            "SIM-1011-1",
-            "SIM-1011-2",
-            "SIM-1011-3",
-            "SIM-1011-4"
-          ],
-          "source_batch": "SIM-B-1011",
-          "first_seen": "2026-10-28T02:51:50Z"
-        }
-      ],
-      "created_at": "2026-10-28T02:51:50Z",
-      "updated_at": "2026-10-28T03:32:15Z",
-      "promoted_case_id": null,
-      "family_id": "web-exploit",
-      "signature_key": "ecd869ff5b2d7932",
-      "signature_terms": [
-        "php"
-      ],
-      "signature_features": {
-        "cves": [],
-        "products": [
-          "php"
-        ],
-        "actions": [],
-        "primary_product": "php",
-        "primary_action": "",
-        "sources": [
-          "hids",
-          "rasp",
-          "waf",
-          "web"
-        ],
-        "label_used": true
-      }
-    },
-    {
       "candidate_id": "CAND-0011",
       "signature": "F1::PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
       "label": "PHP-FPM CVE-2019-11043（PATH_INFO 换行注入 auto_prepend_file）",
@@ -1854,55 +1811,6 @@
         ],
         "primary_product": "php",
         "primary_action": "sql-injection",
-        "sources": [
-          "dns",
-          "hids",
-          "rasp",
-          "waf",
-          "web"
-        ],
-        "label_used": true
-      }
-    },
-    {
-      "candidate_id": "CAND-0036",
-      "signature": "F2::XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
-      "label": "XXE OOB 外带（外部实体指向攻击者 DNS 服务器）",
-      "status": "provisional",
-      "incidents": [
-        {
-          "incident_id": "SIM-INC-1039",
-          "event_ids": [
-            "SIM-1039-1",
-            "SIM-1039-2",
-            "SIM-1039-3",
-            "SIM-1039-4",
-            "SIM-1039-5",
-            "SIM-1039-6",
-            "SIM-1039-7"
-          ],
-          "source_batch": "SIM-B-1039",
-          "first_seen": "2026-10-28T02:51:51Z"
-        }
-      ],
-      "created_at": "2026-10-28T02:51:51Z",
-      "updated_at": "2026-10-28T03:32:16Z",
-      "promoted_case_id": null,
-      "family_id": "web-exploit",
-      "signature_key": "bbdf6305be3d9b93",
-      "signature_terms": [
-        "dns",
-        "xxe"
-      ],
-      "signature_features": {
-        "cves": [],
-        "products": [],
-        "actions": [
-          "dns",
-          "xxe"
-        ],
-        "primary_product": "",
-        "primary_action": "xxe",
         "sources": [
           "dns",
           "hids",
@@ -3247,56 +3155,6 @@
         "actions": [],
         "primary_product": "tomcat",
         "primary_action": "",
-        "sources": [
-          "hids",
-          "rasp",
-          "waf",
-          "web"
-        ],
-        "label_used": true
-      }
-    },
-    {
-      "candidate_id": "CAND-0068",
-      "signature": "F4::Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
-      "label": "Apache OFBiz 认证绕过 Groovy 代码执行 (CVE-2023-51467)",
-      "status": "provisional",
-      "incidents": [
-        {
-          "incident_id": "SIM-INC-1075",
-          "event_ids": [
-            "SIM-1075-1",
-            "SIM-1075-2",
-            "SIM-1075-3",
-            "SIM-1075-4",
-            "SIM-1075-5"
-          ],
-          "source_batch": "SIM-B-1075",
-          "first_seen": "2026-10-28T02:51:52Z"
-        }
-      ],
-      "created_at": "2026-10-28T02:51:52Z",
-      "updated_at": "2026-10-28T03:32:17Z",
-      "promoted_case_id": null,
-      "family_id": "web-exploit",
-      "signature_key": "3d9aa0659d759b65",
-      "signature_terms": [
-        "CVE-2023-51467",
-        "ofbiz",
-        "groovy"
-      ],
-      "signature_features": {
-        "cves": [
-          "CVE-2023-51467"
-        ],
-        "products": [
-          "ofbiz"
-        ],
-        "actions": [
-          "groovy"
-        ],
-        "primary_product": "ofbiz",
-        "primary_action": "groovy",
         "sources": [
           "hids",
           "rasp",

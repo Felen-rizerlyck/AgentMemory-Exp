@@ -10,7 +10,7 @@
 ## 结果
 
 ```
-raw_logs.csv            45 -> 581 行
+raw_logs.csv            45 -> 581 行（retention 归档 16 行后 565）
 event_pattern_links.csv 45 -> 265 行
 attack_patterns.json    8 -> 9 个案例（CASE-009 由候选晋升）
 CASE-005                v1 -> v2（新增 optional S9）-> v3（S9 迁入 family）
@@ -20,9 +20,10 @@ CASE-009                v1（CAND-0001 晋升，single_sample，unreviewed）
 proposals               2 条 accepted（auto）
 migrations              2 条 v2->v3
 admissions              1 条（ADM-CASE-009 unreviewed）
-candidate clusters     91 records -> 84 active (77 provisional / 6 promotable / 1 promoted) + 7 merged
+candidate clusters     88 records -> 81 active (74 provisional / 6 promotable / 1 promoted) + 7 merged
 incident chains        59 (56 unclassified; SIM-INC-1083 has 3 annotated DNS events)
 case lifecycle         0 (no production merge/retire applied)
+retention apply        candidate=150d: 3 incidents / 16 events / 3 candidates -> data/archive/2026-10/ (gzip)
 audit                   clean（计数与 maturity 读时从 confirmed 链接推导）
 ```
 
@@ -100,6 +101,7 @@ python src/manage_memory.py catalog admissions
 python src/manage_memory.py catalog chains --rebuild
 python src/manage_memory.py catalog chain --incident-id SIM-INC-1083 --summarize
 python src/manage_memory.py catalog lifecycle
+python src/manage_memory.py catalog retention --as-of 2026-10-29
 python src/manage_memory.py audit
 python src/lookup_case_logs.py --case-id CASE-005 --status related
 python src/run_demo.py --input data/raw_logs.csv --incident-id INC-CASE-005-001
@@ -219,9 +221,53 @@ unexplained segments: 0
 记录在 `case_lifecycle.json`；merge 不改 steps/links，retired case 保留历史但检索跳过。当前
 ledger 为空（没有真实案例需要合并/退休），操作由 synthetic 测试覆盖。自动衰减退休仍延期。
 
+## 保留策略 apply
+
+早期试验 TTL：`candidate=150d`、`variant=180d`、`unclassified=90d`。apply 前报告：
+
+```
+149 incidents, 571 grouped events / 581 raw events, 10 unassigned
+classes: anchor=16, candidate=90, variant=42, fixture=1
+expired: 3 incidents / 16 events
+protected: 31
+```
+
+按 incident 分类，不按每条日志：
+
+- anchor（confirmed link）永久保留；
+- fixture 保留；
+- candidate 只有 `promotable` / `promoted` / `merged` 才受保护；provisional 超过 150 天可过期；
+- variant 180 天，open proposal / annotated chain 保护；
+- unclassified 90 天。
+
+实际 apply：
+
+```
+3 incidents / 16 events / 3 candidates 归档
+CAND-0010, CAND-0036, CAND-0068
+archive: data/archive/2026-10/（monthly gzip）
+tombstones: 1 run（incident 摘要 + 仅引用事件）
+```
+
+apply 后：
+
+```
+146 incidents, 555 grouped events / 565 raw events
+0 expired
+candidate 88 records: 81 active（74 provisional / 6 promotable / 1 promoted）+ 7 merged
+active 312,909 B / archive 2,397 B / data 374,957 B
+files: active 4 / archive 5 / data 25
+```
+
+`--apply` 先写 monthly gzip 段，再写 run 级 tombstone（incident 摘要 + `content_hash_root`）；只有仍被
+active links/chains/candidates/proposals 引用的事件才保留 per-event tombstone。这样 tombstone
+不会按归档事件线性膨胀。可选硬上限：`--max-active-bytes`、`--archive-max-days`。
+
+10 条未归组事件仍来自 `SIM-B-1035` 和 `SIM-B-1076`；报告会显式列出，而不是隐藏。
+
 ## 剩余说明
 
-- 剩余候选：77 provisional、6 promotable、1 promoted、7 merged；6 个 promotable 待作者写 pattern。
+- 剩余候选：74 provisional、6 promotable、1 promoted、7 merged；6 个 promotable 待作者写 pattern。
 - 它们留在 `raw_logs.csv`（`SIM-B-*` 批次）并由 `case_candidates.json` 跟踪，没有被强行建案。
 - CAND-0001 的事件现在带 `CASE-009` / `SIM-INC-1002` 标签；CAND-0066 的 incident `SIM-INC-1073`
   进入 `pending_case_links`，尚未自动链到 CASE-009。

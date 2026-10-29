@@ -71,15 +71,17 @@ demo/
 ├── data/
 │   ├── attack_patterns.json       # current case catalog; 9 cases, 32 case steps
 │   ├── families.json              # 5 families + family-level steps (ransomware/S9, supply-chain/S4)
-│   ├── case_candidates.json       # 91 records: 84 active + 7 merged aliases
+│   ├── case_candidates.json       # 88 records: 81 active + 7 merged aliases
 │   ├── case_admissions.json       # new-case admissions; currently CASE-009 is unreviewed
 │   ├── case_lifecycle.json        # merge/split/retire/reactivate ledger (currently empty)
 │   ├── pattern_proposals.json     # 2 accepted add_step proposals (CASE-005/007 v1 -> v2)
 │   ├── pattern_migrations.json    # 2 reviewed v2 -> v3 moves (S9/S4 into families)
 │   ├── pattern_versions/          # immutable snapshots v001..v003 for CASE-005/007
-│   ├── raw_logs.csv               # 581 observations: seed data + dataset units 1001-1140
+│   ├── raw_logs.csv               # 565 active observations (16 archived)
 │   ├── event_pattern_links.csv    # 265 reviewed links
 │   ├── incident_chains.json       # 59 incident chains with independent stages
+│   ├── archive/2026-10/           # monthly gzip: raw/links/chains/candidates + run manifests
+│   ├── retention_tombstones.json  # 1 run; incident summaries + referenced-event tombstones
 │   ├── promoted/
 │   │   └── CASE-009.json          # authored pattern used to promote CAND-0001
 │   ├── proposals/
@@ -99,6 +101,7 @@ demo/
 │   │   ├── chains.py              # incident chains, stage annotations, summaries
 │   │   ├── migrations.py          # reviewed migration ledger
 │   │   ├── lifecycle.py           # case merge/split/retire ledger
+│   │   ├── retention.py           # incident-level retention classifier/report
 │   │   ├── admissions.py          # new-case admission ledger + review marker
 │   │   ├── signatures.py          # deterministic candidate signature features (step 1)
 │   │   └── manage.py              # the 4-verb CLI
@@ -122,7 +125,7 @@ demo/
 The management CLI has four top-level verbs:
 
 ```text
-catalog   validate / add / stage / merge / split / merge-case / split-case / retire / reactivate / lifecycle / candidates / chains / chain / families / migrations / admissions / review-case
+catalog   validate / add / stage / merge / split / merge-case / split-case / retire / reactivate / lifecycle / retention / candidates / chains / chain / families / migrations / admissions / review-case
 review    link / associate / stage
 evolve    propose / list / accept / reject / rollback
 audit     [--verbose] [--case-id CASE]
@@ -142,6 +145,7 @@ python src/manage_memory.py review stage --incident-id SIM-INC-1083 --event-id S
 python src/manage_memory.py catalog merge --primary CAND-0002 --alias CAND-0058 --basis "same signature_key"
 python src/manage_memory.py catalog split --primary CAND-0002 --alias CAND-0058 --basis "wrong merge"
 python src/manage_memory.py catalog lifecycle
+python src/manage_memory.py catalog retention --as-of 2026-10-29
 python src/manage_memory.py catalog retire --case-id CASE-009 --basis "obsolete"
 python src/manage_memory.py catalog reactivate --case-id CASE-009 --basis "restored"
 python src/manage_memory.py catalog merge-case --source CASE-009 --target CASE-001 --basis "alias duplicate"
@@ -168,6 +172,7 @@ python src/manage_memory.py catalog review-case --case-id CASE-009 --basis "revi
   `merged_into=target`; steps and existing links are not rewritten. `split-case` restores it.
   `retire` / `reactivate` are independent lifecycle actions. All are recorded in
   `case_lifecycle.json` and shown by `catalog lifecycle`.
+- `catalog retention` is a read-only incident-level report; it does not delete or archive data.
 - `catalog review-case` removes the `unreviewed` marker after human review. Only the marker is
   removed; `admission_id` stays for audit.
 
@@ -392,21 +397,85 @@ reject it.
 Same-product but different techniques (for example OFBiz XML-RPC vs OFBiz Groovy) stay separate;
 product-only PHP variants are not merged.
 
+## Retention
+
+`catalog retention` classifies incidents, not individual rows. With no `--apply` it is read-only:
+
+| class | protection | TTL |
+|---|---|---|
+| `anchor` | confirmed link to a case | keep |
+| `fixture` | synthetic validation | keep |
+| `candidate` | `promotable` / `promoted` / `merged` | 150 days for provisional |
+| `variant` | none (unless open proposal/annotation) | 180 days |
+| `unclassified` | none | 90 days |
+
+The clock is the latest event timestamp, not last recall. No per-log access timestamp is written.
+The TTLs are early-experiment defaults and will be revisited at deployment.
+
+Before apply (as of 2026-10-29):
+
+```
+149 incidents, 571 grouped events / 581 raw events
+classes: anchor=16, candidate=90, variant=42, fixture=1
+expired: 3 incidents / 16 events
+protected: 31
+unassigned: 10 events (SIM-B-1035 and SIM-B-1076)
+```
+
+The apply was run with the experimental TTLs:
+
+```
+3 incidents / 16 events / 3 candidates archived
+CAND-0010, CAND-0036, CAND-0068
+archive: data/archive/2026-10/ (monthly gzip)
+```
+
+After apply:
+
+```
+146 incidents, 555 grouped events / 565 raw events
+expired: 0
+candidate records: 88 (81 active + 7 merged)
+bytes: active=312909 archive=2397 data=374957
+files: active=4 archive=5 data=25
+```
+
+`--apply` writes monthly gzip segments (`raw_logs.csv.gz`, `event_pattern_links.csv.gz`,
+`incident_chains.json.gz`, `case_candidates.json.gz`) plus a per-run manifest. It then writes one
+run to `retention_tombstones.json`: an incident-level summary with `content_hash_root`, and
+per-event tombstones only for events still referenced by active links/chains/candidates/proposals.
+This keeps tombstones bounded instead of one record per archived event.
+
+Hard caps are optional:
+
+```powershell
+python src/manage_memory.py catalog retention --apply \
+  --max-active-bytes 500000000 --archive-max-days 365
+```
+
+- `--max-active-bytes` archives the oldest eligible non-anchor incidents until the active files are
+  under the cap;
+- `--archive-max-days` deletes a whole archive group only when **all** runs in it are older than the
+  limit.
+
+The 10 unassigned events are still a real gap; the report lists them.
+
 ## Current demo state
 
 ```
 cases                9 (CASE-001..CASE-009)
 case steps           32 (0 optional case steps)
 families             5
-candidates           91 records: 84 active (77 provisional, 6 promotable, 1 promoted) + 7 merged
+candidates           88 records: 81 active (74 provisional, 6 promotable, 1 promoted) + 7 merged
 admissions           1 (CASE-009 unreviewed)
 links                265
-raw events           581
+raw events           565 (16 archived)
 proposals            2 accepted (v1 -> v2)
 migrations           2 reviewed (v2 -> v3)
 chains               59 (56 unclassified events; 3 annotated in SIM-INC-1083)
 lifecycle            0 events (no production merge/retire applied)
-tests                97
+retention            146 incidents / 555 grouped of 565 events; 1 archive run; 0 expired
+tests                100
 audit                clean
 ```
 
@@ -445,6 +514,7 @@ carry only their `SIM-B-<unit>` batch scope; CAND-0001's rows now carry `CASE-00
   linked to the promoted case.
 - `reorder_steps` is implemented; case-level alias `merge-case`/`split-case` and
   `retire`/`reactivate` are implemented; automatic decay-based retirement is deferred.
+- Retention archive/tombstone apply is implemented; the TTLs are early-experiment defaults, and 10 unassigned events still need review.
 - Chain summaries are suggestions; they never create a case or a stage automatically.
 - Migrations are recorded in their own ledger; they are not re-evaluated by the proposal gate.
 - `decided_at`/`reviewed_at` exist, but there is no authenticated reviewer identity.

@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "runs": [
+    {
+      "run_id": "20261029T054724Z",
+      "archived_at": "2026-10-29T05:47:25Z",
+      "archive_dir": "archive/2026-10",
+      "incidents": [
+        "SIM-INC-1011",
+        "SIM-INC-1039",
+        "SIM-INC-1075"
+      ],
+      "events": 16,
+      "links": 0,
+      "chains": 0,
+      "candidates": [
+        "CAND-0010",
+        "CAND-0036",
+        "CAND-0068"
+      ],
+      "incident_summaries": [
+        {
+          "incident_id": "SIM-INC-1011",
+          "classification": "candidate",
+          "events": 4,
+          "first_event_at": "2026-06-01 02:47:06",
+          "last_event_at": "2026-06-01 02:48:35",
+          "content_hash_root": "cf68e05956d23e178d6d41da0d0655b59b59401fff9efec3d92462523fa5cff0"
+        },
+        {
+          "incident_id": "SIM-INC-1039",
+          "classification": "candidate",
+          "events": 7,
+          "first_event_at": "2026-06-01 08:28:06",
+          "last_event_at": "2026-06-01 22:19:46",
+          "content_hash_root": "6fb22e28b2ff98cff885a8d5ebaa21b7ab16f5d89d09a482853d7f58dc12fb5f"
+        },
+        {
+          "incident_id": "SIM-INC-1075",
+          "classification": "candidate",
+          "events": 5,
+          "first_event_at": "2026-06-01 16:18:11",
+          "last_event_at": "2026-06-01 16:21:12",
+          "content_hash_root": "6bd93306375227571c0ade1318f989ea37c205ffcb69a434374aba7f9b8217a4"
+        }
+      ],
+      "referenced_tombstones": [],
+      "archive_layout": "monthly"
+    }
+  ]
+}
