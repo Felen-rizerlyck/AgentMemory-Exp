@@ -21,6 +21,8 @@ proposals               2 条 accepted（auto）
 migrations              2 条 v2->v3
 admissions              1 条（ADM-CASE-009 unreviewed）
 candidate clusters     91 records -> 84 active (77 provisional / 6 promotable / 1 promoted) + 7 merged
+incident chains        59 (56 unclassified; SIM-INC-1083 has 3 annotated DNS events)
+case lifecycle         0 (no production merge/retire applied)
 audit                   clean（计数与 maturity 读时从 confirmed 链接推导）
 ```
 
@@ -95,7 +97,9 @@ python src/manage_memory.py catalog candidates
 python src/manage_memory.py catalog families
 python src/manage_memory.py catalog migrations
 python src/manage_memory.py catalog admissions
-python src/manage_memory.py catalog candidates --by-group
+python src/manage_memory.py catalog chains --rebuild
+python src/manage_memory.py catalog chain --incident-id SIM-INC-1083 --summarize
+python src/manage_memory.py catalog lifecycle
 python src/manage_memory.py audit
 python src/lookup_case_logs.py --case-id CASE-005 --status related
 python src/run_demo.py --input data/raw_logs.csv --incident-id INC-CASE-005-001
@@ -190,6 +194,30 @@ pattern: review_status=unreviewed, admission_id=ADM-CASE-009
 实验阶段没有人工门禁，CASE-009 保持 `unreviewed`；`run_demo` 会显示 `UNREVIEWED`。部署时用
 `catalog review-case --case-id CASE-009 --basis ... --reviewer ...` 清除标记，ledger 变为
 reviewed，`admission_id` 保留用于追溯。`catalog validate` / `audit` 检查 ledger 与 marker 一致。
+
+## Phase 3：incident chain
+
+`demo/data/incident_chains.json` 有 59 条链、56 个 unclassified event。每个事件有独立 stage：
+
+- `case_step`：case 步骤覆盖；
+- `family_step`：family 步骤覆盖；
+- `annotated`：人工/agent 独立标注；
+- `unclassified`：模式之外、尚未命名。
+
+示例：`SIM-INC-1083` 的 3 个 DNS 事件被标为 `exfiltration`：
+
+```
+stage sequence: S9 -> exfiltration -> exfiltration -> exfiltration
+unexplained segments: 0
+```
+
+`review stage` 不写 case/link；`catalog chains --rebuild` 会保留 annotated stage；`catalog chain
+--summarize` 只对 unclassified 段给建议，不自动建案。
+
+`reorder_steps` 已实现为 evolution operation：列出全部 step、≥2 confirmed incidents、strong/coverage
+不下降、非 auto。case 级 alias `merge-case` / `split-case` / `retire` / `reactivate` 已实现，
+记录在 `case_lifecycle.json`；merge 不改 steps/links，retired case 保留历史但检索跳过。当前
+ledger 为空（没有真实案例需要合并/退休），操作由 synthetic 测试覆盖。自动衰减退休仍延期。
 
 ## 剩余说明
 

@@ -8,6 +8,7 @@ from collections import defaultdict
 
 from . import admissions as admission_store
 from . import candidates as candidate_store
+from . import lifecycle as lifecycle_store
 from . import storage
 from .retrieval import build_action_index
 from .storage import atomic_write_json, load_patterns, read_csv, validate_pattern
@@ -147,6 +148,110 @@ def review_case(case_id: str, basis: str, reviewer: str = "human") -> dict:
     pattern["reviewed_by"] = reviewer
     atomic_write_json(storage.PATTERNS_PATH, data)
     return record
+
+
+def active_patterns(patterns: list[dict]) -> list[dict]:
+    return [pattern for pattern in patterns if pattern.get("status", "active") != "retired"]
+
+
+def retire_case(case_id: str, basis: str, reviewer: str = "agent") -> dict:
+    data = load_validated_catalog()
+    pattern = next((item for item in data["attack_patterns"] if item["case_id"] == case_id), None)
+    if pattern is None:
+        raise ValueError(f"unknown case_id: {case_id}")
+    if pattern.get("status") == "retired":
+        raise ValueError(f"{case_id} is already retired")
+    if pattern.get("merged_into"):
+        raise ValueError(f"{case_id} is merged into {pattern['merged_into']}; split it first")
+    pattern["status"] = "retired"
+    pattern["retired_at"] = now_iso()
+    pattern["retired_basis"] = basis
+    pattern["retired_by"] = reviewer
+    atomic_write_json(storage.PATTERNS_PATH, data)
+    return {"case_id": case_id, "status": "retired",
+            "event": lifecycle_store.record("retire", case_id, basis, reviewer)}
+
+
+def reactivate_case(case_id: str, basis: str, reviewer: str = "agent") -> dict:
+    data = load_validated_catalog()
+    pattern = next((item for item in data["attack_patterns"] if item["case_id"] == case_id), None)
+    if pattern is None:
+        raise ValueError(f"unknown case_id: {case_id}")
+    if pattern.get("status") != "retired":
+        raise ValueError(f"{case_id} is not retired")
+    if pattern.get("merged_into"):
+        raise ValueError(f"{case_id} is merged into {pattern['merged_into']}; use split")
+    pattern["status"] = "active"
+    pattern.pop("retired_at", None)
+    pattern.pop("retired_basis", None)
+    pattern.pop("retired_by", None)
+    atomic_write_json(storage.PATTERNS_PATH, data)
+    return {"case_id": case_id, "status": "active",
+            "event": lifecycle_store.record("reactivate", case_id, basis, reviewer)}
+
+
+def merge_case(source_id: str, target_id: str, basis: str, reviewer: str = "agent") -> dict:
+    data = load_validated_catalog()
+    source = next((item for item in data["attack_patterns"] if item["case_id"] == source_id), None)
+    target = next((item for item in data["attack_patterns"] if item["case_id"] == target_id), None)
+    if source is None or target is None:
+        raise ValueError("unknown source or target case")
+    if source_id == target_id:
+        raise ValueError("cannot merge a case into itself")
+    if source.get("status") == "retired":
+        raise ValueError(f"{source_id} is already retired")
+    if target.get("status") == "retired":
+        raise ValueError(f"target {target_id} is retired")
+    if (source.get("family_id") or "") != (target.get("family_id") or ""):
+        raise ValueError("merge requires the same family")
+    candidates = candidate_store.load_candidates()
+    candidate_ids = [item["candidate_id"] for item in candidates["candidates"]
+                     if item.get("promoted_case_id") == source_id]
+    for item in candidates["candidates"]:
+        if item.get("promoted_case_id") == source_id:
+            item["promoted_case_id"] = target_id
+    source["status"] = "retired"
+    source["merged_into"] = target_id
+    source["merged_at"] = now_iso()
+    source["merged_basis"] = basis
+    source["retired_at"] = now_iso()
+    source["retired_basis"] = basis
+    source["retired_by"] = reviewer
+    atomic_write_json(storage.PATTERNS_PATH, data)
+    candidate_store.save_candidates(candidates)
+    event = lifecycle_store.record("merge", source_id, basis, reviewer, target=target_id,
+                                   candidate_ids=candidate_ids)
+    return {"case_id": source_id, "target": target_id, "status": "retired",
+            "candidate_ids": candidate_ids, "event": event}
+
+
+def split_case(case_id: str, basis: str, reviewer: str = "agent") -> dict:
+    data = load_validated_catalog()
+    pattern = next((item for item in data["attack_patterns"] if item["case_id"] == case_id), None)
+    if pattern is None:
+        raise ValueError(f"unknown case_id: {case_id}")
+    target = pattern.get("merged_into")
+    if not target:
+        raise ValueError(f"{case_id} is not merged")
+    merge_event = lifecycle_store.latest_merge(case_id)
+    candidate_ids = (merge_event or {}).get("candidate_ids") or []
+    candidates = candidate_store.load_candidates()
+    for item in candidates["candidates"]:
+        if item.get("candidate_id") in candidate_ids and item.get("promoted_case_id") == target:
+            item["promoted_case_id"] = case_id
+    pattern["status"] = "active"
+    pattern.pop("merged_into", None)
+    pattern.pop("merged_at", None)
+    pattern.pop("merged_basis", None)
+    pattern.pop("retired_at", None)
+    pattern.pop("retired_basis", None)
+    pattern.pop("retired_by", None)
+    atomic_write_json(storage.PATTERNS_PATH, data)
+    candidate_store.save_candidates(candidates)
+    event = lifecycle_store.record("split", case_id, basis, reviewer, target=target,
+                                   candidate_ids=candidate_ids)
+    return {"case_id": case_id, "target": target, "status": "active",
+            "candidate_ids": candidate_ids, "event": event}
 
 
 def write_version_snapshot(pattern: dict):

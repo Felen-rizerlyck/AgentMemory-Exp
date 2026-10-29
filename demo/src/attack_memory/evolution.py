@@ -16,7 +16,7 @@ from .storage import (atomic_write_json, latest_link_by_event, read_csv, read_li
                       update_event_labels, validate_pattern)
 
 PROPOSALS_PATH = storage.DATA_DIR / "pattern_proposals.json"
-OPERATIONS = ("add_step", "extend_step", "add_source", "set_required")
+OPERATIONS = ("add_step", "extend_step", "add_source", "set_required", "reorder_steps")
 AUTO_OPERATIONS = frozenset({"add_step", "extend_step", "add_source"})
 
 
@@ -70,6 +70,13 @@ def validate_proposal(proposal: dict) -> None:
         for field in ("step_id", "order", "action_id", "action_regex", "expected_sources"):
             if field not in step:
                 raise ValueError(f"proposed step missing {field}")
+    elif operation == "reorder_steps":
+        order = proposal.get("order")
+        if (not isinstance(order, list) or len(order) < 2
+                or not all(isinstance(item, str) and item.strip() for item in order)):
+            raise ValueError("reorder_steps requires an order list of at least two step IDs")
+        if len(set(order)) != len(order):
+            raise ValueError("reorder_steps order contains duplicate step IDs")
     else:
         if not isinstance(proposal.get("step_id"), str) or not proposal["step_id"].strip():
             raise ValueError(f"{operation} requires step_id")
@@ -100,6 +107,14 @@ def apply_delta(pattern: dict, proposal: dict) -> dict:
         if any(item["action_id"] == step["action_id"] for item in steps):
             raise ValueError(f"duplicate action_id {step['action_id']}")
         steps.append(step)
+        steps.sort(key=lambda item: int(item["order"]))
+    elif operation == "reorder_steps":
+        order = proposal["order"]
+        if set(order) != {step["step_id"] for step in steps}:
+            raise ValueError("reorder_steps must list every step exactly once")
+        by_id = {step["step_id"]: step for step in steps}
+        for index, step_id in enumerate(order, start=1):
+            by_id[step_id]["order"] = index
         steps.sort(key=lambda item: int(item["order"]))
     else:
         target = next((item for item in steps if item["step_id"] == proposal["step_id"]), None)
@@ -137,9 +152,77 @@ def _case_metrics(pattern: dict, rows_by_incident: dict[str, list[dict[str, str]
     return (sum(coverages) / len(coverages) if coverages else 0.0), strong
 
 
+def _evaluate_reorder(patterns: list[dict], logs: list[dict[str, str]],
+                      links: list[dict[str, str]], proposal: dict) -> dict:
+    problems: list[str] = []
+    case_id = proposal["case_id"]
+    base = next((pattern for pattern in patterns if pattern["case_id"] == case_id), None)
+    if base is None:
+        return {"ok": False, "problems": [f"unknown case_id {case_id}"], "metrics": {},
+                "candidate": None, "auto_eligible": False}
+    version = pattern_version(base)
+    if proposal["base_version"] != version:
+        problems.append(f"stale proposal: base_version={proposal['base_version']} but {case_id} is at v{version}")
+    try:
+        candidate = apply_delta(base, proposal)
+        candidate["version"] = version + 1
+        candidate["supersedes"] = version
+        candidate["updated_at"] = now_iso()
+        validate_pattern(candidate)
+        catalog = [candidate if pattern["case_id"] == case_id else pattern for pattern in patterns]
+        build_action_index(catalog)
+    except ValueError as error:
+        return {"ok": False, "problems": [str(error)], "metrics": {},
+                "candidate": None, "auto_eligible": False}
+
+    confirmed = {incident for incident, case in confirmed_pairs(links) if case == case_id}
+    if len(confirmed) < MIN_SUPPORT_INCIDENTS:
+        problems.append(f"reorder needs at least {MIN_SUPPORT_INCIDENTS} confirmed incidents")
+    known_events = {(row.get("event_id") or ""): row for row in logs}
+    latest = latest_link_by_event(links)
+    support_events = []
+    for event_id in proposal["supporting_event_ids"]:
+        if event_id not in known_events:
+            problems.append(f"unknown supporting event {event_id}")
+            continue
+        link = latest.get(event_id) or {}
+        if ((link.get("link_status") or "") != "confirmed"
+                or (link.get("case_id") or "") != case_id
+                or (link.get("incident_id") or "") not in confirmed):
+            problems.append(f"{event_id} is not a confirmed event of {case_id}")
+            continue
+        support_events.append(event_id)
+    rows_by_incident: dict[str, list[dict[str, str]]] = defaultdict(list)
+    for row in logs:
+        incident = (row.get("incident_id") or "").strip()
+        if incident in confirmed:
+            rows_by_incident[incident].append(row)
+    coverage_before, strong_before = _case_metrics(base, rows_by_incident, confirmed)
+    coverage_after, strong_after = _case_metrics(candidate, rows_by_incident, confirmed)
+    if strong_after < strong_before:
+        problems.append(f"reorder drops strong incidents from {strong_before} to {strong_after}")
+    if coverage_after < coverage_before:
+        problems.append(f"reorder drops required coverage from {coverage_before:.3f} to {coverage_after:.3f}")
+    metrics = {
+        "support_incidents": len(confirmed),
+        "support_events": len(support_events),
+        "coverage_before": round(coverage_before, 3),
+        "coverage_after": round(coverage_after, 3),
+        "strong_before": strong_before,
+        "strong_after": strong_after,
+        "foreign_matches": 0,
+        "narrowing": 0,
+        "reorder": True,
+    }
+    return {"ok": not problems, "problems": problems, "metrics": metrics,
+            "candidate": candidate, "catalog": catalog, "auto_eligible": False}
+
+
 def evaluate_proposal(patterns: list[dict], logs: list[dict[str, str]],
                       links: list[dict[str, str]], proposal: dict) -> dict:
     """Deterministic gate: evidence, support, pollution and shadow regression checks."""
+    if proposal.get("operation") == "reorder_steps":
+        return _evaluate_reorder(patterns, logs, links, proposal)
     problems: list[str] = []
     metrics: dict = {}
     case_id = proposal["case_id"]

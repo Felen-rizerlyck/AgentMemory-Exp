@@ -112,6 +112,22 @@ Schema moves that are not pattern deltas are recorded in `data/pattern_migration
 
 `catalog migrations` lists them. `catalog validate` and `audit` check that the snapshot exists, the versions are consecutive, the step is no longer in the case, and the family step exists. A migration does not run the proposal gate; it is an explicit reviewed change with its own ledger.
 
+## Case lifecycle
+
+`data/case_lifecycle.json` records case-level lifecycle events:
+
+```json
+{"event_id": "LIF-0001", "action": "merge", "case_id": "CASE-009", "target": "CASE-001",
+ "basis": "alias duplicate", "reviewer": "analyst", "candidate_ids": ["CAND-0001"]}
+```
+
+Actions are `merge`, `split`, `retire`, `reactivate`. A merge is a conservative alias merge: the
+source gets `status: "retired"` and `merged_into: target`; steps and existing links are not rewritten.
+The target must be active and in the same family. `split` reverses the latest merge. `retire` and
+`reactivate` are independent. Retired cases keep their history but are skipped by `retrieve`, and
+`catalog families` reports `retired=N`. `catalog validate` / `audit` check the latest lifecycle event
+against the case's `status` / `merged_into`.
+
 ## Admissions
 
 A model- or analyst-added case gets an admission record in `data/case_admissions.json`:
@@ -133,6 +149,33 @@ The pattern carries `review_status: "unreviewed"` and `admission_id`. `catalog r
 ledger record to `reviewed` and removes only the marker; the `admission_id` stays. `catalog validate`
 and `audit` require the ledger and marker to agree, so a marker cannot drift away from its record.
 `run_demo` and `lookup` display `UNREVIEWED`.
+
+## Incident chains
+
+`data/incident_chains.json` records every known incident as ordered events, independent of a case:
+
+```json
+{
+  "incident_id": "SIM-INC-1083",
+  "case_id": "CASE-005",
+  "events": [
+    {"event_id": "SIM-1083-1", "timestamp": "...", "source": "hids",
+     "stage": "S9", "stage_kind": "family_step", "label": "...", "stage_order": 9,
+     "stage_basis": ""},
+    {"event_id": "SIM-1083-2", "timestamp": "...", "source": "dns",
+     "stage": "exfiltration", "stage_kind": "annotated", "label": "DNS tunneling",
+     "stage_order": 4, "stage_basis": "three DNS events at a two-minute cadence",
+     "reviewed_at": "..."}
+  ],
+  "updated_at": "..."
+}
+```
+
+Stage kinds are `case_step`, `family_step`, `annotated`, `unclassified`. `catalog chains --rebuild`
+derives the chain from raw logs and links but preserves `annotated` events. `review stage` writes an
+annotation without touching a case or link. `catalog chain --summarize` groups consecutive
+`unclassified` events and suggests labels; it never writes a case automatically. `audit` checks
+event existence, stage kind, annotation basis, and case-step references.
 
 ## Candidates
 
@@ -185,7 +228,7 @@ An accepted change never edits history in place:
 - the new version is written to the catalog and snapshotted too;
 - `data/pattern_proposals.json` keeps every proposal with its evidence, gate metrics and decision.
 
-A proposal names `case_id`, `base_version`, `operation` (`add_step`, `extend_step`, `add_source`, `set_required`), a `rationale`, and `supporting_event_ids`. The supporting events are the evidence: they must exist, belong to incidents **confirmed or related** to the case, and be matched by the proposed step. Two independent incidents are the minimum. `--auto` is limited to completion-class operations; `set_required` always needs an explicit accept.
+A proposal names `case_id`, `base_version`, `operation` (`add_step`, `extend_step`, `add_source`, `set_required`, `reorder_steps`), a `rationale`, and `supporting_event_ids`. The supporting events are the evidence: they must exist, belong to incidents **confirmed or related** to the case, and be matched by the proposed step. Two independent incidents are the minimum. `--auto` is limited to completion-class operations; `set_required` always needs an explicit accept. `reorder_steps` requires an `order` list containing every step exactly once; it uses confirmed incidents, keeps `strong`/coverage from dropping, and is never auto-accepted.
 
 ## Observation counts
 

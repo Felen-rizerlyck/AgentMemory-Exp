@@ -19,6 +19,8 @@
 9. Validate before adding. The management CLI refuses duplicate case IDs, malformed steps, any redefinition of an existing `action_id` with a different regex, a pattern whose steps are all optional, and a new case with fewer than two supporting incidents unless `--force` is explicit.
 10. Set `family_id` from `data/families.json`. Reuse an existing family; a new family is a reviewed taxonomy change, not a per-case label. Family `steps` are broad behaviors linked only as `related`; they are not case required steps. `catalog validate` and `audit` require the registry and catalog to agree.
 11. Every added case writes an admission (`case_admissions.json`) and carries `review_status: "unreviewed"` + `admission_id`. Experiment mode may leave it unreviewed; deployment mode must run `catalog review-case` before treating the case as trusted.
+12. Behavior outside every case belongs on the incident chain: `review stage --incident-id --event-id --stage --basis`. It does not create a case and does not alter links; `catalog chain --summarize` only suggests labels.
+13. Case lifecycle is explicit and recorded in `case_lifecycle.json`: `merge-case` (same-family alias; source retired), `split-case`, `retire`, `reactivate`. A merge does not rewrite steps/links; retired cases keep history but are skipped by retrieval.
 
 ## Link rows
 

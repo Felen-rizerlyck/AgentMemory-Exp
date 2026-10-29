@@ -1,0 +1,2451 @@
+{
+  "schema_version": 1,
+  "chains": [
+    {
+      "incident_id": "INC-CASE-001-001",
+      "case_id": "CASE-001",
+      "events": [
+        {
+          "event_id": "EVT-CASE001-01",
+          "timestamp": "2026-10-21 09:00:00+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "Web 参数中的 ${jndi:…} 注入",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE001-02",
+          "timestamp": "2026-10-21 09:00:01+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "Web 参数中的 ${jndi:…} 注入",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE001-03",
+          "timestamp": "2026-10-21 09:00:03+08:00",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 JNDI 解析并回连",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE001-04",
+          "timestamp": "2026-10-21 09:02:00+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "java 进程派生子 shell 执行命令",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-002-001",
+      "case_id": "CASE-002",
+      "events": [
+        {
+          "event_id": "EVT-CASE002-01",
+          "timestamp": "2026-10-21 10:00:00+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "PUT 写入 JSP webshell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-02",
+          "timestamp": "2026-10-21 10:00:01+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "PUT 写入 JSP webshell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-03",
+          "timestamp": "2026-10-21 10:00:03+08:00",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧记录 webshell 上传与 exec",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-04",
+          "timestamp": "2026-10-21 10:02:05+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "Tomcat 进程派生子 shell 执行探针",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-05",
+          "timestamp": "2026-10-21 12:26:05+08:00",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-06",
+          "timestamp": "2026-10-21 12:26:28+08:00",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE002-07",
+          "timestamp": "2026-10-21 12:27:03+08:00",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-003-001",
+      "case_id": "CASE-003",
+      "events": [
+        {
+          "event_id": "EVT-CASE003-01",
+          "timestamp": "2026-10-21 11:00:00+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "调度接口命令注入（cmd=schtasks）",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE003-02",
+          "timestamp": "2026-10-21 11:00:01+08:00",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧记录 cmd_inject=schtasks",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE003-03",
+          "timestamp": "2026-10-21 11:01:27+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "创建周期计划任务执行载荷",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-004-001",
+      "case_id": "CASE-004",
+      "events": [
+        {
+          "event_id": "EVT-CASE004-01",
+          "timestamp": "2026-10-21 12:00:00+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "_ignition/execute-solution 触发",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE004-02",
+          "timestamp": "2026-10-21 12:00:01+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "_ignition/execute-solution 触发",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE004-03",
+          "timestamp": "2026-10-21 12:00:03+08:00",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 phar:// 反序列化载荷",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE004-04",
+          "timestamp": "2026-10-21 12:01:01+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "PHP-FPM 派生子 shell 执行命令",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE004-05",
+          "timestamp": "2026-10-21 12:01:46+08:00",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "追加 crontab 定时回连",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-005-001",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "EVT-CASE005-01",
+          "timestamp": "2026-10-21 13:00:00+08:00",
+          "source": "rasp",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "上传接口落地 WebShell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE005-02",
+          "timestamp": "2026-10-21 13:01:28+08:00",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "cipher 批量加密目录",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE005-03",
+          "timestamp": "2026-10-21 13:05:48+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "删除全部卷影副本",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-006-001",
+      "case_id": "CASE-006",
+      "events": [
+        {
+          "event_id": "EVT-CASE006-01",
+          "timestamp": "2026-10-21 14:00:00+08:00",
+          "source": "hids",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "SharpHound 全量采集",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE006-02",
+          "timestamp": "2026-10-21 14:04:00+08:00",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "压缩采集结果",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE006-03",
+          "timestamp": "2026-10-21 14:04:55+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "上传采集压缩包",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE-007-001",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "EVT-CASE007-01",
+          "timestamp": "2026-10-21 15:00:00+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "CI 流水线触发依赖安装",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE007-02",
+          "timestamp": "2026-10-21 15:00:01+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "CI 流水线触发依赖安装",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE007-03",
+          "timestamp": "2026-10-21 15:00:03+08:00",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 postinstall 派生 shell",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-CASE007-04",
+          "timestamp": "2026-10-21 15:01:01+08:00",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "钩子拉取远程脚本并执行",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-CASE008-001",
+      "case_id": "CASE-008",
+      "events": [
+        {
+          "event_id": "WAF0410001",
+          "timestamp": "2026-10-14 08:12:03+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "X-BEResource SSRF 入口",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "WEB0410002",
+          "timestamp": "2026-10-14 08:12:05+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "X-BEResource SSRF 入口",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "HID0410003",
+          "timestamp": "2026-10-14 08:12:40+08:00",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "w3wp.exe 派生 cmd.exe",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "RASP0410004",
+          "timestamp": "2026-10-14 08:13:20+08:00",
+          "source": "rasp",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "aspnet_client 下 ASPX webshell",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "WEB0410005",
+          "timestamp": "2026-10-14 08:13:35+08:00",
+          "source": "web",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "aspnet_client 下 ASPX webshell",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "HID0410006",
+          "timestamp": "2026-10-14 08:20:11+08:00",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "PrintSpoofer / SeImpersonate 提权",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "HID0410007",
+          "timestamp": "2026-10-14 08:22:03+08:00",
+          "source": "hids",
+          "stage": "S5",
+          "stage_kind": "case_step",
+          "label": "sc.exe create 注册服务",
+          "stage_order": 5,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "DNS0410008",
+          "timestamp": "2026-10-14 08:31:47+08:00",
+          "source": "dns",
+          "stage": "S6",
+          "stage_kind": "case_step",
+          "label": "长标签 DNS TXT beacon",
+          "stage_order": 6,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "INC-DEMO-CASE008-001",
+      "case_id": "CASE-008",
+      "events": [
+        {
+          "event_id": "EVT-SIM008-001",
+          "timestamp": "2026-10-15T09:00:03+08:00",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "X-BEResource SSRF 入口",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-002",
+          "timestamp": "2026-10-15T09:00:05+08:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "X-BEResource SSRF 入口",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-003",
+          "timestamp": "2026-10-15T09:00:39+08:00",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "w3wp.exe 派生 cmd.exe",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-004",
+          "timestamp": "2026-10-15T09:01:14+08:00",
+          "source": "rasp",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "aspnet_client 下 ASPX webshell",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-005",
+          "timestamp": "2026-10-15T09:01:30+08:00",
+          "source": "web",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "aspnet_client 下 ASPX webshell",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-006",
+          "timestamp": "2026-10-15T09:08:11+08:00",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "PrintSpoofer / SeImpersonate 提权",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-007",
+          "timestamp": "2026-10-15T09:10:02+08:00",
+          "source": "hids",
+          "stage": "S5",
+          "stage_kind": "case_step",
+          "label": "sc.exe create 注册服务",
+          "stage_order": 5,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "EVT-SIM008-008",
+          "timestamp": "2026-10-15T09:19:47+08:00",
+          "source": "dns",
+          "stage": "S6",
+          "stage_kind": "case_step",
+          "label": "长标签 DNS TXT beacon",
+          "stage_order": 6,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1001",
+      "case_id": "CASE-001",
+      "events": [
+        {
+          "event_id": "SIM-1001-1",
+          "timestamp": "2026-06-21 07:34:46",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "Web 参数中的 ${jndi:…} 注入",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1001-2",
+          "timestamp": "2026-06-21 07:34:47",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "Web 参数中的 ${jndi:…} 注入",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1001-3",
+          "timestamp": "2026-06-21 07:34:49",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 JNDI 解析并回连",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1001-4",
+          "timestamp": "2026-06-21 07:36:46",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "java 进程派生子 shell 执行命令",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1002",
+      "case_id": "CASE-009",
+      "events": [
+        {
+          "event_id": "SIM-1002-1",
+          "timestamp": "2026-06-12 07:55:38",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "class.module.classLoader 属性链探测（WAF/Web）",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1002-2",
+          "timestamp": "2026-06-12 07:55:40",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "class.module.classLoader 属性链探测（WAF/Web）",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1002-3",
+          "timestamp": "2026-06-12 07:55:41",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "RASP 观察到 classLoader.first 属性访问",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1002-4",
+          "timestamp": "2026-06-12 07:56:40",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "Tomcat catalina.sh 派生 whoami 执行",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1021",
+      "case_id": "CASE-002",
+      "events": [
+        {
+          "event_id": "SIM-1021-1",
+          "timestamp": "2026-06-27 10:04:59",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "PUT 写入 JSP webshell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-2",
+          "timestamp": "2026-06-27 10:05:00",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "PUT 写入 JSP webshell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-3",
+          "timestamp": "2026-06-27 10:05:02",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧记录 webshell 上传与 exec",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-4",
+          "timestamp": "2026-06-27 10:07:04",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "Tomcat 进程派生子 shell 执行探针",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-5",
+          "timestamp": "2026-06-27 12:31:04",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-6",
+          "timestamp": "2026-06-27 12:31:27",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1021-7",
+          "timestamp": "2026-06-27 12:32:02",
+          "source": "dns",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "DGA 风格子域突发解析",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1035",
+      "case_id": "CASE-008",
+      "events": [
+        {
+          "event_id": "SIM-1035-2",
+          "timestamp": "2026-06-30 07:25:38",
+          "source": "web",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "aspnet_client 下 ASPX webshell",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1042",
+      "case_id": "CASE-003",
+      "events": [
+        {
+          "event_id": "SIM-1042-1",
+          "timestamp": "2026-06-14 07:08:35",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "调度接口命令注入（cmd=schtasks）",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1042-2",
+          "timestamp": "2026-06-14 07:08:36",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧记录 cmd_inject=schtasks",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1042-3",
+          "timestamp": "2026-06-14 07:10:02",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "创建周期计划任务执行载荷",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1043",
+      "case_id": "CASE-008",
+      "events": [
+        {
+          "event_id": "SIM-1043-1",
+          "timestamp": "2026-06-23 22:37:25",
+          "source": "hids",
+          "stage": "S5",
+          "stage_kind": "case_step",
+          "label": "sc.exe create 注册服务",
+          "stage_order": 5,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1047",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1047-1",
+          "timestamp": "2026-06-23 10:52:06",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "删除全部卷影副本",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1061",
+      "case_id": "CASE-004",
+      "events": [
+        {
+          "event_id": "SIM-1061-1",
+          "timestamp": "2026-06-09 10:48:29",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "_ignition/execute-solution 触发",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1061-2",
+          "timestamp": "2026-06-09 10:48:30",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "_ignition/execute-solution 触发",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1061-3",
+          "timestamp": "2026-06-09 10:48:32",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 phar:// 反序列化载荷",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1061-4",
+          "timestamp": "2026-06-09 10:49:30",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "PHP-FPM 派生子 shell 执行命令",
+          "stage_order": 3,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1061-5",
+          "timestamp": "2026-06-09 10:50:15",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "case_step",
+          "label": "追加 crontab 定时回连",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1076",
+      "case_id": "CASE-003",
+      "events": [
+        {
+          "event_id": "SIM-1076-5",
+          "timestamp": "2026-06-03 00:14:22",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "创建周期计划任务执行载荷",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1081",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1081-1",
+          "timestamp": "2026-07-13 15:32:46",
+          "source": "rasp",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "上传接口落地 WebShell",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1081-2",
+          "timestamp": "2026-07-13 15:34:14",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "cipher 批量加密目录",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1081-3",
+          "timestamp": "2026-07-13 15:38:34",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "删除全部卷影副本",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1082",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1082-1",
+          "timestamp": "2026-07-30 17:58:28",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1082-2",
+          "timestamp": "2026-07-30 18:01:13",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1083",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1083-1",
+          "timestamp": "2026-07-27 10:02:01",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1083-2",
+          "timestamp": "2026-07-27 12:38:01",
+          "source": "dns",
+          "stage": "exfiltration",
+          "stage_kind": "annotated",
+          "label": "DNS 隧道外传",
+          "stage_order": 4,
+          "stage_basis": "three DNS events at 2-minute cadence, consistent with DNS tunneling",
+          "reviewed_at": "2026-10-28T08:55:19Z"
+        },
+        {
+          "event_id": "SIM-1083-3",
+          "timestamp": "2026-07-27 12:38:41",
+          "source": "dns",
+          "stage": "exfiltration",
+          "stage_kind": "annotated",
+          "label": "DNS 隧道外传",
+          "stage_order": 4,
+          "stage_basis": "three DNS events at 2-minute cadence, consistent with DNS tunneling",
+          "reviewed_at": "2026-10-28T08:55:19Z"
+        },
+        {
+          "event_id": "SIM-1083-4",
+          "timestamp": "2026-07-27 12:40:41",
+          "source": "dns",
+          "stage": "exfiltration",
+          "stage_kind": "annotated",
+          "label": "DNS 隧道外传",
+          "stage_order": 4,
+          "stage_basis": "three DNS events at 2-minute cadence, consistent with DNS tunneling",
+          "reviewed_at": "2026-10-28T08:55:20Z"
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1084",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1084-1",
+          "timestamp": "2026-07-12 14:11:38",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1084-2",
+          "timestamp": "2026-07-12 14:12:18",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1084-3",
+          "timestamp": "2026-07-12 14:19:18",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1085",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1085-1",
+          "timestamp": "2026-07-09 02:34:37",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1085-2",
+          "timestamp": "2026-07-09 02:36:47",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1086",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1086-1",
+          "timestamp": "2026-07-07 09:24:51",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1086-2",
+          "timestamp": "2026-07-07 09:25:16",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1086-3",
+          "timestamp": "2026-07-07 09:26:51",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1087",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1087-1",
+          "timestamp": "2026-07-25 03:37:40",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1087-2",
+          "timestamp": "2026-07-25 03:40:05",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1088",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1088-1",
+          "timestamp": "2026-07-10 10:10:15",
+          "source": "rasp",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1088-2",
+          "timestamp": "2026-07-10 10:12:13",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1089",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1089-1",
+          "timestamp": "2026-07-29 06:10:53",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1090",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1090-1",
+          "timestamp": "2026-07-21 08:26:38",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1090-2",
+          "timestamp": "2026-07-21 08:28:03",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1090-3",
+          "timestamp": "2026-07-21 08:31:38",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1091",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1091-1",
+          "timestamp": "2026-07-25 09:12:35",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1091-2",
+          "timestamp": "2026-07-25 09:16:55",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1092",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1092-1",
+          "timestamp": "2026-07-13 00:35:20",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1092-2",
+          "timestamp": "2026-07-13 00:36:30",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1092-3",
+          "timestamp": "2026-07-13 03:48:30",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1092-4",
+          "timestamp": "2026-07-13 03:49:30",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1092-5",
+          "timestamp": "2026-07-13 03:51:00",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1093",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1093-1",
+          "timestamp": "2026-07-07 22:16:34",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1093-2",
+          "timestamp": "2026-07-07 22:18:34",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1093-3",
+          "timestamp": "2026-07-07 22:22:34",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1094",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1094-1",
+          "timestamp": "2026-07-07 17:17:03",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1094-2",
+          "timestamp": "2026-07-07 17:20:03",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1094-3",
+          "timestamp": "2026-07-07 17:25:03",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1095",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1095-1",
+          "timestamp": "2026-07-01 10:43:02",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1095-2",
+          "timestamp": "2026-07-01 10:43:57",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1095-3",
+          "timestamp": "2026-07-01 10:47:17",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1096",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1096-1",
+          "timestamp": "2026-07-30 04:48:50",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1096-2",
+          "timestamp": "2026-07-30 04:56:50",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1096-3",
+          "timestamp": "2026-07-30 04:58:20",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1097",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1097-1",
+          "timestamp": "2026-07-08 23:05:17",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1097-2",
+          "timestamp": "2026-07-08 23:08:27",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1098",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1098-1",
+          "timestamp": "2026-07-31 21:52:38",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1098-2",
+          "timestamp": "2026-07-31 21:56:08",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1098-3",
+          "timestamp": "2026-07-31 23:44:08",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1098-4",
+          "timestamp": "2026-07-31 23:44:43",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1098-5",
+          "timestamp": "2026-07-31 23:45:58",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1099",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1099-1",
+          "timestamp": "2026-07-02 16:44:09",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1100",
+      "case_id": "CASE-005",
+      "events": [
+        {
+          "event_id": "SIM-1100-1",
+          "timestamp": "2026-07-05 11:20:47",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1100-2",
+          "timestamp": "2026-07-05 11:22:15",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1100-3",
+          "timestamp": "2026-07-05 11:27:55",
+          "source": "hids",
+          "stage": "S9",
+          "stage_kind": "family_step",
+          "label": "恢复能力破坏/批量加密变体（FA 家族）",
+          "stage_order": 9,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1102",
+      "case_id": "CASE-006",
+      "events": [
+        {
+          "event_id": "SIM-1102-1",
+          "timestamp": "2026-07-05 14:31:26",
+          "source": "hids",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "SharpHound 全量采集",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1102-2",
+          "timestamp": "2026-07-05 14:35:26",
+          "source": "hids",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "压缩采集结果",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1102-3",
+          "timestamp": "2026-07-05 14:36:21",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "上传采集压缩包",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1121",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1121-1",
+          "timestamp": "2026-07-09 02:52:45",
+          "source": "waf",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "CI 流水线触发依赖安装",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1121-2",
+          "timestamp": "2026-07-09 02:52:46",
+          "source": "web",
+          "stage": "S1",
+          "stage_kind": "case_step",
+          "label": "CI 流水线触发依赖安装",
+          "stage_order": 1,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1121-3",
+          "timestamp": "2026-07-09 02:52:48",
+          "source": "rasp",
+          "stage": "S2",
+          "stage_kind": "case_step",
+          "label": "应用侧 postinstall 派生 shell",
+          "stage_order": 2,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1121-4",
+          "timestamp": "2026-07-09 02:53:46",
+          "source": "hids",
+          "stage": "S3",
+          "stage_kind": "case_step",
+          "label": "钩子拉取远程脚本并执行",
+          "stage_order": 3,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1122",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1122-1",
+          "timestamp": "2026-07-10 22:39:16",
+          "source": "waf",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1122-2",
+          "timestamp": "2026-07-10 22:39:18",
+          "source": "web",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1122-3",
+          "timestamp": "2026-07-10 22:39:19",
+          "source": "rasp",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1122-4",
+          "timestamp": "2026-07-10 22:40:47",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1123",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1123-1",
+          "timestamp": "2026-07-08 11:31:07",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1123-2",
+          "timestamp": "2026-07-08 11:31:08",
+          "source": "web",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1123-3",
+          "timestamp": "2026-07-08 11:31:10",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1123-4",
+          "timestamp": "2026-07-08 11:33:08",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1124",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1124-1",
+          "timestamp": "2026-07-12 17:00:35",
+          "source": "waf",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1124-2",
+          "timestamp": "2026-07-12 17:00:37",
+          "source": "web",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1124-3",
+          "timestamp": "2026-07-12 17:00:38",
+          "source": "rasp",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1124-4",
+          "timestamp": "2026-07-12 17:01:36",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1125",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1125-1",
+          "timestamp": "2026-07-15 04:22:53",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1125-2",
+          "timestamp": "2026-07-15 04:22:54",
+          "source": "web",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1125-3",
+          "timestamp": "2026-07-15 04:22:56",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1125-4",
+          "timestamp": "2026-07-15 04:23:54",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1125-5",
+          "timestamp": "2026-07-15 04:24:36",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1126",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1126-1",
+          "timestamp": "2026-07-15 12:36:45",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1126-2",
+          "timestamp": "2026-07-15 12:36:47",
+          "source": "web",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1126-3",
+          "timestamp": "2026-07-15 12:36:48",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1126-4",
+          "timestamp": "2026-07-15 12:38:16",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1126-5",
+          "timestamp": "2026-07-15 12:39:20",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1127",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1127-1",
+          "timestamp": "2026-07-06 15:24:49",
+          "source": "waf",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1127-2",
+          "timestamp": "2026-07-06 15:24:50",
+          "source": "web",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1127-3",
+          "timestamp": "2026-07-06 15:24:52",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1127-4",
+          "timestamp": "2026-07-06 15:26:50",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1127-5",
+          "timestamp": "2026-07-06 15:28:18",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1128",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1128-1",
+          "timestamp": "2026-07-22 09:47:02",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-2",
+          "timestamp": "2026-07-22 09:47:04",
+          "source": "web",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-3",
+          "timestamp": "2026-07-22 09:47:05",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-4",
+          "timestamp": "2026-07-22 09:49:03",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-5",
+          "timestamp": "2026-07-22 13:13:03",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-6",
+          "timestamp": "2026-07-22 13:13:47",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1128-7",
+          "timestamp": "2026-07-22 13:15:13",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1129",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1129-1",
+          "timestamp": "2026-07-10 02:55:13",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-2",
+          "timestamp": "2026-07-10 02:55:14",
+          "source": "web",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-3",
+          "timestamp": "2026-07-10 02:55:16",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-4",
+          "timestamp": "2026-07-10 02:56:14",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-5",
+          "timestamp": "2026-07-10 04:44:14",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-6",
+          "timestamp": "2026-07-10 04:44:47",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1129-7",
+          "timestamp": "2026-07-10 04:46:04",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1130",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1130-1",
+          "timestamp": "2026-07-30 02:16:50",
+          "source": "waf",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1130-2",
+          "timestamp": "2026-07-30 02:17:48",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1131",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1131-1",
+          "timestamp": "2026-07-30 06:30:23",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1131-2",
+          "timestamp": "2026-07-30 06:31:51",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1132",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1132-1",
+          "timestamp": "2026-07-23 20:25:50",
+          "source": "waf",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1132-2",
+          "timestamp": "2026-07-23 20:27:48",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1133",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1133-1",
+          "timestamp": "2026-07-10 19:59:40",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1133-2",
+          "timestamp": "2026-07-10 20:00:38",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1134",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1134-1",
+          "timestamp": "2026-07-10 01:20:35",
+          "source": "rasp",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1134-2",
+          "timestamp": "2026-07-10 01:22:03",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1135",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1135-1",
+          "timestamp": "2026-07-13 23:03:39",
+          "source": "rasp",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1135-2",
+          "timestamp": "2026-07-13 23:04:37",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1135-3",
+          "timestamp": "2026-07-13 23:05:24",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1136",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1136-1",
+          "timestamp": "2026-07-31 17:21:11",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1137",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1137-1",
+          "timestamp": "2026-07-01 19:44:46",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1137-2",
+          "timestamp": "2026-07-01 19:45:28",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1138",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1138-1",
+          "timestamp": "2026-07-05 19:50:51",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1138-2",
+          "timestamp": "2026-07-05 19:52:19",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1138-3",
+          "timestamp": "2026-07-05 19:53:04",
+          "source": "hids",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1139",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1139-1",
+          "timestamp": "2026-07-21 23:43:29",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1139-2",
+          "timestamp": "2026-07-22 01:49:29",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1139-3",
+          "timestamp": "2026-07-22 01:49:57",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1139-4",
+          "timestamp": "2026-07-22 01:50:58",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    },
+    {
+      "incident_id": "SIM-INC-1140",
+      "case_id": "CASE-007",
+      "events": [
+        {
+          "event_id": "SIM-1140-1",
+          "timestamp": "2026-07-22 11:37:52",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1140-2",
+          "timestamp": "2026-07-22 11:39:50",
+          "source": "hids",
+          "stage": "S4",
+          "stage_kind": "family_step",
+          "label": "CI 构建期执行/凭据访问变体（FC 家族）",
+          "stage_order": 4,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1140-3",
+          "timestamp": "2026-07-22 16:15:50",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1140-4",
+          "timestamp": "2026-07-22 16:16:24",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        },
+        {
+          "event_id": "SIM-1140-5",
+          "timestamp": "2026-07-22 16:17:43",
+          "source": "dns",
+          "stage": "unknown",
+          "stage_kind": "unclassified",
+          "label": "unclassified",
+          "stage_order": 99,
+          "stage_basis": ""
+        }
+      ],
+      "updated_at": "2026-10-28T08:55:29Z"
+    }
+  ]
+}

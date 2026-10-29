@@ -131,6 +131,12 @@ def validate_pattern(pattern: dict[str, Any]) -> None:
     family_id = pattern.get("family_id")
     if family_id is not None and (not isinstance(family_id, str) or not family_id.strip()):
         raise ValueError(f"{case_id}: family_id must be a non-empty string")
+    status = pattern.get("status")
+    if status not in (None, "active", "retired"):
+        raise ValueError(f"{case_id}: status must be active or retired")
+    merged_into = pattern.get("merged_into")
+    if merged_into is not None and (not isinstance(merged_into, str) or not merged_into.strip()):
+        raise ValueError(f"{case_id}: merged_into must be a non-empty case ID")
     if "pattern_scope" in pattern and not isinstance(pattern["pattern_scope"], dict):
         raise ValueError(f"{case_id}: pattern_scope must be an object")
     if "negative_and_unknown_evidence" in pattern and not isinstance(pattern["negative_and_unknown_evidence"], dict):

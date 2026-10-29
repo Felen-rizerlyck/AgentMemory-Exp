@@ -37,6 +37,7 @@ Python 3.11+ is enough; the demo uses only the standard library. All commands ar
 |---|---|---|
 | observation | `data/raw_logs.csv` | One sensor row. `case_id`/`incident_id` are analysis labels, not original fields. |
 | link | `data/event_pattern_links.csv` | Reviewed event → incident → case/step relation. Append-only; latest decision wins. |
+| incident chain | `data/incident_chains.json` | Ordered events per incident with independent stages (`case_step`, `family_step`, `annotated`, `unclassified`). |
 | case | `data/attack_patterns.json` | A reusable, ordered attack chain with executable step regexes. |
 | family | `data/families.json` | A taxonomy above cases, plus broad family-level steps. |
 | candidate | `data/case_candidates.json` | A technique that is not a case yet; 1 incident = `provisional`, 2+ = `promotable`. |
@@ -44,6 +45,7 @@ Python 3.11+ is enough; the demo uses only the standard library. All commands ar
 | version | `data/pattern_versions/<CASE>/vNNN.json` | Immutable snapshot of every accepted or migrated version. |
 | migration | `data/pattern_migrations.json` | A reviewed schema move (for example a step from a case into a family). |
 | admission | `data/case_admissions.json` | A new-case record and its review status (`unreviewed` / `reviewed`). |
+| lifecycle | `data/case_lifecycle.json` | merge/split/retire/reactivate events for cases. |
 
 The pipeline is:
 
@@ -51,7 +53,8 @@ The pipeline is:
 raw_logs.csv
   -> retrieval (tier + weak_kind)
   -> reviewed links (confirmed / related / candidate / rejected / fixture)
-  -> existing case, family step, or staged candidate
+  -> incident chain (ordered stages, including unclassified behavior)
+  -> existing case, family step, annotated stage, or staged candidate
   -> authored pattern (catalog add / add --from-candidate)
   -> versioned case (proposals or reviewed migrations)
   -> audit
@@ -70,11 +73,13 @@ demo/
 │   ├── families.json              # 5 families + family-level steps (ransomware/S9, supply-chain/S4)
 │   ├── case_candidates.json       # 91 records: 84 active + 7 merged aliases
 │   ├── case_admissions.json       # new-case admissions; currently CASE-009 is unreviewed
+│   ├── case_lifecycle.json        # merge/split/retire/reactivate ledger (currently empty)
 │   ├── pattern_proposals.json     # 2 accepted add_step proposals (CASE-005/007 v1 -> v2)
 │   ├── pattern_migrations.json    # 2 reviewed v2 -> v3 moves (S9/S4 into families)
 │   ├── pattern_versions/          # immutable snapshots v001..v003 for CASE-005/007
 │   ├── raw_logs.csv               # 581 observations: seed data + dataset units 1001-1140
 │   ├── event_pattern_links.csv    # 265 reviewed links
+│   ├── incident_chains.json       # 59 incident chains with independent stages
 │   ├── promoted/
 │   │   └── CASE-009.json          # authored pattern used to promote CAND-0001
 │   ├── proposals/
@@ -91,7 +96,9 @@ demo/
 │   │   ├── diagnostics.py         # audit aggregation, step statistics, unexplained events
 │   │   ├── candidates.py          # candidate store, provisional/promotable, promotion
 │   │   ├── families.py            # family registry, family steps, family evidence
+│   │   ├── chains.py              # incident chains, stage annotations, summaries
 │   │   ├── migrations.py          # reviewed migration ledger
+│   │   ├── lifecycle.py           # case merge/split/retire ledger
 │   │   ├── admissions.py          # new-case admission ledger + review marker
 │   │   ├── signatures.py          # deterministic candidate signature features (step 1)
 │   │   └── manage.py              # the 4-verb CLI
@@ -115,8 +122,8 @@ demo/
 The management CLI has four top-level verbs:
 
 ```text
-catalog   validate / add / stage / merge / split / candidates / families / migrations / admissions / review-case
-review    link / associate
+catalog   validate / add / stage / merge / split / merge-case / split-case / retire / reactivate / lifecycle / candidates / chains / chain / families / migrations / admissions / review-case
+review    link / associate / stage
 evolve    propose / list / accept / reject / rollback
 audit     [--verbose] [--case-id CASE]
 ```
@@ -129,8 +136,16 @@ python src/manage_memory.py catalog add --input data/new_pattern.json --supporti
 python src/manage_memory.py catalog add --from-candidate CAND-0001 --input data/promoted/CASE-009.json --force
 python src/manage_memory.py catalog stage --signature "F1::Spring4Shell" --family-id web-exploit --incident-id INC-9 --event-ids EVT-1,EVT-2
 python src/manage_memory.py catalog candidates --by-group
+python src/manage_memory.py catalog chains --rebuild
+python src/manage_memory.py catalog chain --incident-id SIM-INC-1083 --summarize
+python src/manage_memory.py review stage --incident-id SIM-INC-1083 --event-id SIM-1083-2 --stage exfiltration --label "DNS tunneling" --basis "reviewed cadence"
 python src/manage_memory.py catalog merge --primary CAND-0002 --alias CAND-0058 --basis "same signature_key"
 python src/manage_memory.py catalog split --primary CAND-0002 --alias CAND-0058 --basis "wrong merge"
+python src/manage_memory.py catalog lifecycle
+python src/manage_memory.py catalog retire --case-id CASE-009 --basis "obsolete"
+python src/manage_memory.py catalog reactivate --case-id CASE-009 --basis "restored"
+python src/manage_memory.py catalog merge-case --source CASE-009 --target CASE-001 --basis "alias duplicate"
+python src/manage_memory.py catalog split-case --case-id CASE-009 --basis "not a duplicate"
 python src/manage_memory.py catalog families
 python src/manage_memory.py catalog migrations
 python src/manage_memory.py catalog admissions
@@ -143,9 +158,16 @@ python src/manage_memory.py catalog review-case --case-id CASE-009 --basis "revi
   `promoted`. A one-incident candidate needs `--force`.
 - `catalog stage` adds/merges one incident under a candidate signature. The same signature with a
   second incident becomes `promotable`.
+- `catalog chains` / `catalog chain` show the incident-chain layer; `catalog chains --rebuild`
+  rebuilds from raw logs and links while preserving annotated stages.
+- `review stage` annotates an event's stage independently of any case or link.
 - `catalog candidates --by-group` groups by deterministic `signature_key`; it does not merge or
   change status. `catalog merge` performs an explicit same-family/same-key merge; `catalog split`
   reverses a non-promoted merge.
+- `catalog merge-case` is a conservative alias merge: the source becomes `retired` with
+  `merged_into=target`; steps and existing links are not rewritten. `split-case` restores it.
+  `retire` / `reactivate` are independent lifecycle actions. All are recorded in
+  `case_lifecycle.json` and shown by `catalog lifecycle`.
 - `catalog review-case` removes the `unreviewed` marker after human review. Only the marker is
   removed; `admission_id` stays for audit.
 
@@ -261,6 +283,64 @@ MIG-CASE-007-v3  CASE-007  v2->3  move_step_to_family  S4 -> supply-chain
 `catalog validate` / `audit` check the v003 snapshot, consecutive versions, the step being absent
 from the case, and the family step existing.
 
+## Case lifecycle (Phase 3c)
+
+`data/case_lifecycle.json` is an append-only ledger for case-level lifecycle events:
+
+- `merge`: conservative alias merge. Source becomes `retired`, `merged_into=target`; steps and
+  existing links are **not** rewritten. Target must be active and in the same family.
+- `split`: reverses the latest merge; source becomes active again.
+- `retire` / `reactivate`: retire a case without merging, or bring it back.
+- Candidate primaries that pointed at the source are moved to the target on merge and restored on
+  split.
+
+Retired cases stay in the catalog and keep their history, but `retrieve` skips them and
+`catalog families` shows `retired=N`. Current ledger is empty: no production case has been merged or
+retired. The operations are covered by synthetic lifecycle tests.
+
+```powershell
+python src/manage_memory.py catalog lifecycle
+python src/manage_memory.py catalog merge-case --source CASE-009 --target CASE-001 --basis "alias duplicate"
+python src/manage_memory.py catalog split-case --case-id CASE-009 --basis "not a duplicate"
+python src/manage_memory.py catalog retire --case-id CASE-009 --basis "obsolete"
+python src/manage_memory.py catalog reactivate --case-id CASE-009 --basis "restored"
+```
+
+Automatic decay/retirement (`last_confirmed_at`, unobserved duration) is still deferred; this phase
+implements explicit, auditable operations.
+
+## Incident chains (Phase 3)
+
+`data/incident_chains.json` is the first-class chain layer. Each incident has ordered events with
+one of four stage kinds:
+
+- `case_step`: covered by a case step;
+- `family_step`: covered by a broad family step (for example ransomware/S9);
+- `annotated`: named by a human/agent independently of any case;
+- `unclassified`: behavior not covered by a case, family step, or annotation.
+
+Build or inspect:
+
+```powershell
+python src/manage_memory.py catalog chains --rebuild
+python src/manage_memory.py catalog chain --incident-id SIM-INC-1083 --summarize
+python src/manage_memory.py review stage --incident-id SIM-INC-1083 --event-id SIM-1083-2 \
+  --stage exfiltration --label "DNS tunneling" --order 4 \
+  --basis "three DNS events at a two-minute cadence"
+```
+
+`catalog chain --summarize` groups consecutive `unclassified` events into segments and suggests
+action labels from event content. It is a suggestion, not an automatic case edit.
+
+Current state: 59 chains, 56 unclassified events. `SIM-INC-1083` has its three DNS events annotated
+as `exfiltration`; a rebuild preserves that annotation instead of overwriting it with `unclassified`.
+`audit` checks chain events, stage kinds, annotation basis, and case-step references.
+
+`reorder_steps` is implemented as an evolution operation (explicit accept, no `--auto`): it lists
+every step exactly once, rewrites `order`, and the gate requires at least two confirmed incidents
+and no drop in `strong` count or required coverage. Case-level `merge`/`split`/`retire` remain
+deferred (Phase 3c); they need the chain layer to stabilize first.
+
 ## Candidates and signature clusters
 
 A novel technique is staged, not turned into a case:
@@ -324,7 +404,9 @@ links                265
 raw events           581
 proposals            2 accepted (v1 -> v2)
 migrations           2 reviewed (v2 -> v3)
-tests                91
+chains               59 (56 unclassified events; 3 annotated in SIM-INC-1083)
+lifecycle            0 events (no production merge/retire applied)
+tests                97
 audit                clean
 ```
 
@@ -361,6 +443,9 @@ carry only their `SIM-B-<unit>` batch scope; CAND-0001's rows now carry `CASE-00
   implemented; semantic/fuzzy clustering and automatic merge suggestions are not.
 - A merged incident in a promoted cluster is only a `pending_case_link`; it is not automatically
   linked to the promoted case.
+- `reorder_steps` is implemented; case-level alias `merge-case`/`split-case` and
+  `retire`/`reactivate` are implemented; automatic decay-based retirement is deferred.
+- Chain summaries are suggestions; they never create a case or a stage automatically.
 - Migrations are recorded in their own ledger; they are not re-evaluated by the proposal gate.
 - `decided_at`/`reviewed_at` exist, but there is no authenticated reviewer identity.
 

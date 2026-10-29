@@ -323,6 +323,8 @@ def retrieve(patterns: list[dict[str, Any]], logs: list[dict[str, str]],
                      for ref in action_index[action["action_id"]]["refs"]}
     results: list[dict[str, Any]] = []
     for pattern in patterns:
+        if pattern.get("status") == "retired":
+            continue
         # The action reverse index narrows action-derived candidates. Lexical fallback remains global.
         if pattern["case_id"] not in indexed_cases and not _keyword_score(pattern, text)[0]:
             continue

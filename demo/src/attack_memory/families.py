@@ -166,14 +166,19 @@ def counts(data: dict, patterns: list[dict], candidates: list[dict] | None = Non
     result: dict[str, dict] = {}
     for family in data.get("families") or []:
         fid = family.get("family_id")
-        result[fid] = {"name": family.get("name", fid), "cases": 0, "candidates": 0,
-                       "steps": len(family.get("steps") or [])}
+        result[fid] = {"name": family.get("name", fid), "cases": 0, "retired": 0,
+                       "candidates": 0, "steps": len(family.get("steps") or [])}
     for pattern in patterns:
         fid = pattern.get("family_id") or DEFAULT_FAMILY
-        result.setdefault(fid, {"name": fid, "cases": 0, "candidates": 0, "steps": 0})["cases"] += 1
+        row = result.setdefault(fid, {"name": fid, "cases": 0, "retired": 0,
+                                      "candidates": 0, "steps": 0})
+        row["cases"] += 1
+        if pattern.get("status") == "retired":
+            row["retired"] += 1
     for candidate in candidates or []:
         fid = candidate.get("family_id") or DEFAULT_FAMILY
-        result.setdefault(fid, {"name": fid, "cases": 0, "candidates": 0, "steps": 0})["candidates"] += 1
+        result.setdefault(fid, {"name": fid, "cases": 0, "retired": 0,
+                                "candidates": 0, "steps": 0})["candidates"] += 1
     return result
 
 

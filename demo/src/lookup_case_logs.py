@@ -101,18 +101,20 @@ def main() -> None:
     maturity_name = None
     family = None
     review_status = None
+    pattern_status = None
     if pattern is not None:
         version = pattern_version(pattern)
         maturity_name = maturity(derived or 0)
         family = pattern.get("family_id")
         review_status = pattern.get("review_status")
+        pattern_status = pattern.get("status", "active")
 
     if args.json:
         print(json.dumps({
             "case_id": args.case_id, "incident_id": args.incident_id,
             "step_id": args.step_id, "excluded_incident": args.exclude_incident,
             "pattern_version": version, "maturity": maturity_name, "family_id": family,
-            "review_status": review_status,
+            "review_status": review_status, "status": pattern_status,
             "count": len(selected), "fixture_rows_hidden": hidden,
             "derived_real_observations": derived,
             "observations": [{**row, "link_status": status} for row, status in selected],
@@ -125,6 +127,8 @@ def main() -> None:
         label += f", {family})" if family else ")"
         if review_status == "unreviewed":
             label += " [UNREVIEWED]"
+        if pattern_status == "retired":
+            label += " [RETIRED]"
     if args.step_id:
         label += f" step={args.step_id}"
     if args.exclude_incident:

@@ -19,18 +19,22 @@ sys.path.insert(0, str(DEMO_ROOT / "src"))
 from attack_memory import admissions as admissions_module  # noqa: E402
 from attack_memory import candidates as candidates_module  # noqa: E402
 from attack_memory import catalog as catalog_module  # noqa: E402
+from attack_memory import chains as chains_module  # noqa: E402
 from attack_memory import evolution as evolution_module  # noqa: E402
 from attack_memory import families as families_module  # noqa: E402
 from attack_memory import links as links_module  # noqa: E402
+from attack_memory import lifecycle as lifecycle_module  # noqa: E402
 from attack_memory import migrations as migrations_module  # noqa: E402
 from attack_memory import signatures as signatures_module  # noqa: E402
 from attack_memory import storage  # noqa: E402
 from attack_memory.catalog import (add_pattern, add_pattern_from_candidate,  # noqa: E402
-                                   load_validated_catalog, maturity, require_pattern_support,
-                                   review_case)
+                                   load_validated_catalog, maturity, merge_case,
+                                   reactivate_case, require_pattern_support, retire_case,
+                                   review_case, split_case)
 from attack_memory.diagnostics import audit_problems, step_statistics, unexplained_events  # noqa: E402
 from attack_memory.evolution import (accept_proposal, create_proposal, evaluate_proposal,  # noqa: E402
-                                     load_proposals, reject_proposal, rollback_pattern)
+                                     load_proposals, reject_proposal, rollback_pattern,
+                                     validate_proposal)
 from attack_memory.ingest import ingest  # noqa: E402
 from attack_memory.links import (append_links, audit_links, derived_observations,  # noqa: E402
                                  related_incidents, support_pairs)
@@ -1018,6 +1022,140 @@ class FamilyRegistryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "family step"):
             append_links(["EVT-CASE005-02"], "INC-CASE-005-001", "CASE-005", "S9",
                          "confirmed", "family steps are related-only")
+
+
+class CaseLifecycleTests(unittest.TestCase):
+    def _catalog(self, path):
+        patterns = []
+        for case_id, action in (("CASE-980", "alpha"), ("CASE-981", "beta")):
+            patterns.append({
+                "case_id": case_id, "name": case_id, "summary": "synthetic",
+                "mitre": ["T0000"], "family_id": "web-exploit", "version": 1,
+                "steps": [{"step_id": "S1", "order": 1, "action_id": f"{case_id}_a",
+                           "label": action, "action_regex": action,
+                           "expected_sources": ["hids"], "required": True}],
+                "retrieval": {"keywords": [action], "pattern_probes": [action]},
+            })
+        path.write_text(json.dumps({"attack_patterns": patterns}), encoding="utf-8")
+
+    def test_retire_reactivate_and_retrieval_skip(self):
+        with tempfile.TemporaryDirectory() as folder:
+            folder = pathlib.Path(folder)
+            catalog_path = folder / "attack_patterns.json"
+            lifecycle_path = folder / "case_lifecycle.json"
+            self._catalog(catalog_path)
+            with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(lifecycle_module, "LIFECYCLE_PATH", lifecycle_path):
+                retire_case("CASE-980", "obsolete", reviewer="tester")
+                patterns = load_validated_catalog()["attack_patterns"]
+                self.assertEqual(next(item for item in patterns
+                                      if item["case_id"] == "CASE-980")["status"], "retired")
+                self.assertEqual(lifecycle_module.audit_lifecycle(patterns), [])
+                row = {"event_id": "E1", "content": "alpha", "source": "hids",
+                       "timestamp": "2026-01-01T00:00:00Z"}
+                self.assertEqual(retrieve(patterns, [row], build_action_index(patterns)), [])
+                reactivate_case("CASE-980", "restored", reviewer="tester")
+                patterns = load_validated_catalog()["attack_patterns"]
+                self.assertEqual(lifecycle_module.audit_lifecycle(patterns), [])
+
+    def test_merge_is_reversible_alias(self):
+        with tempfile.TemporaryDirectory() as folder:
+            folder = pathlib.Path(folder)
+            catalog_path = folder / "attack_patterns.json"
+            lifecycle_path = folder / "case_lifecycle.json"
+            candidates_path = folder / "case_candidates.json"
+            self._catalog(catalog_path)
+            with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(lifecycle_module, "LIFECYCLE_PATH", lifecycle_path), \
+                    mock.patch.object(candidates_module, "CANDIDATES_PATH", candidates_path):
+                merge_case("CASE-980", "CASE-981", "duplicate", reviewer="tester")
+                patterns = load_validated_catalog()["attack_patterns"]
+                source = next(item for item in patterns if item["case_id"] == "CASE-980")
+                self.assertEqual(source["status"], "retired")
+                self.assertEqual(source["merged_into"], "CASE-981")
+                self.assertEqual(lifecycle_module.audit_lifecycle(patterns), [])
+                split_case("CASE-980", "not a duplicate", reviewer="tester")
+                patterns = load_validated_catalog()["attack_patterns"]
+                source = next(item for item in patterns if item["case_id"] == "CASE-980")
+                self.assertEqual(source["status"], "active")
+                self.assertNotIn("merged_into", source)
+                self.assertEqual(lifecycle_module.audit_lifecycle(patterns), [])
+
+
+class ChainTests(unittest.TestCase):
+    def test_real_chains_are_clean_and_have_unclassified_events(self):
+        patterns = load_validated_catalog()["attack_patterns"]
+        logs = read_csv(storage.RAW_LOGS_PATH)
+        chains = chains_module.load_chains()["chains"]
+        self.assertGreaterEqual(len(chains), 1)
+        self.assertEqual(chains_module.audit_chains(patterns, logs), [])
+        self.assertTrue(any(event.get("stage_kind") == "unclassified"
+                            for chain in chains for event in chain["events"]))
+
+    def test_stage_annotation_persists_and_summarizes(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = pathlib.Path(folder) / "incident_chains.json"
+            chains_module.save_chains({"schema_version": 1, "chains": [{
+                "incident_id": "INC-X", "case_id": "", "updated_at": "",
+                "events": [{"event_id": "E1", "timestamp": "", "source": "hids",
+                            "stage": "unknown", "stage_kind": "unclassified",
+                            "label": "unclassified", "stage_order": 99, "stage_basis": ""}],
+            }]}, path)
+            chains_module.review_stage("INC-X", "E1", "impact", "data destruction",
+                                       "manual review", path=path)
+            chain = chains_module.load_chains(path)["chains"][0]
+            self.assertEqual(chain["events"][0]["stage_kind"], "annotated")
+            self.assertEqual(chain["events"][0]["stage"], "impact")
+            summary = chains_module.summarize_chain(
+                chain, [{"event_id": "E1", "content": "vssadmin delete shadows /all",
+                         "source": "hids"}])
+            self.assertEqual(summary["unexplained_segments"], 0)
+
+
+class ReorderTests(unittest.TestCase):
+    def test_reorder_operation_restores_observed_order(self):
+        pattern = {
+            "case_id": "CASE-970", "name": "Synthetic reorder", "summary": "synthetic",
+            "mitre": ["T0000"], "version": 1,
+            "steps": [
+                {"step_id": "S1", "order": 1, "action_id": "a1", "label": "alpha",
+                 "action_regex": "alpha", "expected_sources": ["hids"], "required": True},
+                {"step_id": "S2", "order": 2, "action_id": "a2", "label": "beta",
+                 "action_regex": "beta", "expected_sources": ["hids"], "required": True},
+                {"step_id": "S3", "order": 3, "action_id": "a3", "label": "gamma",
+                 "action_regex": "gamma", "expected_sources": ["hids"], "required": True},
+            ],
+            "retrieval": {"keywords": ["alpha"], "pattern_probes": ["alpha"]},
+        }
+        logs = []
+        links = []
+        for incident in ("A", "B"):
+            for index, content in enumerate(("alpha", "gamma", "beta"), start=1):
+                event_id = f"E-{incident}-{index}"
+                logs.append({"event_id": event_id, "incident_id": incident,
+                             "timestamp": f"2026-01-01T00:0{index}:00Z",
+                             "source": "hids", "content": content})
+                step = {1: "S1", 2: "S3", 3: "S2"}[index]
+                links.append({"event_id": event_id, "incident_id": incident,
+                              "case_id": "CASE-970", "step_id": step,
+                              "link_status": "confirmed"})
+        proposal = {"case_id": "CASE-970", "base_version": 1,
+                    "operation": "reorder_steps", "order": ["S1", "S3", "S2"],
+                    "rationale": "timestamps show gamma before beta",
+                    "supporting_event_ids": [row["event_id"] for row in logs]}
+        validate_proposal(proposal)
+        result = evaluate_proposal([pattern], logs, links, proposal)
+        self.assertTrue(result["ok"], result["problems"])
+        self.assertEqual(result["metrics"]["strong_after"], 2)
+        self.assertEqual([step["step_id"] for step in result["candidate"]["steps"]],
+                         ["S1", "S3", "S2"])
+
+    def test_reorder_requires_every_step_once(self):
+        proposal = {"case_id": "CASE-970", "base_version": 1,
+                    "operation": "reorder_steps", "order": ["S1", "S1"],
+                    "rationale": "bad order", "supporting_event_ids": ["E"]}
+        with self.assertRaisesRegex(ValueError, "duplicate|every step"):
+            validate_proposal(proposal)
 
 
 class CandidateMergeTests(unittest.TestCase):

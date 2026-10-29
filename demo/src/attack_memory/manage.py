@@ -6,12 +6,15 @@ import json
 
 from . import admissions as admission_store
 from . import candidates as candidate_store
+from . import chains as chain_store
 from . import families as family_store
+from . import lifecycle as lifecycle_store
 from . import migrations as migration_store
 from . import signatures as signature_store
 from .catalog import (VERSIONS_DIR, add_pattern, add_pattern_from_candidate,
-                      load_validated_catalog, pattern_version, require_pattern_support,
-                      review_case)
+                      load_validated_catalog, merge_case, pattern_version,
+                      reactivate_case, require_pattern_support, retire_case, review_case,
+                      split_case)
 from .diagnostics import audit_problems, diagnostic_lines
 from .evolution import (PROPOSALS_PATH, accept_proposal, create_proposal, evaluate_proposal,
                         load_proposals, reject_proposal, rollback_pattern)
@@ -41,6 +44,25 @@ def main() -> None:
     split_cmd.add_argument("--primary", required=True)
     split_cmd.add_argument("--alias", required=True)
     split_cmd.add_argument("--basis", required=True)
+    lifecycle_cmd = catalog_sub.add_parser("lifecycle", help="List case lifecycle events")
+    lifecycle_cmd.add_argument("--case-id")
+    retire_cmd = catalog_sub.add_parser("retire", help="Retire a case (keeps its history)")
+    retire_cmd.add_argument("--case-id", required=True)
+    retire_cmd.add_argument("--basis", required=True)
+    retire_cmd.add_argument("--reviewer", default="agent")
+    reactivate_cmd = catalog_sub.add_parser("reactivate", help="Reactivate a retired case")
+    reactivate_cmd.add_argument("--case-id", required=True)
+    reactivate_cmd.add_argument("--basis", required=True)
+    reactivate_cmd.add_argument("--reviewer", default="agent")
+    merge_case_cmd = catalog_sub.add_parser("merge-case", help="Merge a case into an alias")
+    merge_case_cmd.add_argument("--source", required=True)
+    merge_case_cmd.add_argument("--target", required=True)
+    merge_case_cmd.add_argument("--basis", required=True)
+    merge_case_cmd.add_argument("--reviewer", default="agent")
+    split_case_cmd = catalog_sub.add_parser("split-case", help="Undo a case alias merge")
+    split_case_cmd.add_argument("--case-id", required=True)
+    split_case_cmd.add_argument("--basis", required=True)
+    split_case_cmd.add_argument("--reviewer", default="agent")
     stage = catalog_sub.add_parser("stage", help="Stage one incident under a candidate signature")
     stage.add_argument("--signature", required=True, help="Behavioural signature, e.g. F1::Spring4Shell")
     stage.add_argument("--label", default="", help="Human-readable technique name")
@@ -50,6 +72,11 @@ def main() -> None:
     stage.add_argument("--source-batch", default="")
     catalog_sub.add_parser("families", help="List the family taxonomy")
     catalog_sub.add_parser("migrations", help="List reviewed schema migrations")
+    chains_cmd = catalog_sub.add_parser("chains", help="List incident chains (or rebuild with --rebuild)")
+    chains_cmd.add_argument("--rebuild", action="store_true")
+    chain_cmd = catalog_sub.add_parser("chain", help="Show one incident chain")
+    chain_cmd.add_argument("--incident-id", required=True)
+    chain_cmd.add_argument("--summarize", action="store_true")
     catalog_sub.add_parser("admissions", help="List new-case admissions and review status")
     review_case_cmd = catalog_sub.add_parser("review-case", help="Clear an unreviewed marker after review")
     review_case_cmd.add_argument("--case-id", required=True)
@@ -81,6 +108,13 @@ def main() -> None:
     associate.add_argument("--case-id", required=True)
     associate.add_argument("--step-id", help="Optional shared step, e.g. S3")
     associate.add_argument("--basis", required=True)
+    stage = review_sub.add_parser("stage", help="Annotate a chain event independently of a case")
+    stage.add_argument("--incident-id", required=True)
+    stage.add_argument("--event-id", required=True)
+    stage.add_argument("--stage", required=True)
+    stage.add_argument("--label", default="")
+    stage.add_argument("--order", type=int)
+    stage.add_argument("--basis", required=True)
 
     evolve = groups.add_parser("evolve", help="Propose, accept, reject or roll back a pattern")
     evolve_sub = evolve.add_subparsers(dest="action", required=True)
@@ -154,6 +188,62 @@ def main() -> None:
             print(f"Split {args.alias} out of {candidate['candidate_id']}: "
                   f"primary_status={candidate['status']}, "
                   f"incidents={len(candidate['incidents'])}.")
+        elif args.action == "lifecycle":
+            events = lifecycle_store.load_lifecycle()["events"]
+            if args.case_id:
+                events = [event for event in events if event.get("case_id") == args.case_id]
+            print(f"{len(events)} lifecycle event(s)")
+            for event in events:
+                print(f"  {event.get('event_id')}  {event.get('action'):<11}  "
+                      f"{event.get('case_id')} -> {event.get('target') or '-'}")
+        elif args.action == "retire":
+            result = retire_case(args.case_id, args.basis, reviewer=args.reviewer)
+            print(f"Retired {result['case_id']} ({result['event']['event_id']}).")
+        elif args.action == "reactivate":
+            result = reactivate_case(args.case_id, args.basis, reviewer=args.reviewer)
+            print(f"Reactivated {result['case_id']} ({result['event']['event_id']}).")
+        elif args.action == "merge-case":
+            result = merge_case(args.source, args.target, args.basis, reviewer=args.reviewer)
+            print(f"Merged {result['case_id']} into {result['target']}; "
+                  f"source retired ({result['event']['event_id']}).")
+        elif args.action == "split-case":
+            result = split_case(args.case_id, args.basis, reviewer=args.reviewer)
+            print(f"Split {result['case_id']} from {result['target']}; source active again.")
+        elif args.action == "chains":
+            data = load_validated_catalog()
+            logs = read_csv(RAW_LOGS_PATH)
+            links = read_links(LINKS_PATH)
+            if args.rebuild:
+                chain_store.build_chains(data["attack_patterns"], logs, links)
+            chains = chain_store.load_chains()["chains"]
+            unexplained = sum(1 for chain in chains for event in chain["events"]
+                              if event.get("stage_kind") == "unclassified")
+            print(f"{len(chains)} chain(s), {unexplained} unclassified event(s)")
+            for chain in chains:
+                missing = sum(1 for event in chain["events"]
+                              if event.get("stage_kind") == "unclassified")
+                print(f"  {chain['incident_id']}  case={chain.get('case_id') or '-':<16} "
+                      f"events={len(chain['events']):<2} unclassified={missing}")
+        elif args.action == "chain":
+            data = load_validated_catalog()
+            chain = next((item for item in chain_store.load_chains()["chains"]
+                          if item["incident_id"] == args.incident_id), None)
+            if chain is None:
+                parser.error(f"unknown incident chain: {args.incident_id}")
+            print(f"{chain['incident_id']}  case={chain.get('case_id') or '-'}  "
+                  f"events={len(chain['events'])}")
+            for event in chain["events"]:
+                print(f"  {event.get('timestamp', '')} [{event.get('source', '')}] "
+                      f"{event.get('event_id', '')} stage={event.get('stage')} "
+                      f"kind={event.get('stage_kind')} label={event.get('label')}")
+            if args.summarize:
+                summary = chain_store.summarize_chain(chain, read_csv(RAW_LOGS_PATH))
+                print("  stage sequence: " + " -> ".join(summary["sequence"]))
+                print(f"  unexplained segments: {summary['unexplained_segments']}")
+                for suggestion in summary["suggestions"]:
+                    print(f"    segment {suggestion['segment']}: "
+                          f"events={','.join(suggestion['event_ids'])} "
+                          f"suggested={suggestion['suggested_label']}")
         elif args.action == "families":
             data = load_validated_catalog()
             family_data = family_store.load_families()
@@ -163,8 +253,8 @@ def main() -> None:
                   f"{len(data['attack_patterns'])} case(s), "
                   f"{len(candidate_store.list_candidates())} candidate(s)")
             for fid, row in counts.items():
-                print(f"  {fid:<18} cases={row['cases']:<2} candidates={row['candidates']:<3} "
-                      f"steps={row.get('steps', 0):<2} {row['name']}")
+                print(f"  {fid:<18} cases={row['cases']:<2} retired={row.get('retired', 0):<2} "
+                      f"candidates={row['candidates']:<3} steps={row.get('steps', 0):<2} {row['name']}")
         elif args.action == "migrations":
             data = load_validated_catalog()
             records = migration_store.load_migrations()["migrations"]
@@ -202,6 +292,8 @@ def main() -> None:
             problems = family_store.validate_families(family_data, data["attack_patterns"])
             problems += migration_store.audit_migrations(data["attack_patterns"])
             problems += admission_store.audit_admissions(data["attack_patterns"])
+            problems += chain_store.audit_chains(data["attack_patterns"], read_csv(RAW_LOGS_PATH))
+            problems += lifecycle_store.audit_lifecycle(data["attack_patterns"])
             if problems:
                 for problem in problems:
                     print(f"  PROBLEM: {problem}")
@@ -209,7 +301,9 @@ def main() -> None:
             print(f"Catalog valid: {len(data['attack_patterns'])} pattern(s), {steps} step(s), "
                   f"{optional} optional step(s), {len(family_data['families'])} family(ies), "
                   f"{len(migration_store.load_migrations()['migrations'])} migration(s), "
-                  f"{len(admission_store.load_admissions()['admissions'])} admission(s).")
+                  f"{len(admission_store.load_admissions()['admissions'])} admission(s), "
+                  f"{len(chain_store.load_chains()['chains'])} chain(s), "
+                  f"{len(lifecycle_store.load_lifecycle()['events'])} lifecycle event(s).")
         else:
             if args.from_candidate and args.supporting_incident_ids:
                 parser.error("use --from-candidate or --supporting-incident-ids, not both")
@@ -224,17 +318,23 @@ def main() -> None:
                 case_id = add_pattern(resolve_demo_path(args.input), supporting, force=args.force)
                 print(f"Added {case_id} to data/attack_patterns.json (unreviewed).")
     elif args.group == "review":
-        ids = [item.strip() for item in args.event_ids.split(",") if item.strip()]
-        if not ids:
-            parser.error("--event-ids must contain at least one event ID")
-        if args.action == "link":
-            count = append_links(ids, args.incident_id, args.case_id, args.step_id,
-                                 args.status, args.basis, force=args.force)
-            print(f"Appended {count} {args.status} link(s).")
+        if args.action == "stage":
+            chain = chain_store.review_stage(
+                args.incident_id, args.event_id, args.stage, args.label, args.basis,
+                order=args.order)
+            print(f"Annotated {args.event_id} in {chain['incident_id']} as {args.stage}.")
         else:
-            count = append_links(ids, args.incident_id, args.case_id, args.step_id or "",
-                                 "related", args.basis)
-            print(f"Associated {count} event(s) with {args.case_id} as related (no labels changed).")
+            ids = [item.strip() for item in args.event_ids.split(",") if item.strip()]
+            if not ids:
+                parser.error("--event-ids must contain at least one event ID")
+            if args.action == "link":
+                count = append_links(ids, args.incident_id, args.case_id, args.step_id,
+                                     args.status, args.basis, force=args.force)
+                print(f"Appended {count} {args.status} link(s).")
+            else:
+                count = append_links(ids, args.incident_id, args.case_id, args.step_id or "",
+                                     "related", args.basis)
+                print(f"Associated {count} event(s) with {args.case_id} as related (no labels changed).")
     elif args.group == "evolve":
         if args.action == "propose":
             payload = json.loads(resolve_demo_path(args.input).read_text(encoding="utf-8-sig"))
@@ -266,9 +366,12 @@ def main() -> None:
             for snapshot in result["snapshots"]:
                 print(f"  snapshot: {snapshot}")
             proposal = result["proposal"]
-            step_id = (proposal["step"]["step_id"] if proposal["operation"] == "add_step"
-                       else proposal["step_id"])
-            print(f"Next: link the supporting events to {step_id} with `review link`, then audit.")
+            if proposal["operation"] == "reorder_steps":
+                print("Next: re-run retrieval; the step order changed, no new links are needed.")
+            else:
+                step_id = (proposal["step"]["step_id"] if proposal["operation"] == "add_step"
+                           else proposal["step_id"])
+                print(f"Next: link the supporting events to {step_id} with `review link`, then audit.")
         elif args.action == "reject":
             proposal = reject_proposal(args.proposal_id, args.basis)
             print(f"Rejected {proposal['proposal_id']} ({proposal['case_id']}).")
@@ -286,17 +389,22 @@ def main() -> None:
         family_data = family_store.load_families()
         migrations = migration_store.load_migrations()["migrations"]
         admissions = admission_store.load_admissions()["admissions"]
+        chains = chain_store.load_chains()["chains"]
+        lifecycle = lifecycle_store.load_lifecycle()["events"]
         problems = audit_problems(patterns, logs, links, proposals)
         problems += family_store.audit_families(family_data, patterns, candidates)
         problems += migration_store.audit_migrations(patterns)
         problems += admission_store.audit_admissions(patterns)
+        problems += chain_store.audit_chains(patterns, logs)
+        problems += lifecycle_store.audit_lifecycle(patterns)
         problems += candidate_store.audit_candidates(
             patterns, family_ids=family_store.family_ids(family_data))
         print(f"Audited {len(links)} link row(s) against {len(logs)} event(s), "
               f"{len(patterns)} pattern(s), {len(proposals)} proposal(s), "
               f"{len(candidates)} active candidate(s) (+{merged_count} merged), "
-              f"{len(family_data['families'])} family(ies), {len(migrations)} migration(s) "
-              f"and {len(admissions)} admission(s).")
+              f"{len(family_data['families'])} family(ies), {len(migrations)} migration(s), "
+              f"{len(admissions)} admission(s), {len(chains)} chain(s) and "
+              f"{len(lifecycle)} lifecycle event(s).")
         if args.verbose:
             print("\n".join(diagnostic_lines(args.case_id)))
         if problems:
@@ -304,7 +412,7 @@ def main() -> None:
                 print(f"  PROBLEM: {problem}")
             print(f"Audit failed with {len(problems)} problem(s).")
             raise SystemExit(1)
-        print("Audit clean: links, labels, proposals, candidates, migrations and admissions agree.")
+        print("Audit clean: links, labels, proposals, candidates, migrations, admissions, chains and lifecycle agree.")
 
 
 if __name__ == "__main__":
