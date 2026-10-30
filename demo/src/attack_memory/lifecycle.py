@@ -34,14 +34,21 @@ def save_lifecycle(data: dict, path: Path | str | None = None) -> None:
     storage.atomic_write_json(target, data)
 
 
-def record(action: str, case_id: str, basis: str, reviewer: str = "agent",
-           target: str = "", candidate_ids: list[str] | None = None,
-           path: Path | str | None = None) -> dict:
+def build_record(action: str, case_id: str, basis: str, reviewer: str = "agent",
+                 target: str = "", candidate_ids: list[str] | None = None,
+                 data: dict | None = None) -> tuple[dict, dict]:
+    """Append one lifecycle event to a loaded ledger *without* saving it.
+
+    Returning the ledger lets callers commit patterns + candidates + lifecycle in one
+    transaction, so a merge/split cannot leave a half-applied store behind.
+    """
     if action not in ACTIONS:
         raise ValueError(f"unsupported lifecycle action: {action}")
-    data = load_lifecycle(path)
+    ledger = data if data is not None else _empty()
+    if not isinstance(ledger, dict) or not isinstance(ledger.get("events"), list):
+        raise ValueError("lifecycle ledger must contain an events list")
     event = {
-        "event_id": f"LIF-{len(data['events']) + 1:04d}",
+        "event_id": f"LIF-{len(ledger['events']) + 1:04d}",
         "action": action,
         "case_id": case_id,
         "target": target,
@@ -50,13 +57,24 @@ def record(action: str, case_id: str, basis: str, reviewer: str = "agent",
         "candidate_ids": sorted(candidate_ids or []),
         "created_at": _now_iso(),
     }
-    data["events"].append(event)
+    ledger["events"].append(event)
+    return ledger, event
+
+
+def record(action: str, case_id: str, basis: str, reviewer: str = "agent",
+           target: str = "", candidate_ids: list[str] | None = None,
+           path: Path | str | None = None) -> dict:
+    data = load_lifecycle(path)
+    data, event = build_record(action, case_id, basis, reviewer, target=target,
+                               candidate_ids=candidate_ids, data=data)
     save_lifecycle(data, path)
     return event
 
 
-def latest_merge(case_id: str, path: Path | str | None = None) -> dict | None:
-    for event in reversed(load_lifecycle(path)["events"]):
+def latest_merge(case_id: str, path: Path | str | None = None,
+                 data: dict | None = None) -> dict | None:
+    ledger = data if data is not None else load_lifecycle(path)
+    for event in reversed(ledger["events"]):
         if event.get("action") == "merge" and event.get("case_id") == case_id:
             return event
     return None

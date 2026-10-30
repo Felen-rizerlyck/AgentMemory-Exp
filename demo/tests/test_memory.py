@@ -31,8 +31,9 @@ from attack_memory import signatures as signatures_module  # noqa: E402
 from attack_memory import storage  # noqa: E402
 from attack_memory.catalog import (add_pattern, add_pattern_from_candidate,  # noqa: E402
                                    load_validated_catalog, maturity, merge_case,
-                                   reactivate_case, require_pattern_support, retire_case,
-                                   review_case, split_case)
+                                   pattern_support_report, reactivate_case,
+                                   require_pattern_support, retire_case, review_case,
+                                   split_case)
 from attack_memory.diagnostics import audit_problems, step_statistics, unexplained_events  # noqa: E402
 from attack_memory.evolution import (accept_proposal, create_proposal, evaluate_proposal,  # noqa: E402
                                      load_proposals, reject_proposal, rollback_pattern,
@@ -300,7 +301,11 @@ class LinkWriteTests(unittest.TestCase):
                            encoding="utf-8")
             links = pathlib.Path(folder) / "links.csv"
             with mock.patch.object(storage, "RAW_LOGS_PATH", raw), \
-                    mock.patch.object(storage, "LINKS_PATH", links):
+                    mock.patch.object(storage, "LINKS_PATH", links), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      pathlib.Path(folder) / "ops_journal.jsonl"), \
+                    mock.patch.object(links_module, "LINK_EXCEPTIONS_PATH",
+                                      pathlib.Path(folder) / "link_exceptions.json"):
                 with self.assertRaisesRegex(ValueError, "do not match"):
                     append_links(["EVT-X"], "INC-X", "CASE-008", "S1",
                                                "candidate", "guessing")
@@ -622,6 +627,7 @@ class ProposalLifecycleTests(unittest.TestCase):
             mock.patch.object(storage, "PATTERNS_PATH", self.patterns_path),
             mock.patch.object(storage, "RAW_LOGS_PATH", self.raw_path),
             mock.patch.object(storage, "LINKS_PATH", self.links_path),
+            mock.patch.object(storage, "JOURNAL_PATH", root / "ops_journal.jsonl"),
             mock.patch.object(evolution_module, "PROPOSALS_PATH", self.proposals_path),
             mock.patch.object(catalog_module, "VERSIONS_DIR", self.versions_dir),
         ):
@@ -697,7 +703,11 @@ class LinkTimestampTests(unittest.TestCase):
                            encoding="utf-8")
             links = pathlib.Path(folder) / "links.csv"
             with mock.patch.object(storage, "RAW_LOGS_PATH", raw), \
-                    mock.patch.object(storage, "LINKS_PATH", links):
+                    mock.patch.object(storage, "LINKS_PATH", links), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      pathlib.Path(folder) / "ops_journal.jsonl"), \
+                    mock.patch.object(links_module, "LINK_EXCEPTIONS_PATH",
+                                      pathlib.Path(folder) / "link_exceptions.json"):
                 append_links(["EVT-X"], "INC-X", "CASE-008", "S1", "candidate",
                                            "synthetic", force=True)
             row = storage.read_csv(links)[0]
@@ -828,7 +838,11 @@ class RelatedAssociationTests(unittest.TestCase):
                            "vssadmin delete shadows /all\n", encoding="utf-8")
             links = pathlib.Path(folder) / "links.csv"
             with mock.patch.object(storage, "RAW_LOGS_PATH", raw), \
-                    mock.patch.object(storage, "LINKS_PATH", links):
+                    mock.patch.object(storage, "LINKS_PATH", links), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      pathlib.Path(folder) / "ops_journal.jsonl"), \
+                    mock.patch.object(links_module, "LINK_EXCEPTIONS_PATH",
+                                      pathlib.Path(folder) / "link_exceptions.json"):
                 append_links(["EVT-X"], "INC-X", "CASE-005", "", "related",
                                            "same ransomware family, different tooling")
                 rows = storage.read_csv(raw)
@@ -858,45 +872,118 @@ class RelatedAssociationTests(unittest.TestCase):
 
 
 class AddPatternSupportTests(unittest.TestCase):
+    """New-case gate: required-step union coverage across incidents + tier floor.
+
+    Every accepting test has a rejecting counterpart so the gate cannot be
+    loosened to "any single step matched" without a red test.
+    """
+
+    @staticmethod
+    def _step(step_id: str, order: int, action_id: str, regex: str) -> dict:
+        return {"step_id": step_id, "order": order, "action_id": action_id,
+                "label": action_id, "action_regex": regex,
+                "expected_sources": ["any"], "required": True}
+
     def setUp(self):
-        self.pattern = {"steps": [{"action_regex": "alpha"}]}
-        self.logs = [
-            {"incident_id": "INC-A", "content": "alpha one"},
-            {"incident_id": "INC-B", "content": "beta two"},
-            {"incident_id": "INC-C", "content": "alpha three"},
-        ]
+        self.pattern = {
+            "case_id": "CASE-990", "name": "synthetic support gate", "summary": "synthetic",
+            "mitre": ["T1190"],
+            "steps": [self._step("S1", 1, "support_alpha", "(?i)alpha"),
+                      self._step("S2", 2, "support_beta", "(?i)beta"),
+                      self._step("S3", 3, "support_gamma", "(?i)gamma")],
+            "retrieval": {"keywords": ["alpha"], "pattern_probes": ["alpha"]},
+        }
+        self.logs: list[dict[str, str]] = []
+        minute = 0
+
+        def add(incident: str, *contents: str) -> None:
+            nonlocal minute
+            for index, content in enumerate(contents, start=1):
+                event_id = f"E-{incident}-{index}"
+                self.logs.append({
+                    "event_id": event_id, "batch_id": "B-T", "incident_id": incident,
+                    "case_id": "", "timestamp": f"2026-01-01T00:{minute:02d}:00+00:00",
+                    "source": "hids", "log_id": event_id, "content": content,
+                })
+                minute += 1
+
+        add("INC-FULL", "alpha one", "beta two", "gamma three")  # strong by itself
+        add("INC-AB", "alpha four", "beta five")                # medium
+        add("INC-G", "gamma six")
+        add("INC-A", "alpha seven")
+        add("INC-B", "beta eight")
+        add("INC-NOMATCH", "delta nine")
 
     def test_singleton_support_is_refused(self):
         with self.assertRaisesRegex(ValueError, "at least 2 supporting incidents"):
-            require_pattern_support(self.pattern, ["INC-A"], self.logs)
+            require_pattern_support(self.pattern, ["INC-FULL"], self.logs)
         with self.assertRaisesRegex(ValueError, "at least 2 supporting incidents"):
             require_pattern_support(self.pattern, [], self.logs)
 
     def test_two_matching_incidents_pass(self):
-        self.assertEqual(require_pattern_support(self.pattern, ["INC-A", "INC-C"], self.logs),
-                         ["INC-A", "INC-C"])
+        self.assertEqual(require_pattern_support(self.pattern, ["INC-AB", "INC-G"], self.logs),
+                         ["INC-AB", "INC-G"])
+        self.assertEqual(require_pattern_support(self.pattern, ["INC-FULL", "INC-AB"], self.logs),
+                         ["INC-AB", "INC-FULL"])
+
+    def test_one_of_three_required_steps_is_refused(self):
+        # The backlog P0-2 counterexample: two incidents, union covers 2/3, S2 has no evidence.
+        with self.assertRaisesRegex(ValueError, "required step\\(s\\).*S2|S2.*no supporting event"):
+            require_pattern_support(self.pattern, ["INC-A", "INC-G"], self.logs)
+
+    def test_union_coverage_but_no_strong_or_medium_sample_is_refused(self):
+        # Complementarity is not enough: no single incident reaches strong/medium by itself.
+        with self.assertRaisesRegex(ValueError, "strong/medium"):
+            require_pattern_support(self.pattern, ["INC-A", "INC-B", "INC-G"], self.logs)
 
     def test_unmatched_or_unknown_incident_is_refused(self):
         with self.assertRaisesRegex(ValueError, "does not|no event"):
-            require_pattern_support(self.pattern, ["INC-A", "INC-B"], self.logs)
+            require_pattern_support(self.pattern, ["INC-FULL", "INC-NOMATCH"], self.logs)
         with self.assertRaisesRegex(ValueError, "unknown"):
-            require_pattern_support(self.pattern, ["INC-A", "INC-NOPE"], self.logs)
+            require_pattern_support(self.pattern, ["INC-FULL", "INC-NOPE"], self.logs)
 
     def test_force_allows_a_reviewed_singleton(self):
-        self.assertEqual(require_pattern_support(self.pattern, ["INC-A"], self.logs, force=True),
-                         ["INC-A"])
+        self.assertEqual(require_pattern_support(self.pattern, ["INC-G"], self.logs, force=True),
+                         ["INC-G"])
         self.assertEqual(require_pattern_support(self.pattern, [], self.logs, force=True), [])
+
+    def test_force_singleton_records_partial_coverage(self):
+        report = pattern_support_report(self.pattern, ["INC-G"], self.logs, force=True)
+        self.assertTrue(report["single_sample"])
+        self.assertFalse(report["has_strong_medium"])
+        self.assertIn("S1", report["missing_required"])
+        self.assertIn("S2", report["missing_required"])
+        self.assertEqual(report["coverage"]["INC-G"]["coverage"], round(1 / 3, 3))
+        full = pattern_support_report(self.pattern, ["INC-FULL"], self.logs, force=True)
+        self.assertTrue(full["single_sample"])  # singleton even with complete coverage
+        self.assertEqual(full["missing_required"], [])
+        self.assertTrue(full["has_strong_medium"])
 
 
 class CandidateStoreTests(unittest.TestCase):
+    STAGING_LOGS = [
+        {"event_id": "E1", "batch_id": "B-T", "incident_id": "INC-1", "case_id": "",
+         "timestamp": "2026-01-01T00:00:00+00:00", "source": "hids", "log_id": "E1",
+         "content": "alpha one"},
+        {"event_id": "E2", "batch_id": "B-T", "incident_id": "INC-2", "case_id": "",
+         "timestamp": "2026-01-01T00:01:00+00:00", "source": "hids", "log_id": "E2",
+         "content": "beta two"},
+    ]
+
     def test_single_incident_is_provisional_and_two_are_promotable(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / "case_candidates.json"
-            first = candidates_module.upsert_candidate("sig", "label", "INC-1", ["E1"], path=path)
+            first = candidates_module.upsert_candidate(
+                "sig", "label", "INC-1", ["E1"], path=path,
+                logs=self.STAGING_LOGS, links=[])
             self.assertEqual(first["status"], "provisional")
-            again = candidates_module.upsert_candidate("sig", "label", "INC-1", ["E1"], path=path)
+            again = candidates_module.upsert_candidate(
+                "sig", "label", "INC-1", ["E1"], path=path,
+                logs=self.STAGING_LOGS, links=[])
             self.assertEqual(len(again["incidents"]), 1)
-            second = candidates_module.upsert_candidate("sig", "label", "INC-2", ["E2"], path=path)
+            second = candidates_module.upsert_candidate(
+                "sig", "label", "INC-2", ["E2"], path=path,
+                logs=self.STAGING_LOGS, links=[])
             self.assertEqual(second["candidate_id"], first["candidate_id"])
             self.assertEqual(second["status"], "promotable")
             self.assertEqual(candidates_module.counts(path)["promotable"], 1)
@@ -911,7 +998,7 @@ class CandidateStoreTests(unittest.TestCase):
                     if row.get("incident_id") == "INC-CASE-001-001"]
             self.assertTrue(rows)
             candidate = candidates_module.upsert_candidate(
-                "singleton", "singleton", "INC-CAND-950",
+                "singleton", "singleton", "INC-CASE-001-001",
                 [row["event_id"] for row in rows], path=candidate_path)
             pattern = {
                 "case_id": "CASE-950", "name": "Synthetic singleton", "summary": "synthetic",
@@ -925,6 +1012,10 @@ class CandidateStoreTests(unittest.TestCase):
             pattern_path = folder / "pattern.json"
             pattern_path.write_text(json.dumps(pattern), encoding="utf-8")
             with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      folder / "ops_journal.jsonl"), \
+                    mock.patch.object(catalog_module, "VERSIONS_DIR",
+                                      folder / "pattern_versions"), \
                     mock.patch.object(candidates_module, "CANDIDATES_PATH", candidate_path), \
                     mock.patch.object(admissions_module, "ADMISSIONS_PATH",
                                       folder / "case_admissions.json"):
@@ -962,6 +1053,10 @@ class CandidateStoreTests(unittest.TestCase):
             pattern_path = folder / "pattern.json"
             pattern_path.write_text(json.dumps(pattern), encoding="utf-8")
             with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      folder / "ops_journal.jsonl"), \
+                    mock.patch.object(catalog_module, "VERSIONS_DIR",
+                                      folder / "pattern_versions"), \
                     mock.patch.object(candidates_module, "CANDIDATES_PATH", candidate_path), \
                     mock.patch.object(admissions_module, "ADMISSIONS_PATH",
                                       folder / "case_admissions.json"):
@@ -975,9 +1070,15 @@ class CandidateStoreTests(unittest.TestCase):
     def test_audit_flags_a_promoted_candidate_without_a_case(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / "case_candidates.json"
-            candidates_module.upsert_candidate("sig", "label", "INC-1", ["E1"], path=path)
+            candidates_module.upsert_candidate(
+                "sig", "label", "INC-1", ["E1"], path=path,
+                logs=[{"event_id": "E1", "incident_id": "INC-1", "case_id": "",
+                       "source": "hids", "content": "alpha"}], links=[])
             candidates_module.mark_promoted("CAND-0001", "CASE-999", path=path)
-            problems = candidates_module.audit_candidates([], path=path)
+            problems = candidates_module.audit_candidates(
+                [], path=path,
+                logs=[{"event_id": "E1", "incident_id": "INC-1", "case_id": "",
+                       "source": "hids", "content": "alpha"}])
             self.assertTrue(any("missing case" in problem for problem in problems))
 
 
@@ -998,8 +1099,10 @@ class FamilyRegistryTests(unittest.TestCase):
     def test_candidate_unknown_family_is_reported(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / "case_candidates.json"
-            candidates_module.upsert_candidate("sig", "label", "INC-1", ["E1"],
-                                               family_id="nope", path=path)
+            candidates_module.upsert_candidate(
+                "sig", "label", "INC-1", ["E1"], family_id="nope", path=path,
+                logs=[{"event_id": "E1", "incident_id": "INC-1", "case_id": "",
+                       "source": "hids", "content": "alpha"}], links=[])
             problems = candidates_module.audit_candidates([], path=path,
                                                           family_ids={"web-exploit"})
             self.assertTrue(any("unknown family_id" in problem for problem in problems))
@@ -1047,6 +1150,8 @@ class CaseLifecycleTests(unittest.TestCase):
             lifecycle_path = folder / "case_lifecycle.json"
             self._catalog(catalog_path)
             with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      folder / "ops_journal.jsonl"), \
                     mock.patch.object(lifecycle_module, "LIFECYCLE_PATH", lifecycle_path):
                 retire_case("CASE-980", "obsolete", reviewer="tester")
                 patterns = load_validated_catalog()["attack_patterns"]
@@ -1068,6 +1173,8 @@ class CaseLifecycleTests(unittest.TestCase):
             candidates_path = folder / "case_candidates.json"
             self._catalog(catalog_path)
             with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      folder / "ops_journal.jsonl"), \
                     mock.patch.object(lifecycle_module, "LIFECYCLE_PATH", lifecycle_path), \
                     mock.patch.object(candidates_module, "CANDIDATES_PATH", candidates_path):
                 merge_case("CASE-980", "CASE-981", "duplicate", reviewer="tester")
@@ -1296,15 +1403,24 @@ class ReorderTests(unittest.TestCase):
 
 
 class CandidateMergeTests(unittest.TestCase):
+    MERGE_LOGS = [
+        {"event_id": "E1", "batch_id": "B-T", "incident_id": "INC-1", "case_id": "",
+         "timestamp": "2026-01-01T00:00:00+00:00", "source": "hids", "log_id": "E1",
+         "content": "spring cloud gateway spel"},
+        {"event_id": "E2", "batch_id": "B-T", "incident_id": "INC-2", "case_id": "",
+         "timestamp": "2026-01-01T00:01:00+00:00", "source": "hids", "log_id": "E2",
+         "content": "spring cloud gateway spel"},
+    ]
+    GROUPED_FEATURES = {"signature_key": "key", "signature_terms": ["spring"],
+                        "signature_source": "terms"}
+
     def _pair(self, path):
         first = candidates_module.upsert_candidate(
-            "sig-a", "A", "INC-1", ["E1"], family_id="web-exploit", path=path)
+            "sig-a", "A", "INC-1", ["E1"], family_id="web-exploit", path=path,
+            logs=self.MERGE_LOGS, links=[], features=self.GROUPED_FEATURES)
         second = candidates_module.upsert_candidate(
-            "sig-b", "B", "INC-2", ["E2"], family_id="web-exploit", path=path)
-        data = candidates_module.load_candidates(path)
-        for candidate in data["candidates"]:
-            candidate["signature_key"] = "key"
-        candidates_module.save_candidates(data, path)
+            "sig-b", "B", "INC-2", ["E2"], family_id="web-exploit", path=path,
+            logs=self.MERGE_LOGS, links=[], features=self.GROUPED_FEATURES)
         return first, second
 
     def test_merge_makes_a_promotable_primary_and_split_restores_it(self):
@@ -1319,7 +1435,8 @@ class CandidateMergeTests(unittest.TestCase):
             self.assertEqual(candidates_module.get_candidate(
                 second["candidate_id"], path=path)["status"], "merged")
             self.assertEqual(candidates_module.audit_candidates(
-                [], path=path, family_ids={"web-exploit"}), [])
+                [], path=path, family_ids={"web-exploit"},
+                logs=self.MERGE_LOGS), [])
             candidates_module.split_candidate(
                 first["candidate_id"], second["candidate_id"], "wrong merge", path=path)
             self.assertEqual(candidates_module.get_candidate(
@@ -1339,10 +1456,33 @@ class CandidateMergeTests(unittest.TestCase):
             self.assertEqual(merged["status"], "promoted")
             self.assertEqual(merged["pending_case_links"], ["INC-2"])
             self.assertEqual(candidates_module.audit_candidates(
-                [{"case_id": "CASE-999"}], path=path, family_ids={"web-exploit"}), [])
+                [{"case_id": "CASE-999"}], path=path, family_ids={"web-exploit"},
+                logs=self.MERGE_LOGS), [])
             with self.assertRaisesRegex(ValueError, "promoted cluster"):
                 candidates_module.split_candidate(
                     first["candidate_id"], second["candidate_id"], "no", path=path)
+
+    def test_ungrouped_merge_needs_an_explicit_decision(self):
+        # Counterexample for the new "fallback = ungrouped" rule: a hash-less candidate
+        # may only be merged after a reviewer explicitly allows the ungrouped bucket.
+        logs = [dict(row, content="whoami output") for row in self.MERGE_LOGS]
+        with tempfile.TemporaryDirectory() as folder:
+            path = pathlib.Path(folder) / "case_candidates.json"
+            first = candidates_module.upsert_candidate(
+                "sig-a", "A", "INC-1", ["E1"], family_id="web-exploit", path=path,
+                logs=logs, links=[])
+            second = candidates_module.upsert_candidate(
+                "sig-b", "B", "INC-2", ["E2"], family_id="web-exploit", path=path,
+                logs=logs, links=[])
+            self.assertIsNone(first["signature_key"])
+            self.assertEqual(first["signature_source"], "fallback")
+            with self.assertRaisesRegex(ValueError, "ungrouped"):
+                candidates_module.merge_candidates(
+                    first["candidate_id"], second["candidate_id"], "looks similar", path=path)
+            merged = candidates_module.merge_candidates(
+                first["candidate_id"], second["candidate_id"], "reviewed same technique",
+                path=path, allow_ungrouped=True)
+            self.assertEqual(merged["status"], "promotable")
 
 
 class SignatureTests(unittest.TestCase):
@@ -1370,16 +1510,34 @@ class SignatureTests(unittest.TestCase):
         self.assertNotEqual(xmlrpc["signature_key"], groovy["signature_key"])
 
     def test_product_alone_does_not_merge_php_variants(self):
-        keys = {
-            signatures_module.extract_features(
-                label, [content], ["hids"], "web-exploit")["signature_key"]
+        # A product with no discriminative action is not a technique signature: the old
+        # fallback hash created one group per spelling, so the new semantics put every
+        # term-less candidate into the single visible "ungrouped" bucket instead.
+        features = [signatures_module.extract_features(
+            label, [content], ["hids"], "web-exploit")
             for label, content in (
                 ("PHP 双编码路径穿越", "php path traversal"),
                 ("ThinkPHP 多语言参数 RCE", "thinkphp rce"),
                 ("PHPUnit eval-stdin 远程代码执行", "phpunit eval"),
-            )
-        }
-        self.assertEqual(len(keys), 3)
+            )]
+        for feature in features:
+            self.assertIsNone(feature["signature_key"], feature)
+            self.assertEqual(feature["signature_source"], "fallback")
+        synthetic = [{"candidate_id": f"CAND-9{i:03d}", **feature} for i, feature in enumerate(features)]
+        groups = signatures_module.group_candidates(synthetic)
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0]["signature_key"], "ungrouped")
+        self.assertTrue(groups[0]["ungrouped"])
+        self.assertEqual(len(groups[0]["candidates"]), 3)
+
+    def test_product_plus_action_still_yields_a_terms_key(self):
+        # Keeping the rejecting test above honest: a real product+action pair still groups.
+        feature = signatures_module.extract_features(
+            "Apache OFBiz Groovy 代码执行", ["groovy deserialization"], ["hids"], "web-exploit")
+        self.assertEqual(feature["signature_source"], "terms")
+        self.assertIsNotNone(feature["signature_key"])
+        self.assertEqual(feature["primary_product"], "ofbiz")
+        self.assertEqual(feature["primary_action"], "groovy")
 
     def test_group_candidates_pairs_spring4shell(self):
         candidates = candidates_module.load_candidates()["candidates"]
@@ -1447,6 +1605,10 @@ class AdmissionTests(unittest.TestCase):
             pattern_path = folder / "pattern.json"
             pattern_path.write_text(json.dumps(pattern), encoding="utf-8")
             with mock.patch.object(storage, "PATTERNS_PATH", catalog_path), \
+                    mock.patch.object(storage, "JOURNAL_PATH",
+                                      folder / "ops_journal.jsonl"), \
+                    mock.patch.object(catalog_module, "VERSIONS_DIR",
+                                      folder / "pattern_versions"), \
                     mock.patch.object(admissions_module, "ADMISSIONS_PATH", admissions_path):
                 add_pattern(pattern_path, force=True)
                 added = next(item for item in load_validated_catalog()["attack_patterns"]

@@ -1,0 +1,105 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-004",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "Laravel Ignition 反序列化 RCE + cron 持久化",
+  "summary": "请求 _ignition/execute-solution 触发 phar 反序列化 → 应用侧记录 phar:// 载荷 → PHP-FPM 派生子 shell 执行 id → 追加 crontab 定时回连。",
+  "pattern_scope": {
+    "attack_family": "Laravel Ignition 反序列化（CVE-2021-3129）",
+    "variant_note": "单样本归纳；phar 落地路径与持久化命令来自该样本。"
+  },
+  "mitre": [
+    "T1190",
+    "T1059.004",
+    "T1053.003"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "initial_access",
+      "action_id": "laravel_ignition_execute_solution",
+      "label": "_ignition/execute-solution 触发",
+      "action_regex": "(?i)_ignition/execute-solution",
+      "expected_sources": [
+        "waf",
+        "web"
+      ],
+      "evidence_patterns": [
+        "_ignition/execute-solution"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "execution",
+      "action_id": "ignition_phar_deserialization",
+      "label": "应用侧 phar:// 反序列化载荷",
+      "action_regex": "(?i)\\\"viewfile\\\"\\s*:\\s*\\\"phar://",
+      "expected_sources": [
+        "rasp"
+      ],
+      "evidence_patterns": [
+        "{\"viewFile\": \"phar://"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "execution",
+      "action_id": "php_fpm_child_id",
+      "label": "PHP-FPM 派生子 shell 执行命令",
+      "action_regex": "(?i)<==\\s*/bin/(?:sh|bash|dash)\\s+-c\\s+'id'.{0,40}php-fpm",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "<== /bin/sh -c 'id' <== php-fpm"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S4",
+      "order": 4,
+      "phase": "persistence",
+      "action_id": "cron_persistence_append",
+      "label": "追加 crontab 定时回连",
+      "action_regex": "(?i)>>\\s*/var/spool/cron/root|\\(\\s*crontab\\s+-l",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        ">> /var/spool/cron/root"
+      ],
+      "generic": true
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "_ignition",
+      "phar://",
+      "execute-solution",
+      "php-fpm",
+      "/var/spool/cron/root"
+    ],
+    "pattern_probes": [
+      "_ignition/execute-solution",
+      "phar:///tmp/",
+      ">>\\s*/var/spool/cron/root"
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "横向移动",
+      "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "evidence_status": "single_observation_demo"
+  },
+  "family_id": "web-exploit",
+  "version": 1
+}

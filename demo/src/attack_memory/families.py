@@ -70,9 +70,9 @@ def family_evidence(family: dict, logs: list[dict[str, str]]) -> list[dict]:
     evidence: list[dict] = []
     for step in family.get("steps") or []:
         regex = re.compile(step["action_regex"])
-        expected = set(step.get("expected_sources") or [])
+        expected = step.get("expected_sources") or []
         rows = [row for row in logs
-                if (row.get("source") or "") in expected
+                if storage.source_fits(row.get("source") or "", expected)
                 and regex.search(row.get("content") or "") is not None]
         if not rows:
             continue

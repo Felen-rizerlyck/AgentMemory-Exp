@@ -3,10 +3,88 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from functools import lru_cache
 from typing import Any
+
+from .storage import source_fits
 
 TIER_RANK = {"strong": 3, "medium": 2, "weak": 1, "keyword_only": 0}
 FAR_FUTURE = datetime.max.replace(tzinfo=timezone.utc)
+
+
+_LITERAL_SPECIAL = ".^$*+?{}[]()|"
+_FLAG_OK = "ims"
+
+
+def _has_top_level_alternation(source: str) -> bool:
+    """True when ``|`` joins whole-pattern branches, which invalidates a prefix literal."""
+    depth = 0
+    in_class = False
+    index = 0
+    while index < len(source):
+        char = source[index]
+        if char == "\\":
+            index += 2
+            continue
+        if in_class:
+            if char == "]":
+                in_class = False
+        elif char == "[":
+            in_class = True
+        elif char == "(":
+            depth += 1
+        elif char == ")":
+            depth -= 1
+        elif char == "|" and depth == 0:
+            return True
+        index += 1
+    return False
+
+
+def _leading_literal(source: str) -> str | None:
+    """Return the mandatory case-folded literal prefix of a regex, or None.
+
+    Only a leading run of plain or escaped literal characters after an optional inline
+    flag group and ``^`` is accepted, and only when the pattern has no top-level
+    alternation. Anything more complex returns None, so the value can only *narrow* the
+    regex scan: every real match of the regex contains it.
+    """
+    if _has_top_level_alternation(source):
+        return None
+    index = 0
+    if source.startswith("(?"):
+        close = source.find(")", 2)
+        if close == -1:
+            return None
+        flags = source[2:close]
+        if not flags or any(char not in _FLAG_OK for char in flags):
+            return None
+        index = close + 1
+    if index < len(source) and source[index] == "^":
+        index += 1
+    chars: list[str] = []
+    while index < len(source):
+        char = source[index]
+        if char == "\\":
+            if index + 1 >= len(source):
+                return None
+            escaped = source[index + 1]
+            if escaped in "dDsSwWbBAZzG0123456789":
+                break
+            literal = {"n": "\n", "r": "\r", "t": "\t"}.get(escaped, escaped)
+            if index + 2 < len(source) and source[index + 2] in "*+?{":
+                break
+            chars.append(literal)
+            index += 2
+            continue
+        if char in _LITERAL_SPECIAL:
+            break
+        if index + 1 < len(source) and source[index + 1] in "*+?{":
+            break
+        chars.append(char)
+        index += 1
+    literal = "".join(chars)
+    return literal.casefold() if len(literal) >= 3 else None
 
 
 def build_action_index(patterns: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
@@ -26,6 +104,7 @@ def build_action_index(patterns: list[dict[str, Any]]) -> dict[str, dict[str, An
                     "regex": re.compile(regex),
                     "source": regex,
                     "generic": bool(step.get("generic", False)),
+                    "literal": _leading_literal(regex),
                     "refs": [{"case_id": pattern["case_id"], "step_no": step_no}],
                 }
                 continue
@@ -41,19 +120,34 @@ def build_action_index(patterns: list[dict[str, Any]]) -> dict[str, dict[str, An
 
 
 def extract_log_actions(logs: list[dict[str, str]], action_index: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
-    """Match each unique action ID at most once per row and retain event/source provenance."""
+    """Match each unique action ID at most once per row and retain event/source provenance.
+
+    Detection depends only on the row content, so the regex scan is bound once per call and
+    repeated content is matched once then reused. When an action regex has a provable
+    mandatory literal prefix, that cheap substring check runs before the regex; it can only
+    reject rows the regex would reject. The returned rows and their order are identical to
+    a plain per-row scan.
+    """
+    searchers = [(action_id, entry["regex"].search, entry["generic"], entry.get("literal"))
+                 for action_id, entry in action_index.items()]
+    fold_content = any(literal for _, _, _, literal in searchers)
+    hits_by_content: dict[str, list[tuple[str, bool]]] = {}
     output: list[dict[str, Any]] = []
     for log in logs:
         content = log.get("content") or ""
-        for action_id, entry in action_index.items():
-            if not entry["regex"].search(content):
-                continue
+        hits = hits_by_content.get(content)
+        if hits is None:
+            folded = content.casefold() if fold_content else ""
+            hits = [(action_id, generic) for action_id, search, generic, literal in searchers
+                    if (literal is None or literal in folded) and search(content)]
+            hits_by_content[content] = hits
+        for action_id, generic in hits:
             output.append({
                 "action_id": action_id,
                 "event_id": log.get("event_id") or log.get("log_id", ""),
                 "source": (log.get("source") or "").casefold(),
                 "timestamp": log.get("timestamp", ""),
-                "generic": entry["generic"],
+                "generic": generic,
                 "log": log,
             })
     return output
@@ -82,12 +176,27 @@ def _expected_sources(step: dict[str, Any]) -> set[str]:
     return {str(source).casefold() for source in step.get("expected_sources") or []}
 
 
-def _source_fits(source: str, expected: set[str]) -> bool:
-    return not expected or "any" in expected or source in expected
+@lru_cache(maxsize=None)
+def _mitre_boundary_pattern(token: str) -> re.Pattern[str]:
+    """Compiled literal-token matcher, cached per technique ID."""
+    return re.compile(r"(?<![a-z0-9])" + re.escape(token) + r"(?![a-z0-9])")
 
 
-def _keyword_score(pattern: dict[str, Any], text: str) -> tuple[int, list[str]]:
-    lowered = text.casefold()
+@lru_cache(maxsize=None)
+def _probe_pattern(probe: str) -> re.Pattern[str]:
+    """Compiled retrieval probe, cached so a repeated CLI run recompiles nothing."""
+    return re.compile(probe, re.IGNORECASE)
+
+
+@lru_cache(maxsize=None)
+def _probe_prefix(probe: str) -> str | None:
+    """Mandatory literal prefix of a probe, cached; used as a cheap negative filter."""
+    return _leading_literal(probe)
+
+
+def _keyword_score(pattern: dict[str, Any], text: str,
+                   lowered: str | None = None) -> tuple[int, list[str]]:
+    lowered = text.casefold() if lowered is None else lowered
     score = 0
     details: list[str] = []
     seen: set[str] = set()
@@ -102,12 +211,22 @@ def _keyword_score(pattern: dict[str, Any], text: str) -> tuple[int, list[str]]:
     # is a weak lexical hint, not ATT&CK inference.
     for technique in pattern.get("mitre", []):
         token = str(technique).casefold()
-        if token and re.search(r"(?<![a-z0-9])" + re.escape(token) + r"(?![a-z0-9])", lowered) and token not in seen:
+        if (token and token not in seen and token in lowered
+                and _mitre_boundary_pattern(token).search(lowered)):
             score += 2
             seen.add(token)
             details.append(f"MITRE token +2: {technique}")
-    for probe in retrieval.get("pattern_probes", []):
-        if re.search(probe, text, re.IGNORECASE):
+    probes = retrieval.get("pattern_probes", [])
+    # re.IGNORECASE is the expensive scan here; a mandatory literal prefix rejects most
+    # text before it. Only taken when both sides are ASCII, where case folding and the
+    # regex engine's ignore-case matching are exactly equivalent.
+    ascii_text = text.isascii() if probes else False
+    for probe in probes:
+        if ascii_text:
+            prefix = _probe_prefix(probe)
+            if prefix is not None and prefix not in lowered:
+                continue
+        if _probe_pattern(probe).search(text):
             score += 4
             details.append(f"probe +4: {probe}")
     return score, details
@@ -116,25 +235,26 @@ def _keyword_score(pattern: dict[str, Any], text: str) -> tuple[int, list[str]]:
 def _align_sequence(pattern: dict[str, Any], actions: list[dict[str, Any]]) -> list[tuple[int, dict[str, Any]]]:
     """LCS-style temporal alignment used for shape/tier: one action supports at most one step."""
     steps = pattern["steps"]
+    expected_by_pos = [_expected_sources(step) for step in steps]
     n, m = len(steps), len(actions)
     dp = [[0] * (m + 1) for _ in range(n + 1)]
 
-    def compatible(step: dict[str, Any], action: dict[str, Any]) -> bool:
-        if step["action_id"] != action["action_id"]:
+    def compatible(step_pos: int, action: dict[str, Any]) -> bool:
+        if steps[step_pos]["action_id"] != action["action_id"]:
             return False
-        return _source_fits(action["source"], _expected_sources(step))
+        return source_fits(action["source"], expected_by_pos[step_pos])
 
     for i in range(1, n + 1):
         for j in range(1, m + 1):
             best = max(dp[i - 1][j], dp[i][j - 1])
-            if compatible(steps[i - 1], actions[j - 1]):
+            if compatible(i - 1, actions[j - 1]):
                 best = max(best, dp[i - 1][j - 1] + 1)
             dp[i][j] = best
 
     aligned: list[tuple[int, dict[str, Any]]] = []
     i, j = n, m
     while i and j:
-        if compatible(steps[i - 1], actions[j - 1]) and dp[i][j] == dp[i - 1][j - 1] + 1:
+        if compatible(i - 1, actions[j - 1]) and dp[i][j] == dp[i - 1][j - 1] + 1:
             aligned.append((i - 1, actions[j - 1]))
             i -= 1
             j -= 1
@@ -160,22 +280,36 @@ def _shape(positions: list[int], total: int) -> str:
 
 
 def match_pattern(pattern: dict[str, Any], logs: list[dict[str, str]],
-                  all_actions: list[dict[str, Any]], query_text: str | None = None) -> dict[str, Any]:
+                  all_actions: list[dict[str, Any]], query_text: str | None = None,
+                  actions_by_id: dict[str, list[dict[str, Any]]] | None = None,
+                  keyword: tuple[int, list[str]] | None = None) -> dict[str, Any]:
+    """Score one pattern against a batch of rows.
+
+    ``actions_by_id`` and ``keyword`` are optional pre-computed inputs used by
+    :func:`retrieve` so it can build the reverse index and the lexical score once per
+    batch instead of once per pattern. Callers that pass neither get exactly the same
+    result as before (the old full-scan code path is kept below).
+    """
     steps = pattern["steps"]
     step_by_action = {step["action_id"]: pos for pos, step in enumerate(steps)}
-    case_actions = [action for action in all_actions if action["action_id"] in step_by_action]
+    if actions_by_id is None:
+        case_actions = [action for action in all_actions if action["action_id"] in step_by_action]
+    else:
+        case_actions = [action for action_id in step_by_action
+                        for action in actions_by_id.get(action_id, ())]
     case_actions.sort(key=_sort_key)
 
     # Detection is source-aware but not alignment-dependent: every hit stays visible.
     detected_by_step: dict[int, list[dict[str, Any]]] = {}
     mismatches: list[dict[str, Any]] = []
     hit_positions: set[int] = set()
+    expected_by_pos = [_expected_sources(step) for step in steps]
     for action in case_actions:
         pos = step_by_action[action["action_id"]]
         hit_positions.add(pos)
         step = steps[pos]
-        expected = _expected_sources(step)
-        if _source_fits(action["source"], expected):
+        expected = expected_by_pos[pos]
+        if source_fits(action["source"], expected):
             detected_by_step.setdefault(pos, []).append(action)
         else:
             mismatches.append({"step_id": step["step_id"], "event_id": action["event_id"],
@@ -237,8 +371,12 @@ def match_pattern(pattern: dict[str, Any], logs: list[dict[str, str]],
 
     source_ok_steps = len(detected_by_step)
     source_ratio = source_ok_steps / len(hit_positions) if hit_positions else 0.0
-    text = query_text if query_text is not None else "\n".join(log.get("content") or "" for log in logs)
-    kw_score, kw_details = _keyword_score(pattern, text)
+    if keyword is not None:
+        kw_score, kw_details = keyword
+    else:
+        text = (query_text if query_text is not None
+                else "\n".join(log.get("content") or "" for log in logs))
+        kw_score, kw_details = _keyword_score(pattern, text)
 
     if matched_required == required_total and required_total and order_assessable and order_ok and matched_non_generic:
         tier = "strong"
@@ -319,16 +457,25 @@ def retrieve(patterns: list[dict[str, Any]], logs: list[dict[str, str]],
     action_index = action_index or build_action_index(patterns)
     all_actions = extract_log_actions(logs, action_index)
     text = "\n".join(log.get("content") or "" for log in logs)
-    indexed_cases = {ref["case_id"] for action in all_actions
-                     for ref in action_index[action["action_id"]]["refs"]}
+    # Build the reverse index and the lower-cased corpus once per retrieval, not once per
+    # pattern: both are pure functions of the batch and the catalog.
+    actions_by_id: dict[str, list[dict[str, Any]]] = {}
+    for action in all_actions:
+        actions_by_id.setdefault(action["action_id"], []).append(action)
+    indexed_cases: set[str] = set()
+    for action_id in actions_by_id:
+        indexed_cases.update(ref["case_id"] for ref in action_index[action_id]["refs"])
+    lowered_text = text.casefold()
     results: list[dict[str, Any]] = []
     for pattern in patterns:
         if pattern.get("status") == "retired":
             continue
+        keyword = _keyword_score(pattern, text, lowered_text)
         # The action reverse index narrows action-derived candidates. Lexical fallback remains global.
-        if pattern["case_id"] not in indexed_cases and not _keyword_score(pattern, text)[0]:
+        if pattern["case_id"] not in indexed_cases and not keyword[0]:
             continue
-        result = match_pattern(pattern, logs, all_actions, text)
+        result = match_pattern(pattern, logs, all_actions, text,
+                               actions_by_id=actions_by_id, keyword=keyword)
         if result["tier"] != "none":
             results.append(result)
 

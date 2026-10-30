@@ -65,6 +65,9 @@ def unexplained_events(patterns: list[dict], logs: list[dict[str, str]],
 
 def audit_problems(patterns: list[dict], logs: list[dict[str, str]], links: list[dict[str, str]],
                    proposals: list[dict]) -> list[str]:
+    """Deprecated compatibility shim; the CLI now uses :func:`attack_memory.audit.run_audit`."""
+    from .evolution import audit_proposals
+    from .links import audit_links
     return audit_links(patterns, logs, links) + audit_proposals(proposals)
 
 

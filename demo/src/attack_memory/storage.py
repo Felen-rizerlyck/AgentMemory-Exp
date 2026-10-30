@@ -1,8 +1,13 @@
-"""Relative-path storage helpers and schema checks for the demo."""
+"""Relative-path storage helpers, schema checks and the two-phase write journal."""
 from __future__ import annotations
 
 import csv
+import dataclasses
+import datetime as dt
+import hashlib
+import io
 import json
+import os
 import pathlib
 import re
 import tempfile
@@ -13,6 +18,8 @@ DATA_DIR = DEMO_ROOT / "data"
 PATTERNS_PATH = DATA_DIR / "attack_patterns.json"
 RAW_LOGS_PATH = DATA_DIR / "raw_logs.csv"
 LINKS_PATH = DATA_DIR / "event_pattern_links.csv"
+JOURNAL_PATH = DATA_DIR / "ops_journal.jsonl"
+BOM = b"\xef\xbb\xbf"
 RAW_FIELDS = ["event_id", "batch_id", "incident_id", "case_id", "timestamp", "source", "log_id", "content"]
 LINK_FIELDS = ["event_id", "incident_id", "case_id", "step_id", "action_id", "link_status", "link_basis",
                "decided_at"]
@@ -231,48 +238,50 @@ def validate_event_labels(event_ids: set[str], case_id: str, incident_id: str) -
             raise ValueError(f"{event_id} already has incident_id {current_incident}; review the existing label first")
 
 
-def update_event_labels(event_ids: set[str], case_id: str, incident_id: str, status: str) -> None:
-    """Update only analysis-label columns, preserving every other column and the line endings."""
-    raw = RAW_LOGS_PATH.read_bytes()
-    has_bom = raw.startswith(b"\xef\xbb\xbf")
-    newline = "\r\n" if b"\r\n" in raw else "\n"
-    fieldnames, rows = _read_csv_strict(RAW_LOGS_PATH)
+def apply_label_changes(rows: list[dict[str, str]], event_ids: set[str], case_id: str,
+                        incident_id: str, status: str) -> tuple[list[dict[str, str]], bool]:
+    """Pure label derivation for one reviewed decision; returns new rows and whether anything changed."""
+    if status not in ("confirmed", "rejected"):
+        return list(rows), False
+    targets = set(event_ids)
     found: set[str] = set()
     changed = False
+    new_rows: list[dict[str, str]] = []
     for row in rows:
         event_id = row.get("event_id", "")
-        if event_id not in event_ids:
+        if event_id not in targets:
+            new_rows.append(row)
             continue
         found.add(event_id)
         current_case = (row.get("case_id") or "").strip()
         current_incident = (row.get("incident_id") or "").strip()
+        updated = dict(row)
         if status == "confirmed":
             if current_case != case_id or current_incident != incident_id:
-                row["case_id"] = case_id
-                row["incident_id"] = incident_id
+                updated["case_id"] = case_id
+                updated["incident_id"] = incident_id
                 changed = True
-        elif status == "rejected":
-            if current_case == case_id and current_incident == incident_id:
-                row["case_id"] = ""
-                row["incident_id"] = ""
-                changed = True
-            elif not current_case and current_incident == incident_id:
-                # An ingestion-only incident label can be withdrawn without a stand-in confirmation.
-                row["incident_id"] = ""
-                changed = True
-    if found != event_ids:
-        raise ValueError(f"Unknown event_id(s): {', '.join(sorted(event_ids - found))}")
+        elif current_case == case_id and current_incident == incident_id:
+            updated["case_id"] = ""
+            updated["incident_id"] = ""
+            changed = True
+        elif not current_case and current_incident == incident_id:
+            # An ingestion-only incident label can be withdrawn without a stand-in confirmation.
+            updated["incident_id"] = ""
+            changed = True
+        new_rows.append(updated)
+    if found != targets:
+        raise ValueError(f"Unknown event_id(s): {', '.join(sorted(targets - found))}")
+    return new_rows, changed
+
+
+def update_event_labels(event_ids: set[str], case_id: str, incident_id: str, status: str) -> None:
+    """Update only analysis-label columns, preserving every other column and the line endings."""
+    fieldnames, rows = _read_csv_strict(RAW_LOGS_PATH)
+    new_rows, changed = apply_label_changes(rows, event_ids, case_id, incident_id, status)
     if not changed:
         return
-    with tempfile.NamedTemporaryFile("w", encoding="utf-8-sig" if has_bom else "utf-8",
-                                     newline="", dir=RAW_LOGS_PATH.parent,
-                                     suffix=".tmp", delete=False) as handle:
-        tmp = pathlib.Path(handle.name)
-        writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore",
-                                lineterminator=newline)
-        writer.writeheader()
-        writer.writerows(rows)
-    tmp.replace(RAW_LOGS_PATH)
+    _atomic_write_bytes(RAW_LOGS_PATH, _csv_bytes(fieldnames, new_rows, like=RAW_LOGS_PATH))
 
 
 def atomic_write_json(path: pathlib.Path, data: Any) -> None:
@@ -283,3 +292,257 @@ def atomic_write_json(path: pathlib.Path, data: Any) -> None:
         json.dump(data, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
     tmp.replace(path)
+
+
+# ---------------------------------------------------------------------------
+# Shared domain helpers (one definition per concept)
+# ---------------------------------------------------------------------------
+
+def now_iso() -> str:
+    """UTC timestamp with second precision, used by every ledger record."""
+    return dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def load_json(path: pathlib.Path | str, default: Any = None) -> Any:
+    path = pathlib.Path(path)
+    if not path.exists():
+        return json.loads(json.dumps(default))
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def source_fits(source: str, expected_sources: list[str] | set[str] | tuple[str, ...] | None) -> bool:
+    """A source fits when the step declares none, declares ``any``, or names it."""
+    expected = {str(item).casefold() for item in (expected_sources or [])}
+    return not expected or "any" in expected or (source or "").casefold() in expected
+
+
+def owner_of_event(row: dict[str, str], latest_link: dict[str, str] | None) -> str:
+    """Case that owns an event: the raw label first, else its latest reviewed link."""
+    label = (row.get("case_id") or "").strip()
+    if label:
+        return label
+    link = latest_link or {}
+    if (link.get("link_status") or "").strip() in ("confirmed", "related", "fixture"):
+        return (link.get("case_id") or "").strip()
+    return ""
+
+
+def resolve_case(case_id: str, patterns: list[dict[str, Any]]) -> tuple[str, list[str]]:
+    """Follow ``merged_into`` pointers; return (active target, alias chain including the input)."""
+    by_id = {pattern.get("case_id"): pattern for pattern in patterns}
+    if case_id not in by_id:
+        raise ValueError(f"unknown case_id: {case_id}")
+    chain = [case_id]
+    seen = {case_id}
+    current = case_id
+    while True:
+        target = (by_id[current].get("merged_into") or "").strip()
+        if not target:
+            return current, chain
+        if target not in by_id:
+            raise ValueError(f"{current}: merged_into unknown case {target}")
+        if target in seen:
+            raise ValueError(f"alias cycle: {' -> '.join(chain + [target])}")
+        seen.add(target)
+        chain.append(target)
+        current = target
+
+
+# ---------------------------------------------------------------------------
+# Two-phase writes: render -> stage -> journal -> replace -> journal
+# ---------------------------------------------------------------------------
+
+@dataclasses.dataclass(frozen=True)
+class Write:
+    """One staged file effect; nothing touches disk until :func:`commit`."""
+
+    path: pathlib.Path
+    kind: str
+    payload: Any
+    fields: list[str] | None = None
+
+    @classmethod
+    def json(cls, path: pathlib.Path | str, data: Any) -> "Write":
+        return cls(path=pathlib.Path(path), kind="json", payload=data)
+
+    @classmethod
+    def csv_append(cls, path: pathlib.Path | str, fields: list[str],
+                   rows: list[dict[str, Any]]) -> "Write":
+        return cls(path=pathlib.Path(path), kind="csv_append", payload=list(rows),
+                   fields=list(fields))
+
+    @classmethod
+    def csv_replace(cls, path: pathlib.Path | str, fields: list[str],
+                    rows: list[dict[str, Any]]) -> "Write":
+        return cls(path=pathlib.Path(path), kind="csv_replace", payload=list(rows),
+                   fields=list(fields))
+
+
+def _sha256(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def _csv_bytes(fields: list[str], rows: list[dict[str, Any]],
+               like: pathlib.Path | None = None) -> bytes:
+    """Render CSV bytes, preserving the BOM and line ending of the file being replaced."""
+    bom = True
+    newline = "\n"
+    if like is not None and pathlib.Path(like).exists():
+        raw = pathlib.Path(like).read_bytes()
+        bom = raw.startswith(BOM)
+        newline = "\r\n" if b"\r\n" in raw else "\n"
+    buffer = io.StringIO()
+    writer = csv.DictWriter(buffer, fieldnames=list(fields), extrasaction="ignore",
+                            lineterminator=newline)
+    writer.writeheader()
+    writer.writerows(rows)
+    return buffer.getvalue().encode("utf-8-sig" if bom else "utf-8")
+
+
+def _render_write(write: Write) -> bytes:
+    target = pathlib.Path(write.path)
+    if write.kind == "json":
+        return (json.dumps(write.payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    if write.kind == "csv_append":
+        fields = list(write.fields or [])
+        existing: list[dict[str, Any]] = []
+        if target.exists():
+            header, existing = _read_csv_strict(target)
+            if header != fields:
+                raise ValueError(
+                    f"{target.name} header {header} does not match expected fields {fields}; "
+                    "refusing to append misaligned rows"
+                )
+        return _csv_bytes(fields, existing + list(write.payload), like=target)
+    if write.kind == "csv_replace":
+        return _csv_bytes(list(write.fields or []), list(write.payload), like=target)
+    raise ValueError(f"unknown write kind: {write.kind}")
+
+
+def _write_temp(target: pathlib.Path, data: bytes) -> pathlib.Path:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, name = tempfile.mkstemp(dir=str(target.parent), prefix=f".{target.name}.",
+                                        suffix=".tmp")
+    tmp = pathlib.Path(name)
+    try:
+        with os.fdopen(descriptor, "wb") as handle:
+            handle.write(data)
+    except Exception:
+        tmp.unlink(missing_ok=True)
+        raise
+    return tmp
+
+
+def _atomic_write_bytes(target: pathlib.Path, data: bytes) -> None:
+    _write_temp(target, data).replace(target)
+
+
+def _journal_label(target: pathlib.Path) -> str:
+    try:
+        return str(pathlib.Path(target).resolve().relative_to(DEMO_ROOT))
+    except ValueError:
+        return str(pathlib.Path(target).resolve())
+
+
+def _journal_target(label: str) -> pathlib.Path:
+    path = pathlib.Path(label)
+    return path if path.is_absolute() else DEMO_ROOT / path
+
+
+def _new_txn_id() -> str:
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return f"TXN-{stamp}-{os.urandom(2).hex()}"
+
+
+def _append_journal(record: dict[str, Any], path: pathlib.Path | str | None = None) -> None:
+    journal = pathlib.Path(path) if path else JOURNAL_PATH
+    journal.parent.mkdir(parents=True, exist_ok=True)
+    with journal.open("a", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(record, ensure_ascii=False, sort_keys=True) + "\n")
+
+
+def commit(writes: list[Write], kind: str, summary: str, basis: str = "") -> str:
+    """Apply a group of file writes as one auditable transaction.
+
+    Every target is rendered and staged first. Only when all stages succeed are the
+    files replaced, so a rendering failure leaves the store untouched. The journal
+    records intent before the replace and completion after it, which makes a crash
+    window detectable and repairable.
+    """
+    if not writes:
+        raise ValueError("commit requires at least one write")
+    txn_id = _new_txn_id()
+    staged: list[tuple[pathlib.Path, bytes, pathlib.Path]] = []
+    try:
+        for write in writes:
+            target = pathlib.Path(write.path)
+            data = _render_write(write)
+            staged.append((target, data, _write_temp(target, data)))
+    except Exception:
+        for _, _, tmp in staged:
+            tmp.unlink(missing_ok=True)
+        raise
+    pending = {
+        "txn_id": txn_id, "status": "pending", "kind": kind, "summary": summary,
+        "basis": basis, "at": now_iso(),
+        "files": [{"path": _journal_label(target), "sha256": _sha256(data)}
+                  for target, data, _ in staged],
+    }
+    _append_journal(pending)
+    applied: list[str] = []
+    try:
+        for target, _, tmp in staged:
+            tmp.replace(target)
+            applied.append(_journal_label(target))
+    except Exception as error:
+        for _, _, tmp in staged:
+            tmp.unlink(missing_ok=True)
+        _append_journal({"txn_id": txn_id, "status": "failed", "at": now_iso(),
+                         "applied": applied, "error": str(error)})
+        raise RuntimeError(
+            f"transaction {txn_id} failed while applying files (applied={applied or '-'}): "
+            f"{error}; run `catalog repair --dry-run` to inspect"
+        ) from error
+    _append_journal({"txn_id": txn_id, "status": "done", "at": now_iso(), "files": applied})
+    return txn_id
+
+
+def load_journal(path: pathlib.Path | str | None = None) -> list[dict[str, Any]]:
+    journal = pathlib.Path(path) if path else JOURNAL_PATH
+    if not journal.exists():
+        return []
+    records: list[dict[str, Any]] = []
+    for number, line in enumerate(journal.read_text(encoding="utf-8").splitlines(), start=1):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            records.append(json.loads(line))
+        except json.JSONDecodeError as error:
+            raise ValueError(f"{journal.name} line {number}: {error}") from error
+    return records
+
+
+def audit_journal(path: pathlib.Path | str | None = None) -> list[str]:
+    """Report transactions that started but never recorded completion."""
+    records = load_journal(path)
+    done = {record.get("txn_id") for record in records if record.get("status") == "done"}
+    problems: list[str] = []
+    for record in records:
+        if record.get("status") != "pending" or record.get("txn_id") in done:
+            continue
+        applied: list[str] = []
+        missing: list[str] = []
+        for item in record.get("files") or []:
+            target = _journal_target(str(item.get("path") or ""))
+            if target.exists() and _sha256(target.read_bytes()) == item.get("sha256"):
+                applied.append(str(item.get("path")))
+            else:
+                missing.append(str(item.get("path")))
+        problems.append(
+            f"unfinished transaction {record.get('txn_id')} "
+            f"({record.get('kind')}: {record.get('summary')}): "
+            f"applied={applied or '-'} not_applied={missing or '-'}; "
+            "run `catalog repair --apply` to re-derive safe state"
+        )
+    return problems

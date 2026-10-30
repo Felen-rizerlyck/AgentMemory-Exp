@@ -1,0 +1,105 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-002",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "Tomcat PUT 上传 JSP webshell + DNS C2 心跳",
+  "summary": "PUT 方法把 JSP webshell 写入上传目录 → 应用侧记录 webshell 上传与 exec 标记 → Tomcat 进程派生子 shell 执行探针 → 数小时后 DGA 风格域名突发解析。",
+  "pattern_scope": {
+    "attack_family": "Tomcat 任意文件上传（PUT）+ DNS C2",
+    "variant_note": "单样本归纳；webshell 落地路径与 C2 域名均来自该样本，变体形态未验证。"
+  },
+  "mitre": [
+    "T1190",
+    "T1505.003",
+    "T1071.004"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "initial_access",
+      "action_id": "tomcat_put_jsp_upload",
+      "label": "PUT 写入 JSP webshell",
+      "action_regex": "(?i)/uploads?/[a-z0-9_.-]{1,40}\\.jsp/?\\s+PUT\\b",
+      "expected_sources": [
+        "waf",
+        "web"
+      ],
+      "evidence_patterns": [
+        "/uploads/cmd.jsp/ PUT"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "execution",
+      "action_id": "jsp_upload_rce_marker",
+      "label": "应用侧记录 webshell 上传与 exec",
+      "action_regex": "(?i)\\\"upload\\\"\\s*:\\s*\\\"[a-z0-9_.-]{1,40}\\.jsp\\\".{0,60}\\\"rce\\\"",
+      "expected_sources": [
+        "rasp"
+      ],
+      "evidence_patterns": [
+        "{\"upload\": \"cmd.jsp\", \"rce\": \"exec\"}"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "execution",
+      "action_id": "tomcat_child_id_hostname",
+      "label": "Tomcat 进程派生子 shell 执行探针",
+      "action_regex": "(?i)id;\\s*hostname\\b.{0,90}catalina\\.sh",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "id; hostname"
+      ],
+      "generic": true
+    },
+    {
+      "step_id": "S4",
+      "order": 4,
+      "phase": "command_control",
+      "action_id": "dga_hex_subdomain_beacon",
+      "label": "DGA 风格子域突发解析",
+      "action_regex": "(?i)\\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.(?:net|com|org|io)\\s+A\\s+\\d",
+      "expected_sources": [
+        "dns"
+      ],
+      "evidence_patterns": [
+        "<8hex>.<6字母>-<4hex>.net A"
+      ],
+      "generic": true
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "cmd.jsp",
+      "catalina.sh",
+      "id; hostname",
+      "vqmxld"
+    ],
+    "pattern_probes": [
+      "/uploads?/[a-z0-9_.-]+\\.jsp/?\\s+PUT",
+      "\\\"rce\\\"\\s*:\\s*\\\"exec\\\"",
+      "\\b[0-9a-f]{8}\\.[a-z]{6}-[0-9a-f]{4}\\.net\\s+A\\b"
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "横向移动",
+      "数据外带内容",
+      "持久化"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "evidence_status": "single_observation_demo"
+  },
+  "family_id": "web-exploit",
+  "version": 1
+}

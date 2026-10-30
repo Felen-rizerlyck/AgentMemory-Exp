@@ -3,13 +3,13 @@
 Drop one JSON file here, then run from `demo/`:
 
 ```powershell
-python src/manage_memory.py propose --input data/proposals/<file>.json
-python src/manage_memory.py proposals
-python src/manage_memory.py accept PROP-... --basis "..."
+python src/manage_memory.py evolve propose --input data/proposals/<file>.json
+python src/manage_memory.py evolve list
+python src/manage_memory.py evolve accept PROP-... --basis "..."
 ```
 
-A proposal is evidence plus a patch. It never edits the catalog by itself; `propose` only
-records it, and `accept` is a separate command.
+A proposal is evidence plus a patch. It never edits the catalog by itself; `evolve propose` only
+records it, and `evolve accept` is a separate, reviewed command.
 
 ```json
 {
@@ -32,17 +32,22 @@ records it, and `accept` is a separate command.
 }
 ```
 
+`required` defaults to `false` for `add_step`: a completion stage that only some incidents reach is
+optional by design. Write `"required": true` only when every confirmed incident must contain it.
+
 Operations:
 
 | operation | extra fields | auto-accept |
 |---|---|---|
-| `add_step` | `step` | yes, if gate passes and maturity ≥ repeated |
+| `add_step` | `step` | yes, when the gate passes and the case has at least two supporting incidents |
 | `extend_step` | `step_id`, `action_regex` | yes only when the new regex is a strict widening |
-| `add_source` | `step_id`, `add_sources` | yes, if gate passes |
+| `add_source` | `step_id`, `add_sources` | yes, when the gate passes (including foreign/shadow checks) |
 | `set_required` | `step_id`, `required` | never (needs an explicit human accept) |
+| `reorder_steps` | `order` (every step ID exactly once) | never |
 
-`supporting_event_ids` must belong to incidents already confirmed for the case, and at least
-two independent incidents are required. The gate also re-runs retrieval over every stored
-incident and refuses a change that flips another incident's top-1, drops the case's `strong`
-count, or lowers its required coverage. A proposal that fails stays `candidate` and cannot be
-accepted; that is expected for a case with only one confirmed incident.
+`supporting_event_ids` must belong to incidents already confirmed or related for the case, and at
+least two independent incidents are required. The deterministic gate re-runs retrieval over every
+stored incident and refuses a change that flips another incident's top-1, matches another case's
+event (including `related`/`fixture` ownership), drops the case's `strong` count, lowers required
+coverage, or regresses held-out confirmed incidents. A proposal that fails stays `candidate` and
+cannot be accepted; that is expected for a case with only one confirmed incident.

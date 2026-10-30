@@ -1,0 +1,89 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-006",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "域内侦察：BloodHound 图谱采集与外传",
+  "summary": "主机侧运行 SharpHound 全量采集 → 压缩采集结果 → 上传到攻击者地址，为后续 Kerberoasting/DCSync 选路。",
+  "pattern_scope": {
+    "attack_family": "AD 域内侦察（BloodHound）",
+    "variant_note": "由单个合成样本归纳；采集参数与上传地址来自该样本，未覆盖其它采集器。"
+  },
+  "mitre": [
+    "T1087.002",
+    "T1069.002",
+    "T1560.001"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "discovery",
+      "action_id": "sharphound_collect_all",
+      "label": "SharpHound 全量采集",
+      "action_regex": "(?i)sharphound(?:\\.exe)?\\s+-c\\s+all",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "SharpHound.exe -c All"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "collection",
+      "action_id": "archive_collect_result",
+      "label": "压缩采集结果",
+      "action_regex": "(?i)compress-archive.{0,80}bh_\\*",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "Compress-Archive ... bh_*.json"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "exfiltration",
+      "action_id": "upload_collected_zip",
+      "label": "上传采集压缩包",
+      "action_regex": "(?i)curl(?:\\.exe)?\\s+-t\\s+\\S{1,40}\\.zip\\s+http://",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "curl.exe -T bh.zip"
+      ],
+      "generic": false
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "sharphound.exe",
+      "compress-archive",
+      "bh.zip",
+      "corp\\jdoe"
+    ],
+    "pattern_probes": [
+      "sharphound(?:\\.exe)?\\s+-c\\s+all",
+      "compress-archive.{0,80}bh_",
+      "curl(?:\\.exe)?\\s+-t\\s+\\S{1,40}\\.zip"
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "Kerberoasting",
+      "DCSync",
+      "横向移动"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "evidence_status": "single_observation_demo"
+  },
+  "family_id": "domain-identity",
+  "version": 1
+}

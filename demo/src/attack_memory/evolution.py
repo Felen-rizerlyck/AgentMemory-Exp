@@ -9,11 +9,11 @@ from collections import defaultdict
 
 from . import storage
 from .catalog import (MIN_SUPPORT_INCIDENTS, load_validated_catalog, maturity, now_iso,
-                      pattern_version, version_path, write_version_snapshot)
-from .links import confirmed_pairs, derived_observations, related_incidents, support_pairs
+                      pattern_version, version_path, version_snapshot)
+from .links import confirmed_pairs, related_incidents, support_pairs
 from .retrieval import build_action_index, extract_log_actions, match_pattern, retrieve
 from .storage import (atomic_write_json, latest_link_by_event, read_csv, read_links,
-                      update_event_labels, validate_pattern)
+                      validate_pattern)
 
 PROPOSALS_PATH = storage.DATA_DIR / "pattern_proposals.json"
 OPERATIONS = ("add_step", "extend_step", "add_source", "set_required", "reorder_steps")
@@ -70,6 +70,13 @@ def validate_proposal(proposal: dict) -> None:
         for field in ("step_id", "order", "action_id", "action_regex", "expected_sources"):
             if field not in step:
                 raise ValueError(f"proposed step missing {field}")
+        # Completion steps are optional unless the author explicitly declares otherwise;
+        # a required-by-default step silently raises the coverage denominator and gets
+        # the completion rejected by its own gate.
+        if "required" not in step:
+            step["required"] = False
+        elif not isinstance(step["required"], bool):
+            raise ValueError("add_step step.required must be true or false")
     elif operation == "reorder_steps":
         order = proposal.get("order")
         if (not isinstance(order, list) or len(order) < 2
@@ -101,7 +108,7 @@ def apply_delta(pattern: dict, proposal: dict) -> dict:
     steps = candidate["steps"]
     if operation == "add_step":
         step = copy.deepcopy(proposal["step"])
-        step.setdefault("required", True)
+        step.setdefault("required", False)  # completion steps are optional by default
         if any(item["step_id"] == step["step_id"] for item in steps):
             raise ValueError(f"duplicate step_id {step['step_id']}")
         if any(item["action_id"] == step["action_id"] for item in steps):
@@ -203,6 +210,23 @@ def _evaluate_reorder(patterns: list[dict], logs: list[dict[str, str]],
         problems.append(f"reorder drops strong incidents from {strong_before} to {strong_after}")
     if coverage_after < coverage_before:
         problems.append(f"reorder drops required coverage from {coverage_before:.3f} to {coverage_after:.3f}")
+    support_incidents = set()
+    for event_id in support_events:
+        link = latest.get(event_id) or {}
+        incident = (link.get("incident_id") or "").strip()
+        if incident in confirmed:
+            support_incidents.add(incident)
+    heldout = confirmed - support_incidents
+    heldout_coverage_before, heldout_strong_before = _case_metrics(base, rows_by_incident, heldout)
+    heldout_coverage_after, heldout_strong_after = _case_metrics(candidate, rows_by_incident, heldout)
+    if heldout_strong_after < heldout_strong_before:
+        problems.append(
+            f"held-out incidents would lose strong from {heldout_strong_before} "
+            f"to {heldout_strong_after}")
+    if heldout_coverage_after + 1e-9 < heldout_coverage_before:
+        problems.append(
+            f"held-out required coverage would drop from {heldout_coverage_before:.3f} "
+            f"to {heldout_coverage_after:.3f}")
     metrics = {
         "support_incidents": len(confirmed),
         "support_events": len(support_events),
@@ -213,6 +237,11 @@ def _evaluate_reorder(patterns: list[dict], logs: list[dict[str, str]],
         "foreign_matches": 0,
         "narrowing": 0,
         "reorder": True,
+        "heldout_incidents": len(heldout),
+        "heldout_coverage_before": round(heldout_coverage_before, 3),
+        "heldout_coverage_after": round(heldout_coverage_after, 3),
+        "heldout_strong_before": heldout_strong_before,
+        "heldout_strong_after": heldout_strong_after,
     }
     return {"ok": not problems, "problems": problems, "metrics": metrics,
             "candidate": candidate, "catalog": catalog, "auto_eligible": False}
@@ -321,13 +350,27 @@ def evaluate_proposal(patterns: list[dict], logs: list[dict[str, str]],
         if wrong_source:
             problems.append(f"supporting event(s) have an unexpected source: {', '.join(wrong_source)}")
 
-    if operation in ("add_step", "extend_step"):
-        foreign = [row.get("event_id") for row in logs
-                   if regex.search(row.get("content") or "")
-                   and (row.get("case_id") or "").strip() not in ("", case_id)]
+    if operation in ("add_step", "extend_step", "add_source"):
+        # Ownership must include reviewed related/fixture links, not just the raw label:
+        # an unlabeled variant is exactly the population most likely to be pulled into
+        # the wrong case. One helper decides ownership everywhere.
+        new_sources = {str(source).casefold() for source in proposal.get("add_sources") or []}
+        if operation == "add_source":
+            metrics["new_sources"] = sorted(new_sources)
+        foreign = []
+        for row in logs:
+            if operation == "add_source":
+                if (row.get("source") or "").casefold() not in new_sources:
+                    continue
+            if regex.search(row.get("content") or "") is None:
+                continue
+            owner = storage.owner_of_event(
+                row, latest.get((row.get("event_id") or "").strip()))
+            if owner not in ("", case_id):
+                foreign.append(row.get("event_id"))
         metrics["foreign_matches"] = len(foreign)
         if foreign:
-            problems.append(f"proposed step regex also matches other cases: {', '.join(foreign[:5])}")
+            problems.append(f"proposed change also matches other cases: {', '.join(foreign[:5])}")
 
     if operation == "extend_step":
         previous = next((step for step in base["steps"] if step["step_id"] == target_id), None)
@@ -370,11 +413,38 @@ def evaluate_proposal(patterns: list[dict], logs: list[dict[str, str]],
     })
     if after_strong < before_strong:
         problems.append(
-            f"strong incidents would drop from {before_strong} to {after_strong}; mark the step optional"
+            f"strong incidents would drop from {before_strong} to {after_strong}; "
+            "mark the step optional (required: false), or provide the step in every "
+            "confirmed incident"
         )
     if after_coverage + 1e-9 < before_coverage:
         problems.append(
             f"required coverage would drop from {before_coverage:.2f} to {after_coverage:.2f}"
+        )
+
+    # Held-out gate: the proposal must not win on its own support incidents while losing
+    # the independent confirmed incidents it was not built from (RSEA-style keep-better).
+    heldout_incidents = confirmed_incidents - set(support_incidents)
+    heldout_before_coverage, heldout_before_strong = _case_metrics(
+        base, rows_by_incident, heldout_incidents)
+    heldout_after_coverage, heldout_after_strong = _case_metrics(
+        candidate, rows_by_incident, heldout_incidents)
+    metrics.update({
+        "heldout_incidents": len(heldout_incidents),
+        "heldout_coverage_before": round(heldout_before_coverage, 3),
+        "heldout_coverage_after": round(heldout_after_coverage, 3),
+        "heldout_strong_before": heldout_before_strong,
+        "heldout_strong_after": heldout_after_strong,
+    })
+    if heldout_after_strong < heldout_before_strong:
+        problems.append(
+            f"held-out incidents would lose strong from {heldout_before_strong} "
+            f"to {heldout_after_strong}; the change is overfit to its support incidents"
+        )
+    if heldout_after_coverage + 1e-9 < heldout_before_coverage:
+        problems.append(
+            f"held-out required coverage would drop from {heldout_before_coverage:.3f} "
+            f"to {heldout_after_coverage:.3f}"
         )
 
     auto_eligible = (not problems and operation in AUTO_OPERATIONS
@@ -426,12 +496,16 @@ def accept_proposal(proposal_id: str, basis: str, auto: bool = False) -> dict:
     case_id = proposal["case_id"]
     base = next(pattern for pattern in patterns if pattern["case_id"] == case_id)
     old_version = pattern_version(base)
-    current_snapshot = write_version_snapshot(base)
     candidate = evaluation["candidate"]
     new_version = pattern_version(candidate)
-    new_snapshot = write_version_snapshot(candidate)
+    writes: list[storage.Write] = []
+    current_path, current_payload = version_snapshot(base)
+    if not current_path.exists():
+        writes.append(storage.Write.json(current_path, current_payload))
+    new_path, new_payload = version_snapshot(candidate)
+    writes.append(storage.Write.json(new_path, new_payload))
     catalog["attack_patterns"] = evaluation["catalog"]
-    atomic_write_json(storage.PATTERNS_PATH, catalog)
+    writes.append(storage.Write.json(storage.PATTERNS_PATH, catalog))
     proposal.update({
         "status": "accepted",
         "decided_at": now_iso(),
@@ -440,9 +514,14 @@ def accept_proposal(proposal_id: str, basis: str, auto: bool = False) -> dict:
         "auto": bool(auto),
         "metrics": evaluation["metrics"],
     })
-    save_proposals(PROPOSALS_PATH, proposals)
+    writes.append(storage.Write.json(PROPOSALS_PATH, {"schema_version": 1, "proposals": proposals}))
+    storage.commit(
+        writes, kind="proposal_accept",
+        summary=f"accept {proposal_id}: {case_id} v{old_version} -> v{new_version}",
+        basis=basis,
+    )
     return {"case_id": case_id, "old_version": old_version, "new_version": new_version,
-            "proposal": proposal, "snapshots": [str(current_snapshot), str(new_snapshot)]}
+            "proposal": proposal, "snapshots": [str(current_path), str(new_path)]}
 
 
 def reject_proposal(proposal_id: str, basis: str) -> dict:
@@ -477,8 +556,16 @@ def rollback_pattern(case_id: str, to_version: int, basis: str) -> dict:
     catalog["attack_patterns"] = [restored if pattern["case_id"] == case_id else pattern
                                   for pattern in patterns]
     build_action_index(catalog["attack_patterns"])
-    write_version_snapshot(current)
-    atomic_write_json(storage.PATTERNS_PATH, catalog)
+    writes: list[storage.Write] = []
+    current_path, current_payload = version_snapshot(current)
+    if not current_path.exists():
+        writes.append(storage.Write.json(current_path, current_payload))
+    writes.append(storage.Write.json(storage.PATTERNS_PATH, catalog))
+    storage.commit(
+        writes, kind="proposal_rollback",
+        summary=f"rollback {case_id}: v{current_version} -> v{to_version}",
+        basis=basis,
+    )
     return {"case_id": case_id, "from_version": current_version, "to_version": to_version,
             "basis": basis, "pattern": restored}
 

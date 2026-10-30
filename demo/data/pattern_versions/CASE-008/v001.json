@@ -1,0 +1,149 @@
+{
+  "schema_version": "demo-1.0",
+  "case_id": "CASE-008",
+  "pattern_type": "attack_behavior_pattern",
+  "name": "Exchange ProxyLogon 风格利用链",
+  "summary": "SSRF 入口 → IIS 进程执行 → ASPX webshell → PrintSpoofer 提权 → 服务持久化 → DNS TXT 外传。",
+  "pattern_scope": {
+    "attack_family": "Exchange ProxyLogon 风格利用",
+    "variant_note": "这是从单次样例归纳的模式；步骤顺序和可选性尚未由多实例验证。"
+  },
+  "mitre": [
+    "T1190",
+    "T1059.003",
+    "T1505.003",
+    "T1068",
+    "T1543.003",
+    "T1048.003"
+  ],
+  "steps": [
+    {
+      "step_id": "S1",
+      "order": 1,
+      "phase": "initial_access",
+      "action_id": "exch_proxylogon_ssrf",
+      "label": "X-BEResource SSRF 入口",
+      "action_regex": "(?i)X-BEResource\\s*=|/ecp/[A-Za-z0-9]+/ecp\\.aspx",
+      "expected_sources": [
+        "waf",
+        "web"
+      ],
+      "evidence_patterns": [
+        "X-BEResource=",
+        "/ecp/<id>/ecp.aspx"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S2",
+      "order": 2,
+      "phase": "execution",
+      "action_id": "w3wp_spawn_cmd",
+      "label": "w3wp.exe 派生 cmd.exe",
+      "action_regex": "(?i)w3wp\\.exe.{0,160}?(?:cmd|powershell)(?:\\.exe)?",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "w3wp.exe → cmd.exe"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S3",
+      "order": 3,
+      "phase": "execution",
+      "action_id": "aspx_shell_path",
+      "label": "aspnet_client 下 ASPX webshell",
+      "action_regex": "(?i)/aspnet_client/[A-Za-z0-9_./-]+\\.aspx",
+      "expected_sources": [
+        "web",
+        "rasp"
+      ],
+      "evidence_patterns": [
+        "/aspnet_client/... .aspx"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S4",
+      "order": 4,
+      "phase": "privilege",
+      "action_id": "printspoofer_priv",
+      "label": "PrintSpoofer / SeImpersonate 提权",
+      "action_regex": "(?i)PrintSpoofer(?:\\.exe)?|SeImpersonatePrivilege",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "PrintSpoofer.exe",
+        "SeImpersonatePrivilege"
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S5",
+      "order": 5,
+      "phase": "persistence",
+      "action_id": "sc_create_service",
+      "label": "sc.exe create 注册服务",
+      "action_regex": "(?i)sc(?:\\.exe)?\\s+create\\s+\\w+.{0,100}?binPath=",
+      "expected_sources": [
+        "hids"
+      ],
+      "evidence_patterns": [
+        "sc.exe create ... binPath="
+      ],
+      "generic": false
+    },
+    {
+      "step_id": "S6",
+      "order": 6,
+      "phase": "exfil",
+      "action_id": "dns_b64_label_beacon",
+      "label": "长标签 DNS TXT beacon",
+      "action_regex": "(?i)\\b[A-Za-z0-9+/=]{18,}\\.[A-Za-z0-9-]+\\.[A-Za-z]{2,}\\s+TXT\\b",
+      "expected_sources": [
+        "dns"
+      ],
+      "evidence_patterns": [
+        "长 base64 标签",
+        "TXT 查询"
+      ],
+      "generic": false
+    }
+  ],
+  "retrieval": {
+    "keywords": [
+      "x-beresource",
+      "proxylogon",
+      "ecp.aspx",
+      "aspnet_client",
+      "webshell",
+      "printspoofer",
+      "seimpersonate",
+      "sc create",
+      "dns txt"
+    ],
+    "pattern_probes": [
+      "x-beresource=",
+      "/ecp/[a-z0-9]+/ecp\\.aspx",
+      "w3wp\\.exe.{0,120}?cmd\\.exe",
+      "/aspnet_client/[A-Za-z0-9_/]+\\.aspx",
+      "printspoofer(?:\\.exe)?",
+      "sc(?:\\.exe)?\\s+create\\s+\\w+\\s+binpath="
+    ]
+  },
+  "negative_and_unknown_evidence": {
+    "not_observed": [
+      "横向移动",
+      "凭据窃取"
+    ],
+    "interpretation": "未观察到不等同于确认不存在；需结合日志覆盖范围判断。"
+  },
+  "provenance": {
+    "evidence_status": "single_observation_demo"
+  },
+  "family_id": "web-exploit",
+  "version": 1
+}

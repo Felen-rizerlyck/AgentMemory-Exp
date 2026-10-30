@@ -6,10 +6,18 @@ import json
 import re
 from collections import Counter, defaultdict
 
-from attack_memory import families
+from attack_memory import corrections, families
+from attack_memory.diagnostics import step_statistics
 from attack_memory.retrieval import TIER_RANK, build_action_index, retrieve
-from attack_memory.storage import (latest_link_by_event, load_patterns, read_csv, read_links,
-                                   resolve_demo_path)
+from attack_memory.storage import (RAW_LOGS_PATH, latest_link_by_event, load_patterns, read_csv,
+                                   read_links, resolve_demo_path)
+
+SCHEMA_VERSION = 1
+EVIDENCE_CONFIDENCE_NOTE = (
+    "evidence_confidence = matched_required / required_steps × historical linked/matched "
+    "step precision over the stored corpus (1.0 when a case has no historical matches). "
+    "It is a deterministic evidence ratio, not a probability; tier remains the primary rank."
+)
 
 HOST_RE = re.compile(r"(?i)\bhost=([^\s,\"';]+)")
 
@@ -63,6 +71,39 @@ def filter_candidates(results: list[dict], min_tier: str) -> list[dict]:
     return [result for result in results if TIER_RANK[result["tier"]] >= floor]
 
 
+def case_historical_precision(patterns: list[dict], logs: list[dict[str, str]],
+                              links: list[dict[str, str]]) -> dict[str, float | None]:
+    """Case-level linked/matched step precision over the stored corpus.
+
+    Reuses :func:`diagnostics.step_statistics` (its fixture-as-linked convention included)
+    and aggregates per case so a candidate can show how often its steps historically
+    matched rows that were actually reviewed. Cases with no historical match report None.
+    """
+    matched: Counter[str] = Counter()
+    linked: Counter[str] = Counter()
+    for stat in step_statistics(patterns, logs, links):
+        matched[stat["case_id"]] += stat["matched"]
+        linked[stat["case_id"]] += stat["linked"]
+    return {case_id: (round(linked[case_id] / total, 3) if total else None)
+            for case_id, total in matched.items()}
+
+
+def evidence_confidence(result: dict, precision: float | None) -> float:
+    """Required-step coverage × historical link precision; missing history counts as 1.0.
+
+    This is an evidence ratio, not a calibrated probability, and never changes the tier.
+    """
+    required_total = result["required_steps"]
+    required_ratio = result["matched_required_steps"] / required_total if required_total else 0.0
+    return round(required_ratio * (1.0 if precision is None else precision), 3)
+
+
+def prior_rejections_for(case_id: str, incident_id: str | None = None) -> list[dict]:
+    """Prior reviewed rejections for a case, annotated with their summary line."""
+    return [{**correction, "summary": corrections.summary_line(correction)}
+            for correction in corrections.for_case(case_id, incident_id=incident_id)]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Retrieve attack-pattern candidates for a CSV log batch.")
     parser.add_argument("--input", default="data/raw_logs.csv", help="CSV path relative to demo/")
@@ -72,20 +113,36 @@ def main() -> None:
                         help="Hide candidates below this evidence tier (default: weak)")
     parser.add_argument("--incident-id", help="Analyze only this known incident ID")
     args = parser.parse_args()
-    logs = read_csv(resolve_demo_path(args.input))
+    input_path = resolve_demo_path(args.input)
+    logs = read_csv(input_path)
     catalog = load_patterns()["attack_patterns"]
     action_index = build_action_index(catalog)
     family_data = families.load_families()
-    latest = latest_link_by_event(read_links())
+    links = read_links()
+    latest = latest_link_by_event(links)
+    # Historical precision always refers to the stored corpus, not to a fresh batch that
+    # has no review history yet. Reuse the input rows when they are that corpus.
+    history_logs = logs if input_path == RAW_LOGS_PATH else read_csv(RAW_LOGS_PATH)
+    precision_by_case = case_historical_precision(catalog, history_logs, links)
     groups = partition_logs(logs)
     if args.incident_id:
         groups = [group for group in groups if group[0] == "incident" and group[1] == args.incident_id]
         if not groups:
             parser.error(f"incident_id not found in input: {args.incident_id}")
     output = []
+    rejection_cache: dict[tuple[str, str | None], list[dict]] = {}
     for kind, identifier, group_logs in groups:
         full_results = retrieve(catalog, group_logs, action_index)
         results = filter_candidates(full_results, args.min_tier)[:max(args.top, 0)]
+        scope_incident = identifier if kind == "incident" else None
+        for item in results:
+            precision = precision_by_case.get(item["case_id"])
+            item["historical_precision"] = precision
+            item["evidence_confidence"] = evidence_confidence(item, precision)
+            rejection_key = (item["case_id"], scope_incident)
+            if rejection_key not in rejection_cache:
+                rejection_cache[rejection_key] = prior_rejections_for(*rejection_key)
+            item["prior_rejections"] = rejection_cache[rejection_key]
         family_matches = []
         family_scope = {results[0]["family_id"]} if results else None
         for family in family_data["families"]:
@@ -102,7 +159,9 @@ def main() -> None:
                        "family_matches": family_matches,
                        "candidates": results})
     if args.json:
-        print(json.dumps({"input": args.input, "log_count": len(logs), "min_tier": args.min_tier,
+        print(json.dumps({"schema_version": SCHEMA_VERSION,
+                          "evidence_confidence_note": EVIDENCE_CONFIDENCE_NOTE,
+                          "input": args.input, "log_count": len(logs), "min_tier": args.min_tier,
                           "scopes": output}, ensure_ascii=False, indent=2))
         return
     print(f"Input: {args.input} | logs: {len(logs)} | independent scopes: {len(output)}")
@@ -156,8 +215,17 @@ def main() -> None:
             order_text = "consistent" if item["order_ok"] else "reversed/unknown"
             if not item["order_assessable"]:
                 order_text = "unassessable"
+            confidence_note = (f"evidence confidence={item['evidence_confidence']:.2f} "
+                               "(not a probability)")
+            if item["historical_precision"] is not None and item["historical_precision"] < 0.5:
+                confidence_note += f"; low historical precision {item['historical_precision']:.0%}"
             print(f"      order={order_text} · source fit={item['source_fit_ratio']:.0%} · "
-                  f"keyword score={item['keyword_score']} · MITRE={','.join(item['mitre'])}")
+                  f"{confidence_note} · keyword score={item['keyword_score']} · "
+                  f"MITRE={','.join(item['mitre'])}")
+            if item["prior_rejections"]:
+                print("      prior rejections (boundaries already tested; not precedents):")
+                for rejection in item["prior_rejections"]:
+                    print(f"         {rejection['summary']}")
             for evidence in item["evidence"]:
                 markers = ""
                 if evidence["generic"]:
