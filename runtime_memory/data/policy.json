@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "policy_version": "2026-11-02.1",
+  "enforce": false,
+  "probe_timeout_s": 300,
+  "defaults": {
+    "cooldown_s": 300,
+    "issue_ttl_s": 86400,
+    "max_attempts_per_run": 3,
+    "probe_after_expiry": true
+  },
+  "budgets": {
+    "max_attempts_per_call_key_per_run": 3,
+    "max_failures_per_component_per_run": 10,
+    "max_blocked_calls_per_run": 50
+  },
+  "classes": {
+    "unreachable": {
+      "key_level": "scope",
+      "retryable": true,
+      "mode": "fixed",
+      "base_s": 900,
+      "max_s": 1800,
+      "max_attempts": 3,
+      "max_attempts_per_run": 1,
+      "ttl_s": 86400
+    },
+    "timeout": {
+      "key_level": "call",
+      "retryable": true,
+      "mode": "exponential",
+      "base_s": 30,
+      "max_s": 300,
+      "max_attempts": 3,
+      "max_attempts_per_run": 3,
+      "ttl_s": 3600
+    },
+    "rate_limit": {
+      "key_level": "scope",
+      "retryable": true,
+      "mode": "exponential",
+      "base_s": 60,
+      "max_s": 300,
+      "max_attempts": 3,
+      "max_attempts_per_run": 3,
+      "ttl_s": 3600
+    },
+    "auth": {
+      "key_level": "scope",
+      "retryable": false,
+      "mode": "none",
+      "base_s": 0,
+      "max_s": 0,
+      "max_attempts": 0,
+      "max_attempts_per_run": 0,
+      "ttl_s": 86400
+    },
+    "permission": {
+      "key_level": "scope",
+      "retryable": false,
+      "mode": "none",
+      "base_s": 0,
+      "max_s": 0,
+      "max_attempts": 0,
+      "max_attempts_per_run": 0,
+      "ttl_s": 86400
+    },
+    "schema": {
+      "key_level": "call",
+      "retryable": false,
+      "mode": "none",
+      "base_s": 0,
+      "max_s": 0,
+      "max_attempts": 0,
+      "max_attempts_per_run": 0,
+      "ttl_s": 86400
+    },
+    "not_found": {
+      "key_level": "call",
+      "retryable": false,
+      "mode": "none",
+      "base_s": 0,
+      "max_s": 0,
+      "max_attempts": 0,
+      "max_attempts_per_run": 0,
+      "ttl_s": 3600
+    },
+    "invalid_args": {
+      "key_level": "call",
+      "retryable": false,
+      "mode": "none",
+      "base_s": 0,
+      "max_s": 0,
+      "max_attempts": 0,
+      "max_attempts_per_run": 0,
+      "ttl_s": 3600
+    },
+    "internal": {
+      "key_level": "scope",
+      "retryable": true,
+      "mode": "fixed",
+      "base_s": 60,
+      "max_s": 600,
+      "max_attempts": 1,
+      "max_attempts_per_run": 1,
+      "ttl_s": 3600
+    },
+    "unknown": {
+      "key_level": "scope",
+      "retryable": true,
+      "mode": "fixed",
+      "base_s": 60,
+      "max_s": 600,
+      "max_attempts": 1,
+      "max_attempts_per_run": 1,
+      "ttl_s": 3600
+    }
+  }
+}

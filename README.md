@@ -25,6 +25,7 @@
 | `skills/` | `security-log-case-memory` skill 的仓库内副本：`SKILL.md`（运行流程常读版）+ `references/`（`runtime-playbook.md` **运行手册** · `case-write-spec.md` 写规 · `upgrade-playbook.md` 开发/升级〔⚠ 仅开发阶段〕· `production-log-schema.md` 生产适配）+ `scripts/`（`check_gates.py` 门禁一把梭 · `measure_assembly_quality.py` 组装质量） |
 | `dataset/` | 原始日志批次（`data-901-910` ~ `data-921-930`）+ 解析存档；另有合成批次 `data-1001-1020` ~ `data-1121-1140`（140 组、7 形态/家族）与生成器 `gen/`（`SPEC.md` / 渲染器 / 校验器） |
 | `demo/` | 独立可搬移的**案例记忆原型**（8 个入库案例 + 检索 + 三个 CLI + schema 文档），用于记忆机制的可用性/消融评测 |
+| `runtime_memory/` | 独立的**运行记忆原型**（B+Shadow：工具/环境问题、retry、preflight gate）；与 demo 的代码/数据分离，详见 `runtime_memory/README_CN.md` |
 | `eval/usability_ablation/` | **记忆框架评测**：检索层全量扫描、LLM 单轮判定（direct / catalog / assisted）、残缺补全、通道消融、完整性/配对判别；含三套 GT（`gt_units` / `gt_next_phase_60` / `gt_step_level_60`）与报告 |
 | `Agent记忆产品落地-调研/` | 产品落地调研（独立于本验证流程） |
 

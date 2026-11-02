@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+data/events/*.jsonl
+data/decisions.jsonl
+data/overrides.jsonl
+data/*.lock

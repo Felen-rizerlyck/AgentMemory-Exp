@@ -1,0 +1,44 @@
+[06:00:00] === A. shadow phase (calls still execute) ===
+[06:00:00] mcp hunt attempt 1: preflight=allow issue=- shadow=True
+[06:00:00]   executed -> fail; issue=ISS-20261102T060000-C23EA3 status=cooldown count=1
+[06:01:00] mcp hunt attempt 2: preflight=block issue=ISS-20261102T060000-C23EA3 shadow=True
+[06:01:00]   executed -> fail; issue=ISS-20261102T060000-C23EA3 status=open count=2
+[06:02:00] mcp hunt attempt 3: preflight=block issue=ISS-20261102T060000-C23EA3 shadow=True
+[06:02:00]   executed -> fail; issue=ISS-20261102T060000-C23EA3 status=open count=3
+[06:03:00] workaround recorded on ISS-20261102T060000-C23EA3
+[06:03:00] siem search attempt 1: preflight=allow issue=- shadow=True
+[06:03:00]   executed -> fail; issue=ISS-20261102T060300-5D5CAC status=cooldown count=1
+[06:04:00] siem search attempt 2: preflight=probe issue=ISS-20261102T060300-5D5CAC shadow=True
+[06:04:00]   executed -> fail; issue=ISS-20261102T060300-5D5CAC status=open count=2
+[06:05:00] pcap case-001: preflight=allow issue=- shadow=True
+[06:05:00]   executed -> fail; issue=ISS-20261102T060500-2800C7 status=open count=1
+[06:06:00] pcap case-002: preflight=allow issue=- shadow=True
+[06:06:00]   executed -> ok; no issue
+[06:07:00] shell permission probe: preflight=allow issue=- shadow=True
+[06:07:00]   executed -> fail; issue=ISS-20261102T060700-B434E1 status=open count=1
+[06:08:00] model completion: preflight=allow issue=- shadow=True
+[06:08:00]   executed -> fail; issue=ISS-20261102T060800-7DD10C status=cooldown count=1
+[06:08:31] model completion retry: preflight=probe issue=ISS-20261102T060800-7DD10C shadow=True
+[06:08:31]   executed -> ok; no issue
+[06:08:31] shadow totals: executed=10 blocked=0 failures=8
+[06:08:31] === B. enforce phase (blocked calls are skipped) ===
+[06:08:31] mcp hunt blocked: preflight=block issue=ISS-20261102T060000-C23EA3 shadow=False
+[06:08:31]   SKIPPED by enforce gate; alternatives=['use local pcap or cached hunt results until endpoint is restored']
+[06:23:32] mcp hunt probe: preflight=probe issue=ISS-20261102T060000-C23EA3 shadow=False
+[06:23:32]   executed -> ok; no issue
+[06:25:33] siem probe: preflight=probe issue=ISS-20261102T060300-5D5CAC shadow=False
+[06:25:33]   executed -> ok; no issue
+[06:25:33] siem issue before probe: open
+[06:25:33] pcap case-001 blocked: preflight=block issue=ISS-20261102T060500-2800C7 shadow=False
+[06:25:33]   SKIPPED by enforce gate; alternatives=[]
+[06:25:33] pcap case-002 allowed: preflight=allow issue=- shadow=False
+[06:25:33]   executed -> ok; no issue
+[06:25:33] shell blocked: preflight=block issue=ISS-20261102T060700-B434E1 shadow=False
+[06:25:33]   SKIPPED by enforce gate; alternatives=[]
+[06:25:33] === C. new session (memory persists) ===
+[06:25:33] fresh preflight mcp: allow issue=-
+[06:25:33] fresh preflight siem: allow issue=-
+[06:25:33] fresh preflight pcap case-001: block issue=ISS-20261102T060500-2800C7
+[06:25:33] fresh preflight pcap case-002: allow issue=-
+[06:25:33] fresh preflight shell: block issue=ISS-20261102T060700-B434E1
+[06:25:33] fresh preflight model: allow issue=-
