@@ -220,6 +220,14 @@ Do not build a graph database before the flat issue store proves useful.
 - No cross-agent coordination beyond `scope` / `environment_id`.
 - Default TTLs and backoffs are deliberate starting points, not calibrated
   production values.
+- `preflight` with a non-empty `run_id` scans events for the per-run budget;
+  in the scale probe this was ~156ms at 20k events (vs ~1ms without `run_id`).
+  Add an index/cache before high-volume use, or leave `run_id` empty if the
+  gateway already enforces a per-run attempt cap.
+- A short backoff plus a small `max_attempts` can exhaust the issue budget
+  before a long outage recovers; the 30-seed workload showed `enforce_60`
+  reaching 0% success, while `enforce_900` reached 100%. Tune backoff and
+  `max_attempts` together, not separately.
 
 ## Further reading
 

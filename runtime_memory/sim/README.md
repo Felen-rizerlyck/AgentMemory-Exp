@@ -47,6 +47,32 @@ sim/runs/<run-id>/
 The scenario is intentionally deterministic in time (fake clock), but event and
 issue IDs contain a timestamp and random suffix.
 
+## Offline Monte-Carlo workload
+
+`sim/workload.py` simulates many endpoints with random outage durations and
+compares no-memory, shadow, and enforce under different retry windows:
+
+```powershell
+python sim/workload.py --seeds 30 --run-id workload-2026-11-03-b30
+```
+
+Outputs `summary.md`, `metrics.json`, `table.csv`, and per-seed `runs.jsonl`
+under `sim/runs/<run-id>/`. The current example is
+`sim/runs/workload-2026-11-03-b30/`.
+
+## Scale probe
+
+`sim/scale.py` writes 1k / 5k / 20k synthetic events and measures preflight
+(with/without a run_id), report and check latency:
+
+```powershell
+python sim/scale.py
+```
+
+Output: `sim/runs/scale-2026-11-03/summary.md` + `metrics.json`.
+The `with run_id` measurement includes the per-run budget scan over all events,
+so it grows linearly with event count.
+
 ## Edge cases
 
 `sim/EDGE_CASES.md` lists the additional edge tests (false block, stale recovery,

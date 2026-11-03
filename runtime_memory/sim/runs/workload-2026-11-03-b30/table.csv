@@ -1,0 +1,10 @@
+config,success_rate,mean_calls,mean_failures,mean_blocked,mean_would_block,false_block_rate,mean_time_to_success_s,p95_time_to_success_s,mean_duplicate_failures
+baseline,1.0,16.9,15.9,0,0,0.0,954,1740,14.9
+shadow_60,1.0,16.9,15.9,0,12.9,0.078,954,1740,14.9
+enforce_60,0.0,4,4,57,0,0.0,None,None,3.0
+shadow_300,1.0,16.9,15.9,0,15.9,0.063,954,1740,14.9
+enforce_300,0.467,3.5,3.033,24.9,0,0.0,578.6,900,2.033
+shadow_900,1.0,16.9,15.9,0,15.9,0.063,954,1740,14.9
+enforce_900,1.0,2.533,1.533,1.533,0,0.0,1380,1800,0.533
+shadow_1800,1.0,16.9,15.9,0,15.9,0.063,954,1740,14.9
+enforce_1800,1.0,2,1,1,0,0.0,1800,1800,0.0

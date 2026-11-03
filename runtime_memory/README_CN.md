@@ -302,6 +302,8 @@ attr: status, error_class, next_retry_at, confidence
 - 没有 playbook 自动生成；
 - 没有跨 Agent 协调，只有 `scope` / `environment_id`；
 - 默认 TTL/退避是起点，不是生产校准值；
+- `preflight` 带 `run_id` 时会扫描 events 做 per-run 预算；规模探针在 2 万事件时约 **156ms**（不带 run_id 约 1ms）。高吞吐前要加索引/缓存，或者由 gateway 自己维护 per-run 计数；
+- “短退避 + 小 max_attempts”可能在长故障恢复前就把 issue 预算耗尽：30 seed 的负载实验里 `enforce_60` 成功率 0%，`enforce_900` 为 100%。退避和 `max_attempts` 要一起调，不能分开看；
 - 不写 `demo/data`，不 import demo。
 
 ---

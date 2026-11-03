@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "rows": [
+    {
+      "size": 1000,
+      "preflight_no_run_ms": 0.97,
+      "preflight_with_run_ms": 15.54,
+      "report_ms": 10.13,
+      "check_ms": 11.07
+    },
+    {
+      "size": 5000,
+      "preflight_no_run_ms": 0.82,
+      "preflight_with_run_ms": 46.91,
+      "report_ms": 37.96,
+      "check_ms": 38.93
+    },
+    {
+      "size": 20000,
+      "preflight_no_run_ms": 0.9,
+      "preflight_with_run_ms": 155.88,
+      "report_ms": 150.21,
+      "check_ms": 145.99
+    }
+  ]
+}
