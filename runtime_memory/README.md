@@ -232,6 +232,7 @@ Do not build a graph database before the flat issue store proves useful.
 ## Further reading
 
 - [Design document](../docs/RUNTIME_MEMORY_DESIGN.md)
+- [Executable offline test plan](../docs/RUNTIME_MEMORY_TEST_PLAN.md)
 - [Chinese README](README_CN.md)
 - [Demo case memory](../demo/README.md)
 - [Memory/skill self-iteration survey](../docs/agent-memory-skill-self-iteration-survey-2026-10.md)

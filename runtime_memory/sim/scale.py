@@ -9,7 +9,9 @@ Creates N synthetic events, then measures:
 """
 from __future__ import annotations
 
+import argparse
 import json
+import shutil
 import sys
 import tempfile
 import time
@@ -22,8 +24,7 @@ from runtime_memory import OperationRequest, RuntimeMemory  # noqa: E402
 from runtime_memory.policy import Policy, default_policy  # noqa: E402
 from runtime_memory.store import atomic_write_json  # noqa: E402
 
-SIZES = (1000, 5000, 20000)
-OUT = ROOT / "sim" / "runs" / "scale-2026-11-03"
+DEFAULT_SIZES = (1000, 5000, 20000)
 
 
 def make_events(path: Path, count: int) -> None:
@@ -78,9 +79,22 @@ def measure(size: int) -> dict:
 
 
 def main() -> int:
-    rows = [measure(size) for size in SIZES]
-    OUT.mkdir(parents=True, exist_ok=True)
-    atomic_write_json(OUT / "metrics.json", {"schema_version": 1, "rows": rows})
+    parser = argparse.ArgumentParser(description="Scale/latency probe")
+    parser.add_argument("--run-id", default="scale-2026-11-03")
+    parser.add_argument("--out", help="default sim/runs/<run-id>")
+    parser.add_argument("--sizes", default="1000,5000,20000",
+                        help="comma-separated event counts")
+    parser.add_argument("--force", action="store_true")
+    args = parser.parse_args()
+    out = Path(args.out) if args.out else ROOT / "sim" / "runs" / args.run_id
+    if out.exists() and not args.force:
+        parser.error(f"{out} exists; pass --force or a new --run-id")
+    if out.exists():
+        shutil.rmtree(out)
+    sizes = [int(item) for item in args.sizes.split(",") if item.strip()]
+    rows = [measure(size) for size in sizes]
+    out.mkdir(parents=True, exist_ok=True)
+    atomic_write_json(out / "metrics.json", {"schema_version": 1, "rows": rows})
     lines = ["# Scale probe (synthetic JSONL events)", "",
              "| events | preflight no run_id | preflight with run_id | report | check |",
              "|---|---|---|---|---|"]
@@ -90,9 +104,9 @@ def main() -> int:
                      f"{row['check_ms']} ms |")
     lines += ["", "`preflight with run_id` includes the per-run budget scan over all events; "
               "`preflight no run_id` skips it."]
-    (OUT / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (out / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines[:8]))
-    print(f"\nwrote {OUT}")
+    print(f"\nwrote {out}")
     return 0
 
 

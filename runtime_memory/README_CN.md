@@ -337,3 +337,5 @@ python scripts/verify_runtime_memory.py
 4. 再考虑 SQLite / 多 Agent / playbook / 图投影。
 
 设计细节、开放问题和排期见 [`docs/RUNTIME_MEMORY_DESIGN.md`](../docs/RUNTIME_MEMORY_DESIGN.md)。
+
+离线测试的方法、步骤、预期和结果模板见 [`docs/RUNTIME_MEMORY_TEST_PLAN.md`](../docs/RUNTIME_MEMORY_TEST_PLAN.md)，可直接交给后台模型执行。
