@@ -79,6 +79,28 @@ so it grows linearly with event count.
 Retry-After > TTL, abandoned probing, per-run budget, environment/scope
 isolation, malformed journals, gc). Run them with the normal test command.
 
+## Deep mode/behaviour matrix (2026-11-03)
+
+`sim/deep_test.py` is a deterministic 59-check matrix added for issue #3.  It
+covers shadow/enforce, probe and manual paths, the state machine and budgets,
+scope isolation, fingerprints, classification, redaction, concurrent stores,
+report metrics and audit traceability.  It uses a fake clock and temporary
+directories, never writes `runtime_memory/data`, and does not modify the
+algorithm.
+
+```powershell
+python sim/deep_test.py --force
+```
+
+Outputs `sim/runs/deep-2026-11-03/report.json` (machine-readable) and
+`summary.md` (all checks plus evidence).  The analysis is in
+`sim/FINDINGS_2026-11-03.md`.
+
+> The issue referenced `docs/RUNTIME_MEMORY_TEST_PLAN.md`, but that file is not
+> present in the working tree, any branch or the git history.  The matrix is
+> therefore derived from `docs/RUNTIME_MEMORY_DESIGN.md` §16/§9.5/§15 and the
+> runtime-memory READMEs.
+
 ## What to inspect
 
 - `data/events/*.jsonl`: the trace shape (`fingerprint`, `error_class`,

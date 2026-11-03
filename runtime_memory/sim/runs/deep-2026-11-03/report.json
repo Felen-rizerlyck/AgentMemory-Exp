@@ -1,0 +1,964 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-03T07:56:58+00:00",
+  "harness": "sim/deep_test.py",
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "requested_test_plan": {
+    "path": "docs/RUNTIME_MEMORY_TEST_PLAN.md",
+    "found": false,
+    "fallback": [
+      "docs/RUNTIME_MEMORY_DESIGN.md §16",
+      "docs/RUNTIME_MEMORY_DESIGN.md §9.5",
+      "docs/RUNTIME_MEMORY_DESIGN.md §15",
+      "runtime_memory/README.md and README_CN.md"
+    ]
+  },
+  "totals": {
+    "PASS": 30,
+    "FINDING": 18,
+    "GAP": 9,
+    "CRASH": 2
+  },
+  "checks": [
+    {
+      "id": "mode.shadow",
+      "category": "mode",
+      "title": "shadow records block but still executes the call",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "decision block, 2 events, would_block=true, shadow false_blocks=1",
+      "observed": "{'decision': 'block', 'shadow': True, 'events': 2, 'would_block_on_ok_event': True, 'shadow_report': {'would_block': 1, 'false_blocks': 1, 'confirmed_blocks': 0}}",
+      "evidence": {
+        "decision": "block",
+        "shadow": true,
+        "events": 2,
+        "would_block_on_ok_event": true,
+        "shadow_report": {
+          "would_block": 1,
+          "false_blocks": 1,
+          "confirmed_blocks": 0
+        }
+      }
+    },
+    {
+      "id": "mode.enforce",
+      "category": "mode",
+      "title": "enforce mode refuses postflight for a blocked call",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "block; postflight raises; only the real failure event is stored",
+      "observed": "{'decision': 'block', 'postflight_for_block_raises': True, 'events': [('fail', False)]}",
+      "evidence": {
+        "decision": "block",
+        "postflight_for_block_raises": true,
+        "events": [
+          [
+            "fail",
+            false
+          ]
+        ]
+      }
+    },
+    {
+      "id": "mode.probe_in_flight",
+      "category": "mode",
+      "title": "a second preflight while a probe is in flight blocks",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "first probe, issue=probing, second block",
+      "observed": "{'first': 'probe', 'second': 'block', 'second_reason': 'probe already in flight: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))', 'issue_status': 'probing', 'probe_started_at': True}",
+      "evidence": {
+        "first": "probe",
+        "second": "block",
+        "second_reason": "probe already in flight: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))",
+        "issue_status": "probing",
+        "probe_started_at": true
+      }
+    },
+    {
+      "id": "mode.policy_load",
+      "category": "mode",
+      "title": "enforce mode is loaded from data/policy.json",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "block is authoritative; shadow=false",
+      "observed": "{'action': 'block', 'shadow': False, 'enforce': True, 'base_s': 1}",
+      "evidence": {
+        "action": "block",
+        "shadow": false,
+        "enforce": true,
+        "base_s": 1
+      }
+    },
+    {
+      "id": "mode.note",
+      "category": "mode",
+      "title": "a model note never changes status or next_retry_at",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "note stored; status/next_retry unchanged",
+      "observed": "{'status_same': True, 'next_retry_same': True, 'author': 'model'}",
+      "evidence": {
+        "status_same": true,
+        "next_retry_same": true,
+        "author": "model"
+      }
+    },
+    {
+      "id": "mode.probe_ok",
+      "category": "mode",
+      "title": "a successful probe resolves the issue",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "probe -> resolved -> allow",
+      "observed": "{'decision': 'probe', 'status': 'resolved', 'next_preflight': 'allow'}",
+      "evidence": {
+        "decision": "probe",
+        "status": "resolved",
+        "next_preflight": "allow"
+      }
+    },
+    {
+      "id": "mode.probe_fail",
+      "category": "mode",
+      "title": "a failed probe reopens the issue and increments the backoff",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "open, count=2, attempts=2",
+      "observed": "{'decision': 'probe', 'status': 'open', 'count': 2, 'attempts': 2}",
+      "evidence": {
+        "decision": "probe",
+        "status": "open",
+        "count": 2,
+        "attempts": 2
+      }
+    },
+    {
+      "id": "mode.manual",
+      "category": "mode",
+      "title": "resolve allows the call and a new failure reopens the issue",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "allow; reopen; ignore -> resolved",
+      "observed": "{'after_resolve': 'allow', 'after_new_failure': 'cooldown', 'after_ignore': 'resolved', 'ignore_resolution': 'ignored'}",
+      "evidence": {
+        "after_resolve": "allow",
+        "after_new_failure": "cooldown",
+        "after_ignore": "resolved",
+        "ignore_resolution": "ignored"
+      }
+    },
+    {
+      "id": "mode.mitigated",
+      "category": "mode",
+      "title": "a mitigated issue yields allow_with_hint and the workaround",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "allow_with_hint + alternatives",
+      "observed": "{'decision': 'allow_with_hint', 'alternatives': ['use local pcap'], 'issue_status': 'mitigated'}",
+      "evidence": {
+        "decision": "allow_with_hint",
+        "alternatives": [
+          "use local pcap"
+        ],
+        "issue_status": "mitigated"
+      }
+    },
+    {
+      "id": "mode.workaround_only",
+      "category": "mode",
+      "title": "recording a workaround transitions to mitigated",
+      "status": "FINDING",
+      "severity": "low",
+      "expected": "set_workaround should make the issue mitigated (design §7.2 / README_CN §3.3) and preflight should return allow_with_hint",
+      "observed": "{'status': 'cooldown', 'decision': 'block', 'alternatives': ['use local pcap']}",
+      "evidence": {
+        "status": "cooldown",
+        "decision": "block",
+        "alternatives": [
+          "use local pcap"
+        ]
+      }
+    },
+    {
+      "id": "mode.override_auth",
+      "category": "mode",
+      "title": "model override bypasses a non-retryable auth block",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "auth is non-retryable and should require a human/operator decision (design §7.3, §9.3); a model override should not be enough",
+      "observed": "{'blocked': 'block', 'override': 'probe', 'override_reason': 'override: model wants to retry', 'issue_status': 'probing', 'overrides': 1}",
+      "evidence": {
+        "blocked": "block",
+        "override": "probe",
+        "override_reason": "override: model wants to retry",
+        "issue_status": "probing",
+        "overrides": 1
+      }
+    },
+    {
+      "id": "mode.override_budget",
+      "category": "mode",
+      "title": "model override bypasses the per-run hard budget",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "the per-run budget is described as a hard guard; an override should not turn its block into a probe",
+      "observed": "{'blocked': 'block', 'blocked_reason': 'run budget exhausted: 1 failure(s) for this operation in budget-run', 'blocked_issue_id': '', 'override': 'probe', 'override_reason': 'override: try anyway', 'override_issue_id': ''}",
+      "evidence": {
+        "blocked": "block",
+        "blocked_reason": "run budget exhausted: 1 failure(s) for this operation in budget-run",
+        "blocked_issue_id": "",
+        "override": "probe",
+        "override_reason": "override: try anyway",
+        "override_issue_id": ""
+      }
+    },
+    {
+      "id": "mode.override_audit",
+      "category": "mode",
+      "title": "every override is recorded in overrides.jsonl",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "one override record with basis",
+      "observed": "{'blocked': 'block', 'override': 'probe', 'override_reason': 'override: model wants to retry', 'issue_status': 'probing', 'overrides': 1}",
+      "evidence": {
+        "blocked": "block",
+        "override": "probe",
+        "override_reason": "override: model wants to retry",
+        "issue_status": "probing",
+        "overrides": 1
+      }
+    },
+    {
+      "id": "state.cooldown_open",
+      "category": "state",
+      "title": "the first failure creates cooldown, the second opens the issue",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "cooldown count=1; open count=2",
+      "observed": "{'first_status': 'cooldown', 'first_count': 1, 'second_status': 'open', 'second_count': 2}",
+      "evidence": {
+        "first_status": "cooldown",
+        "first_count": 1,
+        "second_status": "open",
+        "second_count": 2
+      }
+    },
+    {
+      "id": "state.retry_window",
+      "category": "state",
+      "title": "preflight blocks before next_retry_at and probes after it",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "block -> probe",
+      "observed": "{'before': 'block', 'after': 'probe'}",
+      "evidence": {
+        "before": "block",
+        "after": "probe"
+      }
+    },
+    {
+      "id": "state.schema",
+      "category": "state",
+      "title": "schema failures block only the bad call and are not retried",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "bad args block; good args allow; status open; retryable=false",
+      "observed": "{'status': 'open', 'bad_args': 'block', 'good_args': 'allow', 'retryable': False}",
+      "evidence": {
+        "status": "open",
+        "bad_args": "block",
+        "good_args": "allow",
+        "retryable": false
+      }
+    },
+    {
+      "id": "state.invalid_args",
+      "category": "state",
+      "title": "invalid_args failures block only the bad call and are not retried",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "bad args block; good args allow; status open; retryable=false",
+      "observed": "{'status': 'open', 'bad_args': 'block', 'good_args': 'allow', 'retryable': False}",
+      "evidence": {
+        "status": "open",
+        "bad_args": "block",
+        "good_args": "allow",
+        "retryable": false
+      }
+    },
+    {
+      "id": "state.retry_after",
+      "category": "state",
+      "title": "Retry-After wins over the class backoff and extends expiry",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "next_retry=+7200s, block at +1h, probe at +2h",
+      "observed": "{'next_retry_at': '2026-11-02T08:00:00Z', 'expires_at': '2026-11-02T08:00:00Z', 'at_one_hour': 'block', 'at_two_hours': 'probe', 'delta_s': 7200, 'expiry_after_retry': True}",
+      "evidence": {
+        "next_retry_at": "2026-11-02T08:00:00Z",
+        "expires_at": "2026-11-02T08:00:00Z",
+        "at_one_hour": "block",
+        "at_two_hours": "probe",
+        "delta_s": 7200,
+        "expiry_after_retry": true
+      }
+    },
+    {
+      "id": "state.auth_stale",
+      "category": "state",
+      "title": "non-retryable auth blocks until TTL, then allows one probe",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "open/block; stale/probe",
+      "observed": "{'initial_status': 'open', 'immediate': 'block', 'stale': 'probe', 'status': 'stale'}",
+      "evidence": {
+        "initial_status": "open",
+        "immediate": "block",
+        "stale": "probe",
+        "status": "stale"
+      }
+    },
+    {
+      "id": "state.abandoned_probe",
+      "category": "state",
+      "title": "an abandoned probe without probe_started_at recovers",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "probe; issue back to open",
+      "observed": "{'decision': 'probe', 'status': 'open'}",
+      "evidence": {
+        "decision": "probe",
+        "status": "open"
+      }
+    },
+    {
+      "id": "state.attempt_budget",
+      "category": "state",
+      "title": "the issue-level attempt budget eventually blocks",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "3 retries after the initial failure (4 calls) then block",
+      "observed": "{'failures': 4, 'attempts': 4, 'block_reason': 'attempt budget exhausted: unreachable @ http://10.7.194.120:22196/hunt/sse (4 failure(s))'}",
+      "evidence": {
+        "failures": 4,
+        "attempts": 4,
+        "block_reason": "attempt budget exhausted: unreachable @ http://10.7.194.120:22196/hunt/sse (4 failure(s))"
+      }
+    },
+    {
+      "id": "state.per_class_run_budget",
+      "category": "state",
+      "title": "the class-level max_attempts_per_run is not enforced",
+      "status": "GAP",
+      "severity": "medium",
+      "expected": "policy.classes.unreachable.max_attempts_per_run=1 should cap failures in one run",
+      "observed": "{'class_max_attempts_per_run': 1, 'failures_in_single_run': 4, 'issue_attempts': 4}",
+      "evidence": {
+        "class_max_attempts_per_run": 1,
+        "failures_in_single_run": 4,
+        "issue_attempts": 4
+      }
+    },
+    {
+      "id": "state.probe_after_expiry",
+      "category": "state",
+      "title": "probe_after_expiry=false is ignored",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "policy.defaults.probe_after_expiry should be honoured",
+      "observed": "{'configured_probe_after_expiry': False, 'decision': 'probe', 'reason': 'stale issue; one probe allowed: auth @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+      "evidence": {
+        "configured_probe_after_expiry": false,
+        "decision": "probe",
+        "reason": "stale issue; one probe allowed: auth @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+      }
+    },
+    {
+      "id": "state.defaults",
+      "category": "state",
+      "title": "policy.defaults is not used for cooldown/TTL",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "policy.defaults.cooldown_s and issue_ttl_s should affect the default backoff/TTL; the class values win and the defaults keys are dead configuration",
+      "observed": "{'defaults': {'cooldown_s': 1, 'issue_ttl_s': 1}, 'next_retry_delta_s': 900, 'expires_delta_s': 86400}",
+      "evidence": {
+        "defaults": {
+          "cooldown_s": 1,
+          "issue_ttl_s": 1
+        },
+        "next_retry_delta_s": 900,
+        "expires_delta_s": 86400
+      }
+    },
+    {
+      "id": "state.read_only",
+      "category": "state",
+      "title": "record=False still persists an issue state refresh",
+      "status": "FINDING",
+      "severity": "low",
+      "expected": "record=False should not mutate the store (docstring: read-only inspection)",
+      "observed": "{'status_before': 'cooldown', 'decision': 'probe', 'status_after': 'stale', 'decisions': 0}",
+      "evidence": {
+        "status_before": "cooldown",
+        "decision": "probe",
+        "status_after": "stale",
+        "decisions": 0
+      }
+    },
+    {
+      "id": "state.mitigated_expired",
+      "category": "state",
+      "title": "mitigating an already-expired issue is immediately undone",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "resolve(..., resolution='mitigated') should remain mitigated until it is re-checked or a new failure occurs",
+      "observed": "{'status_after_resolve': 'mitigated', 'expires_at': '2026-11-03T06:00:00Z', 'next_decision': 'probe', 'status_after_next_preflight': 'stale'}",
+      "evidence": {
+        "status_after_resolve": "mitigated",
+        "expires_at": "2026-11-03T06:00:00Z",
+        "next_decision": "probe",
+        "status_after_next_preflight": "stale"
+      }
+    },
+    {
+      "id": "state.jitter",
+      "category": "state",
+      "title": "exponential backoff has no jitter",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "design §10.2 calls for ±20% jitter to avoid synchronised retries",
+      "observed": "{'delays_s': [30, 60, 120], 'expected_without_jitter': [30, 60, 120]}",
+      "evidence": {
+        "delays_s": [
+          30,
+          60,
+          120
+        ],
+        "expected_without_jitter": [
+          30,
+          60,
+          120
+        ]
+      }
+    },
+    {
+      "id": "scope.environment",
+      "category": "scope",
+      "title": "environment_id isolates issues",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "lab-b is allowed",
+      "observed": "{'lab_a_failure': True, 'lab_b': 'allow'}",
+      "evidence": {
+        "lab_a_failure": true,
+        "lab_b": "allow"
+      }
+    },
+    {
+      "id": "scope.session",
+      "category": "scope",
+      "title": "a session-scope issue blocks every other session",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "design §13: 'session 只在本 run 生效'; session-a must not block session-b",
+      "observed": "{'failure_session': 'session-a', 'other_session': 'session-b', 'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+      "evidence": {
+        "failure_session": "session-a",
+        "other_session": "session-b",
+        "decision": "block",
+        "reason": "blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+      }
+    },
+    {
+      "id": "scope.agent",
+      "category": "scope",
+      "title": "an agent-scope issue blocks every other agent",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "design §13: 'agent' means one Agent; agent-a must not block agent-b",
+      "observed": "{'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+      "evidence": {
+        "decision": "block",
+        "reason": "blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+      }
+    },
+    {
+      "id": "scope.global_resolution",
+      "category": "scope",
+      "title": "a successful session call cannot resolve a global issue",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "design §7.3: another scope's success may mitigate; at minimum a genuine success must not leave the issue stuck in probing",
+      "observed": "{'probe': 'probe', 'issue_scope': 'global', 'status_after_session_success': 'probing'}",
+      "evidence": {
+        "probe": "probe",
+        "issue_scope": "global",
+        "status_after_session_success": "probing"
+      }
+    },
+    {
+      "id": "scope.mixed",
+      "category": "scope",
+      "title": "a session failure updates the global issue record",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "scope is part of issue ownership; the same operation failing in session s2 should not increment the global issue",
+      "observed": "{'issue_count': 1, 'scopes': ['global'], 'counts': [2]}",
+      "evidence": {
+        "issue_count": 1,
+        "scopes": [
+          "global"
+        ],
+        "counts": [
+          2
+        ]
+      }
+    },
+    {
+      "id": "scope.cross_env_mitigation",
+      "category": "scope",
+      "title": "another environment's success does not mitigate the issue",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "design §7.2: 'open --other environment success--> mitigated'",
+      "observed": "{'lab_a_issue_status': 'cooldown'}",
+      "evidence": {
+        "lab_a_issue_status": "cooldown"
+      }
+    },
+    {
+      "id": "identity.normalise",
+      "category": "identity",
+      "title": "target and argument normalisation is stable",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "volatile/query/secret/userinfo differences do not change the key",
+      "observed": "{'query_ignored': True, 'second_segment_ignored': True, 'secret_args_same': True, 'volatile_args_same': True, 'userinfo_stripped': True}",
+      "evidence": {
+        "query_ignored": true,
+        "second_segment_ignored": true,
+        "secret_args_same": true,
+        "volatile_args_same": true,
+        "userinfo_stripped": true
+      }
+    },
+    {
+      "id": "identity.key_level",
+      "category": "identity",
+      "title": "call-level failures only block the same arguments",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "different args allow; same args block",
+      "observed": "{'other_args': 'allow', 'same_args': 'block'}",
+      "evidence": {
+        "other_args": "allow",
+        "same_args": "block"
+      }
+    },
+    {
+      "id": "identity.bad_port",
+      "category": "identity",
+      "title": "a malformed URL port does not crash preflight",
+      "status": "CRASH",
+      "severity": "medium",
+      "expected": "preflight returns a decision (or a documented validation error), never an uncaught exception",
+      "observed": "ValueError: Port out of range 0-65535",
+      "evidence": {
+        "exception": "ValueError",
+        "message": "Port out of range 0-65535"
+      }
+    },
+    {
+      "id": "identity.non_json_args",
+      "category": "identity",
+      "title": "non-JSON argument values do not crash preflight",
+      "status": "CRASH",
+      "severity": "medium",
+      "expected": "preflight returns a decision (or a documented validation error), never an uncaught exception",
+      "observed": "TypeError: Object of type bytes is not JSON serializable",
+      "evidence": {
+        "exception": "TypeError",
+        "message": "Object of type bytes is not JSON serializable"
+      }
+    },
+    {
+      "id": "classify.known",
+      "category": "classify",
+      "title": "known exception types map to the documented class",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "see expected mapping",
+      "observed": "{'ConnectionRefusedError': 'unreachable', 'TimeoutError': 'timeout', 'PermissionError': 'permission', 'json.JSONDecodeError': 'schema', 'HTTP 401': 'auth', 'HTTP 403': 'auth', 'HTTP 404': 'not_found', 'HTTP 429': 'rate_limit'}",
+      "evidence": {
+        "ConnectionRefusedError": "unreachable",
+        "TimeoutError": "timeout",
+        "PermissionError": "permission",
+        "json.JSONDecodeError": "schema",
+        "HTTP 401": "auth",
+        "HTTP 403": "auth",
+        "HTTP 404": "not_found",
+        "HTTP 429": "rate_limit"
+      }
+    },
+    {
+      "id": "classify.server_errors",
+      "category": "classify",
+      "title": "5xx and errno-based network errors fall back to unknown",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "design §8.5: 5xx -> internal; OSError(errno=101/111) -> unreachable",
+      "observed": "{'HTTP 500': 'unknown', 'HTTP 503': 'unknown', 'OSError(errno=101)': 'unknown', 'OSError(errno=111)': 'unknown'}",
+      "evidence": {
+        "HTTP 500": "unknown",
+        "HTTP 503": "unknown",
+        "OSError(errno=101)": "unknown",
+        "OSError(errno=111)": "unknown"
+      }
+    },
+    {
+      "id": "classify.invalid_args",
+      "category": "classify",
+      "title": "postflight cannot pass the argument context to the classifier",
+      "status": "GAP",
+      "severity": "medium",
+      "expected": "the classifier supports context['source']='args' -> invalid_args, but postflight has no context parameter, so a plain ValueError becomes unknown",
+      "observed": "{'context_parameter': False, 'ValueError_without_context': 'unknown', 'ValueError_with_args_context': 'invalid_args'}",
+      "evidence": {
+        "context_parameter": false,
+        "ValueError_without_context": "unknown",
+        "ValueError_with_args_context": "invalid_args"
+      }
+    },
+    {
+      "id": "security.redaction",
+      "category": "security",
+      "title": "header, URL, password and private-key redaction works",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "all samples redacted",
+      "observed": {
+        "Authorization: Bearer abc123": "Authorization: Bearer [REDACTED]",
+        "Cookie: session=abc123": "Cookie: [REDACTED]",
+        "password=hunter2 token=tok-abc": "password=[REDACTED] token=[REDACTED]",
+        "https://user:hunter2@10.0.0.1/x": "https://user:[REDACTED]@10.0.0.1/x",
+        "-----BEGIN RSA PRIVATE KEY-----\nMIIE\n-----END RSA PRIVATE KEY-----": "[REDACTED PRIVATE KEY]"
+      },
+      "evidence": {
+        "Authorization: Bearer abc123": "Authorization: Bearer [REDACTED]",
+        "Cookie: session=abc123": "Cookie: [REDACTED]",
+        "password=hunter2 token=tok-abc": "password=[REDACTED] token=[REDACTED]",
+        "https://user:hunter2@10.0.0.1/x": "https://user:[REDACTED]@10.0.0.1/x",
+        "-----BEGIN RSA PRIVATE KEY-----\nMIIE\n-----END RSA PRIVATE KEY-----": "[REDACTED PRIVATE KEY]"
+      }
+    },
+    {
+      "id": "security.redaction_json",
+      "category": "security",
+      "title": "JSON-formatted secrets are not redacted",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "error messages often contain JSON; password/token/api_key and quoted Authorization values must be redacted before storage",
+      "observed": "{'{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}': '{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}', '{\"Authorization\": \"Bearer abc123\"}': '{\"Authorization\": \"Bearer abc123\"}'}",
+      "evidence": {
+        "{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}": "{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}",
+        "{\"Authorization\": \"Bearer abc123\"}": "{\"Authorization\": \"Bearer abc123\"}"
+      }
+    },
+    {
+      "id": "security.target_credentials",
+      "category": "security",
+      "title": "URL userinfo credentials leak through the raw target field",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "credentials must not appear in issue.target, decision.reason or report.top_open_issues",
+      "observed": "{'issue_target': 'https://user:hunter2@10.0.0.1/hunt', 'decision_reason': 'blocked until retry window: unreachable @ https://user:hunter2@10.0.0.1/hunt (1 failure(s))', 'report_target': 'https://user:hunter2@10.0.0.1/hunt'}",
+      "evidence": {
+        "issue_target": "https://user:hunter2@10.0.0.1/hunt",
+        "decision_reason": "blocked until retry window: unreachable @ https://user:hunter2@10.0.0.1/hunt (1 failure(s))",
+        "report_target": "https://user:hunter2@10.0.0.1/hunt"
+      }
+    },
+    {
+      "id": "security.message_limit",
+      "category": "security",
+      "title": "message_redacted is truncated",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "<= 500 chars plus an ellipsis",
+      "observed": {
+        "length": 501
+      },
+      "evidence": null
+    },
+    {
+      "id": "store.multiprocess",
+      "category": "store",
+      "title": "concurrent record() calls create duplicate live issues",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "4 events -> exactly one issue record with count=4; duplicate live records split the evidence and make find_issue ambiguous. The store is documented as single-writer, but the README claims the JSONL lock prevents interleaved lines and issues.json is atomic, so readers should not observe duplicate live issues",
+      "observed": "[{'round': 0, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 1, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}]",
+      "evidence": [
+        {
+          "round": 0,
+          "errors": [],
+          "events": 4,
+          "issue_records": 3,
+          "issue_counts": [
+            1,
+            1,
+            1
+          ],
+          "issue_attempts": [
+            1,
+            1,
+            1
+          ],
+          "sum_counts": 3
+        },
+        {
+          "round": 1,
+          "errors": [],
+          "events": 4,
+          "issue_records": 4,
+          "issue_counts": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "issue_attempts": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "sum_counts": 4
+        },
+        {
+          "round": 2,
+          "errors": [],
+          "events": 4,
+          "issue_records": 3,
+          "issue_counts": [
+            1,
+            1,
+            1
+          ],
+          "issue_attempts": [
+            1,
+            1,
+            1
+          ],
+          "sum_counts": 3
+        }
+      ]
+    },
+    {
+      "id": "store.lock_contention",
+      "category": "store",
+      "title": "the JSONL file lock can raise an uncaught PermissionError on Windows",
+      "status": "FINDING",
+      "severity": "high",
+      "expected": "file_lock should treat Access Denied / FileExists as contention and retry until its timeout; a thread must not crash",
+      "observed": "errors=[{'round': 0, 'type': 'PermissionError', 'message': \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-lock-t5iauw0t\\\\\\\\events.jsonl.lock'\"}]; rounds=[{'round': 0, 'lines': 76, 'expected': 80}]",
+      "evidence": {
+        "errors": [
+          {
+            "round": 0,
+            "type": "PermissionError",
+            "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-t5iauw0t\\\\events.jsonl.lock'"
+          }
+        ],
+        "rounds": [
+          {
+            "round": 0,
+            "lines": 76,
+            "expected": 80
+          }
+        ]
+      }
+    },
+    {
+      "id": "store.atomic_json",
+      "category": "store",
+      "title": "issues.json remains a complete JSON document",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "parseable snapshot after repeated writes",
+      "observed": "{'issues': 1, 'schema_version': 1}",
+      "evidence": {
+        "issues": 1,
+        "schema_version": 1
+      }
+    },
+    {
+      "id": "store.corrupt_events",
+      "category": "store",
+      "title": "a corrupt event journal raises from report and budgeted preflight",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "check() reports the journal problem; report/preflight should return a controlled error instead of an uncaught ValueError",
+      "observed": "{'report': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_with_run': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_without_run': 'allow', 'check': ['journal: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)']}",
+      "evidence": {
+        "report": "ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)",
+        "preflight_with_run": "ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)",
+        "preflight_without_run": "allow",
+        "check": [
+          "journal: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)"
+        ]
+      }
+    },
+    {
+      "id": "audit.expires_at",
+      "category": "audit",
+      "title": "check() does not enforce the expires_at invariant",
+      "status": "FINDING",
+      "severity": "low",
+      "expected": "design §16.3 invariant 4: expires_at always exists; check() should report an issue without it",
+      "observed": "[]",
+      "evidence": []
+    },
+    {
+      "id": "store.find_live",
+      "category": "store",
+      "title": "find_issue prefers the live duplicate",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "ISS-no-expiry",
+      "observed": "ISS-no-expiry",
+      "evidence": null
+    },
+    {
+      "id": "store.gc",
+      "category": "store",
+      "title": "gc deletes old events/resolved issues and keeps audit logs",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "old data gone; audit logs retained",
+      "observed": "{'gc': {'event_files': 1, 'events': 1, 'issues': 1, 'dry_run': 0}, 'old_event_file_exists': False, 'old_issue_exists': False, 'decisions': 1, 'overrides': 1}",
+      "evidence": {
+        "gc": {
+          "event_files": 1,
+          "events": 1,
+          "issues": 1,
+          "dry_run": 0
+        },
+        "old_event_file_exists": false,
+        "old_issue_exists": false,
+        "decisions": 1,
+        "overrides": 1
+      }
+    },
+    {
+      "id": "report.link",
+      "category": "report",
+      "title": "shadow false blocks require the caller to pass the decision",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "a shadow block followed by a successful call should count as a false block even when the caller only records the outcome",
+      "observed": "{'decision': 'block', 'would_block': 1, 'false_blocks': 0, 'false_block_rate_present': False}",
+      "evidence": {
+        "decision": "block",
+        "would_block": 1,
+        "false_blocks": 0,
+        "false_block_rate_present": false
+      }
+    },
+    {
+      "id": "report.rate",
+      "category": "report",
+      "title": "report exposes counts but not false_block_rate",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "design §15.1 defines false_block_rate; the report has would_block/false_blocks but no rate",
+      "observed": "{'decision': 'block', 'would_block': 1, 'false_blocks': 0, 'false_block_rate_present': False}",
+      "evidence": {
+        "decision": "block",
+        "would_block": 1,
+        "false_blocks": 0,
+        "false_block_rate_present": false
+      }
+    },
+    {
+      "id": "report.probe_rate",
+      "category": "report",
+      "title": "probe success rate is reported",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "1/1 -> rate 1.0",
+      "observed": "{'probes': {'attempts': 1, 'success': 1, 'success_rate': 1.0}, 'enforce_blocked': 0}",
+      "evidence": {
+        "probes": {
+          "attempts": 1,
+          "success": 1,
+          "success_rate": 1.0
+        },
+        "enforce_blocked": 0
+      }
+    },
+    {
+      "id": "report.duplicate_scope",
+      "category": "report",
+      "title": "duplicate_attempts is not scoped to a run",
+      "status": "GAP",
+      "severity": "low",
+      "expected": "design §15.1 defines duplicate_attempts 'in run'; the report counts repeats across all runs",
+      "observed": "{'duplicate_attempts': 1, 'note': 'two failures in distinct runs'}",
+      "evidence": {
+        "duplicate_attempts": 1,
+        "note": "two failures in distinct runs"
+      }
+    },
+    {
+      "id": "audit.block_issue",
+      "category": "audit",
+      "title": "a run-budget block has no issue_id",
+      "status": "FINDING",
+      "severity": "medium",
+      "expected": "design §16.3 invariant 3: every block is traceable to issue_id + policy_version + source events; a budget block is a hard block but carries no issue id",
+      "observed": "{'decision': 'block', 'issue_id': '', 'reason': 'run budget exhausted: 1 failure(s) for this operation in budget-audit'}",
+      "evidence": {
+        "decision": "block",
+        "issue_id": "",
+        "reason": "run budget exhausted: 1 failure(s) for this operation in budget-audit"
+      }
+    },
+    {
+      "id": "audit.override",
+      "category": "audit",
+      "title": "overrides are audited",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "one override record",
+      "observed": "1",
+      "evidence": null
+    },
+    {
+      "id": "audit.reopen",
+      "category": "audit",
+      "title": "a resolved issue can be reopened by a new failure",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "new live issue (same id) with count=1",
+      "observed": "{'issue_id_reused': True, 'status': 'cooldown', 'count': 1}",
+      "evidence": {
+        "issue_id_reused": true,
+        "status": "cooldown",
+        "count": 1
+      }
+    },
+    {
+      "id": "audit.rebuild",
+      "category": "audit",
+      "title": "rebuild_issues is not implemented",
+      "status": "GAP",
+      "severity": "info",
+      "expected": "design §11.6 proposes rebuilding issues from events; the prototype has no rebuild method",
+      "observed": "method absent",
+      "evidence": "absent"
+    }
+  ]
+}
