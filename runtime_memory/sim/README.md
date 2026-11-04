@@ -96,10 +96,36 @@ Outputs `sim/runs/deep-2026-11-03/report.json` (machine-readable) and
 `summary.md` (all checks plus evidence).  The analysis is in
 `sim/FINDINGS_2026-11-03.md`.
 
-> The issue referenced `docs/RUNTIME_MEMORY_TEST_PLAN.md`, but that file is not
-> present in the working tree, any branch or the git history.  The matrix is
-> therefore derived from `docs/RUNTIME_MEMORY_DESIGN.md` §16/§9.5/§15 and the
-> runtime-memory READMEs.
+## Plan execution (T0-T8, 2026-11-03)
+
+`sim/run_plan.py` executes the offline plan in
+[`docs/RUNTIME_MEMORY_TEST_PLAN.md`](../../docs/RUNTIME_MEMORY_TEST_PLAN.md):
+
+```powershell
+python sim/run_plan.py
+```
+
+It runs T0/T1 baselines, T2 `workload.py`, T3 `policy_grid.py`, T4
+`multitool.py`, T5 `scale.py` + `scale_multi.py`, T6 `concurrency.py`, T7
+`retention.py` and T8 `redaction_fuzz.py`, captures each command's
+stdout/stderr, and writes:
+
+- `sim/runs/exec-<UTC>/EXECUTOR_REPORT.md`
+- `sim/runs/exec-<UTC>/results.json`
+- `sim/runs/exec-<UTC>/raw/*.stdout.txt` / `*.stderr.txt`
+- per-test metric dirs (`workload/`, `policy-grid/`, `multitool/`, `scale/`,
+  `scale-multi/`, `scale-100k/`, `concurrency/`, `retention/`, `redaction/`)
+
+T9 (scripted obedient/naive agents) is covered by T4's comparison; T10 is
+optional and is reported as `NOT_RUN`.  The runner does not modify
+`runtime_memory/src/`, `runtime_memory/tests/` or `runtime_memory/data/`.
+
+Latest execution: `sim/runs/exec-20261103T084500Z/`.  T0–T5 and T7 passed;
+T6 failed on concurrent append (lost lines / `PermissionError`) and concurrent
+postflight (duplicate live issues); T8 passed the plan's legacy
+header/password/token/cookie/private-key patterns but failed on JSON-formatted
+secrets and URL userinfo (P0).  See the executor report and
+`FINDINGS_2026-11-03.md`.
 
 ## What to inspect
 

@@ -1,0 +1,186 @@
+{
+  "schema_version": 1,
+  "messages": 1000,
+  "stored_messages": 40,
+  "by_pattern": {
+    "authorization": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "password": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "token": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "api_key": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "cookie": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "private_key": {
+      "checked": 100,
+      "leaks": 0
+    },
+    "json_password": {
+      "checked": 100,
+      "leaks": 100
+    },
+    "json_token": {
+      "checked": 100,
+      "leaks": 100
+    },
+    "json_authorization": {
+      "checked": 100,
+      "leaks": 100
+    },
+    "normal": {
+      "checked": 100,
+      "leaks": 0
+    }
+  },
+  "plan_pattern_leaks": 0,
+  "json_pattern_leaks": 300,
+  "redaction_leak_samples": [
+    {
+      "pattern": "json_password",
+      "index": 6,
+      "secret": "SEC-JSON_PASSWORD-0006-82597552",
+      "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0006-82597552\", \"ok\": false}"
+    },
+    {
+      "pattern": "json_token",
+      "index": 7,
+      "secret": "SEC-JSON_TOKEN-0007-17930905",
+      "redacted": "{\"token\": \"SEC-JSON_TOKEN-0007-17930905\", \"error\": \"expired\"}"
+    },
+    {
+      "pattern": "json_authorization",
+      "index": 8,
+      "secret": "SEC-JSON_AUTHORIZATION-0008-07339937",
+      "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0008-07339937\"}"
+    },
+    {
+      "pattern": "json_password",
+      "index": 16,
+      "secret": "SEC-JSON_PASSWORD-0016-15359867",
+      "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0016-15359867\", \"ok\": false}"
+    },
+    {
+      "pattern": "json_token",
+      "index": 17,
+      "secret": "SEC-JSON_TOKEN-0017-23933272",
+      "redacted": "{\"token\": \"SEC-JSON_TOKEN-0017-23933272\", \"error\": \"expired\"}"
+    },
+    {
+      "pattern": "json_authorization",
+      "index": 18,
+      "secret": "SEC-JSON_AUTHORIZATION-0018-60773253",
+      "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0018-60773253\"}"
+    },
+    {
+      "pattern": "json_password",
+      "index": 26,
+      "secret": "SEC-JSON_PASSWORD-0026-61052324",
+      "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0026-61052324\", \"ok\": false}"
+    },
+    {
+      "pattern": "json_token",
+      "index": 27,
+      "secret": "SEC-JSON_TOKEN-0027-99550129",
+      "redacted": "{\"token\": \"SEC-JSON_TOKEN-0027-99550129\", \"error\": \"expired\"}"
+    },
+    {
+      "pattern": "json_authorization",
+      "index": 28,
+      "secret": "SEC-JSON_AUTHORIZATION-0028-45612283",
+      "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0028-45612283\"}"
+    },
+    {
+      "pattern": "json_password",
+      "index": 36,
+      "secret": "SEC-JSON_PASSWORD-0036-41810591",
+      "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0036-41810591\", \"ok\": false}"
+    }
+  ],
+  "stored_leaks": [
+    {
+      "file": "issues.json",
+      "secret": "SEC-TARGET-0001-99999999",
+      "pattern": "target_userinfo"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_PASSWORD-0006-82597552",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_AUTHORIZATION-0008-07339937",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_PASSWORD-0016-15359867",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_PASSWORD-0036-41810591",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_AUTHORIZATION-0018-60773253",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_AUTHORIZATION-0038-70165056",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_TOKEN-0007-17930905",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_TOKEN-0027-99550129",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_PASSWORD-0026-61052324",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_AUTHORIZATION-0028-45612283",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_TOKEN-0037-29250236",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-JSON_TOKEN-0017-23933272",
+      "pattern": "stored_message"
+    },
+    {
+      "file": "events\\2026-11.jsonl",
+      "secret": "SEC-TARGET-0001-99999999",
+      "pattern": "target_userinfo"
+    }
+  ],
+  "storage_message_leaks": 12,
+  "target_userinfo_leaks": 2,
+  "normal_text_preserved": true
+}

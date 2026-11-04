@@ -1,16 +1,15 @@
 # Runtime memory deep test matrix
 
-- generated: 2026-11-03T07:56:58+00:00
+- generated: 2026-11-04T02:23:26+00:00
 - harness: `sim/deep_test.py`
 - out: `runtime_memory/sim/runs/deep-2026-11-03`
 - checks: 59
-- status: CRASH=2, FINDING=18, GAP=9, PASS=30
+- status: CRASH=2, FINDING=16, GAP=9, PASS=32
 
-> Note: the requested `docs/RUNTIME_MEMORY_TEST_PLAN.md` does not exist
-> in this repository (not in the working tree, any remote branch or git
-> history). This matrix is derived from `docs/RUNTIME_MEMORY_DESIGN.md`
-> §16 (test plan), §9.5 (interception matrix), §15 (metrics) and the
-> runtime-memory READMEs, plus additional robustness checks.
+> The requested plan `RUNTIME_MEMORY_TEST_PLAN.md` exists; this matrix is
+> derived from `docs/RUNTIME_MEMORY_DESIGN.md` §16 (test plan),
+> §9.5 (interception matrix) and §15 (metrics), plus additional
+> robustness checks. Cross-check the two if their scopes differ.
 
 ## Checks
 
@@ -40,7 +39,7 @@
 | 22 | `state.per_class_run_budget` | state | **GAP** | medium | the class-level max_attempts_per_run is not enforced |
 | 23 | `state.probe_after_expiry` | state | **GAP** | low | probe_after_expiry=false is ignored |
 | 24 | `state.defaults` | state | **GAP** | low | policy.defaults is not used for cooldown/TTL |
-| 25 | `state.read_only` | state | **FINDING** | low | record=False still persists an issue state refresh |
+| 25 | `state.read_only` | state | **PASS** | info | record=False writes no decision and does not probe |
 | 26 | `state.mitigated_expired` | state | **FINDING** | medium | mitigating an already-expired issue is immediately undone |
 | 27 | `state.jitter` | state | **GAP** | low | exponential backoff has no jitter |
 | 28 | `scope.environment` | scope | **PASS** | info | environment_id isolates issues |
@@ -60,7 +59,7 @@
 | 42 | `security.redaction_json` | security | **FINDING** | high | JSON-formatted secrets are not redacted |
 | 43 | `security.target_credentials` | security | **FINDING** | high | URL userinfo credentials leak through the raw target field |
 | 44 | `security.message_limit` | security | **PASS** | info | message_redacted is truncated |
-| 45 | `store.multiprocess` | store | **FINDING** | medium | concurrent record() calls create duplicate live issues |
+| 45 | `store.multiprocess` | store | **FINDING** | high | concurrent record() calls crash on the file lock and/or lose counts |
 | 46 | `store.lock_contention` | store | **FINDING** | high | the JSONL file lock can raise an uncaught PermissionError on Windows |
 | 47 | `store.atomic_json` | store | **PASS** | info | issues.json remains a complete JSON document |
 | 48 | `store.corrupt_events` | store | **FINDING** | medium | a corrupt event journal raises from report and budgeted preflight |
@@ -71,7 +70,7 @@
 | 53 | `report.rate` | report | **GAP** | low | report exposes counts but not false_block_rate |
 | 54 | `report.probe_rate` | report | **PASS** | info | probe success rate is reported |
 | 55 | `report.duplicate_scope` | report | **GAP** | low | duplicate_attempts is not scoped to a run |
-| 56 | `audit.block_issue` | audit | **FINDING** | medium | a run-budget block has no issue_id |
+| 56 | `audit.block_issue` | audit | **PASS** | info | a per-run budget block is explicit and may lack an issue_id |
 | 57 | `audit.override` | audit | **PASS** | info | overrides are audited |
 | 58 | `audit.reopen` | audit | **PASS** | info | a resolved issue can be reopened by a new failure |
 | 59 | `audit.rebuild` | audit | **GAP** | info | rebuild_issues is not implemented |
@@ -80,14 +79,14 @@
 
 | category | pass | finding | gap | crash |
 |---|---|---|---|---|
-| audit | 2 | 2 | 1 | 0 |
+| audit | 3 | 1 | 1 | 0 |
 | classify | 1 | 1 | 1 | 0 |
 | identity | 2 | 0 | 0 | 2 |
 | mode | 10 | 3 | 0 | 0 |
 | report | 1 | 1 | 2 | 0 |
 | scope | 1 | 4 | 1 | 0 |
 | security | 2 | 2 | 0 | 0 |
-| state | 8 | 2 | 4 | 0 |
+| state | 9 | 1 | 4 | 0 |
 | store | 3 | 3 | 0 | 0 |
 
 ## Non-pass detail
@@ -189,22 +188,6 @@
   },
   "next_retry_delta_s": 900,
   "expires_delta_s": 86400
-}
-```
-
-### state.read_only (FINDING, low)
-
-**record=False still persists an issue state refresh**
-
-- expected: record=False should not mutate the store (docstring: read-only inspection)
-- observed: {'status_before': 'cooldown', 'decision': 'probe', 'status_after': 'stale', 'decisions': 0}
-
-```json
-{
-  "status_before": "cooldown",
-  "decision": "probe",
-  "status_after": "stale",
-  "decisions": 0
 }
 ```
 
@@ -411,12 +394,12 @@
 }
 ```
 
-### store.multiprocess (FINDING, medium)
+### store.multiprocess (FINDING, high)
 
-**concurrent record() calls create duplicate live issues**
+**concurrent record() calls crash on the file lock and/or lose counts**
 
-- expected: 4 events -> exactly one issue record with count=4; duplicate live records split the evidence and make find_issue ambiguous. The store is documented as single-writer, but the README claims the JSONL lock prevents interleaved lines and issues.json is atomic, so readers should not observe duplicate live issues
-- observed: [{'round': 0, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 1, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}]
+- expected: 4 events -> 1 issue, count=4; the README calls the JSONL lock cross-platform and the lock should wait, not raise an uncaught OSError
+- observed: [{'round': 0, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 1, 'errors': [{'type': 'PermissionError', 'message': "[WinError 5] 拒绝访问。: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\tmpiscfhiqe.tmp' -> 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\issues.json'"}], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}]
 
 ```json
 [
@@ -439,11 +422,15 @@
   },
   {
     "round": 1,
-    "errors": [],
+    "errors": [
+      {
+        "type": "PermissionError",
+        "message": "[WinError 5] 拒绝访问。: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\tmpiscfhiqe.tmp' -> 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\issues.json'"
+      }
+    ],
     "events": 4,
-    "issue_records": 4,
+    "issue_records": 3,
     "issue_counts": [
-      1,
       1,
       1,
       1
@@ -451,10 +438,9 @@
     "issue_attempts": [
       1,
       1,
-      1,
       1
     ],
-    "sum_counts": 4
+    "sum_counts": 3
   },
   {
     "round": 2,
@@ -481,21 +467,41 @@
 **the JSONL file lock can raise an uncaught PermissionError on Windows**
 
 - expected: file_lock should treat Access Denied / FileExists as contention and retry until its timeout; a thread must not crash
-- observed: errors=[{'round': 0, 'type': 'PermissionError', 'message': "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-t5iauw0t\\\\events.jsonl.lock'"}]; rounds=[{'round': 0, 'lines': 76, 'expected': 80}]
+- observed: errors=[{'round': 4, 'type': 'PermissionError', 'message': "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-onn6u81z\\\\events.jsonl.lock'"}]; rounds=[{'round': 0, 'lines': 80, 'expected': 80}, {'round': 1, 'lines': 80, 'expected': 80}, {'round': 2, 'lines': 80, 'expected': 80}, {'round': 3, 'lines': 80, 'expected': 80}, {'round': 4, 'lines': 72, 'expected': 80}]
 
 ```json
 {
   "errors": [
     {
-      "round": 0,
+      "round": 4,
       "type": "PermissionError",
-      "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-t5iauw0t\\\\events.jsonl.lock'"
+      "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-onn6u81z\\\\events.jsonl.lock'"
     }
   ],
   "rounds": [
     {
       "round": 0,
-      "lines": 76,
+      "lines": 80,
+      "expected": 80
+    },
+    {
+      "round": 1,
+      "lines": 80,
+      "expected": 80
+    },
+    {
+      "round": 2,
+      "lines": 80,
+      "expected": 80
+    },
+    {
+      "round": 3,
+      "lines": 80,
+      "expected": 80
+    },
+    {
+      "round": 4,
+      "lines": 72,
       "expected": 80
     }
   ]
@@ -574,21 +580,6 @@
 {
   "duplicate_attempts": 1,
   "note": "two failures in distinct runs"
-}
-```
-
-### audit.block_issue (FINDING, medium)
-
-**a run-budget block has no issue_id**
-
-- expected: design §16.3 invariant 3: every block is traceable to issue_id + policy_version + source events; a budget block is a hard block but carries no issue id
-- observed: {'decision': 'block', 'issue_id': '', 'reason': 'run budget exhausted: 1 failure(s) for this operation in budget-audit'}
-
-```json
-{
-  "decision": "block",
-  "issue_id": "",
-  "reason": "run budget exhausted: 1 failure(s) for this operation in budget-audit"
 }
 ```
 

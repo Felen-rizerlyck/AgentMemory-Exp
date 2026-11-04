@@ -1,0 +1,77 @@
+
+== compile ==
+OK: compile
+
+== tests ==
+.............................................................................
+----------------------------------------------------------------------
+Ran 77 tests in 6.315s
+
+OK
+OK: tests
+
+== check ==
+Runtime memory check clean.
+OK: check
+
+== shadow demo ==
+runtime memory demo (shadow); data=C:\Users\cui-home\AppData\Local\Temp\rtmem-demo-cda7wpmk
+scenario: hunt.query endpoint is unreachable; 3 attempted calls
+
+attempt 1: preflight -> allow (issue=-, attempts_left=0)
+  call executed; issue=ISS-20261102T060000-8A8501 status=cooldown count=1
+
+attempt 2: preflight -> block (issue=ISS-20261102T060000-8A8501, attempts_left=3)
+  call executed; issue=ISS-20261102T060000-8A8501 status=open count=2
+
+attempt 3: preflight -> block (issue=ISS-20261102T060000-8A8501, attempts_left=2)
+  call executed; issue=ISS-20261102T060000-8A8501 status=open count=3
+
+actual calls: 3
+
+Runtime memory report (since all time)
+events: 3 (ok=0, failures=3)
+decisions: 2 (shadow=2, enforce=0)
+shadow would-block: 2 (false=0, confirmed=2)
+enforce blocked calls: 0
+probes: 0 (success=0, rate=None)
+duplicate failure attempts: 2
+issues: 1 (open=1)
+open issues:
+  ISS-20261102T060000-8A8501 open mcp/hunt.query 10.7.194.120:22196 error=unreachable count=3 next_retry=2026-11-02T06:17:00Z
+
+simulate operator fix: resolve ISS-20261102T060000-8A8501
+preflight after resolve -> block
+OK: shadow demo
+
+== enforce demo ==
+runtime memory demo (enforce); data=C:\Users\cui-home\AppData\Local\Temp\rtmem-demo-yk3x8qyv
+scenario: hunt.query endpoint is unreachable; 3 attempted calls
+
+attempt 1: preflight -> allow (issue=-, attempts_left=0)
+  call executed; issue=ISS-20261102T060000-FD7E49 status=cooldown count=1
+
+attempt 2: preflight -> block (issue=ISS-20261102T060000-FD7E49, attempts_left=3)
+  call skipped by enforce gate
+
+attempt 3: preflight -> block (issue=ISS-20261102T060000-FD7E49, attempts_left=3)
+  call skipped by enforce gate
+
+actual calls: 1
+
+Runtime memory report (since all time)
+events: 1 (ok=0, failures=1)
+decisions: 2 (shadow=0, enforce=2)
+shadow would-block: 0 (false=0, confirmed=0)
+enforce blocked calls: 2
+probes: 0 (success=0, rate=None)
+duplicate failure attempts: 0
+issues: 1 (cooldown=1)
+open issues:
+  ISS-20261102T060000-FD7E49 cooldown mcp/hunt.query 10.7.194.120:22196 error=unreachable count=1 next_retry=2026-11-02T06:15:00Z
+
+simulate operator fix: resolve ISS-20261102T060000-FD7E49
+preflight after resolve -> allow
+OK: enforce demo
+
+Runtime memory verification: PASS

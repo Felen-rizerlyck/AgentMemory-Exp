@@ -1,0 +1,6 @@
+baseline: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 44.1, 'mean_failures': 27.667, 'mean_blocked': 0, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 565.714, 'mean_duplicate_failures': 26.667}
+shadow: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 44.1, 'mean_failures': 27.667, 'mean_blocked': 26.633, 'mean_would_block': 26.633, 'mean_false_blocks': 1.467, 'mean_tts_s': 565.714, 'mean_duplicate_failures': 26.667}
+enforce_obedient: {'runs': 30, 'task_success_rate': 1.0, 'mean_calls': 4.233, 'mean_failures': 2.5, 'mean_blocked': 6.867, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 162, 'mean_duplicate_failures': 1.5}
+enforce_naive: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 13, 'mean_failures': 3.533, 'mean_blocked': 35, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 900, 'mean_duplicate_failures': 2.533}
+
+wrote F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\sim\runs\exec-20261103T084500Z\multitool

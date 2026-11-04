@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "rows": [
+    {
+      "size": 100000,
+      "preflight_no_run_ms": 0.91,
+      "preflight_with_run_ms": 1375.74,
+      "report_ms": 1860.91,
+      "check_ms": 1870.67
+    }
+  ]
+}

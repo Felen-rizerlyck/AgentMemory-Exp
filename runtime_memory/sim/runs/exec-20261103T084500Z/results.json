@@ -1,0 +1,2394 @@
+{
+  "schema_version": 1,
+  "run_id": "exec-20261103T084500Z",
+  "commit": "5b1dcfe",
+  "python": "3.14.0",
+  "started_at": "2026-11-03T08:45:16+00:00",
+  "finished_at": "2026-11-03T08:53:45+00:00",
+  "git_status": "M runtime_memory/sim/deep_test.py\n?? runtime_memory/sim/concurrency.py\n?? runtime_memory/sim/multitool.py\n?? runtime_memory/sim/policy_grid.py\n?? runtime_memory/sim/redaction_fuzz.py\n?? runtime_memory/sim/retention.py\n?? runtime_memory/sim/run_plan.py\n?? runtime_memory/sim/scale_multi.py",
+  "issues_json": {
+    "schema_version": 1,
+    "issues": []
+  },
+  "tests": [
+    {
+      "id": "T0.1",
+      "command": "C:\\Python314\\python.exe -m unittest discover -s tests",
+      "exit_code": 0,
+      "duration_s": 6.84,
+      "status": "PASS",
+      "notes": "............................................................................. | ---------------------------------------------------------------------- | Ran 77 tests in 6.088s |  | OK",
+      "stdout_tail": [
+        ".............................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 77 tests in 6.088s",
+        "",
+        "OK"
+      ],
+      "stderr_tail": [
+        ".............................................................................",
+        "----------------------------------------------------------------------",
+        "Ran 77 tests in 6.088s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "id": "T0.2",
+      "command": "C:\\Python314\\python.exe scripts/verify_runtime_memory.py",
+      "exit_code": 0,
+      "duration_s": 9.7,
+      "status": "PASS",
+      "notes": "simulate operator fix: resolve ISS-20261102T060000-FD7E49 | preflight after resolve -> allow | OK: enforce demo |  | Runtime memory verification: PASS",
+      "stdout_tail": [
+        "simulate operator fix: resolve ISS-20261102T060000-FD7E49",
+        "preflight after resolve -> allow",
+        "OK: enforce demo",
+        "",
+        "Runtime memory verification: PASS"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T0.3",
+      "command": "C:\\Python314\\python.exe src/manage_runtime_memory.py check",
+      "exit_code": 0,
+      "duration_s": 0.61,
+      "status": "PASS",
+      "notes": "Runtime memory check clean.",
+      "stdout_tail": [
+        "Runtime memory check clean."
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T1.1",
+      "command": "C:\\Python314\\python.exe -m unittest discover -s tests -p test_edge_cases.py -v",
+      "exit_code": 0,
+      "duration_s": 1.97,
+      "status": "PASS",
+      "notes": " | ---------------------------------------------------------------------- | Ran 13 tests in 1.274s |  | OK",
+      "stdout_tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 13 tests in 1.274s",
+        "",
+        "OK"
+      ],
+      "stderr_tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 13 tests in 1.274s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "id": "T1.2",
+      "command": "C:\\Python314\\python.exe -m unittest discover -s tests -p test_store_edge.py -v",
+      "exit_code": 0,
+      "duration_s": 0.86,
+      "status": "PASS",
+      "notes": " | ---------------------------------------------------------------------- | Ran 7 tests in 0.172s |  | OK",
+      "stdout_tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 7 tests in 0.172s",
+        "",
+        "OK"
+      ],
+      "stderr_tail": [
+        "",
+        "----------------------------------------------------------------------",
+        "Ran 7 tests in 0.172s",
+        "",
+        "OK"
+      ]
+    },
+    {
+      "id": "T1.3",
+      "command": "C:\\Python314\\python.exe sim/deep_test.py --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\deep --force",
+      "exit_code": 0,
+      "duration_s": 11.82,
+      "status": "PASS",
+      "notes": "checks=59 CRASH=2 FINDING=16 GAP=9 PASS=32 | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\deep",
+      "stdout_tail": [
+        "checks=59 CRASH=2 FINDING=16 GAP=9 PASS=32",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\deep"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T2",
+      "command": "C:\\Python314\\python.exe sim/workload.py --seeds 30 --run-id exec-20261103T084500Z-workload --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\workload",
+      "exit_code": 0,
+      "duration_s": 166.21,
+      "status": "PASS",
+      "notes": "enforce_900: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 2.533, 'mean_failures': 1.533, 'mean_blocked': 1.533, 'mean_would_block': 0, 'mean_false_blocks': 0, 'false_block_rate': 0.0, 'mean_time_to_success_s': 1380, 'p95_time_to_success_s': 1800, 'mean_duplicate_failures': 0.533} | shadow_1800: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 16.9, 'mean_failures': 15.9, 'mean_blocked': 0, 'mean_would_block': 15.9, 'mean_false_blocks': 1, 'false_block_rate': 0.063, 'mean_time_to_success_s': 954, 'p95_time_to_success_s': 1740, 'mean_duplicate_failures': 14.9} | enforce_1800: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 2, 'mean_failures': 1, 'mean_blocked': 1, 'mean_would_block': 0, 'mean_false_blocks': 0, 'false_block_rate': 0.0, 'mean_time_to_success_s': 1800, 'p95_time_to_success_s': 1800, 'mean_duplicate_failures': 0.0} |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\workload",
+      "stdout_tail": [
+        "enforce_900: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 2.533, 'mean_failures': 1.533, 'mean_blocked': 1.533, 'mean_would_block': 0, 'mean_false_blocks': 0, 'false_block_rate': 0.0, 'mean_time_to_success_s': 1380, 'p95_time_to_success_s': 1800, 'mean_duplicate_failures': 0.533}",
+        "shadow_1800: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 16.9, 'mean_failures': 15.9, 'mean_blocked': 0, 'mean_would_block': 15.9, 'mean_false_blocks': 1, 'false_block_rate': 0.063, 'mean_time_to_success_s': 954, 'p95_time_to_success_s': 1740, 'mean_duplicate_failures': 14.9}",
+        "enforce_1800: {'runs': 30, 'success_rate': 1.0, 'mean_calls': 2, 'mean_failures': 1, 'mean_blocked': 1, 'mean_would_block': 0, 'mean_false_blocks': 0, 'false_block_rate': 0.0, 'mean_time_to_success_s': 1800, 'p95_time_to_success_s': 1800, 'mean_duplicate_failures': 0.0}",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\workload"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T3",
+      "command": "C:\\Python314\\python.exe sim/policy_grid.py --seeds 10 --run-id exec-20261103T084500Z-policy-grid --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\policy-grid",
+      "exit_code": 0,
+      "duration_s": 140.12,
+      "status": "PASS",
+      "notes": "enforce_b1800_m5_ttl86400: success=1.0 calls=2 blocked=1 | enforce_b1800_m10_ttl3600: success=1.0 calls=2 blocked=1 | enforce_b1800_m10_ttl86400: success=1.0 calls=2 blocked=1 |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\policy-grid",
+      "stdout_tail": [
+        "enforce_b1800_m5_ttl86400: success=1.0 calls=2 blocked=1",
+        "enforce_b1800_m10_ttl3600: success=1.0 calls=2 blocked=1",
+        "enforce_b1800_m10_ttl86400: success=1.0 calls=2 blocked=1",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\policy-grid"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T4",
+      "command": "C:\\Python314\\python.exe sim/multitool.py --seeds 30 --run-id exec-20261103T084500Z-multitool --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\multitool",
+      "exit_code": 0,
+      "duration_s": 142.59,
+      "status": "PASS",
+      "notes": "shadow: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 44.1, 'mean_failures': 27.667, 'mean_blocked': 26.633, 'mean_would_block': 26.633, 'mean_false_blocks': 1.467, 'mean_tts_s': 565.714, 'mean_duplicate_failures': 26.667} | enforce_obedient: {'runs': 30, 'task_success_rate': 1.0, 'mean_calls': 4.233, 'mean_failures': 2.5, 'mean_blocked': 6.867, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 162, 'mean_duplicate_failures': 1.5} | enforce_naive: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 13, 'mean_failures': 3.533, 'mean_blocked': 35, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 900, 'mean_duplicate_failures': 2.533} |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\multitool",
+      "stdout_tail": [
+        "shadow: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 44.1, 'mean_failures': 27.667, 'mean_blocked': 26.633, 'mean_would_block': 26.633, 'mean_false_blocks': 1.467, 'mean_tts_s': 565.714, 'mean_duplicate_failures': 26.667}",
+        "enforce_obedient: {'runs': 30, 'task_success_rate': 1.0, 'mean_calls': 4.233, 'mean_failures': 2.5, 'mean_blocked': 6.867, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 162, 'mean_duplicate_failures': 1.5}",
+        "enforce_naive: {'runs': 30, 'task_success_rate': 0.233, 'mean_calls': 13, 'mean_failures': 3.533, 'mean_blocked': 35, 'mean_would_block': 0, 'mean_false_blocks': 0, 'mean_tts_s': 900, 'mean_duplicate_failures': 2.533}",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\multitool"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T5a",
+      "command": "C:\\Python314\\python.exe sim/scale.py --sizes 1000,5000,20000 --run-id exec-20261103T084500Z-scale --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale",
+      "exit_code": 0,
+      "duration_s": 2.49,
+      "status": "PASS",
+      "notes": "| 5000 | 0.9 ms | 44.68 ms | 37.99 ms | 39.46 ms | | | 20000 | 0.75 ms | 162.01 ms | 155.98 ms | 161.09 ms | |  |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale",
+      "stdout_tail": [
+        "| 5000 | 0.9 ms | 44.68 ms | 37.99 ms | 39.46 ms |",
+        "| 20000 | 0.75 ms | 162.01 ms | 155.98 ms | 161.09 ms |",
+        "",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T5b",
+      "command": "C:\\Python314\\python.exe sim/scale_multi.py --issues 100 --events 5000 --run-id exec-20261103T084500Z-scale-multi --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-multi",
+      "exit_code": 0,
+      "duration_s": 5.8,
+      "status": "PASS",
+      "notes": "| 100 | 5000 | 8.06 ms | 110.56 ms | 127.37 ms | 108.07 ms | 120628 B | 1688890 B | |  | check problems: none |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-multi",
+      "stdout_tail": [
+        "| 100 | 5000 | 8.06 ms | 110.56 ms | 127.37 ms | 108.07 ms | 120628 B | 1688890 B |",
+        "",
+        "check problems: none",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-multi"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T5c",
+      "command": "C:\\Python314\\python.exe sim/scale.py --sizes 100000 --run-id exec-20261103T084500Z-scale-100k --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-100k",
+      "exit_code": 0,
+      "duration_s": 12.07,
+      "status": "PASS",
+      "notes": "| 100000 | 0.91 ms | 1375.74 ms | 1860.91 ms | 1870.67 ms | |  | `preflight with run_id` includes the per-run budget scan over all events; `preflight no run_id` skips it. |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-100k",
+      "stdout_tail": [
+        "| 100000 | 0.91 ms | 1375.74 ms | 1860.91 ms | 1870.67 ms |",
+        "",
+        "`preflight with run_id` includes the per-run budget scan over all events; `preflight no run_id` skips it.",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\scale-100k"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T6",
+      "command": "C:\\Python314\\python.exe sim/concurrency.py --run-id exec-20261103T084500Z-concurrency --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\concurrency",
+      "exit_code": 0,
+      "duration_s": 3.53,
+      "status": "FAIL",
+      "notes": "concurrency checks failed | - `concurrent_postflight`: 2 processes record the same failure. | - `partial_write_event_without_issue`: check() visibility. | - `terminate_between_event_and_issue`: simulated crash after the event append, before the issue update. |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\concurrency",
+      "stdout_tail": [
+        "- `concurrent_postflight`: 2 processes record the same failure.",
+        "- `partial_write_event_without_issue`: check() visibility.",
+        "- `terminate_between_event_and_issue`: simulated crash after the event append, before the issue update.",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\concurrency"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T7",
+      "command": "C:\\Python314\\python.exe sim/retention.py --days 90 --run-id exec-20261103T084500Z-retention --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\retention",
+      "exit_code": 0,
+      "duration_s": 1.21,
+      "status": "PASS",
+      "notes": "old_resolved_deleted: True | recent_resolved_kept: True | check: clean |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\retention",
+      "stdout_tail": [
+        "old_resolved_deleted: True",
+        "recent_resolved_kept: True",
+        "check: clean",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\retention"
+      ],
+      "stderr_tail": []
+    },
+    {
+      "id": "T8",
+      "command": "C:\\Python314\\python.exe sim/redaction_fuzz.py --messages 1000 --run-id exec-20261103T084500Z-redaction --out F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\redaction",
+      "exit_code": 0,
+      "duration_s": 1.89,
+      "status": "FAIL",
+      "notes": "plan-pattern leaks=0; json leaks=300; target leaks=2 | normal text preserved: True |  | Note: the plan lists header/password/token/cookie/private-key patterns; JSON-formatted secrets and URL userinfo are included as realistic additional variants. |  | wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\redaction",
+      "stdout_tail": [
+        "normal text preserved: True",
+        "",
+        "Note: the plan lists header/password/token/cookie/private-key patterns; JSON-formatted secrets and URL userinfo are included as realistic additional variants.",
+        "",
+        "wrote F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\sim\\runs\\exec-20261103T084500Z\\redaction"
+      ],
+      "stderr_tail": []
+    }
+  ],
+  "metrics": {
+    "workload": {
+      "schema_version": 1,
+      "configs": {
+        "baseline": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 16.9,
+          "mean_failures": 15.9,
+          "mean_blocked": 0,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "false_block_rate": 0.0,
+          "mean_time_to_success_s": 954,
+          "p95_time_to_success_s": 1740,
+          "mean_duplicate_failures": 14.9
+        },
+        "shadow_60": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 16.9,
+          "mean_failures": 15.9,
+          "mean_blocked": 0,
+          "mean_would_block": 12.9,
+          "mean_false_blocks": 1,
+          "false_block_rate": 0.078,
+          "mean_time_to_success_s": 954,
+          "p95_time_to_success_s": 1740,
+          "mean_duplicate_failures": 14.9
+        },
+        "enforce_60": {
+          "runs": 30,
+          "success_rate": 0.0,
+          "mean_calls": 4,
+          "mean_failures": 4,
+          "mean_blocked": 57,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "false_block_rate": 0.0,
+          "mean_time_to_success_s": null,
+          "p95_time_to_success_s": null,
+          "mean_duplicate_failures": 3.0
+        },
+        "shadow_300": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 16.9,
+          "mean_failures": 15.9,
+          "mean_blocked": 0,
+          "mean_would_block": 15.9,
+          "mean_false_blocks": 1,
+          "false_block_rate": 0.063,
+          "mean_time_to_success_s": 954,
+          "p95_time_to_success_s": 1740,
+          "mean_duplicate_failures": 14.9
+        },
+        "enforce_300": {
+          "runs": 30,
+          "success_rate": 0.467,
+          "mean_calls": 3.5,
+          "mean_failures": 3.033,
+          "mean_blocked": 24.9,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "false_block_rate": 0.0,
+          "mean_time_to_success_s": 578.6,
+          "p95_time_to_success_s": 900,
+          "mean_duplicate_failures": 2.033
+        },
+        "shadow_900": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 16.9,
+          "mean_failures": 15.9,
+          "mean_blocked": 0,
+          "mean_would_block": 15.9,
+          "mean_false_blocks": 1,
+          "false_block_rate": 0.063,
+          "mean_time_to_success_s": 954,
+          "p95_time_to_success_s": 1740,
+          "mean_duplicate_failures": 14.9
+        },
+        "enforce_900": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 2.533,
+          "mean_failures": 1.533,
+          "mean_blocked": 1.533,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "false_block_rate": 0.0,
+          "mean_time_to_success_s": 1380,
+          "p95_time_to_success_s": 1800,
+          "mean_duplicate_failures": 0.533
+        },
+        "shadow_1800": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 16.9,
+          "mean_failures": 15.9,
+          "mean_blocked": 0,
+          "mean_would_block": 15.9,
+          "mean_false_blocks": 1,
+          "false_block_rate": 0.063,
+          "mean_time_to_success_s": 954,
+          "p95_time_to_success_s": 1740,
+          "mean_duplicate_failures": 14.9
+        },
+        "enforce_1800": {
+          "runs": 30,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "false_block_rate": 0.0,
+          "mean_time_to_success_s": 1800,
+          "p95_time_to_success_s": 1800,
+          "mean_duplicate_failures": 0.0
+        }
+      },
+      "parameters": {
+        "seeds": 30,
+        "interval_s": 60,
+        "horizon_s": 3600,
+        "max_down_s": 1800
+      }
+    },
+    "policy_grid": {
+      "schema_version": 1,
+      "parameters": {
+        "seeds": 10,
+        "interval_s": 60,
+        "horizon_s": 3600,
+        "max_down_s": 1800,
+        "base_grid": [
+          60,
+          300,
+          900,
+          1800
+        ],
+        "max_attempts_grid": [
+          1,
+          3,
+          5,
+          10
+        ],
+        "ttl_grid": [
+          3600,
+          86400
+        ]
+      },
+      "configs": {
+        "enforce_b60_m1_ttl3600": {
+          "base_s": 60,
+          "max_attempts": 1,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.0,
+          "mean_calls": 2,
+          "mean_failures": 2,
+          "mean_blocked": 59,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": null,
+          "mean_duplicate_failures": 1.0
+        },
+        "enforce_b60_m1_ttl86400": {
+          "base_s": 60,
+          "max_attempts": 1,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.0,
+          "mean_calls": 2,
+          "mean_failures": 2,
+          "mean_blocked": 59,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": null,
+          "mean_duplicate_failures": 1.0
+        },
+        "enforce_b60_m3_ttl3600": {
+          "base_s": 60,
+          "max_attempts": 3,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.0,
+          "mean_calls": 4,
+          "mean_failures": 4,
+          "mean_blocked": 57,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": null,
+          "mean_duplicate_failures": 3.0
+        },
+        "enforce_b60_m3_ttl86400": {
+          "base_s": 60,
+          "max_attempts": 3,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.0,
+          "mean_calls": 4,
+          "mean_failures": 4,
+          "mean_blocked": 57,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": null,
+          "mean_duplicate_failures": 3.0
+        },
+        "enforce_b60_m5_ttl3600": {
+          "base_s": 60,
+          "max_attempts": 5,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.1,
+          "mean_calls": 6,
+          "mean_failures": 5.9,
+          "mean_blocked": 49.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 300,
+          "mean_duplicate_failures": 4.9
+        },
+        "enforce_b60_m5_ttl86400": {
+          "base_s": 60,
+          "max_attempts": 5,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.1,
+          "mean_calls": 6,
+          "mean_failures": 5.9,
+          "mean_blocked": 49.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 300,
+          "mean_duplicate_failures": 4.9
+        },
+        "enforce_b60_m10_ttl3600": {
+          "base_s": 60,
+          "max_attempts": 10,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.4,
+          "mean_calls": 10.1,
+          "mean_failures": 9.7,
+          "mean_blocked": 30,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 465,
+          "mean_duplicate_failures": 8.7
+        },
+        "enforce_b60_m10_ttl86400": {
+          "base_s": 60,
+          "max_attempts": 10,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.4,
+          "mean_calls": 10.1,
+          "mean_failures": 9.7,
+          "mean_blocked": 30,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 465,
+          "mean_duplicate_failures": 8.7
+        },
+        "enforce_b300_m1_ttl3600": {
+          "base_s": 300,
+          "max_attempts": 1,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.1,
+          "mean_calls": 2,
+          "mean_failures": 1.9,
+          "mean_blocked": 47.8,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 300,
+          "mean_duplicate_failures": 0.9
+        },
+        "enforce_b300_m1_ttl86400": {
+          "base_s": 300,
+          "max_attempts": 1,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.1,
+          "mean_calls": 2,
+          "mean_failures": 1.9,
+          "mean_blocked": 47.8,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 300,
+          "mean_duplicate_failures": 0.9
+        },
+        "enforce_b300_m3_ttl3600": {
+          "base_s": 300,
+          "max_attempts": 3,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.5,
+          "mean_calls": 3.5,
+          "mean_failures": 3,
+          "mean_blocked": 23.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 600,
+          "mean_duplicate_failures": 2.0
+        },
+        "enforce_b300_m3_ttl86400": {
+          "base_s": 300,
+          "max_attempts": 3,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.5,
+          "mean_calls": 3.5,
+          "mean_failures": 3,
+          "mean_blocked": 23.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 600,
+          "mean_duplicate_failures": 2.0
+        },
+        "enforce_b300_m5_ttl3600": {
+          "base_s": 300,
+          "max_attempts": 5,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.7,
+          "mean_calls": 4.4,
+          "mean_failures": 3.7,
+          "mean_blocked": 13,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 814.286,
+          "mean_duplicate_failures": 2.7
+        },
+        "enforce_b300_m5_ttl86400": {
+          "base_s": 300,
+          "max_attempts": 5,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.7,
+          "mean_calls": 4.4,
+          "mean_failures": 3.7,
+          "mean_blocked": 13,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 814.286,
+          "mean_duplicate_failures": 2.7
+        },
+        "enforce_b300_m10_ttl3600": {
+          "base_s": 300,
+          "max_attempts": 10,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 4.7,
+          "mean_failures": 3.7,
+          "mean_blocked": 3.7,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1110,
+          "mean_duplicate_failures": 2.7
+        },
+        "enforce_b300_m10_ttl86400": {
+          "base_s": 300,
+          "max_attempts": 10,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 4.7,
+          "mean_failures": 3.7,
+          "mean_blocked": 3.7,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1110,
+          "mean_duplicate_failures": 2.7
+        },
+        "enforce_b900_m1_ttl3600": {
+          "base_s": 900,
+          "max_attempts": 1,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 0.5,
+          "mean_calls": 2,
+          "mean_failures": 1.5,
+          "mean_blocked": 17,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 900,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m1_ttl86400": {
+          "base_s": 900,
+          "max_attempts": 1,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 0.5,
+          "mean_calls": 2,
+          "mean_failures": 1.5,
+          "mean_blocked": 17,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 900,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m3_ttl3600": {
+          "base_s": 900,
+          "max_attempts": 3,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m3_ttl86400": {
+          "base_s": 900,
+          "max_attempts": 3,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m5_ttl3600": {
+          "base_s": 900,
+          "max_attempts": 5,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m5_ttl86400": {
+          "base_s": 900,
+          "max_attempts": 5,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m10_ttl3600": {
+          "base_s": 900,
+          "max_attempts": 10,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b900_m10_ttl86400": {
+          "base_s": 900,
+          "max_attempts": 10,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2.5,
+          "mean_failures": 1.5,
+          "mean_blocked": 1.5,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1350,
+          "mean_duplicate_failures": 0.5
+        },
+        "enforce_b1800_m1_ttl3600": {
+          "base_s": 1800,
+          "max_attempts": 1,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m1_ttl86400": {
+          "base_s": 1800,
+          "max_attempts": 1,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m3_ttl3600": {
+          "base_s": 1800,
+          "max_attempts": 3,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m3_ttl86400": {
+          "base_s": 1800,
+          "max_attempts": 3,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m5_ttl3600": {
+          "base_s": 1800,
+          "max_attempts": 5,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m5_ttl86400": {
+          "base_s": 1800,
+          "max_attempts": 5,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m10_ttl3600": {
+          "base_s": 1800,
+          "max_attempts": 10,
+          "ttl_s": 3600,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        },
+        "enforce_b1800_m10_ttl86400": {
+          "base_s": 1800,
+          "max_attempts": 10,
+          "ttl_s": 86400,
+          "runs": 10,
+          "success_rate": 1.0,
+          "mean_calls": 2,
+          "mean_failures": 1,
+          "mean_blocked": 1,
+          "mean_false_blocks": 0.0,
+          "mean_tts_s": 1800,
+          "mean_duplicate_failures": 0.0
+        }
+      }
+    },
+    "multitool": {
+      "schema_version": 1,
+      "parameters": {
+        "seeds": 30,
+        "interval_s": 60,
+        "horizon_s": 900,
+        "alternative_p": 0.7
+      },
+      "configs": {
+        "baseline": {
+          "runs": 30,
+          "task_success_rate": 0.233,
+          "mean_calls": 44.1,
+          "mean_failures": 27.667,
+          "mean_blocked": 0,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "mean_tts_s": 565.714,
+          "mean_duplicate_failures": 26.667
+        },
+        "shadow": {
+          "runs": 30,
+          "task_success_rate": 0.233,
+          "mean_calls": 44.1,
+          "mean_failures": 27.667,
+          "mean_blocked": 26.633,
+          "mean_would_block": 26.633,
+          "mean_false_blocks": 1.467,
+          "mean_tts_s": 565.714,
+          "mean_duplicate_failures": 26.667
+        },
+        "enforce_obedient": {
+          "runs": 30,
+          "task_success_rate": 1.0,
+          "mean_calls": 4.233,
+          "mean_failures": 2.5,
+          "mean_blocked": 6.867,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "mean_tts_s": 162,
+          "mean_duplicate_failures": 1.5
+        },
+        "enforce_naive": {
+          "runs": 30,
+          "task_success_rate": 0.233,
+          "mean_calls": 13,
+          "mean_failures": 3.533,
+          "mean_blocked": 35,
+          "mean_would_block": 0,
+          "mean_false_blocks": 0,
+          "mean_tts_s": 900,
+          "mean_duplicate_failures": 2.533
+        },
+        "cross_tool_checks": {
+          "checks": {
+            "unrelated_tool_allowed": true,
+            "same_scope_blocked": true,
+            "call_level_args_isolated": true,
+            "workaround_in_alternatives": true,
+            "same_component_other_tool_allowed": true
+          },
+          "all_pass": true
+        },
+        "comparisons": {
+          "obedient_not_below_baseline": true,
+          "naive_worse_than_obedient": true
+        }
+      }
+    },
+    "scale": {
+      "schema_version": 1,
+      "rows": [
+        {
+          "size": 1000,
+          "preflight_no_run_ms": 0.77,
+          "preflight_with_run_ms": 15.82,
+          "report_ms": 10.5,
+          "check_ms": 30.35
+        },
+        {
+          "size": 5000,
+          "preflight_no_run_ms": 0.9,
+          "preflight_with_run_ms": 44.68,
+          "report_ms": 37.99,
+          "check_ms": 39.46
+        },
+        {
+          "size": 20000,
+          "preflight_no_run_ms": 0.75,
+          "preflight_with_run_ms": 162.01,
+          "report_ms": 155.98,
+          "check_ms": 161.09
+        }
+      ]
+    },
+    "scale_multi": {
+      "schema_version": 1,
+      "rows": [
+        {
+          "issues": 100,
+          "events": 5000,
+          "preflight_no_run_ms": 8.06,
+          "preflight_with_run_ms": 110.56,
+          "report_ms": 127.37,
+          "check_ms": 108.07,
+          "issues_json_bytes": 120628,
+          "events_bytes": 1688890,
+          "check_problems": []
+        }
+      ]
+    },
+    "scale_100k": {
+      "schema_version": 1,
+      "rows": [
+        {
+          "size": 100000,
+          "preflight_no_run_ms": 0.91,
+          "preflight_with_run_ms": 1375.74,
+          "report_ms": 1860.91,
+          "check_ms": 1870.67
+        }
+      ]
+    },
+    "concurrency": {
+      "schema_version": 1,
+      "checks": [
+        {
+          "test": "concurrent_append",
+          "expected_lines": 200,
+          "actual_lines": 165,
+          "bad_lines": 0,
+          "errors": [
+            {
+              "type": "PermissionError",
+              "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-conc-append-n87fgl2d\\\\events\\\\2026-11.jsonl.lock'"
+            }
+          ],
+          "status": "FAIL"
+        },
+        {
+          "test": "concurrent_postflight",
+          "expected_issue_count": 2,
+          "issue_records": 2,
+          "issue_counts": [
+            1,
+            1
+          ],
+          "events": 2,
+          "errors": [],
+          "status": "FAIL"
+        },
+        {
+          "test": "partial_write_event_without_issue",
+          "check_problems": [],
+          "detected": false,
+          "status": "GAP",
+          "note": "plan T6: not detecting event-without-issue is a gap"
+        },
+        {
+          "test": "terminate_between_event_and_issue",
+          "marker_seen": true,
+          "check_problems": [],
+          "corrupt_event_lines": 0,
+          "event_count": 1,
+          "issue_count": 0,
+          "status": "PASS"
+        }
+      ]
+    },
+    "retention": {
+      "schema_version": 1,
+      "days": 90,
+      "per_day": 100,
+      "before": {
+        "event_files": 4,
+        "event_bytes": 2154600,
+        "event_lines": 9000,
+        "issues": 4,
+        "issue_ids": [
+          "ISS-old-resolved",
+          "ISS-old-open",
+          "ISS-recent-resolved",
+          "ISS-recent-open"
+        ],
+        "issues_json_bytes": 4390
+      },
+      "dry_run": {
+        "event_files": 2,
+        "events": 5600,
+        "issues": 1,
+        "dry_run": 1
+      },
+      "after_dry_run": {
+        "event_files": 4,
+        "event_bytes": 2154600,
+        "event_lines": 9000,
+        "issues": 4,
+        "issue_ids": [
+          "ISS-old-resolved",
+          "ISS-old-open",
+          "ISS-recent-resolved",
+          "ISS-recent-open"
+        ],
+        "issues_json_bytes": 4390
+      },
+      "apply": {
+        "event_files": 2,
+        "events": 5600,
+        "issues": 1,
+        "dry_run": 0
+      },
+      "after_apply": {
+        "event_files": 2,
+        "event_bytes": 813960,
+        "event_lines": 3400,
+        "issues": 3,
+        "issue_ids": [
+          "ISS-old-open",
+          "ISS-recent-resolved",
+          "ISS-recent-open"
+        ],
+        "issues_json_bytes": 3281
+      },
+      "dry_run_deleted_nothing": true,
+      "open_issues_kept": true,
+      "old_resolved_deleted": true,
+      "recent_resolved_kept": true,
+      "check_problems": []
+    },
+    "redaction": {
+      "schema_version": 1,
+      "messages": 1000,
+      "stored_messages": 40,
+      "by_pattern": {
+        "authorization": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "password": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "token": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "api_key": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "cookie": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "private_key": {
+          "checked": 100,
+          "leaks": 0
+        },
+        "json_password": {
+          "checked": 100,
+          "leaks": 100
+        },
+        "json_token": {
+          "checked": 100,
+          "leaks": 100
+        },
+        "json_authorization": {
+          "checked": 100,
+          "leaks": 100
+        },
+        "normal": {
+          "checked": 100,
+          "leaks": 0
+        }
+      },
+      "plan_pattern_leaks": 0,
+      "json_pattern_leaks": 300,
+      "redaction_leak_samples": [
+        {
+          "pattern": "json_password",
+          "index": 6,
+          "secret": "SEC-JSON_PASSWORD-0006-82597552",
+          "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0006-82597552\", \"ok\": false}"
+        },
+        {
+          "pattern": "json_token",
+          "index": 7,
+          "secret": "SEC-JSON_TOKEN-0007-17930905",
+          "redacted": "{\"token\": \"SEC-JSON_TOKEN-0007-17930905\", \"error\": \"expired\"}"
+        },
+        {
+          "pattern": "json_authorization",
+          "index": 8,
+          "secret": "SEC-JSON_AUTHORIZATION-0008-07339937",
+          "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0008-07339937\"}"
+        },
+        {
+          "pattern": "json_password",
+          "index": 16,
+          "secret": "SEC-JSON_PASSWORD-0016-15359867",
+          "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0016-15359867\", \"ok\": false}"
+        },
+        {
+          "pattern": "json_token",
+          "index": 17,
+          "secret": "SEC-JSON_TOKEN-0017-23933272",
+          "redacted": "{\"token\": \"SEC-JSON_TOKEN-0017-23933272\", \"error\": \"expired\"}"
+        },
+        {
+          "pattern": "json_authorization",
+          "index": 18,
+          "secret": "SEC-JSON_AUTHORIZATION-0018-60773253",
+          "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0018-60773253\"}"
+        },
+        {
+          "pattern": "json_password",
+          "index": 26,
+          "secret": "SEC-JSON_PASSWORD-0026-61052324",
+          "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0026-61052324\", \"ok\": false}"
+        },
+        {
+          "pattern": "json_token",
+          "index": 27,
+          "secret": "SEC-JSON_TOKEN-0027-99550129",
+          "redacted": "{\"token\": \"SEC-JSON_TOKEN-0027-99550129\", \"error\": \"expired\"}"
+        },
+        {
+          "pattern": "json_authorization",
+          "index": 28,
+          "secret": "SEC-JSON_AUTHORIZATION-0028-45612283",
+          "redacted": "{\"Authorization\": \"Bearer SEC-JSON_AUTHORIZATION-0028-45612283\"}"
+        },
+        {
+          "pattern": "json_password",
+          "index": 36,
+          "secret": "SEC-JSON_PASSWORD-0036-41810591",
+          "redacted": "{\"password\": \"SEC-JSON_PASSWORD-0036-41810591\", \"ok\": false}"
+        }
+      ],
+      "stored_leaks": [
+        {
+          "file": "issues.json",
+          "secret": "SEC-TARGET-0001-99999999",
+          "pattern": "target_userinfo"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_PASSWORD-0006-82597552",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_AUTHORIZATION-0008-07339937",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_PASSWORD-0016-15359867",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_PASSWORD-0036-41810591",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_AUTHORIZATION-0018-60773253",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_AUTHORIZATION-0038-70165056",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_TOKEN-0007-17930905",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_TOKEN-0027-99550129",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_PASSWORD-0026-61052324",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_AUTHORIZATION-0028-45612283",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_TOKEN-0037-29250236",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-JSON_TOKEN-0017-23933272",
+          "pattern": "stored_message"
+        },
+        {
+          "file": "events\\2026-11.jsonl",
+          "secret": "SEC-TARGET-0001-99999999",
+          "pattern": "target_userinfo"
+        }
+      ],
+      "storage_message_leaks": 12,
+      "target_userinfo_leaks": 2,
+      "normal_text_preserved": true
+    },
+    "deep": {
+      "schema_version": 1,
+      "generated_at": "2026-11-03T08:45:48+00:00",
+      "harness": "sim/deep_test.py",
+      "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "requested_test_plan": {
+        "path": "docs/RUNTIME_MEMORY_TEST_PLAN.md",
+        "found": true,
+        "fallback": []
+      },
+      "totals": {
+        "PASS": 32,
+        "FINDING": 16,
+        "GAP": 9,
+        "CRASH": 2
+      },
+      "checks": [
+        {
+          "id": "mode.shadow",
+          "category": "mode",
+          "title": "shadow records block but still executes the call",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "decision block, 2 events, would_block=true, shadow false_blocks=1",
+          "observed": "{'decision': 'block', 'shadow': True, 'events': 2, 'would_block_on_ok_event': True, 'shadow_report': {'would_block': 1, 'false_blocks': 1, 'confirmed_blocks': 0}}",
+          "evidence": {
+            "decision": "block",
+            "shadow": true,
+            "events": 2,
+            "would_block_on_ok_event": true,
+            "shadow_report": {
+              "would_block": 1,
+              "false_blocks": 1,
+              "confirmed_blocks": 0
+            }
+          }
+        },
+        {
+          "id": "mode.enforce",
+          "category": "mode",
+          "title": "enforce mode refuses postflight for a blocked call",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "block; postflight raises; only the real failure event is stored",
+          "observed": "{'decision': 'block', 'postflight_for_block_raises': True, 'events': [('fail', False)]}",
+          "evidence": {
+            "decision": "block",
+            "postflight_for_block_raises": true,
+            "events": [
+              [
+                "fail",
+                false
+              ]
+            ]
+          }
+        },
+        {
+          "id": "mode.probe_in_flight",
+          "category": "mode",
+          "title": "a second preflight while a probe is in flight blocks",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "first probe, issue=probing, second block",
+          "observed": "{'first': 'probe', 'second': 'block', 'second_reason': 'probe already in flight: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))', 'issue_status': 'probing', 'probe_started_at': True}",
+          "evidence": {
+            "first": "probe",
+            "second": "block",
+            "second_reason": "probe already in flight: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))",
+            "issue_status": "probing",
+            "probe_started_at": true
+          }
+        },
+        {
+          "id": "mode.policy_load",
+          "category": "mode",
+          "title": "enforce mode is loaded from data/policy.json",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "block is authoritative; shadow=false",
+          "observed": "{'action': 'block', 'shadow': False, 'enforce': True, 'base_s': 1}",
+          "evidence": {
+            "action": "block",
+            "shadow": false,
+            "enforce": true,
+            "base_s": 1
+          }
+        },
+        {
+          "id": "mode.note",
+          "category": "mode",
+          "title": "a model note never changes status or next_retry_at",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "note stored; status/next_retry unchanged",
+          "observed": "{'status_same': True, 'next_retry_same': True, 'author': 'model'}",
+          "evidence": {
+            "status_same": true,
+            "next_retry_same": true,
+            "author": "model"
+          }
+        },
+        {
+          "id": "mode.probe_ok",
+          "category": "mode",
+          "title": "a successful probe resolves the issue",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "probe -> resolved -> allow",
+          "observed": "{'decision': 'probe', 'status': 'resolved', 'next_preflight': 'allow'}",
+          "evidence": {
+            "decision": "probe",
+            "status": "resolved",
+            "next_preflight": "allow"
+          }
+        },
+        {
+          "id": "mode.probe_fail",
+          "category": "mode",
+          "title": "a failed probe reopens the issue and increments the backoff",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "open, count=2, attempts=2",
+          "observed": "{'decision': 'probe', 'status': 'open', 'count': 2, 'attempts': 2}",
+          "evidence": {
+            "decision": "probe",
+            "status": "open",
+            "count": 2,
+            "attempts": 2
+          }
+        },
+        {
+          "id": "mode.manual",
+          "category": "mode",
+          "title": "resolve allows the call and a new failure reopens the issue",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "allow; reopen; ignore -> resolved",
+          "observed": "{'after_resolve': 'allow', 'after_new_failure': 'cooldown', 'after_ignore': 'resolved', 'ignore_resolution': 'ignored'}",
+          "evidence": {
+            "after_resolve": "allow",
+            "after_new_failure": "cooldown",
+            "after_ignore": "resolved",
+            "ignore_resolution": "ignored"
+          }
+        },
+        {
+          "id": "mode.mitigated",
+          "category": "mode",
+          "title": "a mitigated issue yields allow_with_hint and the workaround",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "allow_with_hint + alternatives",
+          "observed": "{'decision': 'allow_with_hint', 'alternatives': ['use local pcap'], 'issue_status': 'mitigated'}",
+          "evidence": {
+            "decision": "allow_with_hint",
+            "alternatives": [
+              "use local pcap"
+            ],
+            "issue_status": "mitigated"
+          }
+        },
+        {
+          "id": "mode.workaround_only",
+          "category": "mode",
+          "title": "recording a workaround transitions to mitigated",
+          "status": "FINDING",
+          "severity": "low",
+          "expected": "set_workaround should make the issue mitigated (design §7.2 / README_CN §3.3) and preflight should return allow_with_hint",
+          "observed": "{'status': 'cooldown', 'decision': 'block', 'alternatives': ['use local pcap']}",
+          "evidence": {
+            "status": "cooldown",
+            "decision": "block",
+            "alternatives": [
+              "use local pcap"
+            ]
+          }
+        },
+        {
+          "id": "mode.override_auth",
+          "category": "mode",
+          "title": "model override bypasses a non-retryable auth block",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "auth is non-retryable and should require a human/operator decision (design §7.3, §9.3); a model override should not be enough",
+          "observed": "{'blocked': 'block', 'override': 'probe', 'override_reason': 'override: model wants to retry', 'issue_status': 'probing', 'overrides': 1}",
+          "evidence": {
+            "blocked": "block",
+            "override": "probe",
+            "override_reason": "override: model wants to retry",
+            "issue_status": "probing",
+            "overrides": 1
+          }
+        },
+        {
+          "id": "mode.override_budget",
+          "category": "mode",
+          "title": "model override bypasses the per-run hard budget",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "the per-run budget is described as a hard guard; an override should not turn its block into a probe",
+          "observed": "{'blocked': 'block', 'blocked_reason': 'run budget exhausted: 1 failure(s) for this operation in budget-run', 'blocked_issue_id': '', 'override': 'probe', 'override_reason': 'override: try anyway', 'override_issue_id': ''}",
+          "evidence": {
+            "blocked": "block",
+            "blocked_reason": "run budget exhausted: 1 failure(s) for this operation in budget-run",
+            "blocked_issue_id": "",
+            "override": "probe",
+            "override_reason": "override: try anyway",
+            "override_issue_id": ""
+          }
+        },
+        {
+          "id": "mode.override_audit",
+          "category": "mode",
+          "title": "every override is recorded in overrides.jsonl",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "one override record with basis",
+          "observed": "{'blocked': 'block', 'override': 'probe', 'override_reason': 'override: model wants to retry', 'issue_status': 'probing', 'overrides': 1}",
+          "evidence": {
+            "blocked": "block",
+            "override": "probe",
+            "override_reason": "override: model wants to retry",
+            "issue_status": "probing",
+            "overrides": 1
+          }
+        },
+        {
+          "id": "state.cooldown_open",
+          "category": "state",
+          "title": "the first failure creates cooldown, the second opens the issue",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "cooldown count=1; open count=2",
+          "observed": "{'first_status': 'cooldown', 'first_count': 1, 'second_status': 'open', 'second_count': 2}",
+          "evidence": {
+            "first_status": "cooldown",
+            "first_count": 1,
+            "second_status": "open",
+            "second_count": 2
+          }
+        },
+        {
+          "id": "state.retry_window",
+          "category": "state",
+          "title": "preflight blocks before next_retry_at and probes after it",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "block -> probe",
+          "observed": "{'before': 'block', 'after': 'probe'}",
+          "evidence": {
+            "before": "block",
+            "after": "probe"
+          }
+        },
+        {
+          "id": "state.schema",
+          "category": "state",
+          "title": "schema failures block only the bad call and are not retried",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "bad args block; good args allow; status open; retryable=false",
+          "observed": "{'status': 'open', 'bad_args': 'block', 'good_args': 'allow', 'retryable': False}",
+          "evidence": {
+            "status": "open",
+            "bad_args": "block",
+            "good_args": "allow",
+            "retryable": false
+          }
+        },
+        {
+          "id": "state.invalid_args",
+          "category": "state",
+          "title": "invalid_args failures block only the bad call and are not retried",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "bad args block; good args allow; status open; retryable=false",
+          "observed": "{'status': 'open', 'bad_args': 'block', 'good_args': 'allow', 'retryable': False}",
+          "evidence": {
+            "status": "open",
+            "bad_args": "block",
+            "good_args": "allow",
+            "retryable": false
+          }
+        },
+        {
+          "id": "state.retry_after",
+          "category": "state",
+          "title": "Retry-After wins over the class backoff and extends expiry",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "next_retry=+7200s, block at +1h, probe at +2h",
+          "observed": "{'next_retry_at': '2026-11-02T08:00:00Z', 'expires_at': '2026-11-02T08:00:00Z', 'at_one_hour': 'block', 'at_two_hours': 'probe', 'delta_s': 7200, 'expiry_after_retry': True}",
+          "evidence": {
+            "next_retry_at": "2026-11-02T08:00:00Z",
+            "expires_at": "2026-11-02T08:00:00Z",
+            "at_one_hour": "block",
+            "at_two_hours": "probe",
+            "delta_s": 7200,
+            "expiry_after_retry": true
+          }
+        },
+        {
+          "id": "state.auth_stale",
+          "category": "state",
+          "title": "non-retryable auth blocks until TTL, then allows one probe",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "open/block; stale/probe",
+          "observed": "{'initial_status': 'open', 'immediate': 'block', 'stale': 'probe', 'status': 'stale'}",
+          "evidence": {
+            "initial_status": "open",
+            "immediate": "block",
+            "stale": "probe",
+            "status": "stale"
+          }
+        },
+        {
+          "id": "state.abandoned_probe",
+          "category": "state",
+          "title": "an abandoned probe without probe_started_at recovers",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "probe; issue back to open",
+          "observed": "{'decision': 'probe', 'status': 'open'}",
+          "evidence": {
+            "decision": "probe",
+            "status": "open"
+          }
+        },
+        {
+          "id": "state.attempt_budget",
+          "category": "state",
+          "title": "the issue-level attempt budget eventually blocks",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "3 retries after the initial failure (4 calls) then block",
+          "observed": "{'failures': 4, 'attempts': 4, 'block_reason': 'attempt budget exhausted: unreachable @ http://10.7.194.120:22196/hunt/sse (4 failure(s))'}",
+          "evidence": {
+            "failures": 4,
+            "attempts": 4,
+            "block_reason": "attempt budget exhausted: unreachable @ http://10.7.194.120:22196/hunt/sse (4 failure(s))"
+          }
+        },
+        {
+          "id": "state.per_class_run_budget",
+          "category": "state",
+          "title": "the class-level max_attempts_per_run is not enforced",
+          "status": "GAP",
+          "severity": "medium",
+          "expected": "policy.classes.unreachable.max_attempts_per_run=1 should cap failures in one run",
+          "observed": "{'class_max_attempts_per_run': 1, 'failures_in_single_run': 4, 'issue_attempts': 4}",
+          "evidence": {
+            "class_max_attempts_per_run": 1,
+            "failures_in_single_run": 4,
+            "issue_attempts": 4
+          }
+        },
+        {
+          "id": "state.probe_after_expiry",
+          "category": "state",
+          "title": "probe_after_expiry=false is ignored",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "policy.defaults.probe_after_expiry should be honoured",
+          "observed": "{'configured_probe_after_expiry': False, 'decision': 'probe', 'reason': 'stale issue; one probe allowed: auth @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+          "evidence": {
+            "configured_probe_after_expiry": false,
+            "decision": "probe",
+            "reason": "stale issue; one probe allowed: auth @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+          }
+        },
+        {
+          "id": "state.defaults",
+          "category": "state",
+          "title": "policy.defaults is not used for cooldown/TTL",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "policy.defaults.cooldown_s and issue_ttl_s should affect the default backoff/TTL; the class values win and the defaults keys are dead configuration",
+          "observed": "{'defaults': {'cooldown_s': 1, 'issue_ttl_s': 1}, 'next_retry_delta_s': 900, 'expires_delta_s': 86400}",
+          "evidence": {
+            "defaults": {
+              "cooldown_s": 1,
+              "issue_ttl_s": 1
+            },
+            "next_retry_delta_s": 900,
+            "expires_delta_s": 86400
+          }
+        },
+        {
+          "id": "state.read_only",
+          "category": "state",
+          "title": "record=False writes no decision and does not probe",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "no decision row; issue not moved to probing",
+          "observed": "{'status_before': 'cooldown', 'decision': 'probe', 'status_after': 'stale', 'decisions': 0, 'note': 'the plan (T1) only requires no decision and no probing transition; the expiry refresh still persists cooldown -> stale'}",
+          "evidence": {
+            "status_before": "cooldown",
+            "decision": "probe",
+            "status_after": "stale",
+            "decisions": 0,
+            "note": "the plan (T1) only requires no decision and no probing transition; the expiry refresh still persists cooldown -> stale"
+          }
+        },
+        {
+          "id": "state.mitigated_expired",
+          "category": "state",
+          "title": "mitigating an already-expired issue is immediately undone",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "resolve(..., resolution='mitigated') should remain mitigated until it is re-checked or a new failure occurs",
+          "observed": "{'status_after_resolve': 'mitigated', 'expires_at': '2026-11-03T06:00:00Z', 'next_decision': 'probe', 'status_after_next_preflight': 'stale'}",
+          "evidence": {
+            "status_after_resolve": "mitigated",
+            "expires_at": "2026-11-03T06:00:00Z",
+            "next_decision": "probe",
+            "status_after_next_preflight": "stale"
+          }
+        },
+        {
+          "id": "state.jitter",
+          "category": "state",
+          "title": "exponential backoff has no jitter",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "design §10.2 calls for ±20% jitter to avoid synchronised retries",
+          "observed": "{'delays_s': [30, 60, 120], 'expected_without_jitter': [30, 60, 120]}",
+          "evidence": {
+            "delays_s": [
+              30,
+              60,
+              120
+            ],
+            "expected_without_jitter": [
+              30,
+              60,
+              120
+            ]
+          }
+        },
+        {
+          "id": "scope.environment",
+          "category": "scope",
+          "title": "environment_id isolates issues",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "lab-b is allowed",
+          "observed": "{'lab_a_failure': True, 'lab_b': 'allow'}",
+          "evidence": {
+            "lab_a_failure": true,
+            "lab_b": "allow"
+          }
+        },
+        {
+          "id": "scope.session",
+          "category": "scope",
+          "title": "a session-scope issue blocks every other session",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "design §13: 'session 只在本 run 生效'; session-a must not block session-b",
+          "observed": "{'failure_session': 'session-a', 'other_session': 'session-b', 'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+          "evidence": {
+            "failure_session": "session-a",
+            "other_session": "session-b",
+            "decision": "block",
+            "reason": "blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+          }
+        },
+        {
+          "id": "scope.agent",
+          "category": "scope",
+          "title": "an agent-scope issue blocks every other agent",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "design §13: 'agent' means one Agent; agent-a must not block agent-b",
+          "observed": "{'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}",
+          "evidence": {
+            "decision": "block",
+            "reason": "blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))"
+          }
+        },
+        {
+          "id": "scope.global_resolution",
+          "category": "scope",
+          "title": "a successful session call cannot resolve a global issue",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "design §7.3: another scope's success may mitigate; at minimum a genuine success must not leave the issue stuck in probing",
+          "observed": "{'probe': 'probe', 'issue_scope': 'global', 'status_after_session_success': 'probing'}",
+          "evidence": {
+            "probe": "probe",
+            "issue_scope": "global",
+            "status_after_session_success": "probing"
+          }
+        },
+        {
+          "id": "scope.mixed",
+          "category": "scope",
+          "title": "a session failure updates the global issue record",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "scope is part of issue ownership; the same operation failing in session s2 should not increment the global issue",
+          "observed": "{'issue_count': 1, 'scopes': ['global'], 'counts': [2]}",
+          "evidence": {
+            "issue_count": 1,
+            "scopes": [
+              "global"
+            ],
+            "counts": [
+              2
+            ]
+          }
+        },
+        {
+          "id": "scope.cross_env_mitigation",
+          "category": "scope",
+          "title": "another environment's success does not mitigate the issue",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "design §7.2: 'open --other environment success--> mitigated'",
+          "observed": "{'lab_a_issue_status': 'cooldown'}",
+          "evidence": {
+            "lab_a_issue_status": "cooldown"
+          }
+        },
+        {
+          "id": "identity.normalise",
+          "category": "identity",
+          "title": "target and argument normalisation is stable",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "volatile/query/secret/userinfo differences do not change the key",
+          "observed": "{'query_ignored': True, 'second_segment_ignored': True, 'secret_args_same': True, 'volatile_args_same': True, 'userinfo_stripped': True}",
+          "evidence": {
+            "query_ignored": true,
+            "second_segment_ignored": true,
+            "secret_args_same": true,
+            "volatile_args_same": true,
+            "userinfo_stripped": true
+          }
+        },
+        {
+          "id": "identity.key_level",
+          "category": "identity",
+          "title": "call-level failures only block the same arguments",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "different args allow; same args block",
+          "observed": "{'other_args': 'allow', 'same_args': 'block'}",
+          "evidence": {
+            "other_args": "allow",
+            "same_args": "block"
+          }
+        },
+        {
+          "id": "identity.bad_port",
+          "category": "identity",
+          "title": "a malformed URL port does not crash preflight",
+          "status": "CRASH",
+          "severity": "medium",
+          "expected": "preflight returns a decision (or a documented validation error), never an uncaught exception",
+          "observed": "ValueError: Port out of range 0-65535",
+          "evidence": {
+            "exception": "ValueError",
+            "message": "Port out of range 0-65535"
+          }
+        },
+        {
+          "id": "identity.non_json_args",
+          "category": "identity",
+          "title": "non-JSON argument values do not crash preflight",
+          "status": "CRASH",
+          "severity": "medium",
+          "expected": "preflight returns a decision (or a documented validation error), never an uncaught exception",
+          "observed": "TypeError: Object of type bytes is not JSON serializable",
+          "evidence": {
+            "exception": "TypeError",
+            "message": "Object of type bytes is not JSON serializable"
+          }
+        },
+        {
+          "id": "classify.known",
+          "category": "classify",
+          "title": "known exception types map to the documented class",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "see expected mapping",
+          "observed": "{'ConnectionRefusedError': 'unreachable', 'TimeoutError': 'timeout', 'PermissionError': 'permission', 'json.JSONDecodeError': 'schema', 'HTTP 401': 'auth', 'HTTP 403': 'auth', 'HTTP 404': 'not_found', 'HTTP 429': 'rate_limit'}",
+          "evidence": {
+            "ConnectionRefusedError": "unreachable",
+            "TimeoutError": "timeout",
+            "PermissionError": "permission",
+            "json.JSONDecodeError": "schema",
+            "HTTP 401": "auth",
+            "HTTP 403": "auth",
+            "HTTP 404": "not_found",
+            "HTTP 429": "rate_limit"
+          }
+        },
+        {
+          "id": "classify.server_errors",
+          "category": "classify",
+          "title": "5xx and errno-based network errors fall back to unknown",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "design §8.5: 5xx -> internal; OSError(errno=101/111) -> unreachable",
+          "observed": "{'HTTP 500': 'unknown', 'HTTP 503': 'unknown', 'OSError(errno=101)': 'unknown', 'OSError(errno=111)': 'unknown'}",
+          "evidence": {
+            "HTTP 500": "unknown",
+            "HTTP 503": "unknown",
+            "OSError(errno=101)": "unknown",
+            "OSError(errno=111)": "unknown"
+          }
+        },
+        {
+          "id": "classify.invalid_args",
+          "category": "classify",
+          "title": "postflight cannot pass the argument context to the classifier",
+          "status": "GAP",
+          "severity": "medium",
+          "expected": "the classifier supports context['source']='args' -> invalid_args, but postflight has no context parameter, so a plain ValueError becomes unknown",
+          "observed": "{'context_parameter': False, 'ValueError_without_context': 'unknown', 'ValueError_with_args_context': 'invalid_args'}",
+          "evidence": {
+            "context_parameter": false,
+            "ValueError_without_context": "unknown",
+            "ValueError_with_args_context": "invalid_args"
+          }
+        },
+        {
+          "id": "security.redaction",
+          "category": "security",
+          "title": "header, URL, password and private-key redaction works",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "all samples redacted",
+          "observed": {
+            "Authorization: Bearer abc123": "Authorization: Bearer [REDACTED]",
+            "Cookie: session=abc123": "Cookie: [REDACTED]",
+            "password=hunter2 token=tok-abc": "password=[REDACTED] token=[REDACTED]",
+            "https://user:hunter2@10.0.0.1/x": "https://user:[REDACTED]@10.0.0.1/x",
+            "-----BEGIN RSA PRIVATE KEY-----\nMIIE\n-----END RSA PRIVATE KEY-----": "[REDACTED PRIVATE KEY]"
+          },
+          "evidence": {
+            "Authorization: Bearer abc123": "Authorization: Bearer [REDACTED]",
+            "Cookie: session=abc123": "Cookie: [REDACTED]",
+            "password=hunter2 token=tok-abc": "password=[REDACTED] token=[REDACTED]",
+            "https://user:hunter2@10.0.0.1/x": "https://user:[REDACTED]@10.0.0.1/x",
+            "-----BEGIN RSA PRIVATE KEY-----\nMIIE\n-----END RSA PRIVATE KEY-----": "[REDACTED PRIVATE KEY]"
+          }
+        },
+        {
+          "id": "security.redaction_json",
+          "category": "security",
+          "title": "JSON-formatted secrets are not redacted",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "error messages often contain JSON; password/token/api_key and quoted Authorization values must be redacted before storage",
+          "observed": "{'{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}': '{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}', '{\"Authorization\": \"Bearer abc123\"}': '{\"Authorization\": \"Bearer abc123\"}'}",
+          "evidence": {
+            "{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}": "{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}",
+            "{\"Authorization\": \"Bearer abc123\"}": "{\"Authorization\": \"Bearer abc123\"}"
+          }
+        },
+        {
+          "id": "security.target_credentials",
+          "category": "security",
+          "title": "URL userinfo credentials leak through the raw target field",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "credentials must not appear in issue.target, decision.reason or report.top_open_issues",
+          "observed": "{'issue_target': 'https://user:hunter2@10.0.0.1/hunt', 'decision_reason': 'blocked until retry window: unreachable @ https://user:hunter2@10.0.0.1/hunt (1 failure(s))', 'report_target': 'https://user:hunter2@10.0.0.1/hunt'}",
+          "evidence": {
+            "issue_target": "https://user:hunter2@10.0.0.1/hunt",
+            "decision_reason": "blocked until retry window: unreachable @ https://user:hunter2@10.0.0.1/hunt (1 failure(s))",
+            "report_target": "https://user:hunter2@10.0.0.1/hunt"
+          }
+        },
+        {
+          "id": "security.message_limit",
+          "category": "security",
+          "title": "message_redacted is truncated",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "<= 500 chars plus an ellipsis",
+          "observed": {
+            "length": 501
+          },
+          "evidence": null
+        },
+        {
+          "id": "store.multiprocess",
+          "category": "store",
+          "title": "concurrent record() calls create duplicate live issues",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "4 events -> exactly one issue record with count=4; duplicate live records split the evidence and make find_issue ambiguous. The store is documented as single-writer, but the README claims the JSONL lock prevents interleaved lines and issues.json is atomic, so readers should not observe duplicate live issues",
+          "observed": "[{'round': 0, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}, {'round': 1, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}]",
+          "evidence": [
+            {
+              "round": 0,
+              "errors": [],
+              "events": 4,
+              "issue_records": 4,
+              "issue_counts": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "issue_attempts": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "sum_counts": 4
+            },
+            {
+              "round": 1,
+              "errors": [],
+              "events": 4,
+              "issue_records": 3,
+              "issue_counts": [
+                1,
+                1,
+                1
+              ],
+              "issue_attempts": [
+                1,
+                1,
+                1
+              ],
+              "sum_counts": 3
+            },
+            {
+              "round": 2,
+              "errors": [],
+              "events": 4,
+              "issue_records": 4,
+              "issue_counts": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "issue_attempts": [
+                1,
+                1,
+                1,
+                1
+              ],
+              "sum_counts": 4
+            }
+          ]
+        },
+        {
+          "id": "store.lock_contention",
+          "category": "store",
+          "title": "the JSONL file lock can raise an uncaught PermissionError on Windows",
+          "status": "FINDING",
+          "severity": "high",
+          "expected": "file_lock should treat Access Denied / FileExists as contention and retry until its timeout; a thread must not crash",
+          "observed": "errors=[{'round': 1, 'type': 'PermissionError', 'message': \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-lock-s1xwgppt\\\\\\\\events.jsonl.lock'\"}]; rounds=[{'round': 0, 'lines': 80, 'expected': 80}, {'round': 1, 'lines': 70, 'expected': 80}]",
+          "evidence": {
+            "errors": [
+              {
+                "round": 1,
+                "type": "PermissionError",
+                "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-s1xwgppt\\\\events.jsonl.lock'"
+              }
+            ],
+            "rounds": [
+              {
+                "round": 0,
+                "lines": 80,
+                "expected": 80
+              },
+              {
+                "round": 1,
+                "lines": 70,
+                "expected": 80
+              }
+            ]
+          }
+        },
+        {
+          "id": "store.atomic_json",
+          "category": "store",
+          "title": "issues.json remains a complete JSON document",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "parseable snapshot after repeated writes",
+          "observed": "{'issues': 1, 'schema_version': 1}",
+          "evidence": {
+            "issues": 1,
+            "schema_version": 1
+          }
+        },
+        {
+          "id": "store.corrupt_events",
+          "category": "store",
+          "title": "a corrupt event journal raises from report and budgeted preflight",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "check() reports the journal problem; report/preflight should return a controlled error instead of an uncaught ValueError",
+          "observed": "{'report': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_with_run': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_without_run': 'allow', 'check': ['journal: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)']}",
+          "evidence": {
+            "report": "ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)",
+            "preflight_with_run": "ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)",
+            "preflight_without_run": "allow",
+            "check": [
+              "journal: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)"
+            ]
+          }
+        },
+        {
+          "id": "audit.expires_at",
+          "category": "audit",
+          "title": "check() does not enforce the expires_at invariant",
+          "status": "FINDING",
+          "severity": "low",
+          "expected": "design §16.3 invariant 4: expires_at always exists; check() should report an issue without it",
+          "observed": "[]",
+          "evidence": []
+        },
+        {
+          "id": "store.find_live",
+          "category": "store",
+          "title": "find_issue prefers the live duplicate",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "ISS-no-expiry",
+          "observed": "ISS-no-expiry",
+          "evidence": null
+        },
+        {
+          "id": "store.gc",
+          "category": "store",
+          "title": "gc deletes old events/resolved issues and keeps audit logs",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "old data gone; audit logs retained",
+          "observed": "{'gc': {'event_files': 1, 'events': 1, 'issues': 1, 'dry_run': 0}, 'old_event_file_exists': False, 'old_issue_exists': False, 'decisions': 1, 'overrides': 1}",
+          "evidence": {
+            "gc": {
+              "event_files": 1,
+              "events": 1,
+              "issues": 1,
+              "dry_run": 0
+            },
+            "old_event_file_exists": false,
+            "old_issue_exists": false,
+            "decisions": 1,
+            "overrides": 1
+          }
+        },
+        {
+          "id": "report.link",
+          "category": "report",
+          "title": "shadow false blocks require the caller to pass the decision",
+          "status": "FINDING",
+          "severity": "medium",
+          "expected": "a shadow block followed by a successful call should count as a false block even when the caller only records the outcome",
+          "observed": "{'decision': 'block', 'would_block': 1, 'false_blocks': 0, 'false_block_rate_present': False}",
+          "evidence": {
+            "decision": "block",
+            "would_block": 1,
+            "false_blocks": 0,
+            "false_block_rate_present": false
+          }
+        },
+        {
+          "id": "report.rate",
+          "category": "report",
+          "title": "report exposes counts but not false_block_rate",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "design §15.1 defines false_block_rate; the report has would_block/false_blocks but no rate",
+          "observed": "{'decision': 'block', 'would_block': 1, 'false_blocks': 0, 'false_block_rate_present': False}",
+          "evidence": {
+            "decision": "block",
+            "would_block": 1,
+            "false_blocks": 0,
+            "false_block_rate_present": false
+          }
+        },
+        {
+          "id": "report.probe_rate",
+          "category": "report",
+          "title": "probe success rate is reported",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "1/1 -> rate 1.0",
+          "observed": "{'probes': {'attempts': 1, 'success': 1, 'success_rate': 1.0}, 'enforce_blocked': 0}",
+          "evidence": {
+            "probes": {
+              "attempts": 1,
+              "success": 1,
+              "success_rate": 1.0
+            },
+            "enforce_blocked": 0
+          }
+        },
+        {
+          "id": "report.duplicate_scope",
+          "category": "report",
+          "title": "duplicate_attempts is not scoped to a run",
+          "status": "GAP",
+          "severity": "low",
+          "expected": "design §15.1 defines duplicate_attempts 'in run'; the report counts repeats across all runs",
+          "observed": "{'duplicate_attempts': 1, 'note': 'two failures in distinct runs'}",
+          "evidence": {
+            "duplicate_attempts": 1,
+            "note": "two failures in distinct runs"
+          }
+        },
+        {
+          "id": "audit.block_issue",
+          "category": "audit",
+          "title": "a per-run budget block is explicit and may lack an issue_id",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "plan T1 allows no issue_id for a budget block",
+          "observed": "{'decision': 'block', 'issue_id': '', 'reason': 'run budget exhausted: 1 failure(s) for this operation in budget-audit'}",
+          "evidence": {
+            "decision": "block",
+            "issue_id": "",
+            "reason": "run budget exhausted: 1 failure(s) for this operation in budget-audit"
+          }
+        },
+        {
+          "id": "audit.override",
+          "category": "audit",
+          "title": "overrides are audited",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "one override record",
+          "observed": "1",
+          "evidence": null
+        },
+        {
+          "id": "audit.reopen",
+          "category": "audit",
+          "title": "a resolved issue can be reopened by a new failure",
+          "status": "PASS",
+          "severity": "info",
+          "expected": "new live issue (same id) with count=1",
+          "observed": "{'issue_id_reused': True, 'status': 'cooldown', 'count': 1}",
+          "evidence": {
+            "issue_id_reused": true,
+            "status": "cooldown",
+            "count": 1
+          }
+        },
+        {
+          "id": "audit.rebuild",
+          "category": "audit",
+          "title": "rebuild_issues is not implemented",
+          "status": "GAP",
+          "severity": "info",
+          "expected": "design §11.6 proposes rebuilding issues from events; the prototype has no rebuild method",
+          "observed": "method absent",
+          "evidence": "absent"
+        }
+      ]
+    }
+  },
+  "anomalies": [
+    {
+      "severity": "P0",
+      "test": "T8",
+      "file": "runtime_memory/src/runtime_memory/redact.py",
+      "description": "JSON-formatted secrets are not redacted",
+      "evidence": "json_pattern_leaks=300; storage_message_leaks=12"
+    },
+    {
+      "severity": "P0",
+      "test": "T8",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "URL userinfo credentials are persisted in issue.target / report",
+      "evidence": "target_userinfo_leaks=2"
+    },
+    {
+      "severity": "P0",
+      "test": "T6",
+      "file": "runtime_memory/src/runtime_memory/store.py",
+      "description": "concurrent_append failed under concurrency",
+      "evidence": "{\"expected_lines\": 200, \"actual_lines\": 165, \"bad_lines\": 0, \"errors\": [{\"type\": \"PermissionError\", \"message\": \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-conc-append-n87fgl2d\\\\\\\\events\\\\\\\\2026-11.jsonl.lock'\"}]}"
+    },
+    {
+      "severity": "P0",
+      "test": "T6",
+      "file": "runtime_memory/src/runtime_memory/store.py",
+      "description": "concurrent_postflight failed under concurrency",
+      "evidence": "{\"expected_issue_count\": 2, \"issue_records\": 2, \"issue_counts\": [1, 1], \"events\": 2, \"errors\": []}"
+    },
+    {
+      "severity": "P2",
+      "test": "T6",
+      "file": "runtime_memory/src/runtime_memory/store.py",
+      "description": "partial_write_event_without_issue is not detected by check()",
+      "evidence": "{\"check_problems\": [], \"detected\": false, \"note\": \"plan T6: not detecting event-without-issue is a gap\"}"
+    },
+    {
+      "severity": "P2",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "mode.workaround_only: recording a workaround transitions to mitigated",
+      "evidence": "{'status': 'cooldown', 'decision': 'block', 'alternatives': ['use local pcap']}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "mode.override_auth: model override bypasses a non-retryable auth block",
+      "evidence": "{'blocked': 'block', 'override': 'probe', 'override_reason': 'override: model wants to retry', 'issue_status': 'probing', 'overrides': 1}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "mode.override_budget: model override bypasses the per-run hard budget",
+      "evidence": "{'blocked': 'block', 'blocked_reason': 'run budget exhausted: 1 failure(s) for this operation in budget-run', 'blocked_issue_id': '', 'override': 'probe', 'override_reason': 'override: try anyway', 'override_issue_id': ''}"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "state.mitigated_expired: mitigating an already-expired issue is immediately undone",
+      "evidence": "{'status_after_resolve': 'mitigated', 'expires_at': '2026-11-03T06:00:00Z', 'next_decision': 'probe', 'status_after_next_preflight': 'stale'}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "scope.session: a session-scope issue blocks every other session",
+      "evidence": "{'failure_session': 'session-a', 'other_session': 'session-b', 'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "scope.agent: an agent-scope issue blocks every other agent",
+      "evidence": "{'decision': 'block', 'reason': 'blocked until retry window: unreachable @ http://10.7.194.120:22196/hunt/sse (1 failure(s))'}"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "scope.global_resolution: a successful session call cannot resolve a global issue",
+      "evidence": "{'probe': 'probe', 'issue_scope': 'global', 'status_after_session_success': 'probing'}"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "scope.mixed: a session failure updates the global issue record",
+      "evidence": "{'issue_count': 1, 'scopes': ['global'], 'counts': [2]}"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "identity.bad_port: a malformed URL port does not crash preflight",
+      "evidence": "ValueError: Port out of range 0-65535"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "identity.non_json_args: non-JSON argument values do not crash preflight",
+      "evidence": "TypeError: Object of type bytes is not JSON serializable"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "classify.server_errors: 5xx and errno-based network errors fall back to unknown",
+      "evidence": "{'HTTP 500': 'unknown', 'HTTP 503': 'unknown', 'OSError(errno=101)': 'unknown', 'OSError(errno=111)': 'unknown'}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "security.redaction_json: JSON-formatted secrets are not redacted",
+      "evidence": "{'{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}': '{\"password\": \"hunter2\", \"token\": \"tok-abc\", \"api_key\": \"AK-123\"}', '{\"Authorization\": \"Bearer abc123\"}': '{\"Authorization\": \"Bearer abc123\"}'}"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "security.target_credentials: URL userinfo credentials leak through the raw target field",
+      "evidence": "{'issue_target': 'https://user:hunter2@10.0.0.1/hunt', 'decision_reason': 'blocked until retry window: unreachable @ https://user:hunter2@10.0.0.1/hunt (1 failure(s))', 'report_target': 'https://user:hunter2@10.0.0.1/hunt'}"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "store.multiprocess: concurrent record() calls create duplicate live issues",
+      "evidence": "[{'round': 0, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}, {'round': 1, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}]"
+    },
+    {
+      "severity": "P0",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "store.lock_contention: the JSONL file lock can raise an uncaught PermissionError on Windows",
+      "evidence": "errors=[{'round': 1, 'type': 'PermissionError', 'message': \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-lock-s1xwgppt\\\\\\\\events.jsonl.lock'\"}]; rounds=[{'round': 0, 'lines': 80, 'expected': 80}, {'round': 1, 'lines': 70, 'expected': 80}]"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "store.corrupt_events: a corrupt event journal raises from report and budgeted preflight",
+      "evidence": "{'report': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_with_run': 'ValueError: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)', 'preflight_without_run': 'allow', 'check': ['journal: 2026-11.jsonl line 1: Expecting value: line 1 column 1 (char 0)']}"
+    },
+    {
+      "severity": "P2",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "audit.expires_at: check() does not enforce the expires_at invariant",
+      "evidence": "[]"
+    },
+    {
+      "severity": "P1",
+      "test": "T1.3",
+      "file": "runtime_memory/src/runtime_memory/runtime.py",
+      "description": "report.link: shadow false blocks require the caller to pass the decision",
+      "evidence": "{'decision': 'block', 'would_block': 1, 'false_blocks': 0, 'false_block_rate_present': False}"
+    }
+  ],
+  "not_run": [
+    {
+      "id": "T9",
+      "reason": "optional; T4 already runs scripted obedient and naive agents"
+    },
+    {
+      "id": "T10",
+      "reason": "optional ablation; not run in this pass"
+    }
+  ]
+}

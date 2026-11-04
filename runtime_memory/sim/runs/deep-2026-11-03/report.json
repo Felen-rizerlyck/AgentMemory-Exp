@@ -1,22 +1,17 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-03T07:56:58+00:00",
+  "generated_at": "2026-11-04T02:23:26+00:00",
   "harness": "sim/deep_test.py",
   "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
   "platform": "Windows-11-10.0.26200-SP0",
   "requested_test_plan": {
     "path": "docs/RUNTIME_MEMORY_TEST_PLAN.md",
-    "found": false,
-    "fallback": [
-      "docs/RUNTIME_MEMORY_DESIGN.md §16",
-      "docs/RUNTIME_MEMORY_DESIGN.md §9.5",
-      "docs/RUNTIME_MEMORY_DESIGN.md §15",
-      "runtime_memory/README.md and README_CN.md"
-    ]
+    "found": true,
+    "fallback": []
   },
   "totals": {
-    "PASS": 30,
-    "FINDING": 18,
+    "PASS": 32,
+    "FINDING": 16,
     "GAP": 9,
     "CRASH": 2
   },
@@ -395,16 +390,17 @@
     {
       "id": "state.read_only",
       "category": "state",
-      "title": "record=False still persists an issue state refresh",
-      "status": "FINDING",
-      "severity": "low",
-      "expected": "record=False should not mutate the store (docstring: read-only inspection)",
-      "observed": "{'status_before': 'cooldown', 'decision': 'probe', 'status_after': 'stale', 'decisions': 0}",
+      "title": "record=False writes no decision and does not probe",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "no decision row; issue not moved to probing",
+      "observed": "{'status_before': 'cooldown', 'decision': 'probe', 'status_after': 'stale', 'decisions': 0, 'note': 'the plan (T1) only requires no decision and no probing transition; the expiry refresh still persists cooldown -> stale'}",
       "evidence": {
         "status_before": "cooldown",
         "decision": "probe",
         "status_after": "stale",
-        "decisions": 0
+        "decisions": 0,
+        "note": "the plan (T1) only requires no decision and no probing transition; the expiry refresh still persists cooldown -> stale"
       }
     },
     {
@@ -695,11 +691,11 @@
     {
       "id": "store.multiprocess",
       "category": "store",
-      "title": "concurrent record() calls create duplicate live issues",
+      "title": "concurrent record() calls crash on the file lock and/or lose counts",
       "status": "FINDING",
-      "severity": "medium",
-      "expected": "4 events -> exactly one issue record with count=4; duplicate live records split the evidence and make find_issue ambiguous. The store is documented as single-writer, but the README claims the JSONL lock prevents interleaved lines and issues.json is atomic, so readers should not observe duplicate live issues",
-      "observed": "[{'round': 0, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 1, 'errors': [], 'events': 4, 'issue_records': 4, 'issue_counts': [1, 1, 1, 1], 'issue_attempts': [1, 1, 1, 1], 'sum_counts': 4}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}]",
+      "severity": "high",
+      "expected": "4 events -> 1 issue, count=4; the README calls the JSONL lock cross-platform and the lock should wait, not raise an uncaught OSError",
+      "observed": "[{'round': 0, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 1, 'errors': [{'type': 'PermissionError', 'message': \"[WinError 5] 拒绝访问。: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-mp-nih8wl8x\\\\\\\\tmpiscfhiqe.tmp' -> 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-mp-nih8wl8x\\\\\\\\issues.json'\"}], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}, {'round': 2, 'errors': [], 'events': 4, 'issue_records': 3, 'issue_counts': [1, 1, 1], 'issue_attempts': [1, 1, 1], 'sum_counts': 3}]",
       "evidence": [
         {
           "round": 0,
@@ -720,11 +716,15 @@
         },
         {
           "round": 1,
-          "errors": [],
+          "errors": [
+            {
+              "type": "PermissionError",
+              "message": "[WinError 5] 拒绝访问。: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\tmpiscfhiqe.tmp' -> 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-mp-nih8wl8x\\\\issues.json'"
+            }
+          ],
           "events": 4,
-          "issue_records": 4,
+          "issue_records": 3,
           "issue_counts": [
-            1,
             1,
             1,
             1
@@ -732,10 +732,9 @@
           "issue_attempts": [
             1,
             1,
-            1,
             1
           ],
-          "sum_counts": 4
+          "sum_counts": 3
         },
         {
           "round": 2,
@@ -763,19 +762,39 @@
       "status": "FINDING",
       "severity": "high",
       "expected": "file_lock should treat Access Denied / FileExists as contention and retry until its timeout; a thread must not crash",
-      "observed": "errors=[{'round': 0, 'type': 'PermissionError', 'message': \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-lock-t5iauw0t\\\\\\\\events.jsonl.lock'\"}]; rounds=[{'round': 0, 'lines': 76, 'expected': 80}]",
+      "observed": "errors=[{'round': 4, 'type': 'PermissionError', 'message': \"[Errno 13] Permission denied: 'C:\\\\\\\\Users\\\\\\\\cui-home\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\rtmem-deep-lock-onn6u81z\\\\\\\\events.jsonl.lock'\"}]; rounds=[{'round': 0, 'lines': 80, 'expected': 80}, {'round': 1, 'lines': 80, 'expected': 80}, {'round': 2, 'lines': 80, 'expected': 80}, {'round': 3, 'lines': 80, 'expected': 80}, {'round': 4, 'lines': 72, 'expected': 80}]",
       "evidence": {
         "errors": [
           {
-            "round": 0,
+            "round": 4,
             "type": "PermissionError",
-            "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-t5iauw0t\\\\events.jsonl.lock'"
+            "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-deep-lock-onn6u81z\\\\events.jsonl.lock'"
           }
         ],
         "rounds": [
           {
             "round": 0,
-            "lines": 76,
+            "lines": 80,
+            "expected": 80
+          },
+          {
+            "round": 1,
+            "lines": 80,
+            "expected": 80
+          },
+          {
+            "round": 2,
+            "lines": 80,
+            "expected": 80
+          },
+          {
+            "round": 3,
+            "lines": 80,
+            "expected": 80
+          },
+          {
+            "round": 4,
+            "lines": 72,
             "expected": 80
           }
         ]
@@ -915,10 +934,10 @@
     {
       "id": "audit.block_issue",
       "category": "audit",
-      "title": "a run-budget block has no issue_id",
-      "status": "FINDING",
-      "severity": "medium",
-      "expected": "design §16.3 invariant 3: every block is traceable to issue_id + policy_version + source events; a budget block is a hard block but carries no issue id",
+      "title": "a per-run budget block is explicit and may lack an issue_id",
+      "status": "PASS",
+      "severity": "info",
+      "expected": "plan T1 allows no issue_id for a budget block",
       "observed": "{'decision': 'block', 'issue_id': '', 'reason': 'run budget exhausted: 1 failure(s) for this operation in budget-audit'}",
       "evidence": {
         "decision": "block",

@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "configs": {
+    "baseline": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 16.9,
+      "mean_failures": 15.9,
+      "mean_blocked": 0,
+      "mean_would_block": 0,
+      "mean_false_blocks": 0,
+      "false_block_rate": 0.0,
+      "mean_time_to_success_s": 954,
+      "p95_time_to_success_s": 1740,
+      "mean_duplicate_failures": 14.9
+    },
+    "shadow_60": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 16.9,
+      "mean_failures": 15.9,
+      "mean_blocked": 0,
+      "mean_would_block": 12.9,
+      "mean_false_blocks": 1,
+      "false_block_rate": 0.078,
+      "mean_time_to_success_s": 954,
+      "p95_time_to_success_s": 1740,
+      "mean_duplicate_failures": 14.9
+    },
+    "enforce_60": {
+      "runs": 30,
+      "success_rate": 0.0,
+      "mean_calls": 4,
+      "mean_failures": 4,
+      "mean_blocked": 57,
+      "mean_would_block": 0,
+      "mean_false_blocks": 0,
+      "false_block_rate": 0.0,
+      "mean_time_to_success_s": null,
+      "p95_time_to_success_s": null,
+      "mean_duplicate_failures": 3.0
+    },
+    "shadow_300": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 16.9,
+      "mean_failures": 15.9,
+      "mean_blocked": 0,
+      "mean_would_block": 15.9,
+      "mean_false_blocks": 1,
+      "false_block_rate": 0.063,
+      "mean_time_to_success_s": 954,
+      "p95_time_to_success_s": 1740,
+      "mean_duplicate_failures": 14.9
+    },
+    "enforce_300": {
+      "runs": 30,
+      "success_rate": 0.467,
+      "mean_calls": 3.5,
+      "mean_failures": 3.033,
+      "mean_blocked": 24.9,
+      "mean_would_block": 0,
+      "mean_false_blocks": 0,
+      "false_block_rate": 0.0,
+      "mean_time_to_success_s": 578.6,
+      "p95_time_to_success_s": 900,
+      "mean_duplicate_failures": 2.033
+    },
+    "shadow_900": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 16.9,
+      "mean_failures": 15.9,
+      "mean_blocked": 0,
+      "mean_would_block": 15.9,
+      "mean_false_blocks": 1,
+      "false_block_rate": 0.063,
+      "mean_time_to_success_s": 954,
+      "p95_time_to_success_s": 1740,
+      "mean_duplicate_failures": 14.9
+    },
+    "enforce_900": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 2.533,
+      "mean_failures": 1.533,
+      "mean_blocked": 1.533,
+      "mean_would_block": 0,
+      "mean_false_blocks": 0,
+      "false_block_rate": 0.0,
+      "mean_time_to_success_s": 1380,
+      "p95_time_to_success_s": 1800,
+      "mean_duplicate_failures": 0.533
+    },
+    "shadow_1800": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 16.9,
+      "mean_failures": 15.9,
+      "mean_blocked": 0,
+      "mean_would_block": 15.9,
+      "mean_false_blocks": 1,
+      "false_block_rate": 0.063,
+      "mean_time_to_success_s": 954,
+      "p95_time_to_success_s": 1740,
+      "mean_duplicate_failures": 14.9
+    },
+    "enforce_1800": {
+      "runs": 30,
+      "success_rate": 1.0,
+      "mean_calls": 2,
+      "mean_failures": 1,
+      "mean_blocked": 1,
+      "mean_would_block": 0,
+      "mean_false_blocks": 0,
+      "false_block_rate": 0.0,
+      "mean_time_to_success_s": 1800,
+      "p95_time_to_success_s": 1800,
+      "mean_duplicate_failures": 0.0
+    }
+  },
+  "parameters": {
+    "seeds": 30,
+    "interval_s": 60,
+    "horizon_s": 3600,
+    "max_down_s": 1800
+  }
+}
