@@ -79,6 +79,54 @@ so it grows linearly with event count.
 Retry-After > TTL, abandoned probing, per-run budget, environment/scope
 isolation, malformed journals, gc). Run them with the normal test command.
 
+## Deep mode/behaviour matrix (2026-11-03)
+
+`sim/deep_test.py` is a deterministic 59-check matrix added for issue #3.  It
+covers shadow/enforce, probe and manual paths, the state machine and budgets,
+scope isolation, fingerprints, classification, redaction, concurrent stores,
+report metrics and audit traceability.  It uses a fake clock and temporary
+directories, never writes `runtime_memory/data`, and does not modify the
+algorithm.
+
+```powershell
+python sim/deep_test.py --force
+```
+
+Outputs `sim/runs/deep-2026-11-03/report.json` (machine-readable) and
+`summary.md` (all checks plus evidence).  The analysis is in
+`sim/FINDINGS_2026-11-03.md`.
+
+## Plan execution (T0-T8, 2026-11-03)
+
+`sim/run_plan.py` executes the offline plan in
+[`docs/RUNTIME_MEMORY_TEST_PLAN.md`](../../docs/RUNTIME_MEMORY_TEST_PLAN.md):
+
+```powershell
+python sim/run_plan.py
+```
+
+It runs T0/T1 baselines, T2 `workload.py`, T3 `policy_grid.py`, T4
+`multitool.py`, T5 `scale.py` + `scale_multi.py`, T6 `concurrency.py`, T7
+`retention.py` and T8 `redaction_fuzz.py`, captures each command's
+stdout/stderr, and writes:
+
+- `sim/runs/exec-<UTC>/EXECUTOR_REPORT.md`
+- `sim/runs/exec-<UTC>/results.json`
+- `sim/runs/exec-<UTC>/raw/*.stdout.txt` / `*.stderr.txt`
+- per-test metric dirs (`workload/`, `policy-grid/`, `multitool/`, `scale/`,
+  `scale-multi/`, `scale-100k/`, `concurrency/`, `retention/`, `redaction/`)
+
+T9 (scripted obedient/naive agents) is covered by T4's comparison; T10 is
+optional and is reported as `NOT_RUN`.  The runner does not modify
+`runtime_memory/src/`, `runtime_memory/tests/` or `runtime_memory/data/`.
+
+Latest execution: `sim/runs/exec-20261103T084500Z/`.  T0–T5 and T7 passed;
+T6 failed on concurrent append (lost lines / `PermissionError`) and concurrent
+postflight (duplicate live issues); T8 passed the plan's legacy
+header/password/token/cookie/private-key patterns but failed on JSON-formatted
+secrets and URL userinfo (P0).  See the executor report and
+`FINDINGS_2026-11-03.md`.
+
 ## What to inspect
 
 - `data/events/*.jsonl`: the trace shape (`fingerprint`, `error_class`,

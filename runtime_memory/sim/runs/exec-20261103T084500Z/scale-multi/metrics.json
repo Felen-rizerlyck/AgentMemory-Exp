@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "rows": [
+    {
+      "issues": 100,
+      "events": 5000,
+      "preflight_no_run_ms": 8.06,
+      "preflight_with_run_ms": 110.56,
+      "report_ms": 127.37,
+      "check_ms": 108.07,
+      "issues_json_bytes": 120628,
+      "events_bytes": 1688890,
+      "check_problems": []
+    }
+  ]
+}

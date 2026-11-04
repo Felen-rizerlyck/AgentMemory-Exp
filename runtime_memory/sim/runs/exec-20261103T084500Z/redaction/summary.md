@@ -1,0 +1,24 @@
+# T8 redaction fuzz
+
+messages: 1000; stored through postflight: 40
+
+| pattern | checked | leaks |
+|---|---|---|
+| api_key | 100 | 0 |
+| authorization | 100 | 0 |
+| cookie | 100 | 0 |
+| json_authorization | 100 | 100 |
+| json_password | 100 | 100 |
+| json_token | 100 | 100 |
+| normal | 100 | 0 |
+| password | 100 | 0 |
+| private_key | 100 | 0 |
+| token | 100 | 0 |
+
+plan-pattern leaks: 0
+JSON-pattern leaks: 300
+stored message leaks: 12
+target userinfo leaks: 2
+normal text preserved: True
+
+Note: the plan lists header/password/token/cookie/private-key patterns; JSON-formatted secrets and URL userinfo are included as realistic additional variants.

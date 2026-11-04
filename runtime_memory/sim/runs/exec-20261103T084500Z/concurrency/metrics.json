@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "test": "concurrent_append",
+      "expected_lines": 200,
+      "actual_lines": 165,
+      "bad_lines": 0,
+      "errors": [
+        {
+          "type": "PermissionError",
+          "message": "[Errno 13] Permission denied: 'C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\rtmem-conc-append-n87fgl2d\\\\events\\\\2026-11.jsonl.lock'"
+        }
+      ],
+      "status": "FAIL"
+    },
+    {
+      "test": "concurrent_postflight",
+      "expected_issue_count": 2,
+      "issue_records": 2,
+      "issue_counts": [
+        1,
+        1
+      ],
+      "events": 2,
+      "errors": [],
+      "status": "FAIL"
+    },
+    {
+      "test": "partial_write_event_without_issue",
+      "check_problems": [],
+      "detected": false,
+      "status": "GAP",
+      "note": "plan T6: not detecting event-without-issue is a gap"
+    },
+    {
+      "test": "terminate_between_event_and_issue",
+      "marker_seen": true,
+      "check_problems": [],
+      "corrupt_event_lines": 0,
+      "event_count": 1,
+      "issue_count": 0,
+      "status": "PASS"
+    }
+  ]
+}

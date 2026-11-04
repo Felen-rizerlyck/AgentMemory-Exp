@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "days": 90,
+  "per_day": 100,
+  "before": {
+    "event_files": 4,
+    "event_bytes": 2154600,
+    "event_lines": 9000,
+    "issues": 4,
+    "issue_ids": [
+      "ISS-old-resolved",
+      "ISS-old-open",
+      "ISS-recent-resolved",
+      "ISS-recent-open"
+    ],
+    "issues_json_bytes": 4390
+  },
+  "dry_run": {
+    "event_files": 2,
+    "events": 5600,
+    "issues": 1,
+    "dry_run": 1
+  },
+  "after_dry_run": {
+    "event_files": 4,
+    "event_bytes": 2154600,
+    "event_lines": 9000,
+    "issues": 4,
+    "issue_ids": [
+      "ISS-old-resolved",
+      "ISS-old-open",
+      "ISS-recent-resolved",
+      "ISS-recent-open"
+    ],
+    "issues_json_bytes": 4390
+  },
+  "apply": {
+    "event_files": 2,
+    "events": 5600,
+    "issues": 1,
+    "dry_run": 0
+  },
+  "after_apply": {
+    "event_files": 2,
+    "event_bytes": 813960,
+    "event_lines": 3400,
+    "issues": 3,
+    "issue_ids": [
+      "ISS-old-open",
+      "ISS-recent-resolved",
+      "ISS-recent-open"
+    ],
+    "issues_json_bytes": 3281
+  },
+  "dry_run_deleted_nothing": true,
+  "open_issues_kept": true,
+  "old_resolved_deleted": true,
+  "recent_resolved_kept": true,
+  "check_problems": []
+}

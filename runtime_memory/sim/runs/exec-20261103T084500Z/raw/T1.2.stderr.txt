@@ -1,0 +1,12 @@
+test_check_flags_bad_issue_status (test_store_edge.StoreEdgeTests.test_check_flags_bad_issue_status) ... ok
+test_check_flags_malformed_journal (test_store_edge.StoreEdgeTests.test_check_flags_malformed_journal) ... ok
+test_ensure_is_idempotent (test_store_edge.StoreEdgeTests.test_ensure_is_idempotent) ... ok
+test_find_issue_prefers_a_live_duplicate (test_store_edge.StoreEdgeTests.test_find_issue_prefers_a_live_duplicate) ... ok
+test_gc_dry_run_and_apply (test_store_edge.StoreEdgeTests.test_gc_dry_run_and_apply) ... ok
+test_gc_removes_only_old_resolved_issues (test_store_edge.StoreEdgeTests.test_gc_removes_only_old_resolved_issues) ... ok
+test_unknown_field_in_issue_is_ignored_by_runtime_parsing (test_store_edge.StoreEdgeTests.test_unknown_field_in_issue_is_ignored_by_runtime_parsing) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.172s
+
+OK

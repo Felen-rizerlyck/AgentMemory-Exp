@@ -1,0 +1,19 @@
+# T7 retention / gc
+
+days=90, per_day=100
+
+| phase | event files | event lines | event bytes | issues | issues.json |
+|---|---|---|---|---|---|
+| before | 4 | 9000 | 2154600 | 4 | 4390 |
+| after dry-run | 4 | 9000 | 2154600 | 4 | 4390 |
+| after apply | 2 | 3400 | 813960 | 3 | 3281 |
+
+dry_run: `{"event_files": 2, "events": 5600, "issues": 1, "dry_run": 1}`
+apply: `{"event_files": 2, "events": 5600, "issues": 1, "dry_run": 0}`
+dry_run_deleted_nothing: True
+open_issues_kept: True
+old_resolved_deleted: True
+recent_resolved_kept: True
+check: clean
+
+wrote F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\sim\runs\exec-20261103T084500Z\retention

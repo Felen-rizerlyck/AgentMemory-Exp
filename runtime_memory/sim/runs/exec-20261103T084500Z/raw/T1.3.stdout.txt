@@ -1,0 +1,2 @@
+checks=59 CRASH=2 FINDING=16 GAP=9 PASS=32
+wrote F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\sim\runs\exec-20261103T084500Z\deep

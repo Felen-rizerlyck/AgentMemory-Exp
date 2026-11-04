@@ -1,0 +1,18 @@
+test_auth_remains_blocked_until_expiry_then_stale_probe_resolves (test_edge_cases.EdgeCaseTests.test_auth_remains_blocked_until_expiry_then_stale_probe_resolves) ... ok
+test_environment_isolation (test_edge_cases.EdgeCaseTests.test_environment_isolation) ... ok
+test_expired_issue_probe_success_resolves (test_edge_cases.EdgeCaseTests.test_expired_issue_probe_success_resolves) ... ok
+test_invalid_args_does_not_block_a_sibling_query (test_edge_cases.EdgeCaseTests.test_invalid_args_does_not_block_a_sibling_query) ... ok
+test_model_note_does_not_change_status (test_edge_cases.EdgeCaseTests.test_model_note_does_not_change_status) ... ok
+test_per_run_budget_block_has_no_issue (test_edge_cases.EdgeCaseTests.test_per_run_budget_block_has_no_issue) ... ok
+test_probe_in_flight_blocks (test_edge_cases.EdgeCaseTests.test_probe_in_flight_blocks) ... ok
+test_probing_without_started_at_recovers (test_edge_cases.EdgeCaseTests.test_probing_without_started_at_recovers) ... ok
+test_read_only_preflight_does_not_mutate (test_edge_cases.EdgeCaseTests.test_read_only_preflight_does_not_mutate) ... ok
+test_retry_after_larger_than_ttl_extends_expiry (test_edge_cases.EdgeCaseTests.test_retry_after_larger_than_ttl_extends_expiry) ... ok
+test_scope_isolation (test_edge_cases.EdgeCaseTests.test_scope_isolation) ... ok
+test_shadow_block_then_success_is_a_false_block (test_edge_cases.EdgeCaseTests.test_shadow_block_then_success_is_a_false_block) ... ok
+test_unknown_error_class_falls_back_to_scope (test_edge_cases.EdgeCaseTests.test_unknown_error_class_falls_back_to_scope) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 1.274s
+
+OK

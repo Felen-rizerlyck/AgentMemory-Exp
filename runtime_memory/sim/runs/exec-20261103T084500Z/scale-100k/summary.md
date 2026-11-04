@@ -1,0 +1,7 @@
+# Scale probe (synthetic JSONL events)
+
+| events | preflight no run_id | preflight with run_id | report | check |
+|---|---|---|---|---|
+| 100000 | 0.91 ms | 1375.74 ms | 1860.91 ms | 1870.67 ms |
+
+`preflight with run_id` includes the per-run budget scan over all events; `preflight no run_id` skips it.
