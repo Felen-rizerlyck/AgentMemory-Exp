@@ -1,0 +1,62 @@
+{
+  "generated_at": "2026-11-10T03:19:44.433045Z",
+  "since": null,
+  "events": {
+    "total": 1,
+    "ok": 0,
+    "failures": 1,
+    "by_outcome": {
+      "fail": 1
+    }
+  },
+  "decisions": {
+    "total": 0,
+    "block": 0,
+    "shadow_block": 0,
+    "probe": 0,
+    "hint": 0,
+    "shadow_total": 0,
+    "enforce_total": 0
+  },
+  "shadow": {
+    "would_block": 0,
+    "false_blocks": 0,
+    "false_block_rate": null,
+    "confirmed_blocks": 0
+  },
+  "enforce": {
+    "blocked_calls": 0
+  },
+  "probes": {
+    "attempts": 0,
+    "success": 0,
+    "success_rate": null
+  },
+  "duplicate_attempts": 0,
+  "issues": {
+    "total": 1,
+    "by_status": {
+      "cooldown": 1,
+      "open": 0,
+      "probing": 0,
+      "mitigated": 0,
+      "resolved": 0,
+      "stale": 0
+    },
+    "stale_rate": 0.0,
+    "open": 1
+  },
+  "top_open_issues": [
+    {
+      "issue_id": "ISS-20261110T031943-1E3571",
+      "status": "cooldown",
+      "error_class": "unreachable",
+      "component": "mcp",
+      "tool": "demo.query",
+      "target": "r6-case",
+      "count": 1,
+      "next_retry_at": "2026-11-10T03:34:43.146405Z",
+      "workaround": ""
+    }
+  ]
+}

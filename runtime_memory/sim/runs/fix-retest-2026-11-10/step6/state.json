@@ -1,0 +1,17 @@
+{
+  "root": "C:\\Users\\cui-home\\AppData\\Local\\Temp\\rtmem-r6-9mbdmuki",
+  "enforce": false,
+  "events": 1,
+  "decisions": 0,
+  "overrides": 0,
+  "issues": 1,
+  "issues_by_status": {
+    "cooldown": 1,
+    "open": 0,
+    "probing": 0,
+    "mitigated": 0,
+    "resolved": 0,
+    "stale": 0
+  },
+  "last_event_at": "2026-11-10T03:19:43.146405Z"
+}

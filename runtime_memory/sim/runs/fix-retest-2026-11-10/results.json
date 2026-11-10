@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "run_id": "fix-retest-2026-11-10",
+  "commit": "2b933ce",
+  "parent_commit": "f00b1de",
+  "python": "3.14.0",
+  "executed_at": "2026-11-10T03:19:00Z",
+  "original_git_status": "clean",
+  "changed_files": [
+    "runtime_memory/sim/runs/fix-retest-2026-11-10/ (new test artifacts only)"
+  ],
+  "tests": {
+    "R1_unittest": {
+      "status": "PASS",
+      "tests": 92,
+      "exit_code": 0,
+      "evidence": "step0/unittest.log"
+    },
+    "R2_concurrent_append": {
+      "status": "PASS",
+      "iterations": 10,
+      "lines_per_iteration": 200,
+      "bad_lines": 0,
+      "evidence": "probes/summary.json"
+    },
+    "R3_concurrent_postflight": {
+      "status": "PASS",
+      "iterations": 10,
+      "events": 2,
+      "issue_records": 1,
+      "count": 2,
+      "evidence": "probes/summary.json"
+    },
+    "R4_partial_and_crash": {
+      "status": "PASS",
+      "iterations": 10,
+      "orphan_detected": true,
+      "corrupt_lines": 0,
+      "evidence": "probes/summary.json"
+    },
+    "R5_simple_T0_T8": {
+      "status": "PASS",
+      "evidence": "simple/REPORT.md"
+    },
+    "R6_cli_check_report_brief": {
+      "status": "PASS",
+      "check": "clean",
+      "events": 1,
+      "false_block_rate": null,
+      "evidence": "step6/"
+    },
+    "R7_diff_check_status": {
+      "status": "PASS",
+      "git_diff_check_exit": 0,
+      "evidence": "step7/"
+    }
+  },
+  "probes": [
+    {
+      "probe": 1,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 2,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 3,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 4,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 5,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 6,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 7,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 8,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 9,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    },
+    {
+      "probe": 10,
+      "exit_code": 0,
+      "append_lines": 200,
+      "append_bad_lines": 0,
+      "postflight_events": 2,
+      "postflight_issue_records": 1,
+      "postflight_counts": [
+        2
+      ],
+      "partial_detected": true,
+      "crash_corrupt_lines": 0,
+      "crash_orphan_detected": true,
+      "all_pass": true
+    }
+  ],
+  "known_limitations": [
+    "offline temp directories; 2 processes x 10 iterations",
+    "no real MCP/SIEM/shell/LLM calls",
+    "not a production concurrency or network test"
+  ],
+  "verdict": "R1-R7 PASS; can proceed to shadow gateway integration, not enforce."
+}
