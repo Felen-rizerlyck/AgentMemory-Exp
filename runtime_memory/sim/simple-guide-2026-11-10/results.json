@@ -1,0 +1,235 @@
+[
+  {
+    "id": "T0",
+    "title": "隔离与初始状态",
+    "status": "PASS",
+    "expected": "check clean；brief 无活动问题；events/issues=0",
+    "observed": {
+      "check": "Runtime memory check clean.",
+      "brief": "No active tool issues.",
+      "state": {
+        "root": "C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm",
+        "enforce": false,
+        "events": 0,
+        "decisions": 0,
+        "overrides": 0,
+        "issues": 0,
+        "issues_by_status": {
+          "cooldown": 0,
+          "open": 0,
+          "probing": 0,
+          "mitigated": 0,
+          "resolved": 0,
+          "stale": 0
+        },
+        "last_event_at": null
+      }
+    },
+    "evidence": null
+  },
+  {
+    "id": "T1",
+    "title": "首次失败可记忆",
+    "status": "PASS",
+    "expected": "cooldown, count=1, evidence_run_ids=[run-A], next_retry_at 存在",
+    "observed": {
+      "issue_id": "ISS-20261110T025044-EDBCD4",
+      "status": "cooldown",
+      "count": 1,
+      "evidence_run_ids": [
+        "run-A"
+      ],
+      "next_retry_at": "2026-11-10T02:50:46.962778Z"
+    },
+    "evidence": null
+  },
+  {
+    "id": "T2",
+    "title": "同一 run 的重试不升级",
+    "status": "PASS",
+    "expected": "cooldown，count 增加，evidence_run_ids 仍只有 run-A",
+    "observed": {
+      "status": "cooldown",
+      "count": 3,
+      "evidence_run_ids": [
+        "run-A"
+      ],
+      "next_retry_at": "2026-11-10T02:50:49.995157Z"
+    },
+    "evidence": null
+  },
+  {
+    "id": "T3",
+    "title": "跨 run 的重复故障升级",
+    "status": "PASS",
+    "expected": "open，evidence_run_ids 含 run-A 与 run-B",
+    "observed": {
+      "status": "open",
+      "count": 4,
+      "evidence_run_ids": [
+        "run-A",
+        "run-B"
+      ],
+      "next_retry_at": "2026-11-10T02:50:51.323867Z"
+    },
+    "evidence": null
+  },
+  {
+    "id": "T4",
+    "title": "冷却期内拦截建议",
+    "status": "PASS",
+    "expected": "block；shadow=true；reason 含等待重试窗口",
+    "observed": {
+      "action": "block",
+      "fingerprint": "test|scope|mcp|demo.query|search|case-cooldown",
+      "issue_id": "ISS-20261110T025049-B1E784",
+      "reason": "blocked until retry window: unreachable @ case-cooldown (1 failure(s))",
+      "blocked_until": "2026-11-10T02:50:51.597500Z",
+      "attempts_left": 1,
+      "alternatives": [],
+      "confidence": 0.6,
+      "expires_at": "2026-11-10T02:51:49.597500Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": true,
+      "decision_id": "DEC-20261110T025050-D3004D",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "evidence": null
+  },
+  {
+    "id": "T5",
+    "title": "预算耗尽后仍可探测",
+    "status": "PASS",
+    "expected": "退避时间到后返回 probe",
+    "observed": {
+      "action": "probe",
+      "fingerprint": "test|scope|mcp|demo.query|search|case-one",
+      "issue_id": "ISS-20261110T025044-EDBCD4",
+      "reason": "slow recovery probe: unreachable @ case-one (4 failure(s))",
+      "blocked_until": null,
+      "attempts_left": 0,
+      "alternatives": [],
+      "confidence": 0.95,
+      "expires_at": "2026-11-10T02:51:48.323867Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": true,
+      "decision_id": "DEC-20261110T025052-4F9693",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "evidence": null
+  },
+  {
+    "id": "T6",
+    "title": "探测成功自动解除",
+    "status": "PASS",
+    "expected": "resolved；next_retry_at/probe_started_at 为空；后续 allow",
+    "observed": {
+      "issue": {
+        "status": "resolved",
+        "next_retry_at": null,
+        "probe_started_at": null
+      },
+      "next_preflight": {
+        "action": "allow",
+        "fingerprint": "test|scope|mcp|demo.query|search|case-one",
+        "issue_id": "",
+        "reason": "",
+        "blocked_until": null,
+        "attempts_left": 0,
+        "alternatives": [],
+        "confidence": 0.0,
+        "expires_at": null,
+        "policy_version": "2026-11-02.1",
+        "shadow": true,
+        "decision_id": "",
+        "override": false,
+        "override_basis": "",
+        "override_by": "",
+        "schema_version": 1
+      }
+    },
+    "evidence": null
+  },
+  {
+    "id": "T7",
+    "title": "精简记忆卡片",
+    "status": "PASS",
+    "expected": "brief 输出工具/目标/状态/错误/独立 run 数/重试时间",
+    "observed": {
+      "text": "- mcp/demo.query @ case-brief: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:56.744210Z\n- mcp/demo.query @ case-cooldown: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:51.597500Z",
+      "json": {
+        "issues": [
+          {
+            "issue_id": "ISS-20261110T025054-BF3A80",
+            "tool": "mcp/demo.query",
+            "target": "case-brief",
+            "status": "cooldown",
+            "error": "unreachable",
+            "independent_runs": 1,
+            "retry_at": "2026-11-10T02:50:56.744210Z",
+            "workaround": null
+          },
+          {
+            "issue_id": "ISS-20261110T025049-B1E784",
+            "tool": "mcp/demo.query",
+            "target": "case-cooldown",
+            "status": "cooldown",
+            "error": "unreachable",
+            "independent_runs": 1,
+            "retry_at": "2026-11-10T02:50:51.597500Z",
+            "workaround": null
+          }
+        ]
+      }
+    },
+    "evidence": null
+  },
+  {
+    "id": "T8",
+    "title": "结构与审计自检",
+    "status": "PASS",
+    "expected": "check clean；events/decisions 非空；decision_id 关联",
+    "observed": {
+      "check": "Runtime memory check clean.",
+      "report": {
+        "events": {
+          "total": 7,
+          "ok": 1,
+          "failures": 6,
+          "by_outcome": {
+            "fail": 6,
+            "ok": 1
+          }
+        },
+        "decisions": {
+          "total": 2,
+          "block": 1,
+          "shadow_block": 1,
+          "probe": 1,
+          "hint": 0,
+          "shadow_total": 2,
+          "enforce_total": 0
+        },
+        "issues": {
+          "total": 3,
+          "by_status": {
+            "resolved": 1,
+            "cooldown": 2
+          },
+          "stale_rate": 0.0,
+          "open": 2
+        }
+      },
+      "event_count": 7,
+      "decision_count": 2,
+      "decision_linked": true
+    },
+    "evidence": null
+  }
+]
