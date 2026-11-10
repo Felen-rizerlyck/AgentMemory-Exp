@@ -1,245 +1,141 @@
 # Runtime Memory
 
-An independent prototype for **operational memory**: recording tool/environment
-failures, aggregating them into retryable issues, and deciding before a tool call
-whether to **allow**, **probe**, or **block** it.
+Runtime Memory is a small operational-memory prototype for tool and service
+calls. It records outcomes, groups repeated failures into issues, and returns a
+preflight decision: `allow`, `allow_with_hint`, `probe`, or `block`.
 
-This directory is deliberately separate from [`demo/`](../demo/README.md). It does
-not import `demo/src/attack_memory`, does not write `demo/data`, and does not
-participate in the case-memory `catalog validate` / `audit` / `state` / `retention`
-flows.
+It is separate from [`demo/`](../demo/README.md), which stores reviewed attack
+cases. Runtime Memory records tool health and retry experience; it does not
+store attack cases or decide whether an alert is malicious.
 
-- Design document: [`docs/RUNTIME_MEMORY_DESIGN.md`](../docs/RUNTIME_MEMORY_DESIGN.md)
-- Chinese README: [`README_CN.md`](README_CN.md)
+## Current shape
 
-## Why a second memory
-
-| Memory | Question | Store |
-|---|---|---|
-| Case memory (`demo/`) | What does this attack look like? | `attack_patterns`, links, chains |
-| **Runtime memory (this dir)** | What is broken, when may I retry, what else can I use? | `data/events`, `data/issues.json` |
-
-`ops_journal.jsonl`, `corrections.json`, and `link_exceptions.json` in `demo/`
-are *not* runtime memory: they are a write-transaction WAL, domain negative
-memory, and audit exceptions respectively.
-
-## What is implemented
-
-- Append-only operation traces (`data/events/YYYY-MM.jsonl`)
-- Issue aggregation with two key levels:
-  - `scope`: endpoint/service-level failures (`unreachable`, `auth`, `rate_limit`)
-  - `call`: argument/data-level failures (`schema`, `invalid_args`, `not_found`, `timeout`)
-- A state machine: `cooldown → open → probing → resolved/stale`
-- Per-error-class retry policy (`data/policy.json`)
-- `preflight` / `postflight` library API and a small CLI
-- **Shadow mode by default**: decisions are recorded, but calls still run
-- Enforce mode: `block` prevents the call
-- Redaction of bearer tokens, passwords, cookies, private keys, JSON-form
-  secrets, and URL userinfo/query credentials (also in stored targets)
-- Scope identity: global issues apply everywhere; session/agent issues only to
-  the same `session_id` / `agent_id`
-- JSONL store with an OS-level writer lock (`msvcrt`/`fcntl`); `issues.json` is
-  atomic and write operations are serialized across processes
-- `report --since 7d` with shadow false-block, duplicate-attempt and probe metrics
-- 90 stdlib `unittest` tests, including edge, store, redaction and security
-  tests, plus a read-only verification script
+- Append-only call events, issue snapshots, preflight decisions, and operator overrides.
+- Per-error retry policy with a retry window and slow probes after the normal attempt budget.
+- Retryable failures become `open` only after evidence from distinct `run_id`s; repeated failures in one run alone do not count as independent evidence.
+- `shadow` is the default: the decision is advisory and the caller still invokes the tool. `enforce` blocks only when the calling gateway honors the decision.
+- The local tool layer in [`tool_layer/`](tool_layer/README.md) exercises the real HTTP call boundary against a controllable localhost service. It is not an MCP server or a production gateway.
+- JSONL and JSON files keep the prototype inspectable. Cross-process locking and consistency checks exist, but this is not a transactional database.
 
 ## Quick start
 
-All commands run from `runtime_memory/`.
+Commands below run from `runtime_memory/`:
 
 ```powershell
-# 1) validate the store
+# Inspect the default store and compact active issue cards
 python src/manage_runtime_memory.py check
-python src/manage_runtime_memory.py state
+python src/manage_runtime_memory.py state --json
+python src/manage_runtime_memory.py brief
 
-# 2) end-to-end demo (temporary data dir, no repo writes)
-python src/run_runtime_demo.py --shadow     # default: observe only
-python src/run_runtime_demo.py --enforce    # block the repeated calls
+# Run the deterministic runtime-memory demonstration
+python src/run_runtime_demo.py --shadow
+python src/run_runtime_demo.py --enforce
 
-# 3) tests + verification matrix
-python -m unittest discover -s tests
-python scripts/verify_runtime_memory.py
+# Run the local tool-layer integration demo from the repository root instead
+cd ..
+python runtime_memory/tool_layer/run_demo.py
 ```
 
-Python 3.11+; standard library only.
+The demos use temporary stores by default. To retain data, the tool-layer demo
+accepts `--data-root <path>`; keep this separate from `runtime_memory/data/`
+and `demo/data/` while experimenting. Python 3.11+; the local tool layer uses
+the standard library.
 
-## Shadow vs enforce
+## How a caller uses it
+
+The memory library does not intercept arbitrary tool calls. A gateway must
+call `preflight`, skip a non-shadow `block`, call the tool for other decisions,
+and call `postflight` with the outcome and original decision:
 
 ```python
 from runtime_memory import OperationRequest, RuntimeMemory
 
-runtime = RuntimeMemory("data")  # policy defaults to data/policy.json (enforce=false)
-req = OperationRequest(
-    component="mcp", tool="hunt.query", action="search",
-    target="10.7.194.120:22196", args={"q": "dns tunnel"},
-    scope="global", environment_id="lab-a",
+memory = RuntimeMemory("runtime-data")
+request = OperationRequest(
+    component="mcp", tool="search", action="search",
+    target="local-service", args={"query": "health"},
+    scope="session", session_id="session-1", run_id="run-1",
 )
+decision = memory.preflight(request)
 
-decision = runtime.preflight(req)
-if decision.action == "block":
-    # In shadow mode this is a recommendation; in enforce mode the caller must
-    # skip the tool call and return decision to the model.
-    ...
+def invoke(call_tool, request, decision):
+    if decision.action == "block" and not decision.shadow:
+        return {"blocked": True, "decision": decision.to_dict()}
+    try:
+        result = call_tool(request)
+    except Exception as error:
+        memory.postflight(request, "fail", error=error, decision=decision)
+        raise
+    memory.postflight(request, "ok", decision=decision)
+    return result
 
-runtime.postflight(req, "fail", error=ConnectionRefusedError("refused"),
-                   decision=decision)
+result = invoke(call_tool, request, decision)
 ```
 
-Set `"enforce": true` in `data/policy.json` to make `block` authoritative.
-The demo defaults to a temporary data directory so it never touches the
-checked-in store.
+Always record outcomes from the harness/tool adapter, not from a model's
+unverified claim. Keep `enforce` off until the gateway behavior has been
+observed in shadow on representative calls.
 
-## CLI
+## CLI reference
+
+The global `--root` option comes before the subcommand. It lets a caller use a
+dedicated writable store:
 
 ```powershell
-# Inspect
-python src/manage_runtime_memory.py check
-python src/manage_runtime_memory.py state --json
-python src/manage_runtime_memory.py issues --active
-python src/manage_runtime_memory.py issue ISS-...
-
-# Ask before a call
-python src/manage_runtime_memory.py preflight \
-  --component mcp --tool hunt.query --action search \
-  --target 10.7.194.120:22196 --args '{"q":"dns tunnel"}' --json
-
-# Record an outcome (usually done by a gateway, not by the model)
-python src/manage_runtime_memory.py record \
-  --component mcp --tool hunt.query --action search \
-  --target 10.7.194.120:22196 --outcome fail \
-  --error-class unreachable --message "connect refused"
-
-# Operate
-python src/manage_runtime_memory.py resolve ISS-... --basis "endpoint restored"
-python src/manage_runtime_memory.py ignore ISS-... --basis "false alarm"
-python src/manage_runtime_memory.py note ISS-... --text "checked again" --author analyst
-
-# Report / cleanup
-python src/manage_runtime_memory.py report --since 7d
-python src/manage_runtime_memory.py gc --dry-run
+python src/manage_runtime_memory.py --root ..\tmp\runtime-data check
+python src/manage_runtime_memory.py --root ..\tmp\runtime-data preflight `
+  --component mcp --tool search --action search --target local-service `
+  --args '{"query":"health"}' --run-id run-1 --json
+python src/manage_runtime_memory.py --root ..\tmp\runtime-data record `
+  --component mcp --tool search --action search --target local-service `
+  --outcome fail --error-class unreachable --run-id run-1
+python src/manage_runtime_memory.py --root ..\tmp\runtime-data report --json
 ```
 
-`preflight --probe --basis "..."` is an **operator-only** override and is
-audited in `data/overrides.jsonl`. The library requires `human_override=True`;
-a model-facing caller cannot silently turn a block into a probe.
+Other useful commands: `issues --active`, `issue <ISS-ID>`, `brief --json`,
+`resolve`, `ignore`, `note`, `workaround`, and `gc` (dry-run by default).
+`preflight --probe --basis ...` is an operator override and is audited.
 
-## Data layout
+## Layout
 
 ```text
 runtime_memory/
-├── data/
-│   ├── policy.json          # error class -> retry policy; enforce=false by default
-│   ├── issues.json          # aggregated issue snapshot
-│   ├── events/YYYY-MM.jsonl # append-only operation traces
-│   ├── decisions.jsonl      # preflight decisions (block/probe/hint)
-│   ├── overrides.jsonl      # explicit probes
-│   └── playbook.md          # curated, human-reviewed notes
-├── src/runtime_memory/      # models, fingerprint, policy, store, runtime, report, cli
+├── src/runtime_memory/       # library: models, policy, store, runtime, report, CLI
 ├── src/manage_runtime_memory.py
 ├── src/run_runtime_demo.py
-├── tests/
-├── scripts/verify_runtime_memory.py
-└── skills/runtime-memory/SKILL.md
+├── tool_layer/               # local HTTP tool server, memory gateway, end-to-end demo
+├── data/                     # default policy/store seed; don't use for throwaway tests
+├── tests/                    # unit/edge/security regression tests
+├── scripts/                  # verification helpers
+├── sim/                      # scenarios, workload probes, and saved run artifacts
+└── skills/runtime-memory/    # agent operating guidance
 ```
 
-No event log is committed. The `data/` seed is intentionally small; a real
-harness should point `--root` at its own writable directory.
+Store files include `policy.json`, `issues.json`, `events/YYYY-MM.jsonl`,
+`decisions.jsonl`, `overrides.jsonl`, and a curated `playbook.md`. Directories
+under `sim/runs/` are experiment outputs, not the live default store.
 
-Record-reading notes:
+## Validation and guides
 
-- `count` = number of failure observations; `attempts` = all calls including a
-  successful probe/retry.
-- `max_attempts` means retries **after** the initial failure, so a resolved
-  issue can legitimately have `attempts = max_attempts + 1` (for example
-  3 failures + one successful probe = 4).
-- `decisions.jsonl` stores only non-allow decisions (`block` / `probe` /
-  `allow_with_hint`); `allow` calls appear only as events.
-
-## Commonality with `demo/`
-
-The layout mirrors the case-memory prototype so both can later live under one
-harness:
-
-- `src/<package>/` package + thin CLI entry point
-- `data/` file store with JSON schemas and `schema_version`
-- `tests/` stdlib `unittest`
-- `scripts/verify_*.py` read-only matrix
-- `skills/<name>/SKILL.md` runtime rules
-- English + Chinese README
-
-It deliberately does **not** share code or data with `demo/`; the two stores
-have different lifecycles and audit semantics.
-
-## Simulated run
-
-`sim/scenario.py` is a deterministic restricted-lab scenario: shadow phase →
-enforce phase → new session with persistent memory.
+From `runtime_memory/`:
 
 ```powershell
-python sim/scenario.py --run-id sim-2026-11-02-agent
+python -m unittest discover -s tests
+python scripts/verify_runtime_memory.py
 ```
 
-It writes `sim/runs/<run-id>/` with:
+Related documents:
 
-- `data/events/*.jsonl`, `data/issues.json`, `data/decisions.jsonl`
-- `narrative.log` (timestamped story)
-- `summary.md` / `report.json`
-- `records.md` (sample event / issue / decision)
-- `policies.json` (shadow vs enforce phase policies)
-
-The final example run is under
-`sim/runs/sim-2026-11-02-agent-final/`, with `AGENT_NOTES.md` from the
-independent runner. Earlier runs are kept for comparison.
-
-## Relationship to a tool dependency graph
-
-This prototype touches the **runtime health layer** of a tool dependency graph,
-but it is not a dependency graph implementation.
-
-- It knows nodes by `(environment, component, tool, target)` and records health,
-  failure counts, retry windows, and workarounds.
-- A `workaround` is an `alternative_to` edge in spirit, but it is stored as text.
-- It does not model static `depends_on` direction, topology, planning order,
-  blast radius, or graph queries.
-
-If a graph is needed later, export a projection from this store:
-
-```text
-node: (environment, component, tool, target)
-edge: calls | depends_on | alternative_to | co_fails_with
-attr: status, error_class, next_retry_at, confidence
-```
-
-Do not build a graph database before the flat issue store proves useful.
+- [Chinese README](README_CN.md)
+- [Design](../docs/RUNTIME_MEMORY_DESIGN.md)
+- [Simple algorithm test guide](../docs/RUNTIME_MEMORY_SIMPLE_TEST_GUIDE_2026-11-10.md)
+- [Fix and concurrency retest plan](../docs/RUNTIME_MEMORY_FIX_AND_RETEST_PLAN_2026-11-10.md)
+- [Tool-layer test plan](../docs/RUNTIME_MEMORY_TOOL_LAYER_TEST_PLAN_2026-11-10.md)
 
 ## Limits
 
-- Writes from multiple processes are serialized by an OS lock; this is not a
-  database transaction. A crash between event append and issue update can
-  still leave an event without an issue (recorded as a known gap).
-- Shadow decisions are advisory until `enforce=true`; the caller must honor
-  `block` in enforce mode.
-- No automatic issue resolution from an external health check; a successful
-  probe or a human resolve is required.
-- No playbook auto-generation; `playbook.md` is curated.
-- Scope identity is enforced for issue visibility; there is no task
-  scheduling/coordination between agents beyond that.
-- Default TTLs and backoffs are deliberate starting points, not calibrated
-  production values.
-- `preflight` with a non-empty `run_id` scans events for the per-run budget;
-  in the scale probe this was ~156ms at 20k events (vs ~1ms without `run_id`).
-  Add an index/cache before high-volume use, or leave `run_id` empty if the
-  gateway already enforces a per-run attempt cap.
-- A short backoff plus a small `max_attempts` can exhaust the issue budget
-  before a long outage recovers; the 30-seed workload showed `enforce_60`
-  reaching 0% success, while `enforce_900` reached 100%. Tune backoff and
-  `max_attempts` together, not separately.
-
-## Further reading
-
-- [Design document](../docs/RUNTIME_MEMORY_DESIGN.md)
-- [Executable offline test plan](../docs/RUNTIME_MEMORY_TEST_PLAN.md)
-- [Chinese README](README_CN.md)
-- [Demo case memory](../demo/README.md)
-- [Memory/skill self-iteration survey](../docs/agent-memory-skill-self-iteration-survey-2026-10.md)
+- Shadow mode does not prevent calls; the caller must honor enforce decisions to stop retries.
+- The local harness tests localhost HTTP integration and controlled failures, not MCP protocol compatibility, production traffic, or real failure distributions.
+- JSONL plus file locks are suitable for a small prototype, not a high-throughput multi-agent service. `preflight` with a `run_id` scans events for run-budget accounting.
+- A crash between event append and issue update can leave an orphan event; `check` reports this inconsistency but does not automatically repair it.
+- Backoff values are starting defaults, not production-calibrated settings.
