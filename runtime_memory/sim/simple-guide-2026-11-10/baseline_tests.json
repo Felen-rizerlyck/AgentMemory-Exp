@@ -1,0 +1,8 @@
+{
+  "command": "python -m unittest discover -s tests",
+  "cwd": "runtime_memory/",
+  "result": "FAILED (failures=3, errors=1)",
+  "tests_run": 90,
+  "failures": [],
+  "note": "测试未同步 2026-11-09 的新语义：同 run 重试不升级、预算耗尽后 slow probe；report by_status 无 open 的 KeyError 同因。按指南未修改测试。"
+}

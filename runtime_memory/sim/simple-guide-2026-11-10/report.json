@@ -1,0 +1,793 @@
+{
+  "schema_version": 1,
+  "executed_at": "2026-11-10T02:50:42+00:00",
+  "python": "3.14.0",
+  "commit": "3462004",
+  "policy": {
+    "schema_version": 1,
+    "policy_version": "2026-11-02.1",
+    "enforce": false,
+    "probe_after_expiry": true,
+    "probe_timeout_s": 300,
+    "budgets": {
+      "max_attempts_per_call_key_per_run": 3,
+      "max_failures_per_component_per_run": 10
+    },
+    "classes": {
+      "unreachable": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "exponential",
+        "base_s": 2,
+        "max_s": 3,
+        "max_attempts": 1,
+        "ttl_s": 60
+      },
+      "timeout": {
+        "key_level": "call",
+        "retryable": true,
+        "mode": "exponential",
+        "base_s": 30,
+        "max_s": 300,
+        "max_attempts": 3,
+        "ttl_s": 3600
+      },
+      "rate_limit": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "exponential",
+        "base_s": 60,
+        "max_s": 300,
+        "max_attempts": 3,
+        "ttl_s": 3600
+      },
+      "auth": {
+        "key_level": "scope",
+        "retryable": false,
+        "mode": "none",
+        "base_s": 0,
+        "max_s": 0,
+        "max_attempts": 0,
+        "ttl_s": 86400
+      },
+      "permission": {
+        "key_level": "scope",
+        "retryable": false,
+        "mode": "none",
+        "base_s": 0,
+        "max_s": 0,
+        "max_attempts": 0,
+        "ttl_s": 86400
+      },
+      "schema": {
+        "key_level": "call",
+        "retryable": false,
+        "mode": "none",
+        "base_s": 0,
+        "max_s": 0,
+        "max_attempts": 0,
+        "ttl_s": 86400
+      },
+      "not_found": {
+        "key_level": "call",
+        "retryable": false,
+        "mode": "none",
+        "base_s": 0,
+        "max_s": 0,
+        "max_attempts": 0,
+        "ttl_s": 3600
+      },
+      "invalid_args": {
+        "key_level": "call",
+        "retryable": false,
+        "mode": "none",
+        "base_s": 0,
+        "max_s": 0,
+        "max_attempts": 0,
+        "ttl_s": 3600
+      },
+      "internal": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "fixed",
+        "base_s": 60,
+        "max_s": 600,
+        "max_attempts": 1,
+        "ttl_s": 3600
+      },
+      "unknown": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "fixed",
+        "base_s": 60,
+        "max_s": 600,
+        "max_attempts": 1,
+        "ttl_s": 3600
+      }
+    }
+  },
+  "test_root": "C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm",
+  "test_root_kept": false,
+  "cases": [
+    {
+      "id": "T0",
+      "title": "隔离与初始状态",
+      "status": "PASS",
+      "expected": "check clean；brief 无活动问题；events/issues=0",
+      "observed": {
+        "check": "Runtime memory check clean.",
+        "brief": "No active tool issues.",
+        "state": {
+          "root": "C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm",
+          "enforce": false,
+          "events": 0,
+          "decisions": 0,
+          "overrides": 0,
+          "issues": 0,
+          "issues_by_status": {
+            "cooldown": 0,
+            "open": 0,
+            "probing": 0,
+            "mitigated": 0,
+            "resolved": 0,
+            "stale": 0
+          },
+          "last_event_at": null
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "T1",
+      "title": "首次失败可记忆",
+      "status": "PASS",
+      "expected": "cooldown, count=1, evidence_run_ids=[run-A], next_retry_at 存在",
+      "observed": {
+        "issue_id": "ISS-20261110T025044-EDBCD4",
+        "status": "cooldown",
+        "count": 1,
+        "evidence_run_ids": [
+          "run-A"
+        ],
+        "next_retry_at": "2026-11-10T02:50:46.962778Z"
+      },
+      "evidence": null
+    },
+    {
+      "id": "T2",
+      "title": "同一 run 的重试不升级",
+      "status": "PASS",
+      "expected": "cooldown，count 增加，evidence_run_ids 仍只有 run-A",
+      "observed": {
+        "status": "cooldown",
+        "count": 3,
+        "evidence_run_ids": [
+          "run-A"
+        ],
+        "next_retry_at": "2026-11-10T02:50:49.995157Z"
+      },
+      "evidence": null
+    },
+    {
+      "id": "T3",
+      "title": "跨 run 的重复故障升级",
+      "status": "PASS",
+      "expected": "open，evidence_run_ids 含 run-A 与 run-B",
+      "observed": {
+        "status": "open",
+        "count": 4,
+        "evidence_run_ids": [
+          "run-A",
+          "run-B"
+        ],
+        "next_retry_at": "2026-11-10T02:50:51.323867Z"
+      },
+      "evidence": null
+    },
+    {
+      "id": "T4",
+      "title": "冷却期内拦截建议",
+      "status": "PASS",
+      "expected": "block；shadow=true；reason 含等待重试窗口",
+      "observed": {
+        "action": "block",
+        "fingerprint": "test|scope|mcp|demo.query|search|case-cooldown",
+        "issue_id": "ISS-20261110T025049-B1E784",
+        "reason": "blocked until retry window: unreachable @ case-cooldown (1 failure(s))",
+        "blocked_until": "2026-11-10T02:50:51.597500Z",
+        "attempts_left": 1,
+        "alternatives": [],
+        "confidence": 0.6,
+        "expires_at": "2026-11-10T02:51:49.597500Z",
+        "policy_version": "2026-11-02.1",
+        "shadow": true,
+        "decision_id": "DEC-20261110T025050-D3004D",
+        "override": false,
+        "override_basis": "",
+        "override_by": "",
+        "schema_version": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "T5",
+      "title": "预算耗尽后仍可探测",
+      "status": "PASS",
+      "expected": "退避时间到后返回 probe",
+      "observed": {
+        "action": "probe",
+        "fingerprint": "test|scope|mcp|demo.query|search|case-one",
+        "issue_id": "ISS-20261110T025044-EDBCD4",
+        "reason": "slow recovery probe: unreachable @ case-one (4 failure(s))",
+        "blocked_until": null,
+        "attempts_left": 0,
+        "alternatives": [],
+        "confidence": 0.95,
+        "expires_at": "2026-11-10T02:51:48.323867Z",
+        "policy_version": "2026-11-02.1",
+        "shadow": true,
+        "decision_id": "DEC-20261110T025052-4F9693",
+        "override": false,
+        "override_basis": "",
+        "override_by": "",
+        "schema_version": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "T6",
+      "title": "探测成功自动解除",
+      "status": "PASS",
+      "expected": "resolved；next_retry_at/probe_started_at 为空；后续 allow",
+      "observed": {
+        "issue": {
+          "status": "resolved",
+          "next_retry_at": null,
+          "probe_started_at": null
+        },
+        "next_preflight": {
+          "action": "allow",
+          "fingerprint": "test|scope|mcp|demo.query|search|case-one",
+          "issue_id": "",
+          "reason": "",
+          "blocked_until": null,
+          "attempts_left": 0,
+          "alternatives": [],
+          "confidence": 0.0,
+          "expires_at": null,
+          "policy_version": "2026-11-02.1",
+          "shadow": true,
+          "decision_id": "",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "T7",
+      "title": "精简记忆卡片",
+      "status": "PASS",
+      "expected": "brief 输出工具/目标/状态/错误/独立 run 数/重试时间",
+      "observed": {
+        "text": "- mcp/demo.query @ case-brief: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:56.744210Z\n- mcp/demo.query @ case-cooldown: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:51.597500Z",
+        "json": {
+          "issues": [
+            {
+              "issue_id": "ISS-20261110T025054-BF3A80",
+              "tool": "mcp/demo.query",
+              "target": "case-brief",
+              "status": "cooldown",
+              "error": "unreachable",
+              "independent_runs": 1,
+              "retry_at": "2026-11-10T02:50:56.744210Z",
+              "workaround": null
+            },
+            {
+              "issue_id": "ISS-20261110T025049-B1E784",
+              "tool": "mcp/demo.query",
+              "target": "case-cooldown",
+              "status": "cooldown",
+              "error": "unreachable",
+              "independent_runs": 1,
+              "retry_at": "2026-11-10T02:50:51.597500Z",
+              "workaround": null
+            }
+          ]
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "T8",
+      "title": "结构与审计自检",
+      "status": "PASS",
+      "expected": "check clean；events/decisions 非空；decision_id 关联",
+      "observed": {
+        "check": "Runtime memory check clean.",
+        "report": {
+          "events": {
+            "total": 7,
+            "ok": 1,
+            "failures": 6,
+            "by_outcome": {
+              "fail": 6,
+              "ok": 1
+            }
+          },
+          "decisions": {
+            "total": 2,
+            "block": 1,
+            "shadow_block": 1,
+            "probe": 1,
+            "hint": 0,
+            "shadow_total": 2,
+            "enforce_total": 0
+          },
+          "issues": {
+            "total": 3,
+            "by_status": {
+              "resolved": 1,
+              "cooldown": 2
+            },
+            "stale_rate": 0.0,
+            "open": 2
+          }
+        },
+        "event_count": 7,
+        "decision_count": 2,
+        "decision_linked": true
+      },
+      "evidence": null
+    }
+  ],
+  "commands": [
+    {
+      "case": "T0",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm check",
+      "args": [
+        "check"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.677,
+      "stdout": "Runtime memory check clean.\n",
+      "stderr": ""
+    },
+    {
+      "case": "T0",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm brief",
+      "args": [
+        "brief"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.631,
+      "stdout": "No active tool issues.\n",
+      "stderr": ""
+    },
+    {
+      "case": "T0",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm state --json",
+      "args": [
+        "state",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.638,
+      "stdout": "{\n  \"root\": \"C:\\\\Users\\\\cui-home\\\\AppData\\\\Local\\\\Temp\\\\runtime-memory-simple-check-jo71akpm\",\n  \"enforce\": false,\n  \"events\": 0,\n  \"decisions\": 0,\n  \"overrides\": 0,\n  \"issues\": 0,\n  \"issues_by_status\": {\n    \"cooldown\": 0,\n    \"open\": 0,\n    \"probing\": 0,\n    \"mitigated\": 0,\n    \"resolved\": 0,\n    \"stale\": 0\n  },\n  \"last_event_at\": null\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id run-A --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "run-A",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.646,
+      "stdout": "Recorded failure -> ISS-20261110T025044-EDBCD4 [cooldown]\n",
+      "stderr": ""
+    },
+    {
+      "case": "T1",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm issues --active --json",
+      "args": [
+        "issues",
+        "--active",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.683,
+      "stdout": "{\n  \"schema_version\": 1,\n  \"issues\": [\n    {\n      \"issue_id\": \"ISS-20261110T025044-EDBCD4\",\n      \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n      \"key_level\": \"scope\",\n      \"scope\": \"global\",\n      \"environment_id\": \"test\",\n      \"component\": \"mcp\",\n      \"tool\": \"demo.query\",\n      \"action\": \"search\",\n      \"target\": \"case-one\",\n      \"error_class\": \"unreachable\",\n      \"status\": \"cooldown\",\n      \"first_seen\": \"2026-11-10T02:50:44.962778Z\",\n      \"last_seen\": \"2026-11-10T02:50:44.962778Z\",\n      \"count\": 1,\n      \"attempts\": 1,\n      \"retry_policy\": {\n        \"key_level\": \"scope\",\n        \"retryable\": true,\n        \"mode\": \"exponential\",\n        \"base_s\": 2,\n        \"max_s\": 3,\n        \"max_attempts\": 1,\n        \"ttl_s\": 60,\n        \"next_retry_at\": \"2026-11-10T02:50:46.962778Z\"\n      },\n      \"next_retry_at\": \"2026-11-10T02:50:46.962778Z\",\n      \"expires_at\": \"2026-11-10T02:51:44.962778Z\",\n      \"workaround\": \"\",\n      \"workaround_by\": \"\",\n      \"workaround_at\": null,\n      \"confidence\": 0.6,\n      \"source_event_ids\": [\n        \"OP-20261110T025044-4A9F38\"\n      ],\n      \"dropped_event_count\": 0,\n      \"evidence_run_ids\": [\n        \"run-A\"\n      ],\n      \"last_probe_event_id\": null,\n      \"probe_started_at\": null,\n      \"diagnosis\": \"environment\",\n      \"resolution\": \"\",\n      \"resolved_at\": null,\n      \"resolved_basis\": \"\",\n      \"reviewer\": \"\",\n      \"notes\": [],\n      \"related_incident_id\": null,\n      \"related_case_id\": null,\n      \"scope_id\": \"\",\n      \"schema_version\": 1\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id run-A --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "run-A",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.685,
+      "stdout": "Recorded failure -> ISS-20261110T025044-EDBCD4 [cooldown]\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id run-A --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "run-A",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.666,
+      "stdout": "Recorded failure -> ISS-20261110T025044-EDBCD4 [cooldown]\n",
+      "stderr": ""
+    },
+    {
+      "case": "T2",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm issue ISS-20261110T025044-EDBCD4 --json",
+      "args": [
+        "issue",
+        "ISS-20261110T025044-EDBCD4",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.663,
+      "stdout": "{\n  \"issue_id\": \"ISS-20261110T025044-EDBCD4\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n  \"key_level\": \"scope\",\n  \"scope\": \"global\",\n  \"environment_id\": \"test\",\n  \"component\": \"mcp\",\n  \"tool\": \"demo.query\",\n  \"action\": \"search\",\n  \"target\": \"case-one\",\n  \"error_class\": \"unreachable\",\n  \"status\": \"cooldown\",\n  \"first_seen\": \"2026-11-10T02:50:44.962778Z\",\n  \"last_seen\": \"2026-11-10T02:50:46.995157Z\",\n  \"count\": 3,\n  \"attempts\": 3,\n  \"retry_policy\": {\n    \"key_level\": \"scope\",\n    \"retryable\": true,\n    \"mode\": \"exponential\",\n    \"base_s\": 2,\n    \"max_s\": 3,\n    \"max_attempts\": 1,\n    \"ttl_s\": 60,\n    \"next_retry_at\": \"2026-11-10T02:50:49.995157Z\"\n  },\n  \"next_retry_at\": \"2026-11-10T02:50:49.995157Z\",\n  \"expires_at\": \"2026-11-10T02:51:46.995157Z\",\n  \"workaround\": \"\",\n  \"workaround_by\": \"\",\n  \"workaround_at\": null,\n  \"confidence\": 0.95,\n  \"source_event_ids\": [\n    \"OP-20261110T025044-4A9F38\",\n    \"OP-20261110T025046-0D7D15\",\n    \"OP-20261110T025046-8277E0\"\n  ],\n  \"dropped_event_count\": 0,\n  \"evidence_run_ids\": [\n    \"run-A\"\n  ],\n  \"last_probe_event_id\": null,\n  \"probe_started_at\": null,\n  \"diagnosis\": \"environment\",\n  \"resolution\": \"\",\n  \"resolved_at\": null,\n  \"resolved_basis\": \"\",\n  \"reviewer\": \"\",\n  \"notes\": [],\n  \"related_incident_id\": null,\n  \"related_case_id\": null,\n  \"scope_id\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id run-B --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "run-B",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.667,
+      "stdout": "Recorded failure -> ISS-20261110T025044-EDBCD4 [open]\n",
+      "stderr": ""
+    },
+    {
+      "case": "T3",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm issue ISS-20261110T025044-EDBCD4 --json",
+      "args": [
+        "issue",
+        "ISS-20261110T025044-EDBCD4",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.625,
+      "stdout": "{\n  \"issue_id\": \"ISS-20261110T025044-EDBCD4\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n  \"key_level\": \"scope\",\n  \"scope\": \"global\",\n  \"environment_id\": \"test\",\n  \"component\": \"mcp\",\n  \"tool\": \"demo.query\",\n  \"action\": \"search\",\n  \"target\": \"case-one\",\n  \"error_class\": \"unreachable\",\n  \"status\": \"open\",\n  \"first_seen\": \"2026-11-10T02:50:44.962778Z\",\n  \"last_seen\": \"2026-11-10T02:50:48.323867Z\",\n  \"count\": 4,\n  \"attempts\": 4,\n  \"retry_policy\": {\n    \"key_level\": \"scope\",\n    \"retryable\": true,\n    \"mode\": \"exponential\",\n    \"base_s\": 2,\n    \"max_s\": 3,\n    \"max_attempts\": 1,\n    \"ttl_s\": 60,\n    \"next_retry_at\": \"2026-11-10T02:50:51.323867Z\"\n  },\n  \"next_retry_at\": \"2026-11-10T02:50:51.323867Z\",\n  \"expires_at\": \"2026-11-10T02:51:48.323867Z\",\n  \"workaround\": \"\",\n  \"workaround_by\": \"\",\n  \"workaround_at\": null,\n  \"confidence\": 0.95,\n  \"source_event_ids\": [\n    \"OP-20261110T025044-4A9F38\",\n    \"OP-20261110T025046-0D7D15\",\n    \"OP-20261110T025046-8277E0\",\n    \"OP-20261110T025048-53883D\"\n  ],\n  \"dropped_event_count\": 0,\n  \"evidence_run_ids\": [\n    \"run-A\",\n    \"run-B\"\n  ],\n  \"last_probe_event_id\": null,\n  \"probe_started_at\": null,\n  \"diagnosis\": \"environment\",\n  \"resolution\": \"\",\n  \"resolved_at\": null,\n  \"resolved_basis\": \"\",\n  \"reviewer\": \"\",\n  \"notes\": [],\n  \"related_incident_id\": null,\n  \"related_case_id\": null,\n  \"scope_id\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-cooldown --run-id run-T4 --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-cooldown",
+        "--run-id",
+        "run-T4",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.647,
+      "stdout": "Recorded failure -> ISS-20261110T025049-B1E784 [cooldown]\n",
+      "stderr": ""
+    },
+    {
+      "case": "T4",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm preflight --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-cooldown --run-id check-T4 --json",
+      "args": [
+        "preflight",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-cooldown",
+        "--run-id",
+        "check-T4",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.699,
+      "stdout": "{\n  \"action\": \"block\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-cooldown\",\n  \"issue_id\": \"ISS-20261110T025049-B1E784\",\n  \"reason\": \"blocked until retry window: unreachable @ case-cooldown (1 failure(s))\",\n  \"blocked_until\": \"2026-11-10T02:50:51.597500Z\",\n  \"attempts_left\": 1,\n  \"alternatives\": [],\n  \"confidence\": 0.6,\n  \"expires_at\": \"2026-11-10T02:51:49.597500Z\",\n  \"policy_version\": \"2026-11-02.1\",\n  \"shadow\": true,\n  \"decision_id\": \"DEC-20261110T025050-D3004D\",\n  \"override\": false,\n  \"override_basis\": \"\",\n  \"override_by\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "T5",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm preflight --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id check-T5 --json",
+      "args": [
+        "preflight",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "check-T5",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.651,
+      "stdout": "{\n  \"action\": \"probe\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n  \"issue_id\": \"ISS-20261110T025044-EDBCD4\",\n  \"reason\": \"slow recovery probe: unreachable @ case-one (4 failure(s))\",\n  \"blocked_until\": null,\n  \"attempts_left\": 0,\n  \"alternatives\": [],\n  \"confidence\": 0.95,\n  \"expires_at\": \"2026-11-10T02:51:48.323867Z\",\n  \"policy_version\": \"2026-11-02.1\",\n  \"shadow\": true,\n  \"decision_id\": \"DEC-20261110T025052-4F9693\",\n  \"override\": false,\n  \"override_basis\": \"\",\n  \"override_by\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "T6",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id run-C --outcome ok --decision-id DEC-20261110T025052-4F9693",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "run-C",
+        "--outcome",
+        "ok",
+        "--decision-id",
+        "DEC-20261110T025052-4F9693"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.649,
+      "stdout": "Recorded ok; no issue.\n",
+      "stderr": ""
+    },
+    {
+      "case": "T6",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm issue ISS-20261110T025044-EDBCD4 --json",
+      "args": [
+        "issue",
+        "ISS-20261110T025044-EDBCD4",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.643,
+      "stdout": "{\n  \"issue_id\": \"ISS-20261110T025044-EDBCD4\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n  \"key_level\": \"scope\",\n  \"scope\": \"global\",\n  \"environment_id\": \"test\",\n  \"component\": \"mcp\",\n  \"tool\": \"demo.query\",\n  \"action\": \"search\",\n  \"target\": \"case-one\",\n  \"error_class\": \"unreachable\",\n  \"status\": \"resolved\",\n  \"first_seen\": \"2026-11-10T02:50:44.962778Z\",\n  \"last_seen\": \"2026-11-10T02:50:48.323867Z\",\n  \"count\": 4,\n  \"attempts\": 5,\n  \"retry_policy\": {\n    \"key_level\": \"scope\",\n    \"retryable\": true,\n    \"mode\": \"exponential\",\n    \"base_s\": 2,\n    \"max_s\": 3,\n    \"max_attempts\": 1,\n    \"ttl_s\": 60,\n    \"next_retry_at\": \"2026-11-10T02:50:51.323867Z\"\n  },\n  \"next_retry_at\": null,\n  \"expires_at\": \"2026-11-10T02:51:48.323867Z\",\n  \"workaround\": \"\",\n  \"workaround_by\": \"\",\n  \"workaround_at\": null,\n  \"confidence\": 0.95,\n  \"source_event_ids\": [\n    \"OP-20261110T025044-4A9F38\",\n    \"OP-20261110T025046-0D7D15\",\n    \"OP-20261110T025046-8277E0\",\n    \"OP-20261110T025048-53883D\",\n    \"OP-20261110T025052-B73D8F\"\n  ],\n  \"dropped_event_count\": 0,\n  \"evidence_run_ids\": [\n    \"run-A\",\n    \"run-B\"\n  ],\n  \"last_probe_event_id\": \"OP-20261110T025052-B73D8F\",\n  \"probe_started_at\": null,\n  \"diagnosis\": \"environment\",\n  \"resolution\": \"fixed\",\n  \"resolved_at\": \"2026-11-10T02:50:52.792366Z\",\n  \"resolved_basis\": \"success event OP-20261110T025052-B73D8F\",\n  \"reviewer\": \"\",\n  \"notes\": [],\n  \"related_incident_id\": null,\n  \"related_case_id\": null,\n  \"scope_id\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "T6",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm preflight --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-one --run-id check-T6 --json",
+      "args": [
+        "preflight",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-one",
+        "--run-id",
+        "check-T6",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.667,
+      "stdout": "{\n  \"action\": \"allow\",\n  \"fingerprint\": \"test|scope|mcp|demo.query|search|case-one\",\n  \"issue_id\": \"\",\n  \"reason\": \"\",\n  \"blocked_until\": null,\n  \"attempts_left\": 0,\n  \"alternatives\": [],\n  \"confidence\": 0.0,\n  \"expires_at\": null,\n  \"policy_version\": \"2026-11-02.1\",\n  \"shadow\": true,\n  \"decision_id\": \"\",\n  \"override\": false,\n  \"override_basis\": \"\",\n  \"override_by\": \"\",\n  \"schema_version\": 1\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "record",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm record --component mcp --tool demo.query --action search --scope global --environment test --args {\"q\":\"health\"} --target case-brief --run-id run-BRIEF --outcome fail --error-class unreachable --message simulated connection failure",
+      "args": [
+        "record",
+        "--component",
+        "mcp",
+        "--tool",
+        "demo.query",
+        "--action",
+        "search",
+        "--scope",
+        "global",
+        "--environment",
+        "test",
+        "--args",
+        "{\"q\":\"health\"}",
+        "--target",
+        "case-brief",
+        "--run-id",
+        "run-BRIEF",
+        "--outcome",
+        "fail",
+        "--error-class",
+        "unreachable",
+        "--message",
+        "simulated connection failure"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.642,
+      "stdout": "Recorded failure -> ISS-20261110T025054-BF3A80 [cooldown]\n",
+      "stderr": ""
+    },
+    {
+      "case": "T7",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm brief",
+      "args": [
+        "brief"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.635,
+      "stdout": "- mcp/demo.query @ case-brief: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:56.744210Z\n- mcp/demo.query @ case-cooldown: cooldown / unreachable (1 independent run(s)); retry=2026-11-10T02:50:51.597500Z\n",
+      "stderr": ""
+    },
+    {
+      "case": "T7",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm brief --json",
+      "args": [
+        "brief",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.631,
+      "stdout": "{\n  \"issues\": [\n    {\n      \"issue_id\": \"ISS-20261110T025054-BF3A80\",\n      \"tool\": \"mcp/demo.query\",\n      \"target\": \"case-brief\",\n      \"status\": \"cooldown\",\n      \"error\": \"unreachable\",\n      \"independent_runs\": 1,\n      \"retry_at\": \"2026-11-10T02:50:56.744210Z\",\n      \"workaround\": null\n    },\n    {\n      \"issue_id\": \"ISS-20261110T025049-B1E784\",\n      \"tool\": \"mcp/demo.query\",\n      \"target\": \"case-cooldown\",\n      \"status\": \"cooldown\",\n      \"error\": \"unreachable\",\n      \"independent_runs\": 1,\n      \"retry_at\": \"2026-11-10T02:50:51.597500Z\",\n      \"workaround\": null\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "case": "T8",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm check",
+      "args": [
+        "check"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.675,
+      "stdout": "Runtime memory check clean.\n",
+      "stderr": ""
+    },
+    {
+      "case": "T8",
+      "command": "C:\\Python314\\python.exe F:\\DeepSeekHarness\\data\\state\\superagent\\work\\runtime-memory-tests-64464fdaa11e\\runtime_memory\\src\\manage_runtime_memory.py --root C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-simple-check-jo71akpm report --json",
+      "args": [
+        "report",
+        "--json"
+      ],
+      "exit_code": 0,
+      "duration_s": 0.655,
+      "stdout": "{\n  \"generated_at\": \"2026-11-10T02:50:57.344543Z\",\n  \"since\": null,\n  \"events\": {\n    \"total\": 7,\n    \"ok\": 1,\n    \"failures\": 6,\n    \"by_outcome\": {\n      \"fail\": 6,\n      \"ok\": 1\n    }\n  },\n  \"decisions\": {\n    \"total\": 2,\n    \"block\": 1,\n    \"shadow_block\": 1,\n    \"probe\": 1,\n    \"hint\": 0,\n    \"shadow_total\": 2,\n    \"enforce_total\": 0\n  },\n  \"shadow\": {\n    \"would_block\": 1,\n    \"false_blocks\": 0,\n    \"false_block_rate\": null,\n    \"confirmed_blocks\": 0\n  },\n  \"enforce\": {\n    \"blocked_calls\": 0\n  },\n  \"probes\": {\n    \"attempts\": 1,\n    \"success\": 1,\n    \"success_rate\": 1.0\n  },\n  \"duplicate_attempts\": 3,\n  \"issues\": {\n    \"total\": 3,\n    \"by_status\": {\n      \"resolved\": 1,\n      \"cooldown\": 2\n    },\n    \"stale_rate\": 0.0,\n    \"open\": 2\n  },\n  \"top_open_issues\": [\n    {\n      \"issue_id\": \"ISS-20261110T025054-BF3A80\",\n      \"status\": \"cooldown\",\n      \"error_class\": \"unreachable\",\n      \"component\": \"mcp\",\n      \"tool\": \"demo.query\",\n      \"target\": \"case-brief\",\n      \"count\": 1,\n      \"next_retry_at\": \"2026-11-10T02:50:56.744210Z\",\n      \"workaround\": \"\"\n    },\n    {\n      \"issue_id\": \"ISS-20261110T025049-B1E784\",\n      \"status\": \"cooldown\",\n      \"error_class\": \"unreachable\",\n      \"component\": \"mcp\",\n      \"tool\": \"demo.query\",\n      \"target\": \"case-cooldown\",\n      \"count\": 1,\n      \"next_retry_at\": \"2026-11-10T02:50:51.597500Z\",\n      \"workaround\": \"\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    }
+  ]
+}

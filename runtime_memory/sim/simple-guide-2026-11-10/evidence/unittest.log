@@ -1,0 +1,50 @@
+...................................................F...F.......F...E......................
+======================================================================
+ERROR: test_duplicate_attempts_are_reported (test_runtime.ManualAndReportTests.test_duplicate_attempts_are_reported)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\tests\test_runtime.py", line 341, in test_duplicate_attempts_are_reported
+    self.assertEqual(report["issues"]["by_status"]["open"], 1)
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'open'
+
+======================================================================
+FAIL: test_attempt_budget_allows_one_probe_then_blocks (test_runtime.IssueLifecycleTests.test_attempt_budget_allows_one_probe_then_blocks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\tests\test_runtime.py", line 131, in test_attempt_budget_allows_one_probe_then_blocks
+    self.assertEqual(blocked.action, "block")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'probe' != 'block'
+- probe
++ block
+
+
+======================================================================
+FAIL: test_failed_probe_reopens_issue (test_runtime.IssueLifecycleTests.test_failed_probe_reopens_issue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\tests\test_runtime.py", line 96, in test_failed_probe_reopens_issue
+    self.assertEqual(updated["status"], "open")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cooldown' != 'open'
+- cooldown
++ open
+
+
+======================================================================
+FAIL: test_second_failure_opens_issue (test_runtime.IssueLifecycleTests.test_second_failure_opens_issue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\tests\test_runtime.py", line 72, in test_second_failure_opens_issue
+    self.assertEqual(issue["status"], "open")
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cooldown' != 'open'
+- cooldown
++ open
+
+
+----------------------------------------------------------------------
+Ran 90 tests in 12.130s
+
+FAILED (failures=3, errors=1)
