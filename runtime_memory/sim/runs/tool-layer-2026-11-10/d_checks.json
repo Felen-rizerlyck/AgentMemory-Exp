@@ -1,0 +1,68 @@
+{
+  "D1": {
+    "error_class": "unreachable",
+    "issue": {
+      "status": "cooldown",
+      "error_class": "unreachable",
+      "retry_policy": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "fixed",
+        "base_s": 1,
+        "max_s": 1,
+        "max_attempts": 1,
+        "ttl_s": 30,
+        "next_retry_at": "2026-11-10T07:33:55.998620Z"
+      }
+    }
+  },
+  "D2": {
+    "error_class": "timeout",
+    "hit": "timeout"
+  },
+  "D3": {
+    "error_class": "rate_limit",
+    "issue": "rate_limit",
+    "next_retry_delta_s": 0.937254
+  },
+  "D4": {
+    "error_class": "auth",
+    "issue": {
+      "status": "open",
+      "error_class": "auth",
+      "next_retry_at": null
+    },
+    "blocked": "block",
+    "still_blocked": "block"
+  },
+  "D5": {
+    "error_class": "timeout",
+    "closed_port": 12149,
+    "message": "<urlopen error timed out>"
+  },
+  "D6": {
+    "decision": {
+      "action": "probe",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:60050",
+      "issue_id": "ISS-20261110T073354-04E978",
+      "reason": "retry window open: unreachable @ http://127.0.0.1:60050 (1 failure(s))",
+      "blocked_until": null,
+      "attempts_left": 1,
+      "alternatives": [],
+      "confidence": 0.6,
+      "expires_at": "2026-11-10T07:34:24.998620Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": false,
+      "decision_id": "DEC-20261110T073359-5CF568",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "issue": {
+      "status": "resolved",
+      "next_retry_at": null,
+      "probe_started_at": null
+    }
+  }
+}

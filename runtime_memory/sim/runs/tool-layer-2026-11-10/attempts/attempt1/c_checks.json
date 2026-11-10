@@ -1,0 +1,177 @@
+{
+  "C1": {
+    "result": {
+      "query": "baseline",
+      "results": [
+        "local-result:baseline"
+      ],
+      "source": "local-test-tool"
+    },
+    "events": 1,
+    "active_issues": 0,
+    "target": "http://127.0.0.1:2795"
+  },
+  "C2": {
+    "error_class": "unreachable",
+    "status": "cooldown",
+    "calls_delta": 1
+  },
+  "C3": {
+    "decision": {
+      "schema_version": 1,
+      "decision_id": "DEC-20261110T073217-B0D5D2",
+      "ts": "2026-11-10T07:32:17.462676Z",
+      "component": "local_http",
+      "tool": "search",
+      "requested_action": "search",
+      "target": "http://127.0.0.1:2795",
+      "scope": "session",
+      "scope_id": "local-test-session",
+      "environment_id": "local-test",
+      "session_id": "local-test-session",
+      "agent_id": "",
+      "run_id": "run-C2",
+      "scope_fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+      "call_fingerprint": "local-test|call|local_http|search|search|http://127.0.0.1:2795|args:sha256:11f7f8ef8110a2cd",
+      "decision": "block",
+      "issue_id": "ISS-20261110T073217-F44EFD",
+      "reason": "blocked until retry window: unreachable @ http://127.0.0.1:2795 (1 failure(s))",
+      "blocked_until": "2026-11-10T07:32:22.365578Z",
+      "attempts_left": 1,
+      "alternatives": [],
+      "confidence": 0.6,
+      "expires_at": "2026-11-10T07:32:47.365578Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": true,
+      "override": false,
+      "override_basis": "",
+      "override_by": ""
+    },
+    "event_found": true,
+    "calls_delta": 1
+  },
+  "C4": {
+    "after_same_run": {
+      "status": "cooldown",
+      "evidence": [
+        "run-C2"
+      ]
+    },
+    "after_new_run": {
+      "status": "open",
+      "evidence": [
+        "run-C2",
+        "run-C4"
+      ]
+    }
+  },
+  "C5": {
+    "blocked": true,
+    "decision": {
+      "action": "block",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+      "issue_id": "ISS-20261110T073217-F44EFD",
+      "reason": "blocked until retry window: unreachable @ http://127.0.0.1:2795 (4 failure(s))",
+      "blocked_until": "2026-11-10T07:32:22.894254Z",
+      "attempts_left": 0,
+      "alternatives": [],
+      "confidence": 0.95,
+      "expires_at": "2026-11-10T07:32:47.894254Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": false,
+      "decision_id": "DEC-20261110T073218-02D4F9",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "backend_calls_delta": 0,
+    "event_delta": 0
+  },
+  "C6": {
+    "decision": {
+      "action": "probe",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+      "issue_id": "ISS-20261110T073217-F44EFD",
+      "reason": "slow recovery probe: unreachable @ http://127.0.0.1:2795 (4 failure(s))",
+      "blocked_until": null,
+      "attempts_left": 0,
+      "alternatives": [],
+      "confidence": 0.95,
+      "expires_at": "2026-11-10T07:32:47.894254Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": false,
+      "decision_id": "DEC-20261110T073223-22E27B",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "issue": {
+      "status": "resolved",
+      "next_retry_at": null,
+      "probe_started_at": null
+    }
+  },
+  "C7": {
+    "decision": {
+      "action": "allow",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+      "issue_id": "",
+      "reason": "",
+      "blocked_until": null,
+      "attempts_left": 0,
+      "alternatives": [],
+      "confidence": 0.0,
+      "expires_at": null,
+      "policy_version": "2026-11-02.1",
+      "shadow": false,
+      "decision_id": "",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "issue_status": "resolved"
+  },
+  "C8": {
+    "c3_event_linked": true,
+    "c5_decision": "DEC-20261110T073218-02D4F9",
+    "c5_event_found": false,
+    "c6_event_linked": true
+  },
+  "C9": {
+    "check": [],
+    "events": {
+      "total": 7,
+      "ok": 3,
+      "failures": 4,
+      "by_outcome": {
+        "ok": 3,
+        "fail": 4
+      }
+    },
+    "decisions": {
+      "total": 5,
+      "block": 4,
+      "shadow_block": 3,
+      "probe": 1,
+      "hint": 0,
+      "shadow_total": 3,
+      "enforce_total": 2
+    },
+    "issues": {
+      "total": 1,
+      "by_status": {
+        "cooldown": 0,
+        "open": 0,
+        "probing": 0,
+        "mitigated": 0,
+        "resolved": 1,
+        "stale": 0
+      },
+      "stale_rate": 0.0,
+      "open": 0
+    }
+  }
+}

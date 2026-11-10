@@ -1,0 +1,206 @@
+{
+  "data_root": "C:\\Users\\cui-home\\AppData\\Local\\Temp\\runtime-memory-tool-layer-24pdwq4q",
+  "steps": [
+    {
+      "step": "healthy_call",
+      "outcome": "success",
+      "result": {
+        "query": "baseline",
+        "results": [
+          "local-result:baseline"
+        ],
+        "source": "local-test-tool"
+      }
+    },
+    {
+      "step": "simulated_outage",
+      "run_id": "run-A",
+      "outcome": "recorded_failure",
+      "error_class": "unreachable"
+    },
+    {
+      "step": "simulated_outage",
+      "run_id": "run-A",
+      "outcome": "recorded_failure",
+      "error_class": "unreachable"
+    },
+    {
+      "step": "simulated_outage",
+      "run_id": "run-B",
+      "outcome": "recorded_failure",
+      "error_class": "unreachable"
+    },
+    {
+      "step": "evidence_gate",
+      "status": "open",
+      "evidence_run_ids": [
+        "run-A",
+        "run-B"
+      ]
+    },
+    {
+      "step": "enforce_gate",
+      "outcome": "blocked_before_tool",
+      "decision": {
+        "action": "block",
+        "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:49544",
+        "issue_id": "ISS-20261110T073211-7CCBA5",
+        "reason": "blocked until retry window: unreachable @ http://127.0.0.1:49544 (3 failure(s))",
+        "blocked_until": "2026-11-10T07:32:12.669292Z",
+        "attempts_left": 0,
+        "alternatives": [],
+        "confidence": 0.95,
+        "expires_at": "2026-11-10T07:32:41.669292Z",
+        "policy_version": "2026-11-02.1",
+        "shadow": false,
+        "decision_id": "DEC-20261110T073211-ABE4D1",
+        "override": false,
+        "override_basis": "",
+        "override_by": "",
+        "schema_version": 1
+      },
+      "backend_calls_before": 4,
+      "backend_calls_after": 4
+    },
+    {
+      "step": "recovery_probe",
+      "outcome": "success",
+      "decision": {
+        "action": "probe",
+        "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:49544",
+        "issue_id": "ISS-20261110T073211-7CCBA5",
+        "reason": "slow recovery probe: unreachable @ http://127.0.0.1:49544 (3 failure(s))",
+        "blocked_until": null,
+        "attempts_left": 0,
+        "alternatives": [],
+        "confidence": 0.95,
+        "expires_at": "2026-11-10T07:32:41.669292Z",
+        "policy_version": "2026-11-02.1",
+        "shadow": true,
+        "decision_id": "DEC-20261110T073212-013642",
+        "override": false,
+        "override_basis": "",
+        "override_by": "",
+        "schema_version": 1
+      }
+    },
+    {
+      "step": "final_issue",
+      "issue": {
+        "issue_id": "ISS-20261110T073211-7CCBA5",
+        "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:49544",
+        "key_level": "scope",
+        "scope": "session",
+        "environment_id": "local-test",
+        "component": "local_http",
+        "tool": "search",
+        "action": "search",
+        "target": "http://127.0.0.1:49544",
+        "error_class": "unreachable",
+        "status": "resolved",
+        "first_seen": "2026-11-10T07:32:11.547930Z",
+        "last_seen": "2026-11-10T07:32:11.669292Z",
+        "count": 3,
+        "attempts": 4,
+        "retry_policy": {
+          "key_level": "scope",
+          "retryable": true,
+          "mode": "fixed",
+          "base_s": 1,
+          "max_s": 1,
+          "max_attempts": 1,
+          "ttl_s": 30,
+          "next_retry_at": "2026-11-10T07:32:12.669292Z"
+        },
+        "next_retry_at": null,
+        "expires_at": "2026-11-10T07:32:41.669292Z",
+        "workaround": "",
+        "workaround_by": "",
+        "workaround_at": null,
+        "confidence": 0.95,
+        "source_event_ids": [
+          "OP-20261110T073211-5A7127",
+          "OP-20261110T073211-3B51D0",
+          "OP-20261110T073211-2F5AC4",
+          "OP-20261110T073212-8E24E4"
+        ],
+        "dropped_event_count": 0,
+        "evidence_run_ids": [
+          "run-A",
+          "run-B"
+        ],
+        "last_probe_event_id": "OP-20261110T073212-8E24E4",
+        "probe_started_at": null,
+        "diagnosis": "environment",
+        "resolution": "fixed",
+        "resolved_at": "2026-11-10T07:32:12.739024Z",
+        "resolved_basis": "success event OP-20261110T073212-8E24E4",
+        "reviewer": "",
+        "notes": [],
+        "related_incident_id": null,
+        "related_case_id": null,
+        "scope_id": "local-test-session",
+        "schema_version": 1
+      }
+    },
+    {
+      "step": "final_report",
+      "report": {
+        "generated_at": "2026-11-10T07:32:12.760900Z",
+        "since": null,
+        "events": {
+          "total": 5,
+          "ok": 2,
+          "failures": 3,
+          "by_outcome": {
+            "ok": 2,
+            "fail": 3
+          }
+        },
+        "decisions": {
+          "total": 4,
+          "block": 3,
+          "shadow_block": 2,
+          "probe": 1,
+          "hint": 0,
+          "shadow_total": 3,
+          "enforce_total": 1
+        },
+        "shadow": {
+          "would_block": 2,
+          "false_blocks": 0,
+          "false_block_rate": 0.0,
+          "confirmed_blocks": 2
+        },
+        "enforce": {
+          "blocked_calls": 1
+        },
+        "probes": {
+          "attempts": 1,
+          "success": 1,
+          "success_rate": 1.0
+        },
+        "duplicate_attempts": 2,
+        "issues": {
+          "total": 1,
+          "by_status": {
+            "cooldown": 0,
+            "open": 0,
+            "probing": 0,
+            "mitigated": 0,
+            "resolved": 1,
+            "stale": 0
+          },
+          "stale_rate": 0.0,
+          "open": 0
+        },
+        "top_open_issues": []
+      }
+    }
+  ],
+  "backend": {
+    "mode": "success",
+    "calls": 5
+  },
+  "check": []
+}

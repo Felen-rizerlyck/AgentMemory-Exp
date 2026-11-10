@@ -1,0 +1,27 @@
+wrote F:\DeepSeekHarness\data\state\superagent\work\runtime-memory-tests-64464fdaa11e\runtime_memory\sim\runs\tool-layer-2026-11-10
+A1  PASS 语法与导入
+A2  PASS 端到端演示
+A3  PASS 无外部依赖
+B1  PASS success 模式
+B2  PASS unavailable 模式
+B3  PASS timeout 模式
+B4  PASS rate_limit 模式
+B5  PASS auth 模式
+B6  PASS 未知模式/路径/JSON
+C1  PASS 初始健康调用
+C2  PASS Shadow 失败仍执行
+C3  PASS Shadow block 仍执行
+C4  PASS 两个 run 的证据
+C5  PASS Enforce 真拦截
+C6  PASS retry 后恢复探测
+C7  PASS 成功后的后续调用
+C8  PASS 决策关联
+C9  PASS 数据审计
+D1  PASS 503 unavailable
+D2  PASS 客户端超时
+D3  PASS HTTP 429
+D4  PASS HTTP 401
+D5  SKIP 连接拒绝（可选）
+D6  PASS 503 后切换 success
+E   PASS 端到端脚本验收
+A4  PASS 数据隔离
