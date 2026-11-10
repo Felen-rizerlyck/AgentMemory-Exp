@@ -1,0 +1,70 @@
+{
+  "B1": {
+    "status": 200,
+    "body": {
+      "query": "b1",
+      "results": [
+        "local-result:b1"
+      ],
+      "source": "local-test-tool"
+    },
+    "calls_delta": 1
+  },
+  "B2": {
+    "status": 503,
+    "body": {
+      "error": "service_unavailable",
+      "retryable": true
+    },
+    "calls_delta": 1
+  },
+  "B3": {
+    "result": {
+      "status": null,
+      "body": null,
+      "error": "timeout",
+      "message": "timed out",
+      "duration_s": 0.518
+    },
+    "calls_delta": 1
+  },
+  "B4": {
+    "status": 429,
+    "body": {
+      "error": "rate_limited",
+      "retry_after_s": 1
+    },
+    "calls_delta": 1
+  },
+  "B5": {
+    "status": 401,
+    "body": {
+      "error": "unauthorized"
+    },
+    "calls_delta": 1
+  },
+  "B6": {
+    "invalid_mode": {
+      "status": 400,
+      "body": {
+        "error": "unsupported mode: bogus"
+      },
+      "duration_s": 0.005
+    },
+    "unknown_path": {
+      "status": 404,
+      "body": {
+        "error": "not_found"
+      },
+      "duration_s": 0.027
+    },
+    "invalid_json": {
+      "status": 400,
+      "body": {
+        "error": "invalid_json"
+      },
+      "duration_s": 0.005
+    },
+    "calls_delta": 0
+  }
+}

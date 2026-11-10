@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "issues": [
+    {
+      "issue_id": "ISS-20261110T073217-F44EFD",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+      "key_level": "scope",
+      "scope": "session",
+      "environment_id": "local-test",
+      "component": "local_http",
+      "tool": "search",
+      "action": "search",
+      "target": "http://127.0.0.1:2795",
+      "error_class": "unreachable",
+      "status": "resolved",
+      "first_seen": "2026-11-10T07:32:17.365578Z",
+      "last_seen": "2026-11-10T07:32:17.894254Z",
+      "count": 4,
+      "attempts": 5,
+      "retry_policy": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "fixed",
+        "base_s": 5,
+        "max_s": 5,
+        "max_attempts": 1,
+        "ttl_s": 30,
+        "next_retry_at": "2026-11-10T07:32:22.894254Z"
+      },
+      "next_retry_at": null,
+      "expires_at": "2026-11-10T07:32:47.894254Z",
+      "workaround": "",
+      "workaround_by": "",
+      "workaround_at": null,
+      "confidence": 0.95,
+      "source_event_ids": [
+        "OP-20261110T073217-D96CF1",
+        "OP-20261110T073217-8B581B",
+        "OP-20261110T073217-1D0665",
+        "OP-20261110T073217-FB2013",
+        "OP-20261110T073223-B6128F"
+      ],
+      "dropped_event_count": 0,
+      "evidence_run_ids": [
+        "run-C2",
+        "run-C4"
+      ],
+      "last_probe_event_id": "OP-20261110T073223-B6128F",
+      "probe_started_at": null,
+      "diagnosis": "environment",
+      "resolution": "fixed",
+      "resolved_at": "2026-11-10T07:32:23.171563Z",
+      "resolved_basis": "success event OP-20261110T073223-B6128F",
+      "reviewer": "",
+      "notes": [],
+      "related_incident_id": null,
+      "related_case_id": null,
+      "scope_id": "local-test-session",
+      "schema_version": 1
+    }
+  ]
+}

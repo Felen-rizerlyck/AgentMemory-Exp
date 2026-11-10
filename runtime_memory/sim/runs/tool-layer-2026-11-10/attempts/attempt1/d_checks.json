@@ -1,0 +1,67 @@
+{
+  "D1": {
+    "error_class": "unreachable",
+    "issue": {
+      "status": "cooldown",
+      "error_class": "unreachable",
+      "retry_policy": {
+        "key_level": "scope",
+        "retryable": true,
+        "mode": "fixed",
+        "base_s": 1,
+        "max_s": 1,
+        "max_attempts": 1,
+        "ttl_s": 30,
+        "next_retry_at": "2026-11-10T07:32:24.965536Z"
+      }
+    }
+  },
+  "D2": {
+    "error_class": "timeout",
+    "hit": "timeout"
+  },
+  "D3": {
+    "error_class": "rate_limit",
+    "issue": "rate_limit",
+    "next_retry_delta_s": 0.914049
+  },
+  "D4": {
+    "error_class": "auth",
+    "issue": {
+      "status": "open",
+      "error_class": "auth",
+      "next_retry_at": null
+    },
+    "blocked": "block",
+    "still_blocked": "block"
+  },
+  "D5": {
+    "error_class": "timeout",
+    "message": "<urlopen error timed out>"
+  },
+  "D6": {
+    "decision": {
+      "action": "probe",
+      "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2809",
+      "issue_id": "ISS-20261110T073223-DCECB1",
+      "reason": "retry window open: unreachable @ http://127.0.0.1:2809 (1 failure(s))",
+      "blocked_until": null,
+      "attempts_left": 1,
+      "alternatives": [],
+      "confidence": 0.6,
+      "expires_at": "2026-11-10T07:32:53.965536Z",
+      "policy_version": "2026-11-02.1",
+      "shadow": false,
+      "decision_id": "DEC-20261110T073228-A46113",
+      "override": false,
+      "override_basis": "",
+      "override_by": "",
+      "schema_version": 1
+    },
+    "issue": {
+      "status": "resolved",
+      "next_retry_at": null,
+      "probe_started_at": null
+    }
+  }
+}

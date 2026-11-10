@@ -1,0 +1,592 @@
+{
+  "schema_version": 1,
+  "commit": "3147fae6",
+  "python": "3.14.0 (tags/v3.14.0:ebf955d, Oct  7 2025, 10:15:03) [MSC v.1944 64 bit (AMD64)]",
+  "executed_at": "2026-11-10T07:32:29+00:00",
+  "cases": [
+    {
+      "id": "A1",
+      "title": "语法与导入",
+      "status": "PASS",
+      "expected": "py_compile exit 0",
+      "observed": {
+        "exit_code": 0,
+        "stderr": ""
+      },
+      "evidence": null
+    },
+    {
+      "id": "A2",
+      "title": "端到端演示",
+      "status": "PASS",
+      "expected": "exit 0；合法 JSON；check 为空",
+      "observed": {
+        "exit_code": 0,
+        "backend": {
+          "mode": "success",
+          "calls": 5
+        },
+        "check": []
+      },
+      "evidence": "demo.json"
+    },
+    {
+      "id": "A3",
+      "title": "无外部依赖",
+      "status": "PASS",
+      "expected": "只绑定/访问 127.0.0.1；不访问互联网/真实工具",
+      "observed": {
+        "bind": "127.0.0.1",
+        "external_calls": 0
+      },
+      "evidence": "server.py binds 127.0.0.1; gateway uses base_url from the local server"
+    },
+    {
+      "id": "B1",
+      "title": "success 模式",
+      "status": "PASS",
+      "expected": "HTTP 200；query/result/source 正确；calls +1",
+      "observed": {
+        "status": 200,
+        "body": {
+          "query": "b1",
+          "results": [
+            "local-result:b1"
+          ],
+          "source": "local-test-tool"
+        },
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "B2",
+      "title": "unavailable 模式",
+      "status": "PASS",
+      "expected": "HTTP 503；service_unavailable；calls +1",
+      "observed": {
+        "status": 503,
+        "body": {
+          "error": "service_unavailable",
+          "retryable": true
+        },
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "B3",
+      "title": "timeout 模式",
+      "status": "PASS",
+      "expected": "客户端 0.5s 超时；服务端 call +1",
+      "observed": {
+        "result": {
+          "status": null,
+          "body": null,
+          "error": "timeout",
+          "message": "timed out",
+          "duration_s": 0.518
+        },
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "B4",
+      "title": "rate_limit 模式",
+      "status": "PASS",
+      "expected": "HTTP 429；retry-after 1s；calls +1",
+      "observed": {
+        "status": 429,
+        "body": {
+          "error": "rate_limited",
+          "retry_after_s": 1
+        },
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "B5",
+      "title": "auth 模式",
+      "status": "PASS",
+      "expected": "HTTP 401；calls +1",
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "unauthorized"
+        },
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "B6",
+      "title": "未知模式/路径/JSON",
+      "status": "PASS",
+      "expected": "管理端 400；未知路径 404；无效 JSON 400；calls 不变",
+      "observed": {
+        "invalid_mode": {
+          "status": 400,
+          "body": {
+            "error": "unsupported mode: bogus"
+          },
+          "duration_s": 0.005
+        },
+        "unknown_path": {
+          "status": 404,
+          "body": {
+            "error": "not_found"
+          },
+          "duration_s": 0.027
+        },
+        "invalid_json": {
+          "status": 400,
+          "body": {
+            "error": "invalid_json"
+          },
+          "duration_s": 0.005
+        },
+        "calls_delta": 0
+      },
+      "evidence": null
+    },
+    {
+      "id": "C1",
+      "title": "初始健康调用",
+      "status": "PASS",
+      "expected": "返回本地工具 JSON；1 个 ok event；无活动 issue",
+      "observed": {
+        "result": {
+          "query": "baseline",
+          "results": [
+            "local-result:baseline"
+          ],
+          "source": "local-test-tool"
+        },
+        "events": 1,
+        "active_issues": 0,
+        "target": "http://127.0.0.1:2795"
+      },
+      "evidence": null
+    },
+    {
+      "id": "C2",
+      "title": "Shadow 失败仍执行",
+      "status": "PASS",
+      "expected": "ToolCallError(unreachable)；event fail；issue cooldown；calls +1",
+      "observed": {
+        "error_class": "unreachable",
+        "status": "cooldown",
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "C3",
+      "title": "Shadow block 仍执行",
+      "status": "FAIL",
+      "expected": "block/shadow 决策；实际调用 +1；event 带 decision_id",
+      "observed": {
+        "decision": {
+          "schema_version": 1,
+          "decision_id": "DEC-20261110T073217-B0D5D2",
+          "ts": "2026-11-10T07:32:17.462676Z",
+          "component": "local_http",
+          "tool": "search",
+          "requested_action": "search",
+          "target": "http://127.0.0.1:2795",
+          "scope": "session",
+          "scope_id": "local-test-session",
+          "environment_id": "local-test",
+          "session_id": "local-test-session",
+          "agent_id": "",
+          "run_id": "run-C2",
+          "scope_fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+          "call_fingerprint": "local-test|call|local_http|search|search|http://127.0.0.1:2795|args:sha256:11f7f8ef8110a2cd",
+          "decision": "block",
+          "issue_id": "ISS-20261110T073217-F44EFD",
+          "reason": "blocked until retry window: unreachable @ http://127.0.0.1:2795 (1 failure(s))",
+          "blocked_until": "2026-11-10T07:32:22.365578Z",
+          "attempts_left": 1,
+          "alternatives": [],
+          "confidence": 0.6,
+          "expires_at": "2026-11-10T07:32:47.365578Z",
+          "policy_version": "2026-11-02.1",
+          "shadow": true,
+          "override": false,
+          "override_basis": "",
+          "override_by": ""
+        },
+        "event_found": true,
+        "calls_delta": 1
+      },
+      "evidence": null
+    },
+    {
+      "id": "C4",
+      "title": "两个 run 的证据",
+      "status": "PASS",
+      "expected": "同 run 不升级；第二个独立 run 后 open，evidence 两个",
+      "observed": {
+        "after_same_run": {
+          "status": "cooldown",
+          "evidence": [
+            "run-C2"
+          ]
+        },
+        "after_new_run": {
+          "status": "open",
+          "evidence": [
+            "run-C2",
+            "run-C4"
+          ]
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "C5",
+      "title": "Enforce 真拦截",
+      "status": "PASS",
+      "expected": "ToolBlocked(block)；backend/事件均不增加",
+      "observed": {
+        "blocked": true,
+        "decision": {
+          "action": "block",
+          "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+          "issue_id": "ISS-20261110T073217-F44EFD",
+          "reason": "blocked until retry window: unreachable @ http://127.0.0.1:2795 (4 failure(s))",
+          "blocked_until": "2026-11-10T07:32:22.894254Z",
+          "attempts_left": 0,
+          "alternatives": [],
+          "confidence": 0.95,
+          "expires_at": "2026-11-10T07:32:47.894254Z",
+          "policy_version": "2026-11-02.1",
+          "shadow": false,
+          "decision_id": "DEC-20261110T073218-02D4F9",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        },
+        "backend_calls_delta": 0,
+        "event_delta": 0
+      },
+      "evidence": null
+    },
+    {
+      "id": "C6",
+      "title": "retry 后恢复探测",
+      "status": "PASS",
+      "expected": "probe；HTTP +1；postflight ok → resolved；字段清空",
+      "observed": {
+        "decision": {
+          "action": "probe",
+          "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+          "issue_id": "ISS-20261110T073217-F44EFD",
+          "reason": "slow recovery probe: unreachable @ http://127.0.0.1:2795 (4 failure(s))",
+          "blocked_until": null,
+          "attempts_left": 0,
+          "alternatives": [],
+          "confidence": 0.95,
+          "expires_at": "2026-11-10T07:32:47.894254Z",
+          "policy_version": "2026-11-02.1",
+          "shadow": false,
+          "decision_id": "DEC-20261110T073223-22E27B",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        },
+        "issue": {
+          "status": "resolved",
+          "next_retry_at": null,
+          "probe_started_at": null
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "C7",
+      "title": "成功后的后续调用",
+      "status": "PASS",
+      "expected": "preflight allow；工具成功；issue 保持 resolved",
+      "observed": {
+        "decision": {
+          "action": "allow",
+          "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2795",
+          "issue_id": "",
+          "reason": "",
+          "blocked_until": null,
+          "attempts_left": 0,
+          "alternatives": [],
+          "confidence": 0.0,
+          "expires_at": null,
+          "policy_version": "2026-11-02.1",
+          "shadow": false,
+          "decision_id": "",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        },
+        "issue_status": "resolved"
+      },
+      "evidence": null
+    },
+    {
+      "id": "C8",
+      "title": "决策关联",
+      "status": "PASS",
+      "expected": "C3/C6 event 带 decision_id；C5 拦截无工具 event",
+      "observed": {
+        "c3_event_linked": true,
+        "c5_decision": "DEC-20261110T073218-02D4F9",
+        "c5_event_found": false,
+        "c6_event_linked": true
+      },
+      "evidence": null
+    },
+    {
+      "id": "C9",
+      "title": "数据审计",
+      "status": "PASS",
+      "expected": "check clean；report 计数与 store 一致",
+      "observed": {
+        "check": [],
+        "events": {
+          "total": 7,
+          "ok": 3,
+          "failures": 4,
+          "by_outcome": {
+            "ok": 3,
+            "fail": 4
+          }
+        },
+        "decisions": {
+          "total": 5,
+          "block": 4,
+          "shadow_block": 3,
+          "probe": 1,
+          "hint": 0,
+          "shadow_total": 3,
+          "enforce_total": 2
+        },
+        "issues": {
+          "total": 1,
+          "by_status": {
+            "cooldown": 0,
+            "open": 0,
+            "probing": 0,
+            "mitigated": 0,
+            "resolved": 1,
+            "stale": 0
+          },
+          "stale_rate": 0.0,
+          "open": 0
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "D1",
+      "title": "503 unavailable",
+      "status": "PASS",
+      "expected": "unreachable；retryable",
+      "observed": {
+        "error_class": "unreachable",
+        "issue": {
+          "status": "cooldown",
+          "error_class": "unreachable",
+          "retry_policy": {
+            "key_level": "scope",
+            "retryable": true,
+            "mode": "fixed",
+            "base_s": 1,
+            "max_s": 1,
+            "max_attempts": 1,
+            "ttl_s": 30,
+            "next_retry_at": "2026-11-10T07:32:24.965536Z"
+          }
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "D2",
+      "title": "客户端超时",
+      "status": "PASS",
+      "expected": "timeout；event/issue timeout",
+      "observed": {
+        "error_class": "timeout",
+        "hit": "timeout"
+      },
+      "evidence": null
+    },
+    {
+      "id": "D3",
+      "title": "HTTP 429",
+      "status": "PASS",
+      "expected": "rate_limit；Retry-After ≥1s",
+      "observed": {
+        "error_class": "rate_limit",
+        "issue": "rate_limit",
+        "next_retry_delta_s": 0.914049
+      },
+      "evidence": null
+    },
+    {
+      "id": "D4",
+      "title": "HTTP 401",
+      "status": "PASS",
+      "expected": "auth；non-retryable；到期不自动 probe",
+      "observed": {
+        "error_class": "auth",
+        "issue": {
+          "status": "open",
+          "error_class": "auth",
+          "next_retry_at": null
+        },
+        "blocked": "block",
+        "still_blocked": "block"
+      },
+      "evidence": null
+    },
+    {
+      "id": "D5",
+      "title": "连接拒绝（可选）",
+      "status": "FAIL",
+      "expected": "URLError/OSError → unreachable；不泄露敏感信息",
+      "observed": {
+        "error_class": "timeout",
+        "message": "<urlopen error timed out>"
+      },
+      "evidence": null
+    },
+    {
+      "id": "D6",
+      "title": "503 后切换 success",
+      "status": "PASS",
+      "expected": "probe 成功 → resolved",
+      "observed": {
+        "decision": {
+          "action": "probe",
+          "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:2809",
+          "issue_id": "ISS-20261110T073223-DCECB1",
+          "reason": "retry window open: unreachable @ http://127.0.0.1:2809 (1 failure(s))",
+          "blocked_until": null,
+          "attempts_left": 1,
+          "alternatives": [],
+          "confidence": 0.6,
+          "expires_at": "2026-11-10T07:32:53.965536Z",
+          "policy_version": "2026-11-02.1",
+          "shadow": false,
+          "decision_id": "DEC-20261110T073228-A46113",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        },
+        "issue": {
+          "status": "resolved",
+          "next_retry_at": null,
+          "probe_started_at": null
+        }
+      },
+      "evidence": null
+    },
+    {
+      "id": "E",
+      "title": "端到端脚本验收",
+      "status": "PASS",
+      "expected": "healthy/3 outages/evidence open/enforce no backend/recovery probe/resolved/check []",
+      "observed": {
+        "healthy": {
+          "query": "baseline",
+          "results": [
+            "local-result:baseline"
+          ],
+          "source": "local-test-tool"
+        },
+        "outages": [
+          [
+            "run-A",
+            "unreachable"
+          ],
+          [
+            "run-A",
+            "unreachable"
+          ],
+          [
+            "run-B",
+            "unreachable"
+          ]
+        ],
+        "evidence_gate": {
+          "step": "evidence_gate",
+          "status": "open",
+          "evidence_run_ids": [
+            "run-A",
+            "run-B"
+          ]
+        },
+        "enforce_gate": {
+          "outcome": "blocked_before_tool",
+          "before": 4,
+          "after": 4
+        },
+        "recovery": {
+          "action": "probe",
+          "fingerprint": "local-test|scope|local_http|search|search|http://127.0.0.1:49544",
+          "issue_id": "ISS-20261110T073211-7CCBA5",
+          "reason": "slow recovery probe: unreachable @ http://127.0.0.1:49544 (3 failure(s))",
+          "blocked_until": null,
+          "attempts_left": 0,
+          "alternatives": [],
+          "confidence": 0.95,
+          "expires_at": "2026-11-10T07:32:41.669292Z",
+          "policy_version": "2026-11-02.1",
+          "shadow": true,
+          "decision_id": "DEC-20261110T073212-013642",
+          "override": false,
+          "override_basis": "",
+          "override_by": "",
+          "schema_version": 1
+        },
+        "final_issue": "resolved",
+        "check": []
+      },
+      "evidence": "demo.json"
+    },
+    {
+      "id": "A4",
+      "title": "数据隔离",
+      "status": "PASS",
+      "expected": "runtime_memory/data 与 demo/data 不变",
+      "observed": {
+        "before": {
+          "runtime_memory/data": "3b6ff3e63452314c5c8cf124bf3d45d16c444787690c46601e003755f45d2015",
+          "demo/data": "1d03cd051e93fdae22f14ab3aaad650ff251cbde809e9800870bd37054957bac"
+        },
+        "after": {
+          "runtime_memory/data": "3b6ff3e63452314c5c8cf124bf3d45d16c444787690c46601e003755f45d2015",
+          "demo/data": "1d03cd051e93fdae22f14ab3aaad650ff251cbde809e9800870bd37054957bac"
+        },
+        "unchanged": true
+      },
+      "evidence": "data_isolation.json"
+    }
+  ],
+  "data_isolation": {
+    "before": {
+      "runtime_memory/data": "3b6ff3e63452314c5c8cf124bf3d45d16c444787690c46601e003755f45d2015",
+      "demo/data": "1d03cd051e93fdae22f14ab3aaad650ff251cbde809e9800870bd37054957bac"
+    },
+    "after": {
+      "runtime_memory/data": "3b6ff3e63452314c5c8cf124bf3d45d16c444787690c46601e003755f45d2015",
+      "demo/data": "1d03cd051e93fdae22f14ab3aaad650ff251cbde809e9800870bd37054957bac"
+    },
+    "unchanged": true
+  }
+}
