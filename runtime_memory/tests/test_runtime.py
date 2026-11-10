@@ -65,13 +65,21 @@ class IssueLifecycleTests(unittest.TestCase):
         self.assertEqual(decision.issue_id, issue["issue_id"])
         self.assertIsNotNone(decision.blocked_until)
 
-    def test_second_failure_opens_issue(self):
+    def test_same_run_retries_do_not_open_issue(self):
         runtime, _ = make_runtime(self)
         fail(runtime, request())
         issue = fail(runtime, request())
-        self.assertEqual(issue["status"], "open")
+        self.assertEqual(issue["status"], "cooldown")
         self.assertEqual(issue["count"], 2)
         self.assertEqual(len(issue["source_event_ids"]), 2)
+        self.assertEqual(issue["evidence_run_ids"], ["run-1"])
+
+    def test_independent_run_failure_opens_issue(self):
+        runtime, _ = make_runtime(self)
+        fail(runtime, request(run_id="run-1"))
+        issue = fail(runtime, request(run_id="run-2"))
+        self.assertEqual(issue["status"], "open")
+        self.assertEqual(issue["evidence_run_ids"], ["run-1", "run-2"])
 
     def test_retry_window_opens_a_probe_then_success_resolves(self):
         runtime, clock = make_runtime(self, enforce=True)
@@ -93,7 +101,7 @@ class IssueLifecycleTests(unittest.TestCase):
         decision = runtime.preflight(request())
         self.assertEqual(decision.action, "probe")
         updated = fail(runtime, request(), decision=decision)
-        self.assertEqual(updated["status"], "open")
+        self.assertEqual(updated["status"], "cooldown")
         self.assertEqual(updated["count"], 2)
         self.assertEqual(updated["attempts"], 2)
 
@@ -114,7 +122,7 @@ class IssueLifecycleTests(unittest.TestCase):
         self.assertEqual(decision.action, "block")
         self.assertEqual(decision.attempts_left, 0)
 
-    def test_attempt_budget_allows_one_probe_then_blocks(self):
+    def test_attempt_budget_continues_with_slow_probes(self):
         runtime, clock = make_runtime(
             self, enforce=True,
             budgets={"max_attempts_per_call_key_per_run": 99},
@@ -127,10 +135,10 @@ class IssueLifecycleTests(unittest.TestCase):
         self.assertEqual(probe.attempts_left, 1)
         fail(runtime, request(), decision=probe)
         clock.advance(901)
-        blocked = runtime.preflight(request())
-        self.assertEqual(blocked.action, "block")
-        self.assertIn("budget", blocked.reason)
-        self.assertEqual(blocked.attempts_left, 0)
+        slow_probe = runtime.preflight(request())
+        self.assertEqual(slow_probe.action, "probe")
+        self.assertIn("slow recovery probe", slow_probe.reason)
+        self.assertEqual(slow_probe.attempts_left, 0)
 
     def test_per_run_budget_blocks_before_issue_budget(self):
         runtime, _ = make_runtime(
@@ -338,7 +346,8 @@ class ManualAndReportTests(unittest.TestCase):
             fail(runtime, request())
         report = build_report(runtime.store)
         self.assertEqual(report["duplicate_attempts"], 2)
-        self.assertEqual(report["issues"]["by_status"]["open"], 1)
+        self.assertEqual(report["issues"]["by_status"]["open"], 0)
+        self.assertEqual(report["issues"]["by_status"]["cooldown"], 1)
 
     def test_report_json_serializable(self):
         runtime, _ = make_runtime(self)

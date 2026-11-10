@@ -57,6 +57,18 @@ class StoreEdgeTests(unittest.TestCase):
         problems = self.store.check()
         self.assertTrue(any("unsupported status" in problem for problem in problems))
 
+    def test_check_flags_failure_event_without_issue(self):
+        event = OperationEvent(
+            event_id="OP-orphan", ts="2026-11-02T06:00:00Z",
+            component="mcp", tool="hunt.query", action="search",
+            target="http://x/hunt", outcome="fail", error_class="unreachable",
+            scope="global", fingerprint="fp-orphan",
+        )
+        self.store.append_event(event)
+        problems = self.store.check()
+        self.assertTrue(any("failure has no matching issue" in problem
+                            for problem in problems))
+
     def test_find_issue_prefers_a_live_duplicate(self):
         # Bypass upsert: real duplicate records should still be readable and a
         # live one preferred over a resolved one.

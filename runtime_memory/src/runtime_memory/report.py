@@ -119,7 +119,9 @@ def build_report(store: Store, since: dt.datetime | None = None,
         "duplicate_attempts": duplicate_attempts,
         "issues": {
             "total": len(issues),
-            "by_status": dict(issues_by_status),
+            "by_status": {status: issues_by_status.get(status, 0)
+                          for status in ("cooldown", "open", "probing", "mitigated",
+                                         "resolved", "stale")},
             "stale_rate": round(issues_by_status.get("stale", 0) / len(issues), 3)
             if issues else None,
             "open": len(open_issues),

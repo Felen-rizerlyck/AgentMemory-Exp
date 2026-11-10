@@ -77,7 +77,20 @@ def file_lock(lock_path: Path, timeout: float = 30.0) -> Iterator[None]:
                 del held[key]
         return
 
-    handle = lock_path.open("a+b")
+    started = time.monotonic()
+    while True:
+        try:
+            handle = lock_path.open("a+b")
+            break
+        except PermissionError as error:
+            # Windows can briefly deny a second open while another process is
+            # creating/opening the persistent lock file. Treat this like lock
+            # contention and retry within the same bounded timeout.
+            if os.name != "nt" or getattr(error, "winerror", None) not in (32, 33):
+                raise
+            if time.monotonic() - started >= timeout:
+                raise TimeoutError(f"could not open writer lock: {lock_path}")
+            time.sleep(0.05)
     try:
         handle.seek(0, os.SEEK_END)
         if handle.tell() == 0:
@@ -298,6 +311,12 @@ class Store:
         merged["source_event_ids"] = list(dict.fromkeys(
             list(existing.get("source_event_ids") or [])
             + list(incoming.get("source_event_ids") or [])))[-20:]
+        merged["dropped_event_count"] = (
+            int(existing.get("dropped_event_count", 0) or 0)
+            + int(incoming.get("dropped_event_count", 0) or 0))
+        merged["evidence_run_ids"] = list(dict.fromkeys(
+            list(existing.get("evidence_run_ids") or [])
+            + list(incoming.get("evidence_run_ids") or [])))[-20:]
         if existing.get("status") not in ("resolved", "mitigated") and incoming.get("status") in (
                 "open", "probing", "stale"):
             merged["status"] = incoming["status"]
@@ -348,6 +367,11 @@ class Store:
 
     # -- checks / stats -------------------------------------------------
     def check(self) -> list[str]:
+        # Validate one consistent snapshot while writers are excluded.
+        with self.writer_lock():
+            return self._check_locked()
+
+    def _check_locked(self) -> list[str]:
         problems: list[str] = []
         try:
             problems.extend(self.load_policy().validate())
@@ -389,6 +413,21 @@ class Store:
         for record in events:
             if record.get("outcome") not in OUTCOMES:
                 problems.append(f"event {record.get('event_id')}: bad outcome")
+            if record.get("outcome") in ("fail", "timeout", "denied"):
+                event_scope_id = (record.get("session_id", "") if record.get("scope") == "session"
+                                  else record.get("agent_id", "") if record.get("scope") == "agent"
+                                  else "")
+                matching = any(
+                    item.get("fingerprint") == record.get("fingerprint")
+                    and item.get("error_class") == record.get("error_class")
+                    and item.get("scope", "global") == record.get("scope", "global")
+                    and item.get("scope_id", "") == event_scope_id
+                    for item in issues
+                )
+                if not matching:
+                    problems.append(
+                        f"event {record.get('event_id')}: failure has no matching issue "
+                        f"({record.get('fingerprint')}/{record.get('error_class')})")
         return problems
 
     def state(self, policy: Policy | None = None) -> dict[str, Any]:

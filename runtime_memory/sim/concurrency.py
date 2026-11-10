@@ -29,12 +29,6 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
-
-from runtime_memory import OperationRequest, Policy, RuntimeMemory  # noqa: E402
-from runtime_memory.models import OperationEvent  # noqa: E402
-from runtime_memory.policy import default_policy  # noqa: E402
 from runtime_memory import OperationRequest, Policy, RuntimeMemory  # noqa: E402
 from runtime_memory.models import OperationEvent  # noqa: E402
 from runtime_memory.policy import default_policy  # noqa: E402
@@ -159,7 +153,8 @@ def _run_postflight_test() -> dict[str, Any]:
         events = store.read_events()
         ok = (len(issues) == 1 and issues[0].get("count") == 2
               and len(events) == 2 and not errors)
-        return {"test": "concurrent_postflight", "expected_issue_count": 2,
+        return {"test": "concurrent_postflight", "expected_issue_records": 1,
+                "expected_aggregated_failures": 2,
                 "issue_records": len(issues),
                 "issue_counts": [item.get("count") for item in issues],
                 "events": len(events), "errors": errors,
@@ -205,13 +200,16 @@ def _run_crash_test() -> dict[str, Any]:
                     json.loads(line)
                 except json.JSONDecodeError:
                     corrupt += 1
+        orphaned = len(store.read_events()) > len(store.load_issues()["issues"])
+        status = "FAIL" if corrupt else "GAP" if orphaned and not problems else "PASS"
         return {"test": "terminate_between_event_and_issue",
                 "marker_seen": ready,
                 "check_problems": problems,
                 "corrupt_event_lines": corrupt,
                 "event_count": len(store.read_events()),
                 "issue_count": len(store.load_issues()["issues"]),
-                "status": "PASS" if corrupt == 0 else "FAIL"}
+                "orphan_event_detected": bool(problems),
+                "status": status}
 
 
 def main() -> int:
@@ -248,7 +246,7 @@ def main() -> int:
     (out / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
     print(f"\nwrote {out}")
-    return 0
+    return 1 if any(item["status"] == "FAIL" for item in results) else 0
 
 
 
