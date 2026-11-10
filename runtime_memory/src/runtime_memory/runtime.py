@@ -7,16 +7,27 @@ demo/ or the attack-detection harness; a caller can use it as a library or via
 from __future__ import annotations
 
 import datetime as dt
+import functools
 from typing import Any, Callable
 
 from .classify import classify_exception, diagnosis_for
-from .fingerprint import (call_fingerprint, fingerprint_for, scope_fingerprint)
+from .fingerprint import (call_fingerprint, fingerprint_for, scope_fingerprint,
+                          scope_identity)
 from .models import (ACTIVE_STATUSES, FAILURE_OUTCOMES, OUTCOMES, Decision,
                      Issue, OperationEvent, OperationRequest)
 from .policy import Policy
-from .redact import redact
+from .redact import redact, redact_target
 from .store import DEFAULT_DATA_DIR, Store
 from .timeutil import iso, new_id, parse_iso, utcnow
+
+
+def _write_locked(method):
+    """Serialize a mutating method against other processes."""
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        with self.store.writer_lock():
+            return method(self, *args, **kwargs)
+    return wrapper
 
 
 class RuntimeMemory:
@@ -31,7 +42,8 @@ class RuntimeMemory:
         else:
             self.policy = Policy.load(self.store.policy_path)
         self.clock = clock or utcnow
-        self._refresh_issues(self.clock())
+        with self.store.writer_lock():
+            self._refresh_issues(self.clock())
 
     # -- issue maintenance ------------------------------------------------
     def _expired(self, issue: dict[str, Any], now: dt.datetime) -> bool:
@@ -79,20 +91,21 @@ class RuntimeMemory:
                 ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
                                "probe already in flight"))
             elif status == "stale":
-                ranked.append((2, float(issue.get("confidence", 0) or 0), issue,
-                               "stale issue; one probe allowed"))
+                if self.policy.probe_after_expiry:
+                    ranked.append((2, float(issue.get("confidence", 0) or 0), issue,
+                                   "stale issue; one probe allowed"))
+                else:
+                    ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
+                                   "stale issue; manual probe required"))
             elif not retryable:
                 ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
                                "non-retryable error class"))
-            elif attempts > max_attempts:
-                ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
-                               "attempt budget exhausted"))
             elif next_at is None:
                 ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
                                "no retry window recorded"))
             elif now >= next_at:
-                ranked.append((2, float(issue.get("confidence", 0) or 0), issue,
-                               "retry window open"))
+                reason = "slow recovery probe" if attempts > max_attempts else "retry window open"
+                ranked.append((2, float(issue.get("confidence", 0) or 0), issue, reason))
             else:
                 ranked.append((3, float(issue.get("confidence", 0) or 0), issue,
                                "blocked until retry window"))
@@ -121,6 +134,18 @@ class RuntimeMemory:
             shadow=not self.policy.enforce,
         )
 
+    @staticmethod
+    def _event_in_scope(event: dict[str, Any], request: OperationRequest) -> bool:
+        if event.get("scope") == "global":
+            return request.scope == "global"
+        if event.get("scope") != request.scope:
+            return False
+        if request.session_id and event.get("session_id") != request.session_id:
+            return False
+        if request.agent_id and event.get("agent_id") != request.agent_id:
+            return False
+        return True
+
     # -- preflight --------------------------------------------------------
     def _run_budget_decision(self, request: OperationRequest) -> Decision | None:
         """Per-run hard budget, independent of issue state.
@@ -134,7 +159,7 @@ class RuntimeMemory:
         failures = [event for event in self.store.read_events()
                     if event.get("run_id") == request.run_id
                     and event.get("outcome") in FAILURE_OUTCOMES
-                    and event.get("scope") in ("global", request.scope)]
+                    and self._event_in_scope(event, request)]
         call_key = call_fingerprint(request)
         operation_keys = {scope_fingerprint(request), call_key}
         call_failures = [event for event in failures
@@ -163,8 +188,10 @@ class RuntimeMemory:
             )
         return None
 
+    @_write_locked
     def preflight(self, request: OperationRequest, *, allow_probe: bool = False,
-                  override_basis: str = "", record: bool = True) -> Decision:
+                  override_basis: str = "", human_override: bool = False,
+                  record: bool = True) -> Decision:
         """Return a decision.
 
         ``record=False`` is a read-only inspection: it does not append a
@@ -175,36 +202,45 @@ class RuntimeMemory:
         request.args = request.args or {}
         now = self.clock()
         self._refresh_issues(now)
+        scope_id = scope_identity(request)
         keys = [scope_fingerprint(request), call_fingerprint(request)]
         issues = [
             issue for issue in self.store.find_issues(keys, statuses=ACTIVE_STATUSES)
-            if issue.get("scope") in ("global", request.scope)
+            if issue.get("scope") == "global"
+            or (issue.get("scope") == request.scope
+                and issue.get("scope_id", "") == scope_id)
         ]
         decision = self._run_budget_decision(request) or self._decide(issues, now, request)
         if decision.action == "block" and allow_probe:
             if not override_basis.strip():
                 raise ValueError("allow_probe requires a non-empty override_basis")
+            if not human_override:
+                raise ValueError(
+                    "override requires human_override=True; models may not bypass a block")
             if record:
                 self.store.append_override({
                     "ts": iso(now),
                     "component": request.component,
                     "tool": request.tool,
                     "action": request.action,
-                    "target": request.target,
+                    "target": redact_target(request.target),
                     "scope": request.scope,
+                    "scope_id": scope_id,
                     "environment_id": request.environment_id,
                     "session_id": request.session_id,
+                    "agent_id": request.agent_id,
                     "run_id": request.run_id,
                     "issue_id": decision.issue_id,
                     "fingerprint": decision.fingerprint,
-                    "basis": override_basis.strip(),
+                    "basis": redact(override_basis, limit=500),
+                    "reviewer": "human",
                     "shadow": not self.policy.enforce,
                 })
             decision = Decision(
                 action="probe",
                 fingerprint=decision.fingerprint,
                 issue_id=decision.issue_id,
-                reason=f"override: {override_basis.strip()}",
+                reason=f"human override: {redact(override_basis, limit=200)}",
                 attempts_left=decision.attempts_left,
                 alternatives=decision.alternatives,
                 confidence=decision.confidence,
@@ -213,6 +249,7 @@ class RuntimeMemory:
                 shadow=not self.policy.enforce,
                 override=True,
                 override_basis=override_basis.strip(),
+                override_by="human",
             )
         if decision.action != "allow" and record:
             decision.decision_id = new_id("DEC", now)
@@ -233,18 +270,20 @@ class RuntimeMemory:
             "ts": iso(now),
             "component": request.component,
             "tool": request.tool,
-            "action": request.action,
-            "target": request.target,
+            "requested_action": request.action,
+            "target": redact_target(request.target),
             "scope": request.scope,
+            "scope_id": scope_identity(request),
             "environment_id": request.environment_id,
             "session_id": request.session_id,
+            "agent_id": request.agent_id,
             "run_id": request.run_id,
             "scope_fingerprint": scope_fingerprint(request),
             "call_fingerprint": call_fingerprint(request),
             "decision": decision.action,
-            "action": decision.action,
+            "decision": decision.action,
             "issue_id": decision.issue_id,
-            "reason": decision.reason,
+            "reason": redact(decision.reason, limit=500),
             "blocked_until": decision.blocked_until,
             "attempts_left": decision.attempts_left,
             "alternatives": decision.alternatives,
@@ -253,15 +292,18 @@ class RuntimeMemory:
             "policy_version": decision.policy_version,
             "shadow": decision.shadow,
             "override": decision.override,
-            "override_basis": decision.override_basis,
+            "override_basis": redact(decision.override_basis, limit=500),
+            "override_by": decision.override_by,
         }
 
     # -- postflight -------------------------------------------------------
+    @_write_locked
     def postflight(self, request: OperationRequest, outcome: str, *,
                    error: BaseException | None = None,
                    error_class: str = "", error_code: str = "", message: str = "",
                    duration_ms: int = 0, attempt: int = 0,
                    decision: Decision | None = None,
+                   decision_id: str = "",
                    evidence_ref: str = "",
                    retry_after_s: int | None = None) -> dict[str, Any] | None:
         if outcome not in OUTCOMES:
@@ -270,6 +312,7 @@ class RuntimeMemory:
             raise ValueError("postflight called for a blocked call; skip the tool instead")
         request.args = request.args or {}
         now = self.clock()
+        scope_id = scope_identity(request)
         error_class = (error_class or "").strip()
         if outcome in FAILURE_OUTCOMES and not error_class:
             if outcome == "denied":
@@ -286,23 +329,24 @@ class RuntimeMemory:
             component=request.component,
             tool=request.tool,
             action=request.action,
-            target=request.target,
+            target=redact_target(request.target),
             outcome=outcome,
             scope=request.scope,
             environment_id=request.environment_id,
             session_id=request.session_id,
+            agent_id=request.agent_id,
             run_id=request.run_id,
             error_class=error_class,
-            error_code=error_code,
+            error_code=redact(error_code, limit=100),
             message_redacted=redact(message or (str(error) if error else "")),
             duration_ms=int(duration_ms or 0),
             attempt=int(attempt or 0),
             retryable=retryable,
             fingerprint=fingerprint,
             key_level=key_level,
-            decision_id=(decision.decision_id if decision else ""),
+            decision_id=(decision.decision_id if decision else decision_id),
             would_block=bool(decision and decision.action == "block" and decision.shadow),
-            evidence_ref=evidence_ref,
+            evidence_ref=redact_target(evidence_ref),
             author="harness",
             policy_version=self.policy.version,
         )
@@ -313,15 +357,18 @@ class RuntimeMemory:
             else:
                 active = [
                     item for item in self.store.find_issues(keys, statuses=ACTIVE_STATUSES)
-                    if item.get("scope") in ("global", request.scope)
+                    if item.get("scope") == "global"
+                    or (item.get("scope") == request.scope
+                        and item.get("scope_id", "") == scope_id)
                 ]
                 event.attempt = max((int(item.get("attempts", 0) or 0)
                                      for item in active), default=0) + 1
             self.store.append_event(event)
             self._resolve_keys(keys, event.event_id, now, scope=request.scope,
-                               attempt=event.attempt)
+                               scope_id=scope_id, attempt=event.attempt)
             return None
-        issue = self.store.find_issue(fingerprint, error_class, include_resolved=True)
+        issue = self.store.find_issue(fingerprint, error_class, include_resolved=True,
+                                      scope=request.scope, scope_id=scope_id)
         if issue is None:
             issue = self._new_issue(request, error_class, fingerprint, key_level,
                                     event, now, retryable, decision, retry_after_s)
@@ -357,7 +404,7 @@ class RuntimeMemory:
             component=request.component,
             tool=request.tool,
             action=request.action,
-            target=request.target,
+            target=event.target,
             error_class=error_class,
             status="cooldown" if retryable else "open",
             first_seen=iso(now),
@@ -369,8 +416,10 @@ class RuntimeMemory:
             expires_at=self._expires_at(error_class, now, retry.get("next_retry_at")),
             confidence=0.6,
             source_event_ids=[event.event_id],
+            evidence_run_ids=[request.run_id] if request.run_id else [],
             last_probe_event_id=event.event_id if decision and decision.action == "probe" else None,
             diagnosis=diagnosis_for(error_class),
+            scope_id=scope_identity(request),
         )
 
     def _update_issue(self, existing: dict[str, Any], request: OperationRequest,
@@ -387,7 +436,14 @@ class RuntimeMemory:
         else:
             issue.count += 1
             issue.attempts += 1
-        issue.status = "open" if (not retryable or issue.count >= 2) else "cooldown"
+        run_ids = list(getattr(issue, "evidence_run_ids", []) or [])
+        if request.run_id and request.run_id not in run_ids:
+            run_ids.append(request.run_id)
+        issue.evidence_run_ids = run_ids[-20:]
+        # A burst of retries in one run is one piece of evidence, not proof
+        # that a tool is persistently unhealthy.
+        issue.status = "open" if (not retryable or len(set(run_ids)) >= 2) else "cooldown"
+        issue.target = redact_target(request.target)
         issue.last_seen = iso(now)
         retry = self.policy.retry_record(error_class, issue.attempts, now, retry_after_s)
         issue.retry_policy = retry
@@ -399,18 +455,25 @@ class RuntimeMemory:
             else issue.last_probe_event_id
         issue.probe_started_at = None
         issue.source_event_ids = list(issue.source_event_ids or []) + [event.event_id]
-        issue.source_event_ids = issue.source_event_ids[-20:]
+        if len(issue.source_event_ids) > 20:
+            issue.dropped_event_count = int(getattr(issue, "dropped_event_count", 0)) + \
+                len(issue.source_event_ids) - 20
+            issue.source_event_ids = issue.source_event_ids[-20:]
         return issue
 
     def _resolve_keys(self, keys: list[str], event_id: str,
                       now: dt.datetime, scope: str = "global",
-                      attempt: int = 0) -> None:
+                      scope_id: str = "", attempt: int = 0) -> None:
         data = self.store.load_issues()
         changed = False
         for issue in data["issues"]:
             if issue.get("fingerprint") not in keys:
                 continue
-            if issue.get("scope") != scope:
+            # A global issue is resolved by a success from any scope. A scoped
+            # issue is only resolved by a success from the same identity.
+            if not (issue.get("scope") == "global"
+                    or (issue.get("scope") == scope
+                        and issue.get("scope_id", "") == scope_id)):
                 continue
             if issue.get("status") not in ACTIVE_STATUSES:
                 continue
@@ -418,6 +481,8 @@ class RuntimeMemory:
             issue["resolution"] = "fixed"
             issue["resolved_at"] = iso(now)
             issue["resolved_basis"] = f"success event {event_id}"
+            issue["next_retry_at"] = None
+            issue["probe_started_at"] = None
             issue["last_probe_event_id"] = event_id
             if attempt:
                 issue["attempts"] = max(int(issue.get("attempts", 0) or 0), int(attempt))
@@ -428,6 +493,7 @@ class RuntimeMemory:
             self.store.save_issues(data)
 
     # -- manual operations ------------------------------------------------
+    @_write_locked
     def resolve(self, issue_id: str, basis: str, reviewer: str = "human",
                 resolution: str = "fixed") -> dict[str, Any]:
         if resolution not in ("fixed", "mitigated", "ignored"):
@@ -439,17 +505,21 @@ class RuntimeMemory:
             raise ValueError("basis must not be empty")
         issue["status"] = "mitigated" if resolution == "mitigated" else "resolved"
         issue["resolution"] = resolution
-        issue["resolved_basis"] = basis.strip()
+        issue["resolved_basis"] = redact(basis, limit=500)
         issue["reviewer"] = reviewer
         issue["resolved_at"] = iso(self.clock())
         if resolution == "mitigated":
             issue["next_retry_at"] = None
+        else:
+            issue["next_retry_at"] = None
+        issue["probe_started_at"] = None
         self.store.upsert_issue(issue)
         return issue
 
     def ignore(self, issue_id: str, basis: str, reviewer: str = "human") -> dict[str, Any]:
         return self.resolve(issue_id, basis, reviewer=reviewer, resolution="ignored")
 
+    @_write_locked
     def set_workaround(self, issue_id: str, text: str,
                        reviewer: str = "human") -> dict[str, Any]:
         if not text.strip():
@@ -457,12 +527,13 @@ class RuntimeMemory:
         issue = self.store.get_issue(issue_id)
         if issue is None:
             raise ValueError(f"unknown issue_id {issue_id}")
-        issue["workaround"] = text.strip()
+        issue["workaround"] = redact(text, limit=500)
         issue["workaround_by"] = reviewer
         issue["workaround_at"] = iso(self.clock())
         self.store.upsert_issue(issue)
         return issue
 
+    @_write_locked
     def add_note(self, issue_id: str, text: str, author: str = "model") -> dict[str, Any]:
         if not text.strip():
             raise ValueError("note must not be empty")
@@ -472,7 +543,7 @@ class RuntimeMemory:
         issue.setdefault("notes", []).append({
             "ts": iso(self.clock()),
             "author": author,
-            "text": text.strip(),
+            "text": redact(text, limit=1000),
         })
         self.store.upsert_issue(issue)
         return issue
@@ -484,3 +555,20 @@ class RuntimeMemory:
     def report(self, since=None):
         from .report import build_report
         return build_report(self.store, since=since, now=self.clock())
+
+    def brief(self, limit: int = 8) -> list[dict[str, Any]]:
+        """Return a compact, prompt-friendly view of active tool issues."""
+        issues = self.store.list_issues(include_resolved=False)
+        issues = sorted(issues, key=lambda item: (
+            item.get("status") == "open",
+            item.get("last_seen", "")), reverse=True)
+        return [{
+            "issue_id": item.get("issue_id"),
+            "tool": f"{item.get('component')}/{item.get('tool')}",
+            "target": item.get("target"),
+            "status": item.get("status"),
+            "error": item.get("error_class"),
+            "independent_runs": len(set(item.get("evidence_run_ids") or [])),
+            "retry_at": item.get("next_retry_at"),
+            "workaround": item.get("workaround") or None,
+        } for item in issues[:max(0, limit)]]

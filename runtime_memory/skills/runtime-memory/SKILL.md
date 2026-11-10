@@ -44,6 +44,7 @@ python src/manage_runtime_memory.py preflight \
 
 # Inspect
 python src/manage_runtime_memory.py issues --active
+python src/manage_runtime_memory.py brief
 python src/manage_runtime_memory.py issue ISS-...
 python src/manage_runtime_memory.py report --since 7d
 

@@ -259,7 +259,7 @@ events + issues
 |---|---|---|
 | `event_id` | 是 | 唯一；建议 `OP-<ts>-<seq>` |
 | `ts` | 是 | UTC 或带时区 ISO 8601 |
-| `session_id` / `run_id` | 建议 | 用于 per-run 预算和复盘 |
+| `session_id` / `agent_id` / `run_id` | 建议 | 用于 scope identity、per-run 预算和复盘 |
 | `scope` | 是 | `global`（共享环境）/`session`（本次运行）/`agent`（单 Agent） |
 | `environment_id` | 是 | 手工配置的环境标识，防止跨环境误伤 |
 | `component` / `tool` / `action` | 是 | 指纹的组成部分 |
@@ -301,9 +301,9 @@ events + issues
     "mode": "exponential",
     "base_s": 900,
     "max_s": 1800,
-    "max_attempts": 3,
-    "max_attempts_per_run": 1
+    "max_attempts": 3
   },
+  "scope_id": "",
   "next_retry_at": "2026-11-02T12:10:12+08:00",
   "expires_at": "2026-11-03T11:40:12+08:00",
   "workaround": "该网段不可达；改用本地 pcap 或备用端点",
@@ -365,16 +365,10 @@ events + issues
 {
   "schema_version": 1,
   "policy_version": "2026-11-02.1",
-  "defaults": {
-    "cooldown_s": 300,
-    "issue_ttl_s": 86400,
-    "max_attempts_per_run": 3,
-    "probe_after_expiry": true
-  },
+  "probe_after_expiry": true,
   "budgets": {
     "max_attempts_per_call_key_per_run": 3,
-    "max_failures_per_component_per_run": 10,
-    "max_blocked_calls_per_run": 50
+    "max_failures_per_component_per_run": 10
   },
   "classes": {
     "unreachable": {
@@ -384,7 +378,6 @@ events + issues
       "base_s": 900,
       "max_s": 1800,
       "max_attempts": 3,
-      "max_attempts_per_run": 1,
       "ttl_s": 86400
     },
     "timeout": {
@@ -394,7 +387,6 @@ events + issues
       "base_s": 30,
       "max_s": 300,
       "max_attempts": 3,
-      "max_attempts_per_run": 3,
       "ttl_s": 3600
     },
     "auth": {
@@ -537,8 +529,8 @@ open ──other environment success──► mitigated
 1. **第一次失败默认只建 `cooldown`，不建全局 `open`**：避免一次偶然故障把工具封死。**例外**：`auth` / `permission` / `schema` / `invalid_args` 这类“重试无用”的 class 第一次就建 `open`（`retryable=false`），因为等待不会让问题消失。
 2. **同一 fingerprint + `error_class` 的第二次失败升级 `open`**：与 demo 的“单样本 vs 重复证据”同构。
 3. **`next_retry_at` 只在真实尝试后设置**：不要根据传闻/模型自述设置。
-4. **过期必须允许 probe**：`stale` 不是永久封禁；一次探测成功即 `resolved`。
-5. **成功可以来自另一个 scope/environment**：标记 `mitigated`，不要全局 `resolved`，除非同环境成功。
+4. **过期默认允许 probe**：`stale` 不是永久封禁；`probe_after_expiry=false` 时改为要求人工 probe。一次探测成功即 `resolved`。
+5. **global issue 可被任意同环境的成功解决；session/agent issue 只被同身份成功解决**。不同 identity 的成功不能互相解决 scoped issue，也不能把失败混进同一条 issue。
 6. **人工可以强制 resolve/ignore**：必须写 basis，进 audit。
 7. **`probing` 必须可恢复**：记录 `probe_started_at`；进程崩溃/超时后，启动时把超过 `probe_timeout_s` 的 `probing` 回退为 `open` 或 `stale`。**`probe_started_at` 缺失也视为 abandoned probe**，同样回退，避免脏数据永久卡在探测中。
 
@@ -693,13 +685,14 @@ alternatives: use local pcap; try backup endpoint
 issue: ISS-...
 ```
 
-### 9.3 模型 override
+### 9.3 人工 override
 
-- 模型可以请求 `probe=true` + `basis`；
+- 默认只有操作员可以请求 `probe=true` + `basis`；库 API 要求 `human_override=True`，模型侧调用会被拒绝；
 - gate 只在以下情况允许：
   - `now >= next_retry_at`，或
   - `issue.status == stale`，或
   - 人工/策略显式允许；
+- `auth` / `permission` / per-run 预算的 block 也只在人工 override 下放行；
 - 每次 override 记录 `override_by` / `override_basis` / 结果；
 - **不能静默绕过**；如果模型直接调用底层工具，网关仍然拦截。
 
@@ -739,7 +732,7 @@ issue: ISS-...
 
 | error_class | key_level | 重试 | 退避 | 最大次数 | TTL | 备注 |
 |---|---|---|---|---|---|---|
-| `unreachable` | scope | 是 | 900s 固定 | 3 / 每 run 1 | 24h | 先检查端点/网络 |
+| `unreachable` | scope | 是 | 900s 固定 | 3 | 24h | 先检查端点/网络 |
 | `timeout` | call/scope | 是 | 30s 指数到 300s | 3 | 1h | 大查询可换分页 |
 | `rate_limit` | scope | 是 | `Retry-After` 或 60s | 3 | 1h | 尊重服务端 |
 | `auth` / `permission` | scope | 否 | — | 0 | 24h | 提权/换凭据 |
@@ -753,7 +746,7 @@ issue: ISS-...
 - `fixed` / `exponential` / `none`；
 - exponential 加 jitter（±20%），避免多 Agent 同时重试；
 - `Retry-After` 优先于本地策略；
-- 一个 issue 的 `max_attempts` 用完后，即使 `next_retry_at` 过期也 block，直到人工/新证据。
+- 一个 issue 的 `max_attempts` 用完后，即使 `next_retry_at` 过期也 block，直到人工/新证据；`probe_after_expiry=false` 时过期也只允许人工 probe。
 
 ### 10.3 “半小时后重试”怎么表达
 
@@ -784,7 +777,7 @@ runtime_memory/                     # 与 demo/ 平级；harness 层
 │   └── 2026-11.jsonl               # append-only，按月
 ├── issues.json                     # 聚合问题，原子写
 ├── playbook.md                     # 可选，人审
-├── overrides.jsonl                 # 人工/模型 override 记录（append-only）
+├── overrides.jsonl                 # 人工 override 记录（append-only）
 └── tests/
 ```
 
@@ -794,11 +787,11 @@ runtime_memory/                     # 与 demo/ 平级；harness 层
 
 | 方案 | 适用 | 优点 | 缺点 |
 |---|---|---|---|
-| JSONL + `issues.json` | 单写者、MVP | 零依赖、可读、可 diff、可重建 | 无索引、并发弱 |
-| SQLite WAL | 多 Agent/并发 | 索引、事务、查询 | 多一个文件/迁移 |
+| JSONL + `issues.json` | 多进程串行写、MVP | 零依赖、可读、可 diff、可重建 | 无索引、写串行、不是事务 |
+| SQLite WAL | 高并发/多 Agent | 索引、事务、查询 | 多一个文件/迁移 |
 | 混合 | 大规模 | JSONL 原始 + SQLite 物化 | 复杂度高 |
 
-**建议**：MVP 用 JSONL；当出现“多 Agent 同时写”或“issues > 1k / 查询变慢”时再上 SQLite。**不要先上向量库。**
+**建议**：MVP 用 JSONL + OS 锁；当出现“高并发写”或“issues > 1k / 查询变慢”时再上 SQLite。**不要先上向量库。**
 
 ### 11.3 保留与清理
 
@@ -813,15 +806,15 @@ runtime_memory/                     # 与 demo/ 平级；harness 层
 
 ### 11.4 并发
 
-- JSONL：单写者 + 文件锁；`issues.json` 用 temp + replace 原子写；
+- JSONL：OS 级文件锁（Windows `msvcrt` / POSIX `fcntl`）串行化写；`issues.json` 用 temp + replace 原子写；不是数据库事务，崩溃仍可能留下 event 无 issue；
 - SQLite：WAL；`events` 追加、`issues` upsert；
-- 多 Agent：`scope` + `environment_id` 隔离；冲突用“最近成功/更高 confidence/人工”解决。
+- 多 Agent：`scope` + `scope_id`（session/agent）+ `environment_id` 隔离；冲突用“最近成功/更高 confidence/人工”解决。
 
 ### 11.5 脱敏
 
-- 正则：`Authorization: Bearer ...`、`password=...`、`token=...`、`Cookie: ...`、私钥块；
-- 对 `target` 是否脱敏由配置决定（内网 IP 可能需要保留，否则无法定位）；
-- `message_redacted` 只保留前 200–500 字符；完整内容放 `evidence_ref`，权限更高。
+- 正则：`Authorization: Bearer ...`、`password=...`、`token=...`、`Cookie: ...`、JSON 形式 secret、私钥块；
+- `target` 始终脱敏 URL userinfo 和已知 secret query 参数；内网 host/path 保留以便定位；
+- `message_redacted` 只保留前 200–500 字符；`notes` / `workaround` / `resolved_basis` / override basis 也先脱敏。
 
 ### 11.6 Python 包结构（建议）
 
@@ -1073,7 +1066,7 @@ def after_tool_call(ctx: ToolCallContext, result=None, error=None) -> None:
 | `time_to_workaround` | 首次失败 → 有 workaround | 越短越好 |
 | `stale_issue_rate` | 过期未确认 issue 比例 | <20% |
 | `tokens_saved` | 估算避免的调用成本 | 正收益 |
-| `override_rate` | 人工/模型 override 比例 | 低且可解释 |
+| `override_rate` | 人工 override 比例 | 低且可解释 |
 
 ### 15.2 Shadow 评估
 
@@ -1295,7 +1288,7 @@ class RuntimeMemory:
 
 ```jsonc
 // issues.json
-{"schema_version":1,"issues":[{"issue_id":"ISS-...","fingerprint":"lab-a|scope|mcp|hunt.query|search|10.7.194.120:22196","key_level":"scope","error_class":"unreachable","status":"open","count":3,"attempts":3,"retry_policy":{"mode":"fixed","base_s":900,"max_s":1800,"max_attempts":3,"max_attempts_per_run":1},"next_retry_at":"2026-11-02T12:10:12+08:00","expires_at":"2026-11-03T11:40:12+08:00","workaround":"use local pcap","confidence":0.8}]}
+{"schema_version":1,"issues":[{"issue_id":"ISS-...","fingerprint":"lab-a|scope|mcp|hunt.query|search|10.7.194.120:22196","key_level":"scope","scope":"global","scope_id":"","error_class":"unreachable","status":"open","count":3,"attempts":3,"retry_policy":{"mode":"fixed","base_s":900,"max_s":1800,"max_attempts":3},"next_retry_at":"2026-11-02T12:10:12+08:00","expires_at":"2026-11-03T11:40:12+08:00","workaround":"use local pcap","confidence":0.8}]}
 ```
 
 ### 20.4 术语

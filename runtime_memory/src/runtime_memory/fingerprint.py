@@ -129,3 +129,17 @@ def fingerprint_for(request: OperationRequest, key_level: str) -> str:
     if key_level == "call":
         return call_fingerprint(request)
     return scope_fingerprint(request)
+
+
+def scope_identity(request: OperationRequest) -> str:
+    """Return the identity that owns a non-global issue.
+
+    ``global`` issues have no identity. ``session`` issues are owned by the
+    session id; ``agent`` issues by agent id (falling back to session id for
+    older callers that do not set an agent id).
+    """
+    if request.scope == "global":
+        return ""
+    if request.scope == "agent":
+        return (request.agent_id or request.session_id or "").strip()
+    return (request.session_id or "").strip()

@@ -43,12 +43,13 @@ def build_report(store: Store, since: dt.datetime | None = None,
         if event.get("decision_id")
     }
     shadow_decisions = [item for item in decisions if item.get("shadow")]
-    block_decisions = [item for item in decisions if item.get("action") == "block"]
+    decision_action = lambda item: item.get("decision", item.get("action"))
+    block_decisions = [item for item in decisions if decision_action(item) == "block"]
     shadow_blocks = [item for item in shadow_decisions
-                     if item.get("action") == "block"]
-    probe_decisions = [item for item in decisions if item.get("action") == "probe"]
+                     if decision_action(item) == "block"]
+    probe_decisions = [item for item in decisions if decision_action(item) == "probe"]
     hint_decisions = [item for item in decisions
-                      if item.get("action") == "allow_with_hint"]
+                      if decision_action(item) == "allow_with_hint"]
 
     false_blocks = 0
     true_blocks = 0
@@ -102,6 +103,8 @@ def build_report(store: Store, since: dt.datetime | None = None,
         "shadow": {
             "would_block": len(shadow_blocks),
             "false_blocks": false_blocks,
+            "false_block_rate": round(false_blocks / (false_blocks + true_blocks), 3)
+            if false_blocks + true_blocks else None,
             "confirmed_blocks": true_blocks,
         },
         "enforce": {

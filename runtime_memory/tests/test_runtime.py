@@ -243,7 +243,8 @@ class ShadowTests(unittest.TestCase):
         runtime, clock = make_runtime(self, enforce=True)
         fail(runtime, request())
         decision = runtime.preflight(request(), allow_probe=True,
-                                     override_basis="operator asked for a probe")
+                                     override_basis="operator asked for a probe",
+                                     human_override=True)
         self.assertEqual(decision.action, "probe")
         self.assertTrue(decision.override)
         self.assertEqual(len(runtime.store.read_overrides()), 1)
@@ -254,7 +255,14 @@ class ShadowTests(unittest.TestCase):
         runtime, _ = make_runtime(self, enforce=True)
         fail(runtime, request())
         with self.assertRaisesRegex(ValueError, "override_basis"):
-            runtime.preflight(request(), allow_probe=True)
+            runtime.preflight(request(), allow_probe=True, human_override=True)
+
+    def test_model_override_is_rejected(self):
+        runtime, _ = make_runtime(self, enforce=True)
+        fail(runtime, request(), error_class="auth")
+        with self.assertRaisesRegex(ValueError, "human_override"):
+            runtime.preflight(request(), allow_probe=True,
+                              override_basis="model wants to try")
 
     def test_read_only_preflight_does_not_persist(self):
         runtime, clock = make_runtime(self, enforce=True)

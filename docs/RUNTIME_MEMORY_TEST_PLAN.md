@@ -80,7 +80,7 @@ python src/manage_runtime_memory.py check
 
 | 检查 | 预期 |
 |---|---|
-| 单元测试 | `Ran 77 tests ... OK`（约 5–8s） |
+| 单元测试 | `Ran 90 tests ... OK`（约 5–8s） |
 | 验证矩阵 | `Runtime memory verification: PASS` |
 | `check` | `Runtime memory check clean.` |
 | `runtime_memory/data/issues.json` | `{"schema_version": 1, "issues": []}` |
@@ -112,9 +112,9 @@ runtime_memory/sim/runs/
 | T3 | P1 | 退避 × 重试次数 × TTL 的 tradeoff | 新脚本 `policy_grid.py` | 10 分钟 | 待做 |
 | T4 | P1 | 多工具/替代路径/跨工具干扰 | 新脚本 `multitool.py` | 10 分钟 | 待做 |
 | T5 | P1 | 规模与 per-run 预算扫描 | `sim/scale.py` + 多 issue 变体 | 10–15 分钟 | 20k 已实测 |
-| T6 | P2 | 并发写/崩溃/锁/部分写 | 新脚本 `concurrency.py` | 10 分钟 | 待做 |
+| T6 | P2 | 并发写/崩溃/锁/部分写 | `sim/concurrency.py` | 3 分钟 | 已修/可跑 |
 | T7 | P2 | 保留/gc 与陈旧数据 | 现有测试 + 90 天仿真 | 5 分钟 | 部分已实测 |
-| T8 | P2 | 脱敏 fuzz | 新脚本/测试 | 3 分钟 | 待做 |
+| T8 | P2 | 脱敏 fuzz | `tests/test_redaction_security.py` | 1 分钟 | 已修/可跑 |
 | T9 | P3 | Agent 是否遵守 block/alternative | 脚本化 agent（无 LLM） | 10 分钟 | 可选 |
 | T10 | P3 | 去掉 workaround/scope/call 的消融 | 改 workload 配置 | 10 分钟 | 可选 |
 
@@ -349,22 +349,28 @@ python sim/scale.py --sizes 100000 --run-id exec-<UTC>-scale-100k
 
 **目的**：验证 JSONL 锁、原子 `issues.json`、以及“event 已写、issue 未写”这类部分状态是否可发现。
 
-**实现**：新建 `sim/concurrency.py`（不要改现有 `tests/`），不改核心。
+**实现**：已有 [`sim/concurrency.py`](../runtime_memory/sim/concurrency.py)；不要改核心。
+
+**步骤**
+
+```powershell
+python sim/concurrency.py
+```
 
 **测试**
 
-1. **并发追加**：两个子进程各向同一个 `events/2026-11.jsonl` 追加 100 条合法 JSON 行；
-   - 期望：200 行、每行可解析、无交错。
-2. **锁竞争**：两个进程同时 `postflight` 同一 issue；
-   - 期望：不丢行、issue 计数为 2（若串行）；若出现并发覆盖，记录。
+1. **并发追加**：4 个子进程各追加 200 条合法 JSON 行；
+   - 期望：800 行、每行可解析、无 `PermissionError`。
+2. **并发 issue 更新**：两个进程各 `postflight` 同一 issue 10 次；
+   - 期望：1 条 live issue，`count=20`，无重复 issue。
 3. **部分写**：手动 append 一条 event 但不写 issue；`check` 是否发现？
    - 当前 `check` 不校验 event→issue 反向引用；预期是“不会发现”，记录为 **gap**，不是 FAIL。
-4. **崩溃恢复**：用 `subprocess` 启动一个进程，在 `postflight` 中途 `terminate()`；再跑 `check`；
+4. **崩溃恢复**：用 `subprocess` 在 `postflight` 中途 `terminate()`；再跑 `check`；
    - 期望：不出现损坏 JSON；可能留下 event 无 issue 或 issue 无 event；记录。
 
-**判定**：无损坏 JSON、无丢行 = PASS；部分状态未检测 = 记录 gap，不要求修复。
+**判定**：输出 `append_ok=true`、`issue_ok=true` = PASS；部分状态未检测 = 记录 gap，不要求修复。
 
-**超时**：10 分钟。
+**超时**：5 分钟。
 
 ---
 
@@ -391,17 +397,25 @@ python sim/scale.py --sizes 100000 --run-id exec-<UTC>-scale-100k
 
 **目的**：确保错误消息/参数中的 token、密码、cookie、私钥不会进入 events/issues/decisions。
 
-**实现**：新建 `sim/redaction_fuzz.py`（不要改现有 `tests/`）。
+**实现**：已有 [`tests/test_redaction_security.py`](../runtime_memory/tests/test_redaction_security.py)；也可扩展 `sim/redaction_fuzz.py` 做更大规模 fuzz。
+
+**快速验证**
+
+```powershell
+python -m unittest discover -s tests -p "test_redaction_security.py" -v
+```
 
 **步骤**
 
 1. 生成 1000 条消息，随机包含：
    - `Authorization: Bearer <random>`
    - `password=...`、`token=...`、`api_key=...`
+   - JSON 形式 `{"password":"...","token":"..."}`
+   - URL userinfo `https://user:pass@host/...` 和 `?token=...`
    - `Cookie: session=...`
    - 私钥块
    - 正常文本作为对照
-2. 调用 `redact()`，再跑几次 `postflight`，检查 `events/*.jsonl`、`issues.json`、`decisions.jsonl`。
+2. 调用 `redact()` / `redact_target()`，再跑几次 `postflight`，检查 `events/*.jsonl`、`issues.json`、`decisions.jsonl`、`overrides.jsonl`。
 3. 断言：每个 secret 字符串都不出现在任何落盘文件中；正常文本保留。
 
 **判定**：0 泄漏 = PASS；任何泄漏 = P0，记录具体文件和模式。
@@ -453,7 +467,7 @@ python sim/scale.py --sizes 100000 --run-id exec-<UTC>-scale-100k
   "finished_at": "2026-11-03T15:20:00Z",
   "tests": [
     {"id": "T0", "command": "python -m unittest discover -s tests",
-     "exit_code": 0, "duration_s": 6.2, "status": "PASS", "notes": "77 tests"}
+     "exit_code": 0, "duration_s": 6.2, "status": "PASS", "notes": "90 tests"}
   ],
   "metrics": {
     "workload": {"run_dir": "...", "table": "..."},
@@ -569,7 +583,7 @@ At the end, send the Lead a concise summary: PASS/FAIL per test, key metrics, an
 ### 8.2 当前已实测结果（2026-11-03）
 
 ```text
-unit tests: 77 OK
+unit tests: 90 OK
 verify: PASS
 check: clean
 workload: sim/runs/workload-2026-11-03-b30/

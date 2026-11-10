@@ -73,6 +73,17 @@ Output: `sim/runs/scale-2026-11-03/summary.md` + `metrics.json`.
 The `with run_id` measurement includes the per-run budget scan over all events,
 so it grows linearly with event count.
 
+## Concurrency probe
+
+`sim/concurrency.py` checks multi-process appends and concurrent issue updates:
+
+```powershell
+python sim/concurrency.py
+```
+
+Expected: 4×200 event lines all written, one live issue after two writers each
+record 10 failures. The lock is an OS-level lock (no lock-file unlink race).
+
 ## Edge cases
 
 `sim/EDGE_CASES.md` lists the additional edge tests (false block, stale recovery,

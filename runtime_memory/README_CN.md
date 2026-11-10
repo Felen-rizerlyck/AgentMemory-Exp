@@ -120,7 +120,7 @@ open --workaround 人工--> mitigated（allow_with_hint）
 | `not_found` | call | 否 | — |
 | `internal` / `unknown` | scope | 谨慎 | 60s，最多 1 次 |
 
-`preflight` 在 `next_retry_at` 之前返回 `block`，到点返回 `probe`；`attempts` 超过 `max_attempts` 后即使到点也 block（`reason=attempt budget exhausted`）。
+`preflight` 在 `next_retry_at` 之前返回 `block`，到点返回一次 `probe`。超过 `max_attempts` 后仍会按策略最大退避间隔慢速探测，避免短暂故障造成长期封锁。可用 `brief` 查看精简的活动问题卡片。
 
 ### 3.5 Shadow 与 enforce
 
@@ -137,7 +137,7 @@ open --workaround 人工--> mitigated（allow_with_hint）
 - `block` 时调用方必须跳过工具调用，把 Decision 作为工具结果返回；
 - `report.enforce.blocked_calls` 统计真正被拦下的调用。
 
-`preflight --probe --basis "..."` 可以记录一次显式 override，落在 `data/overrides.jsonl`，不会被静默绕过。
+`preflight --probe --basis "..."` 是**操作员专用**的显式 override，落在 `data/overrides.jsonl`，不会被静默绕过。库 API 要求 `human_override=True`，模型侧调用不能把 block 偷换成 probe。
 
 ---
 
@@ -155,8 +155,9 @@ runtime_memory/data/
 
 - `events` 按 UTC 月份分文件；
 - `issues.json` 用临时文件 + `replace` 原子写；
-- JSONL 追加有跨平台文件锁（单写者原型，不是多进程事务）；
-- 错误消息先脱敏（Bearer、password、cookie、私钥等）再落盘；
+- 多进程写用 OS 级文件锁串行化（Windows `msvcrt` / POSIX `fcntl`），不是数据库事务；崩溃仍可能留下 event 无 issue；
+- 错误消息和目标先脱敏（Bearer、password、cookie、私钥、JSON 形式 secret、URL userinfo/query）再落盘；
+- issue 带 `scope_id`：global 对所有 session/agent 可见，session/agent issue 只对同身份可见；
 - `--root` 可以指向 harness 自己的可写目录，不必用仓库里的 `data/`。
 
 读记录时注意：
@@ -296,11 +297,11 @@ attr: status, error_class, next_retry_at, confidence
 
 ## 10. 当前边界
 
-- 单写者原型；文件锁只保证 JSONL 不交错，不是多进程事务；
+- 多进程写已用 OS 文件锁串行化，但不是数据库事务；event 写入后、issue 更新前崩溃仍会留下部分状态；
 - shadow 决策是建议，调用方必须自己遵守 `block`（enforce 模式）；
 - 没有外部健康检查自动 resolve；需要 probe 成功或人工 resolve；
 - 没有 playbook 自动生成；
-- 没有跨 Agent 协调，只有 `scope` / `environment_id`；
+- scope 身份已用于 issue 可见性；没有跨 Agent 的任务调度/协调；
 - 默认 TTL/退避是起点，不是生产校准值；
 - `preflight` 带 `run_id` 时会扫描 events 做 per-run 预算；规模探针在 2 万事件时约 **156ms**（不带 run_id 约 1ms）。高吞吐前要加索引/缓存，或者由 gateway 自己维护 per-run 计数；
 - “短退避 + 小 max_attempts”可能在长故障恢复前就把 issue 预算耗尽：30 seed 的负载实验里 `enforce_60` 成功率 0%，`enforce_900` 为 100%。退避和 `max_attempts` 要一起调，不能分开看；
@@ -315,7 +316,7 @@ python -m unittest discover -s tests
 python scripts/verify_runtime_memory.py
 ```
 
-当前：**77 个测试**，覆盖 fingerprint、redaction、policy、状态机、shadow/enforce、override、report、CLI，以及边缘用例（false block、stale 恢复、Retry-After、probing 崩溃、预算、环境隔离、损坏 journal、gc）。
+当前：**90 个测试**，覆盖 fingerprint、redaction、policy、状态机、shadow/enforce、override、report、CLI，以及边缘用例（false block、stale 恢复、Retry-After、probing 崩溃、预算、环境/session/agent 隔离、损坏 journal、gc、并发锁、JSON/URL secret 脱敏）。
 
 `scripts/verify_runtime_memory.py` 会跑：
 

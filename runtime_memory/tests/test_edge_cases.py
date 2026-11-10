@@ -28,7 +28,8 @@ class Clock:
         self.now += dt.timedelta(seconds=seconds)
 
 
-def make(case, enforce=False, overrides=None, budgets=None):
+def make(case, enforce=False, overrides=None, budgets=None,
+         policy_overrides=None):
     folder = tempfile.TemporaryDirectory()
     case.addCleanup(folder.cleanup)
     data = default_policy()
@@ -37,6 +38,8 @@ def make(case, enforce=False, overrides=None, budgets=None):
         data["classes"][error_class].update(values)
     if budgets:
         data["budgets"].update(budgets)
+    if policy_overrides:
+        data.update(policy_overrides)
     clock = Clock()
     return RuntimeMemory(folder.name, policy=Policy(data), clock=clock), clock
 
@@ -180,6 +183,70 @@ class EdgeCaseTests(unittest.TestCase):
         self.assertEqual(decision.action, "probe")
         runtime.postflight(req(), "ok", decision=decision)
         self.assertEqual(runtime.store.get_issue(issue["issue_id"])["status"], "resolved")
+
+    def test_session_identity_isolation(self):
+        runtime, _ = make(self)
+        fail(runtime, req(scope="session", session_id="s1"))
+        self.assertEqual(
+            runtime.preflight(req(scope="session", session_id="s2")).action, "allow")
+        self.assertEqual(
+            runtime.preflight(req(scope="session", session_id="s1")).action, "block")
+
+    def test_agent_identity_isolation(self):
+        runtime, _ = make(self)
+        fail(runtime, req(scope="agent", agent_id="a1"))
+        self.assertEqual(
+            runtime.preflight(req(scope="agent", agent_id="a2")).action, "allow")
+        self.assertEqual(
+            runtime.preflight(req(scope="agent", agent_id="a1")).action, "block")
+
+    def test_global_issue_is_resolved_by_session_success(self):
+        runtime, _ = make(self)
+        issue = fail(runtime, req(scope="global", session_id="s1"))
+        runtime.postflight(req(scope="session", session_id="s1"), "ok")
+        self.assertEqual(
+            runtime.store.get_issue(issue["issue_id"])["status"], "resolved")
+        self.assertEqual(
+            runtime.preflight(req(scope="session", session_id="s2")).action, "allow")
+
+    def test_cross_scope_failures_are_not_merged(self):
+        runtime, _ = make(self)
+        global_issue = fail(runtime, req(scope="global", session_id="s1"))
+        session_issue = fail(runtime, req(scope="session", session_id="s1"))
+        self.assertNotEqual(global_issue["issue_id"], session_issue["issue_id"])
+        self.assertEqual(global_issue["count"], 1)
+        self.assertEqual(session_issue["count"], 1)
+
+    def test_stale_issue_blocks_when_probe_after_expiry_is_false(self):
+        runtime, clock = make(self, policy_overrides={"probe_after_expiry": False})
+        issue = fail(runtime, req())
+        clock.advance(86401)
+        decision = runtime.preflight(req())
+        self.assertEqual(decision.action, "block")
+        self.assertIn("manual probe", decision.reason)
+        self.assertEqual(
+            runtime.store.get_issue(issue["issue_id"])["status"], "stale")
+
+    def test_notes_and_workaround_are_redacted(self):
+        runtime, _ = make(self)
+        issue = fail(runtime, req())
+        updated = runtime.add_note(issue["issue_id"], "password=hunter2")
+        self.assertNotIn("hunter2", updated["notes"][0]["text"])
+        updated = runtime.set_workaround(issue["issue_id"],
+                                         "use token=abc123 for the backup")
+        self.assertNotIn("abc123", updated["workaround"])
+
+    def test_target_and_decision_do_not_store_url_credentials(self):
+        runtime, _ = make(self)
+        target = "https://alice:s3cr3t@host.example/hunt?token=abc123"
+        issue = fail(runtime, req(target=target), error_class="auth")
+        self.assertNotIn("alice", issue["target"])
+        self.assertNotIn("s3cr3t", issue["target"])
+        self.assertNotIn("abc123", issue["target"])
+        event = runtime.store.read_events()[-1]
+        self.assertNotIn("s3cr3t", event["target"])
+        decision = runtime.preflight(req(target=target))
+        self.assertNotIn("s3cr3t", decision.reason)
 
 
 if __name__ == "__main__":

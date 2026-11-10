@@ -32,6 +32,7 @@ class OperationRequest:
     scope: str = "session"
     environment_id: str = "default"
     session_id: str = ""
+    agent_id: str = ""
     run_id: str = ""
 
     def to_dict(self) -> dict[str, Any]:
@@ -50,6 +51,7 @@ class OperationEvent:
     scope: str = "session"
     environment_id: str = "default"
     session_id: str = ""
+    agent_id: str = ""
     run_id: str = ""
     error_class: str = ""
     error_code: str = ""
@@ -95,8 +97,12 @@ class Issue:
     next_retry_at: str | None = None
     expires_at: str | None = None
     workaround: str = ""
+    workaround_by: str = ""
+    workaround_at: str | None = None
     confidence: float = 0.0
     source_event_ids: list[str] = field(default_factory=list)
+    dropped_event_count: int = 0
+    evidence_run_ids: list[str] = field(default_factory=list)
     last_probe_event_id: str | None = None
     probe_started_at: str | None = None
     diagnosis: str = ""
@@ -107,6 +113,8 @@ class Issue:
     notes: list[dict[str, Any]] = field(default_factory=list)
     related_incident_id: str | None = None
     related_case_id: str | None = None
+    # Empty for global issues; session/agent identity for scoped issues.
+    scope_id: str = ""
     schema_version: int = 1
 
     def to_dict(self) -> dict[str, Any]:
@@ -133,6 +141,7 @@ class Decision:
     decision_id: str = ""
     override: bool = False
     override_basis: str = ""
+    override_by: str = ""
     schema_version: int = 1
 
     def to_dict(self) -> dict[str, Any]:

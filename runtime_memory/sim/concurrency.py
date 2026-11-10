@@ -29,6 +29,12 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
+from runtime_memory import OperationRequest, Policy, RuntimeMemory  # noqa: E402
+from runtime_memory.models import OperationEvent  # noqa: E402
+from runtime_memory.policy import default_policy  # noqa: E402
 from runtime_memory import OperationRequest, Policy, RuntimeMemory  # noqa: E402
 from runtime_memory.models import OperationEvent  # noqa: E402
 from runtime_memory.policy import default_policy  # noqa: E402
@@ -243,6 +249,7 @@ def main() -> int:
     print("\n".join(lines))
     print(f"\nwrote {out}")
     return 0
+
 
 
 if __name__ == "__main__":

@@ -2,17 +2,11 @@
   "schema_version": 1,
   "policy_version": "2026-11-02.1",
   "enforce": false,
+  "probe_after_expiry": true,
   "probe_timeout_s": 300,
-  "defaults": {
-    "cooldown_s": 300,
-    "issue_ttl_s": 86400,
-    "max_attempts_per_run": 3,
-    "probe_after_expiry": true
-  },
   "budgets": {
     "max_attempts_per_call_key_per_run": 3,
-    "max_failures_per_component_per_run": 10,
-    "max_blocked_calls_per_run": 50
+    "max_failures_per_component_per_run": 10
   },
   "classes": {
     "unreachable": {
@@ -22,7 +16,6 @@
       "base_s": 900,
       "max_s": 1800,
       "max_attempts": 3,
-      "max_attempts_per_run": 1,
       "ttl_s": 86400
     },
     "timeout": {
@@ -32,7 +25,6 @@
       "base_s": 30,
       "max_s": 300,
       "max_attempts": 3,
-      "max_attempts_per_run": 3,
       "ttl_s": 3600
     },
     "rate_limit": {
@@ -42,7 +34,6 @@
       "base_s": 60,
       "max_s": 300,
       "max_attempts": 3,
-      "max_attempts_per_run": 3,
       "ttl_s": 3600
     },
     "auth": {
@@ -52,7 +43,6 @@
       "base_s": 0,
       "max_s": 0,
       "max_attempts": 0,
-      "max_attempts_per_run": 0,
       "ttl_s": 86400
     },
     "permission": {
@@ -62,7 +52,6 @@
       "base_s": 0,
       "max_s": 0,
       "max_attempts": 0,
-      "max_attempts_per_run": 0,
       "ttl_s": 86400
     },
     "schema": {
@@ -72,7 +61,6 @@
       "base_s": 0,
       "max_s": 0,
       "max_attempts": 0,
-      "max_attempts_per_run": 0,
       "ttl_s": 86400
     },
     "not_found": {
@@ -82,7 +70,6 @@
       "base_s": 0,
       "max_s": 0,
       "max_attempts": 0,
-      "max_attempts_per_run": 0,
       "ttl_s": 3600
     },
     "invalid_args": {
@@ -92,7 +79,6 @@
       "base_s": 0,
       "max_s": 0,
       "max_attempts": 0,
-      "max_attempts_per_run": 0,
       "ttl_s": 3600
     },
     "internal": {
@@ -102,7 +88,6 @@
       "base_s": 60,
       "max_s": 600,
       "max_attempts": 1,
-      "max_attempts_per_run": 1,
       "ttl_s": 3600
     },
     "unknown": {
@@ -112,7 +97,6 @@
       "base_s": 60,
       "max_s": 600,
       "max_attempts": 1,
-      "max_attempts_per_run": 1,
       "ttl_s": 3600
     }
   }

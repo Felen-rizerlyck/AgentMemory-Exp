@@ -14,68 +14,62 @@ DEFAULT_POLICY: dict[str, Any] = {
     "schema_version": 1,
     "policy_version": "2026-11-02.1",
     "enforce": False,
+    "probe_after_expiry": True,
     "probe_timeout_s": 300,
-    "defaults": {
-        "cooldown_s": 300,
-        "issue_ttl_s": 86400,
-        "max_attempts_per_run": 3,
-        "probe_after_expiry": True,
-    },
     "budgets": {
         "max_attempts_per_call_key_per_run": 3,
         "max_failures_per_component_per_run": 10,
-        "max_blocked_calls_per_run": 50,
     },
     "classes": {
         "unreachable": {
             "key_level": "scope", "retryable": True, "mode": "fixed",
             "base_s": 900, "max_s": 1800, "max_attempts": 3,
-            "max_attempts_per_run": 1, "ttl_s": 86400,
+            "ttl_s": 86400,
         },
         "timeout": {
             "key_level": "call", "retryable": True, "mode": "exponential",
             "base_s": 30, "max_s": 300, "max_attempts": 3,
-            "max_attempts_per_run": 3, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
         "rate_limit": {
             "key_level": "scope", "retryable": True, "mode": "exponential",
             "base_s": 60, "max_s": 300, "max_attempts": 3,
-            "max_attempts_per_run": 3, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
         "auth": {
             "key_level": "scope", "retryable": False, "mode": "none",
             "base_s": 0, "max_s": 0, "max_attempts": 0,
-            "max_attempts_per_run": 0, "ttl_s": 86400,
+            "ttl_s": 86400,
         },
         "permission": {
             "key_level": "scope", "retryable": False, "mode": "none",
             "base_s": 0, "max_s": 0, "max_attempts": 0,
-            "max_attempts_per_run": 0, "ttl_s": 86400,
+            "ttl_s": 86400,
         },
         "schema": {
             "key_level": "call", "retryable": False, "mode": "none",
             "base_s": 0, "max_s": 0, "max_attempts": 0,
-            "max_attempts_per_run": 0, "ttl_s": 86400,
+            "ttl_s": 86400,
         },
         "not_found": {
             "key_level": "call", "retryable": False, "mode": "none",
             "base_s": 0, "max_s": 0, "max_attempts": 0,
-            "max_attempts_per_run": 0, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
         "invalid_args": {
             "key_level": "call", "retryable": False, "mode": "none",
             "base_s": 0, "max_s": 0, "max_attempts": 0,
-            "max_attempts_per_run": 0, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
         "internal": {
             "key_level": "scope", "retryable": True, "mode": "fixed",
             "base_s": 60, "max_s": 600, "max_attempts": 1,
-            "max_attempts_per_run": 1, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
         "unknown": {
             "key_level": "scope", "retryable": True, "mode": "fixed",
             "base_s": 60, "max_s": 600, "max_attempts": 1,
-            "max_attempts_per_run": 1, "ttl_s": 3600,
+            "ttl_s": 3600,
         },
     },
 }
@@ -114,6 +108,13 @@ class Policy:
         return int(self.data.get("probe_timeout_s", 300))
 
     @property
+    def probe_after_expiry(self) -> bool:
+        if "probe_after_expiry" in self.data:
+            return bool(self.data["probe_after_expiry"])
+        # Backward compatibility with the earlier nested defaults block.
+        return bool((self.data.get("defaults") or {}).get("probe_after_expiry", True))
+
+    @property
     def budgets(self) -> dict[str, int]:
         merged = copy.deepcopy(DEFAULT_POLICY["budgets"])
         merged.update(self.data.get("budgets") or {})
@@ -127,7 +128,6 @@ class Policy:
             "base_s": 0,
             "max_s": 0,
             "max_attempts": 1,
-            "max_attempts_per_run": 1,
             "ttl_s": 3600,
         }
         classes = self.data.get("classes") or {}
@@ -179,7 +179,6 @@ class Policy:
             "base_s": int(rule.get("base_s", 0) or 0),
             "max_s": int(rule.get("max_s", 0) or 0),
             "max_attempts": int(rule.get("max_attempts", 0) or 0),
-            "max_attempts_per_run": int(rule.get("max_attempts_per_run", 1) or 1),
             "ttl_s": self.ttl_s(error_class),
             "next_retry_at": self.next_retry_at(error_class, attempts, now, retry_after_s),
         }
@@ -207,7 +206,7 @@ class Policy:
                 problems.append(f"policy.classes.{name}.mode must be none|fixed|exponential")
             if not isinstance(rule.get("retryable"), bool):
                 problems.append(f"policy.classes.{name}.retryable must be boolean")
-            for numeric in ("base_s", "max_s", "max_attempts", "max_attempts_per_run", "ttl_s"):
+            for numeric in ("base_s", "max_s", "max_attempts", "ttl_s"):
                 if not isinstance(rule.get(numeric, 0), int):
                     problems.append(f"policy.classes.{name}.{numeric} must be an integer")
         if "unknown" not in classes:

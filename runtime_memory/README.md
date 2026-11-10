@@ -34,11 +34,15 @@ memory, and audit exceptions respectively.
 - `preflight` / `postflight` library API and a small CLI
 - **Shadow mode by default**: decisions are recorded, but calls still run
 - Enforce mode: `block` prevents the call
-- Redaction of bearer tokens, passwords, cookies and private keys
-- JSONL store with a small cross-platform file lock; `issues.json` is atomic
+- Redaction of bearer tokens, passwords, cookies, private keys, JSON-form
+  secrets, and URL userinfo/query credentials (also in stored targets)
+- Scope identity: global issues apply everywhere; session/agent issues only to
+  the same `session_id` / `agent_id`
+- JSONL store with an OS-level writer lock (`msvcrt`/`fcntl`); `issues.json` is
+  atomic and write operations are serialized across processes
 - `report --since 7d` with shadow false-block, duplicate-attempt and probe metrics
-- 77 stdlib `unittest` tests, including `tests/test_edge_cases.py` and
-  `tests/test_store_edge.py`, plus a read-only verification script
+- 90 stdlib `unittest` tests, including edge, store, redaction and security
+  tests, plus a read-only verification script
 
 ## Quick start
 
@@ -116,8 +120,9 @@ python src/manage_runtime_memory.py report --since 7d
 python src/manage_runtime_memory.py gc --dry-run
 ```
 
-`preflight --probe --basis "..."` records an explicit override; it is still
-audited in `data/overrides.jsonl`.
+`preflight --probe --basis "..."` is an **operator-only** override and is
+audited in `data/overrides.jsonl`. The library requires `human_override=True`;
+a model-facing caller cannot silently turn a block into a probe.
 
 ## Data layout
 
@@ -210,14 +215,16 @@ Do not build a graph database before the flat issue store proves useful.
 
 ## Limits
 
-- Single-writer prototype; the lock prevents interleaved JSONL lines, not
-  multi-process transactions.
+- Writes from multiple processes are serialized by an OS lock; this is not a
+  database transaction. A crash between event append and issue update can
+  still leave an event without an issue (recorded as a known gap).
 - Shadow decisions are advisory until `enforce=true`; the caller must honor
   `block` in enforce mode.
 - No automatic issue resolution from an external health check; a successful
   probe or a human resolve is required.
 - No playbook auto-generation; `playbook.md` is curated.
-- No cross-agent coordination beyond `scope` / `environment_id`.
+- Scope identity is enforced for issue visibility; there is no task
+  scheduling/coordination between agents beyond that.
 - Default TTLs and backoffs are deliberate starting points, not calibrated
   production values.
 - `preflight` with a non-empty `run_id` scans events for the per-run budget;

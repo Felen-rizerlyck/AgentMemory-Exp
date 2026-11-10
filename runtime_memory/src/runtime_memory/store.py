@@ -6,6 +6,7 @@ import json
 import os
 import re
 import tempfile
+import threading
 import time
 from pathlib import Path
 from typing import Any, Iterator
@@ -20,40 +21,85 @@ DEFAULT_DATA_DIR = RUNTIME_ROOT / "data"
 _MONTH_RE = re.compile(r"^\d{4}-\d{2}$")
 
 
-@contextlib.contextmanager
-def file_lock(lock_path: Path, timeout: float = 5.0) -> Iterator[None]:
-    """Small cross-platform lock used around JSONL appends.
+_LOCK_STATE = threading.local()
 
-    This is a single-writer prototype: the lock prevents interleaved lines, not
-    full transactional isolation.  A stale lock older than 60s is reclaimed.
-    """
-    lock_path.parent.mkdir(parents=True, exist_ok=True)
+
+def _acquire_os_lock(handle, timeout: float) -> None:
     started = time.monotonic()
     while True:
         try:
-            descriptor = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
-            os.close(descriptor)
-            break
-        except FileExistsError:
-            try:
-                if time.time() - lock_path.stat().st_mtime > 60:
-                    lock_path.unlink(missing_ok=True)
-                    continue
-            except FileNotFoundError:
-                continue
+            if os.name == "nt":
+                import msvcrt
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return
+        except OSError:
             if time.monotonic() - started > timeout:
-                raise TimeoutError(f"could not acquire lock {lock_path}")
+                raise TimeoutError("could not acquire writer lock")
             time.sleep(0.05)
+
+
+def _release_os_lock(handle) -> None:
+    if os.name == "nt":
+        import msvcrt
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+    else:
+        import fcntl
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+@contextlib.contextmanager
+def file_lock(lock_path: Path, timeout: float = 30.0) -> Iterator[None]:
+    """Reentrant, cross-process lock on a persistent lock file.
+
+    The lock file is kept on disk: unlinking a lock file is racy on Windows and
+    was the source of ``PermissionError`` / lost JSONL lines.  OS-level locks
+    (``msvcrt`` on Windows, ``fcntl`` on POSIX) are released automatically if
+    the process dies.
+    """
+    lock_path = Path(lock_path)
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    key = str(lock_path.resolve())
+    held = getattr(_LOCK_STATE, "held", None)
+    if held is None:
+        held = {}
+        _LOCK_STATE.held = held
+    if key in held:
+        held[key] += 1
+        try:
+            yield
+        finally:
+            held[key] -= 1
+            if held[key] == 0:
+                del held[key]
+        return
+
+    handle = lock_path.open("a+b")
     try:
-        yield
+        handle.seek(0, os.SEEK_END)
+        if handle.tell() == 0:
+            handle.write(b"\0")
+            handle.flush()
+        handle.seek(0)
+        _acquire_os_lock(handle, timeout)
+        held[key] = 1
+        try:
+            yield
+        finally:
+            del held[key]
+            _release_os_lock(handle)
     finally:
-        lock_path.unlink(missing_ok=True)
+        handle.close()
 
 
-def append_jsonl(path: Path, record: dict[str, Any]) -> None:
+def append_jsonl(path: Path, record: dict[str, Any],
+                 lock_path: Path | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     line = json.dumps(record, ensure_ascii=False, separators=(",", ":"))
-    with file_lock(path.with_name(path.name + ".lock")):
+    with file_lock(lock_path or path.with_name(path.name + ".lock")):
         with path.open("a", encoding="utf-8", newline="\n") as handle:
             handle.write(line + "\n")
 
@@ -97,24 +143,29 @@ class Store:
         self.decisions_path = self.root / "decisions.jsonl"
         self.overrides_path = self.root / "overrides.jsonl"
         self.playbook_path = self.root / "playbook.md"
+        self.write_lock_path = self.root / ".writer.lock"
+
+    def writer_lock(self):
+        return file_lock(self.write_lock_path)
 
     def ensure(self) -> None:
         self.root.mkdir(parents=True, exist_ok=True)
-        self.events_dir.mkdir(parents=True, exist_ok=True)
-        if not self.policy_path.exists():
-            atomic_write_json(self.policy_path, default_policy())
-        if not self.issues_path.exists():
-            atomic_write_json(self.issues_path, {"schema_version": 1, "issues": []})
-        for path in (self.decisions_path, self.overrides_path):
-            if not path.exists():
-                path.touch()
-        if not self.playbook_path.exists():
-            self.playbook_path.write_text(
-                "# Runtime Memory Playbook\n\n"
-                "Curated, human-reviewed handling notes live here. "
-                "Do not auto-generate entries from a single failure.\n",
-                encoding="utf-8",
-            )
+        with self.writer_lock():
+            self.events_dir.mkdir(parents=True, exist_ok=True)
+            if not self.policy_path.exists():
+                atomic_write_json(self.policy_path, default_policy())
+            if not self.issues_path.exists():
+                atomic_write_json(self.issues_path, {"schema_version": 1, "issues": []})
+            for path in (self.decisions_path, self.overrides_path):
+                if not path.exists():
+                    path.touch()
+            if not self.playbook_path.exists():
+                self.playbook_path.write_text(
+                    "# Runtime Memory Playbook\n\n"
+                    "Curated, human-reviewed handling notes live here. "
+                    "Do not auto-generate entries from a single failure.\n",
+                    encoding="utf-8",
+                )
 
     # -- policy ---------------------------------------------------------
     def load_policy(self) -> Policy:
@@ -129,53 +180,59 @@ class Store:
         return self.events_dir / f"{month}.jsonl"
 
     def append_event(self, event: OperationEvent) -> None:
-        append_jsonl(self.event_path(event), event.to_dict())
+        append_jsonl(self.event_path(event), event.to_dict(),
+                     lock_path=self.write_lock_path)
 
     def read_events(self, since=None) -> list[dict[str, Any]]:
-        records: list[dict[str, Any]] = []
-        for path in sorted(self.events_dir.glob("*.jsonl")):
-            for record in read_jsonl(path):
-                if since is not None:
-                    stamp = parse_iso(record.get("ts"))
-                    if stamp is None or stamp < since:
-                        continue
-                records.append(record)
-        records.sort(key=lambda item: str(item.get("ts", "")))
-        return records
+        with self.writer_lock():
+            records: list[dict[str, Any]] = []
+            for path in sorted(self.events_dir.glob("*.jsonl")):
+                for record in read_jsonl(path):
+                    if since is not None:
+                        stamp = parse_iso(record.get("ts"))
+                        if stamp is None or stamp < since:
+                            continue
+                    records.append(record)
+            records.sort(key=lambda item: str(item.get("ts", "")))
+            return records
 
     # -- decisions / overrides -----------------------------------------
     def append_decision(self, record: dict[str, Any]) -> None:
-        append_jsonl(self.decisions_path, record)
+        append_jsonl(self.decisions_path, record, lock_path=self.write_lock_path)
 
     def read_decisions(self, since=None) -> list[dict[str, Any]]:
-        records = read_jsonl(self.decisions_path)
-        if since is not None:
-            filtered = []
-            for record in records:
-                stamp = parse_iso(record.get("ts"))
-                if stamp is not None and stamp >= since:
-                    filtered.append(record)
-            records = filtered
-        return records
+        with self.writer_lock():
+            records = read_jsonl(self.decisions_path)
+            if since is not None:
+                filtered = []
+                for record in records:
+                    stamp = parse_iso(record.get("ts"))
+                    if stamp is not None and stamp >= since:
+                        filtered.append(record)
+                records = filtered
+            return records
 
     def append_override(self, record: dict[str, Any]) -> None:
-        append_jsonl(self.overrides_path, record)
+        append_jsonl(self.overrides_path, record, lock_path=self.write_lock_path)
 
     def read_overrides(self) -> list[dict[str, Any]]:
-        return read_jsonl(self.overrides_path)
+        with self.writer_lock():
+            return read_jsonl(self.overrides_path)
 
     # -- issues ---------------------------------------------------------
     def load_issues(self) -> dict[str, Any]:
-        if not self.issues_path.exists():
-            return {"schema_version": 1, "issues": []}
-        data = json.loads(self.issues_path.read_text(encoding="utf-8-sig"))
-        if not isinstance(data, dict) or not isinstance(data.get("issues"), list):
-            raise ValueError("issues.json must contain an issues list")
-        return data
+        with self.writer_lock():
+            if not self.issues_path.exists():
+                return {"schema_version": 1, "issues": []}
+            data = json.loads(self.issues_path.read_text(encoding="utf-8-sig"))
+            if not isinstance(data, dict) or not isinstance(data.get("issues"), list):
+                raise ValueError("issues.json must contain an issues list")
+            return data
 
     def save_issues(self, data: dict[str, Any]) -> None:
         data.setdefault("schema_version", 1)
-        atomic_write_json(self.issues_path, data)
+        with self.writer_lock():
+            atomic_write_json(self.issues_path, data)
 
     def list_issues(self, status: str | None = None,
                     include_resolved: bool = True) -> list[dict[str, Any]]:
@@ -197,12 +254,16 @@ class Store:
         return result
 
     def find_issue(self, fingerprint: str, error_class: str,
-                   include_resolved: bool = True) -> dict[str, Any] | None:
+                   include_resolved: bool = True,
+                   scope: str | None = None,
+                   scope_id: str | None = None) -> dict[str, Any] | None:
         matches = [
             item for item in self.load_issues()["issues"]
             if item.get("fingerprint") == fingerprint
             and item.get("error_class") == error_class
             and (include_resolved or item.get("status") != "resolved")
+            and (scope is None or item.get("scope") == scope)
+            and (scope_id is None or item.get("scope_id", "") == scope_id)
         ]
         if not matches:
             return None
@@ -217,27 +278,73 @@ class Store:
                 return item
         return None
 
+    @staticmethod
+    def _issue_key(item: dict[str, Any]) -> tuple:
+        return (item.get("fingerprint"), item.get("error_class"),
+                item.get("scope", "global"), item.get("scope_id", ""))
+
+    @staticmethod
+    def _merge_issues(existing: dict[str, Any], incoming: dict[str, Any]) -> dict[str, Any]:
+        """Merge two issues that raced to be created with the same key."""
+        merged = dict(existing)
+        merged["count"] = int(existing.get("count", 0)) + int(incoming.get("count", 0))
+        merged["attempts"] = int(existing.get("attempts", 0)) + int(incoming.get("attempts", 0))
+        merged["first_seen"] = min(str(existing.get("first_seen", "")),
+                                   str(incoming.get("first_seen", "")))
+        merged["last_seen"] = max(str(existing.get("last_seen", "")),
+                                  str(incoming.get("last_seen", "")))
+        merged["confidence"] = max(float(existing.get("confidence", 0) or 0),
+                                   float(incoming.get("confidence", 0) or 0))
+        merged["source_event_ids"] = list(dict.fromkeys(
+            list(existing.get("source_event_ids") or [])
+            + list(incoming.get("source_event_ids") or [])))[-20:]
+        if existing.get("status") not in ("resolved", "mitigated") and incoming.get("status") in (
+                "open", "probing", "stale"):
+            merged["status"] = incoming["status"]
+        if existing.get("status") in ("resolved", "mitigated") and incoming.get("status") not in (
+                "resolved", "mitigated"):
+            merged["status"] = incoming["status"]
+            merged["resolution"] = ""
+            merged["resolved_at"] = None
+            merged["resolved_basis"] = ""
+        for field_name in ("next_retry_at", "expires_at"):
+            values = [str(value) for value in (existing.get(field_name),
+                                               incoming.get(field_name)) if value]
+            if values:
+                merged[field_name] = max(values)
+        merged["workaround"] = existing.get("workaround") or incoming.get("workaround", "")
+        return merged
+
     def upsert_issue(self, issue: Issue | dict[str, Any]) -> dict[str, Any]:
         record = issue.to_dict() if isinstance(issue, Issue) else dict(issue)
-        data = self.load_issues()
-        items = data["issues"]
-        for index, item in enumerate(items):
-            if item.get("issue_id") == record.get("issue_id"):
-                items[index] = record
-                break
-        else:
+        with self.writer_lock():
+            data = self.load_issues()
+            items = data["issues"]
+            for index, item in enumerate(items):
+                if item.get("issue_id") == record.get("issue_id"):
+                    items[index] = record
+                    self.save_issues(data)
+                    return record
+            key = self._issue_key(record)
+            for index, item in enumerate(items):
+                if self._issue_key(item) == key:
+                    merged = self._merge_issues(item, record)
+                    items[index] = merged
+                    self.save_issues(data)
+                    return merged
             items.append(record)
-        self.save_issues(data)
-        return record
+            self.save_issues(data)
+            return record
 
     def delete_issues(self, issue_ids: set[str]) -> int:
-        data = self.load_issues()
-        before = len(data["issues"])
-        data["issues"] = [item for item in data["issues"]
-                          if item.get("issue_id") not in issue_ids]
-        if len(data["issues"]) != before:
-            self.save_issues(data)
-        return before - len(data["issues"])
+        with self.writer_lock():
+            data = self.load_issues()
+            before = len(data["issues"])
+            data["issues"] = [item for item in data["issues"]
+                              if item.get("issue_id") not in issue_ids]
+            if len(data["issues"]) != before:
+                self.save_issues(data)
+            return before - len(data["issues"])
 
     # -- checks / stats -------------------------------------------------
     def check(self) -> list[str]:
@@ -277,7 +384,7 @@ class Store:
         except ValueError as error:
             return problems + [f"journal: {error}"]
         for record in decisions:
-            if record.get("action") not in ACTIONS:
+            if record.get("decision", record.get("action")) not in ACTIONS:
                 problems.append(f"decision {record.get('decision_id')}: bad action")
         for record in events:
             if record.get("outcome") not in OUTCOMES:

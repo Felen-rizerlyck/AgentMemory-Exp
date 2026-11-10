@@ -40,6 +40,7 @@ def _request(args) -> OperationRequest:
         scope=args.scope,
         environment_id=args.environment,
         session_id=args.session_id,
+        agent_id=getattr(args, "agent_id", ""),
         run_id=args.run_id,
     )
 
@@ -49,6 +50,8 @@ def _print_decision(decision) -> None:
         print(f"[allow] {decision.fingerprint}")
         return
     print(f"[{decision.action}] {decision.fingerprint}")
+    if decision.decision_id:
+        print(f"  decision_id: {decision.decision_id}")
     if decision.issue_id:
         print(f"  issue: {decision.issue_id}")
     if decision.shadow:
@@ -92,6 +95,9 @@ def build_parser() -> argparse.ArgumentParser:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("check", help="validate policy, issues, events and decisions")
+    brief = sub.add_parser("brief", help="show a compact tool-memory card")
+    brief.add_argument("--limit", type=int, default=8)
+    brief.add_argument("--json", action="store_true")
     state = sub.add_parser("state", help="show store state")
     state.add_argument("--json", action="store_true")
 
@@ -115,9 +121,11 @@ def build_parser() -> argparse.ArgumentParser:
     preflight.add_argument("--scope", choices=list(SCOPES), default="session")
     preflight.add_argument("--environment", default="default")
     preflight.add_argument("--session-id", default="")
+    preflight.add_argument("--agent-id", default="")
     preflight.add_argument("--run-id", default="")
     preflight.add_argument("--probe", action="store_true",
-                           help="allow one probe when blocked (requires --basis)")
+                           help="operator-only: allow one probe when blocked "
+                                "(requires --basis)")
     preflight.add_argument("--basis", default="")
     preflight.add_argument("--json", action="store_true")
 
@@ -130,6 +138,7 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--scope", choices=list(SCOPES), default="session")
     record.add_argument("--environment", default="default")
     record.add_argument("--session-id", default="")
+    record.add_argument("--agent-id", default="")
     record.add_argument("--run-id", default="")
     record.add_argument("--outcome", required=True,
                         choices=["ok", "fail", "timeout", "denied"])
@@ -139,6 +148,9 @@ def build_parser() -> argparse.ArgumentParser:
     record.add_argument("--duration-ms", type=int, default=0)
     record.add_argument("--attempt", type=int, default=0,
                         help="0 = derive from the issue counter")
+    record.add_argument("--decision-id", default="")
+    record.add_argument("--retry-after-s", type=int)
+    record.add_argument("--evidence-ref", default="")
     record.add_argument("--json", action="store_true")
 
     resolve = sub.add_parser("resolve", help="mark an issue fixed/mitigated")
@@ -197,6 +209,20 @@ def main(argv: list[str] | None = None) -> int:
             return 0
 
         runtime = RuntimeMemory(root)
+        if args.command == "brief":
+            cards = runtime.brief(limit=args.limit)
+            if args.json:
+                print(_json({"issues": cards}))
+            elif not cards:
+                print("No active tool issues.")
+            else:
+                for item in cards:
+                    print(f"- {item['tool']} @ {item['target']}: {item['status']} / "
+                          f"{item['error']} ({item['independent_runs']} independent run(s)); "
+                          f"retry={item['retry_at'] or 'when eligible'}")
+                    if item["workaround"]:
+                        print(f"  workaround: {item['workaround']}")
+            return 0
         if args.command == "state":
             state = runtime.state()
             print(_json(state) if args.json else _format_state(state))
@@ -224,8 +250,9 @@ def main(argv: list[str] | None = None) -> int:
                 _print_issue(issue)
             return 0
         if args.command == "preflight":
-            decision = runtime.preflight(_request(args), allow_probe=args.probe,
-                                         override_basis=args.basis)
+            decision = runtime.preflight(
+                _request(args), allow_probe=args.probe,
+                override_basis=args.basis, human_override=args.probe)
             if args.json:
                 print(_json(decision.to_dict()))
             else:
@@ -235,7 +262,9 @@ def main(argv: list[str] | None = None) -> int:
             issue = runtime.postflight(
                 _request(args), args.outcome, error_class=args.error_class,
                 error_code=args.error_code, message=args.message,
-                duration_ms=args.duration_ms, attempt=args.attempt)
+                duration_ms=args.duration_ms, attempt=args.attempt,
+                decision_id=args.decision_id, retry_after_s=args.retry_after_s,
+                evidence_ref=args.evidence_ref)
             if issue is None:
                 print("Recorded ok; no issue.")
             elif args.json:
