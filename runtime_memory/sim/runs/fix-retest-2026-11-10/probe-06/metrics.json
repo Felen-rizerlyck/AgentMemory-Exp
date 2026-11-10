@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "checks": [
+    {
+      "test": "concurrent_append",
+      "expected_lines": 200,
+      "actual_lines": 200,
+      "bad_lines": 0,
+      "errors": [],
+      "status": "PASS"
+    },
+    {
+      "test": "concurrent_postflight",
+      "expected_issue_records": 1,
+      "expected_aggregated_failures": 2,
+      "issue_records": 1,
+      "issue_counts": [
+        2
+      ],
+      "events": 2,
+      "errors": [],
+      "status": "PASS"
+    },
+    {
+      "test": "partial_write_event_without_issue",
+      "check_problems": [
+        "event OP-partial: failure has no matching issue (fp/None)"
+      ],
+      "detected": true,
+      "status": "PASS",
+      "note": "plan T6: not detecting event-without-issue is a gap"
+    },
+    {
+      "test": "terminate_between_event_and_issue",
+      "marker_seen": true,
+      "check_problems": [
+        "event OP-crash: failure has no matching issue (fp/)"
+      ],
+      "corrupt_event_lines": 0,
+      "event_count": 1,
+      "issue_count": 0,
+      "orphan_event_detected": true,
+      "status": "PASS"
+    }
+  ]
+}

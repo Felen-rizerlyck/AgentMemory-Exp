@@ -1,0 +1,14 @@
+{
+  "issues": [
+    {
+      "issue_id": "ISS-20261110T031943-1E3571",
+      "tool": "mcp/demo.query",
+      "target": "r6-case",
+      "status": "cooldown",
+      "error": "unreachable",
+      "independent_runs": 1,
+      "retry_at": "2026-11-10T03:34:43.146405Z",
+      "workaround": null
+    }
+  ]
+}
